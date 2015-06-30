@@ -1,13 +1,19 @@
 package com.processbalancing.main;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * class for value objects which holds all the information about a single project
  * 
  */
 public class Project {
 
+	public static List<Project> projectList = new ArrayList<Project>();
+	
 	private String name; // name of the project
-	private char id; // id of the project
+	public int numberOfPeriods;
+	private int id; // id of the project
 	private int period; // periode in which the project will be implemented (default: null; only required for the NPV-calculation)
 	private String type; // bpmLevel or processLevel
 	private char i; // influenced processes
@@ -29,12 +35,13 @@ public class Project {
 	private String absRelt; // MLe absolute or relative effect for t
 	private String absRelOop; // MLe absolute or relative effect for Oop
 	
-	public Project(String name, char id, String type, char i, double oinv, double a, double b, double e, double u, double m, int earliestImplementationPeriod,
+	public Project(String name, int numberOfPeriods, String type, char i, double oinv, double a, double b, double e, double u, double m, int earliestImplementationPeriod,
 			int latestImplementationPeriod, char predecessorProject, char successorProject, char togetherInPeriodWithProject,
 			char notTogetherInPeriodWithProject, double fixedCostEffect, String absRelq, String absRelt, String absRelOop) {
 		super();
 		this.name = name;
-		this.id = id;
+		this.id = projectList.size();
+		this.numberOfPeriods = numberOfPeriods;
 		this.type = type;
 		this.i = i;
 		this.oinv = oinv;
@@ -53,24 +60,44 @@ public class Project {
 		this.absRelq = absRelq;					//MLE
 		this.absRelt = absRelt;					//MLE
 		this.absRelOop = absRelOop;				//MLE
-				
+		projectList.add(this);	
 		
 	}
 
+	public String toString(){
+		return this.name;
+	}
+	
+	public boolean equals(Object obj){
+		if(obj instanceof Project){
+			Project p = (Project)obj;
+			return (p.id == this.id);
+		}
+		return false;
+	}
+	
 	public String getName() {
 		return name;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public char getId() {
-		return id;
+	public int getNumberOfPeriods() {
+		return numberOfPeriods;
 	}
 
-	public void setId(char id) {
-		this.id = id;
+	public void setNumberOfPeriods(int numberOfPeriods) {
+		this.numberOfPeriods = numberOfPeriods;
 	}
 
 	public int getPeriod() {

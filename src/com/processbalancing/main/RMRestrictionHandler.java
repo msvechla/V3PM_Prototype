@@ -306,10 +306,10 @@ public class RMRestrictionHandler {
 		return false;
 	}
 
-	private static int getThePeriodForWhichThisProjectIsScheduled(List<String> projectSequence, char ProjectID) throws ProjectIsNotInRoadmapException {
+	private static int getThePeriodForWhichThisProjectIsScheduled(List<String> projectSequence, int i) throws ProjectIsNotInRoadmapException {
 		int position = 1;
 		for (Iterator<String> itPS = projectSequence.iterator(); itPS.hasNext();) {
-			if (itPS.next().contains(Character.toString(ProjectID)) == true) {
+			if (itPS.next().contains(Integer.toString(i)) == true) {
 				return position;
 			}
 			position++;
@@ -331,11 +331,11 @@ public class RMRestrictionHandler {
 	/**
 	 * @return true if the roadmap contains this project
 	 */
-	private static boolean isProjectInRoadmap(List<String> tempProjectSequence, char projectID) {
+	private static boolean isProjectInRoadmap(List<String> tempProjectSequence, int j) {
 		for (Iterator<String> itPS = tempProjectSequence.iterator(); itPS.hasNext();) {
 			char[] projectsInPeriod = itPS.next().toCharArray();
 			for (int i = 0; i < projectsInPeriod.length; i++) {
-				if (projectID == projectsInPeriod[i]) {
+				if (j == projectsInPeriod[i]) {
 					return true; // roadmap contains this project
 				}
 			}

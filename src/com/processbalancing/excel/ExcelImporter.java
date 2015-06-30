@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+
 import com.processbalancing.main.Main;
 import com.processbalancing.main.Process;
 import com.processbalancing.main.Project;
+import com.processbalancing.rmgeneration.RunConfiguration;
 
 /**
  * This class is responsible for importing the data from the Excel file and writing them it into the collections and variables of the Main class. The Apache POI
@@ -65,12 +68,12 @@ public class ExcelImporter {
 				break; // reached the end of the projects-list
 			}
 			Project project = new Project(cell.getStringCellValue(), '0', "", '0', 0, 0, 0, 0, 0, 0, 0, 0, '-', '-', '-', '-', 0, "", "", "");
-			// set ID
+			// set Number of Periods
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-				project.setId(Double.toString(cell.getNumericCellValue()).toCharArray()[0]);
+				project.setNumberOfPeriods((int)cell.getNumericCellValue());
 			} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-				project.setId(cell.getStringCellValue().toCharArray()[0]);
+				project.setNumberOfPeriods((Integer.parseInt(cell.getStringCellValue())));
 			}
 			// set type
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
@@ -245,7 +248,9 @@ public class ExcelImporter {
 
 		cell = sheet.getRow(rowCount++).getCell(cell.getColumnIndex());
 		Main.maxProjectsPerPeriod = (int) cell.getNumericCellValue();
-
+		
+		RunConfiguration.standardConfig = new RunConfiguration(Main.periodsUnderInvestigation / Main.maxProjectsPerPeriod, Main.maxProjectsPerPeriod);
+		
 		cell = sheet.getRow(rowCount++).getCell(cell.getColumnIndex());
 		Main.discountRatePerPeriod = cell.getNumericCellValue();
 

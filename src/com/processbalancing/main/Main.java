@@ -1,10 +1,14 @@
 package com.processbalancing.main;
 
 import java.io.File;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 import com.processbalancing.UI.SwingUI;
-import com.processbalancing.excel.*;
+import com.processbalancing.excel.ExcelImporter;
+import com.processbalancing.rmgeneration.RMContainer;
+import com.processbalancing.rmgeneration.RunConfiguration;
 
 /**
  * The whole procedure of the Process Balancing Calculation Tool is controlled from this Main-Class
@@ -59,42 +63,64 @@ public class Main {
 		// -----------------------------------------------------------------------------
 		// generate all possible roadmaps and filter them by restrictions
 		// -----------------------------------------------------------------------------
-		RMGenerator rmGenerator = new RMGenerator();
-		List<Roadmap> collRM = rmGenerator.generateRoadmapCollection(collProj);
+		//RMGenerator rmGenerator = new RMGenerator();
+		//List<Roadmap> collRM = rmGenerator.generateRoadmapCollection(collProj);
 
+		double millisStart = System.currentTimeMillis();
+		com.processbalancing.rmgeneration.RMGenerator rmGenerator = new com.processbalancing.rmgeneration.RMGenerator();
+		rmGenerator.generateRoadmaps(Project.projectList, RunConfiguration.standardConfig);
+		
+		double millisFinish = System.currentTimeMillis();
+		
+//		for(RMContainer rmc : RMContainer.lstRMContainerSingle){
+//		System.out.println("");
+//		for(RoadMap rm: rmc.getLstRM()){
+//			System.out.println(rm);
+//		}
+//	}
+//	
+//	for(RMContainer rmc : RMContainer.lstRMContainerCombined){
+//		System.out.println("");
+//		for(RoadMap rm: rmc.getLstRM()){
+//			System.out.println(rm);
+//		}
+//	}
+	
+	System.out.println(RMContainer.countRoadMapsGenerated+" Roadmaps generated in "+(millisFinish-millisStart)+"ms");
+		
 		// -----------------------------------------------------------------------------
 		// add empty project to collection (for NPV calculation)
 		// -----------------------------------------------------------------------------
-		collProj.add(new Project("No Project", CHAR_FOR_EMPTY_PROJECTS, "empty", CHAR_FOR_EMPTY_PROJECTS, 0, 0, 0, 0, 0, 0, 0, 0, '-', '-', '-', '-', 0, "empty", "empty", "empty"));
+		//collProj.add(new Project("No Project", CHAR_FOR_EMPTY_PROJECTS, "empty", CHAR_FOR_EMPTY_PROJECTS, 0, 0, 0, 0, 0, 0, 0, 0, '-', '-', '-', '-', 0, "empty", "empty", "empty"));
 
 		// -----------------------------------------------------------------------------
 		// calculate NPV of each roadmap
 		// -----------------------------------------------------------------------------
-		Calculator.calculateNPVs(collRM, collProcess, collProj);
+		//Calculator.calculateNPVs(collRM, collProcess, collProj);
 
 		// -----------------------------------------------------------------------------
 		// sort roadmaps by NPV
 		// -----------------------------------------------------------------------------
-		Collections.sort(collRM, new RMComparator());
+		//Collections.sort(collRM, new RMComparator());
 
 		// -----------------------------------------------------------------------------
 		// delete duplicates with same NPV
 		// -----------------------------------------------------------------------------
-		if (maxProjectsPerPeriod > 1) {
-			DuplicateCheck.deleteDuplicatesWithSameNPV(collRM);
-		}
+//		if (maxProjectsPerPeriod > 1) {
+//			DuplicateCheck.deleteDuplicatesWithSameNPV(collRM);
+//		}
 
 		// -----------------------------------------------------------------------------
 		// sort projects within period
 		// -----------------------------------------------------------------------------
-		if (maxProjectsPerPeriod > 1) {
-			ProjectSorter.sortProjects(collRM);
-		}
+//		if (maxProjectsPerPeriod > 1) {
+//			ProjectSorter.sortProjects(collRM);
+//		}
 
 		// -----------------------------------------------------------------------------
 		// print output-data to excel file
 		// -----------------------------------------------------------------------------
-		ExcelExporter.exportToExcel(collRM, excelFile, collProj.size());
+//		ExcelExporter.exportToExcel(collRM, excelFile, collProj.size());
 
 		// -----------------------------------------------------------------------------
 		// print output-data to console (only for future debugging purposes)
@@ -112,20 +138,19 @@ public class Main {
 		 
 		// MLe
 		
-		System.out.println("OverallAmount:                        "+ RMRestrictionHandler.OverallAmount);
-		System.out.println("AmountisNoProjectInPeriodRestriction: "+ RMRestrictionHandler.AmountisNoProjectInPeriodRestriction);
-		System.out.println("AmountisTogetherWithRestriction:      "+ RMRestrictionHandler.AmountisTogetherWithRestriction);
-		System.out.println("AmountisNotTogetherWithRestriction:   "+ RMRestrictionHandler.AmountisNotTogetherWithRestriction);
-		System.out.println("AmountisPredecessorRestriction:       "+ RMRestrictionHandler.AmountisPredecessorRestriction);
-		System.out.println("AmountisSuccessorRestriction:         "+ RMRestrictionHandler.AmountisSuccessorRestriction);
-		System.out.println("AmountisEarliestAndLatest:            "+ RMRestrictionHandler.AmountisEarliestAndLatest);
-		System.out.println("AmountisMaxBudgetRestriction:         "+ RMRestrictionHandler.AmountisMaxBudgetRestriction);
-		System.out.println("AdmissibleAmount:                     "+ RMRestrictionHandler.AdmissibleAmount);	
-		System.out.println("DuplicateAmountQMIN:                  "+ DuplicateCheck.DuplicateAmountQMIN);
-		System.out.println("");	
-		System.out.println("Final Amount:                         "+ (RMRestrictionHandler.AdmissibleAmount - DuplicateCheck.DuplicateAmount));
+//		System.out.println("OverallAmount:                        "+ RMRestrictionHandler.OverallAmount);
+//		System.out.println("AmountisNoProjectInPeriodRestriction: "+ RMRestrictionHandler.AmountisNoProjectInPeriodRestriction);
+//		System.out.println("AmountisTogetherWithRestriction:      "+ RMRestrictionHandler.AmountisTogetherWithRestriction);
+//		System.out.println("AmountisNotTogetherWithRestriction:   "+ RMRestrictionHandler.AmountisNotTogetherWithRestriction);
+//		System.out.println("AmountisPredecessorRestriction:       "+ RMRestrictionHandler.AmountisPredecessorRestriction);
+//		System.out.println("AmountisSuccessorRestriction:         "+ RMRestrictionHandler.AmountisSuccessorRestriction);
+//		System.out.println("AmountisEarliestAndLatest:            "+ RMRestrictionHandler.AmountisEarliestAndLatest);
+//		System.out.println("AmountisMaxBudgetRestriction:         "+ RMRestrictionHandler.AmountisMaxBudgetRestriction);
+//		System.out.println("AdmissibleAmount:                     "+ RMRestrictionHandler.AdmissibleAmount);	
+//		System.out.println("DuplicateAmountQMIN:                  "+ DuplicateCheck.DuplicateAmountQMIN);
+//		System.out.println("");	
+//		System.out.println("Final Amount:                         "+ (RMRestrictionHandler.AdmissibleAmount - DuplicateCheck.DuplicateAmount));
 		
-		String s = "TEST";
 		
 		return RETURN_STRING_SUCCESSFUL;
 	}
