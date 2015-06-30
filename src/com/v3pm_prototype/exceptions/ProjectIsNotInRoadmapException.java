@@ -1,4 +1,4 @@
-package com.processbalancing.exceptions;
+package com.v3pm_prototype.exceptions;
 
 public class ProjectIsNotInRoadmapException extends Exception {
 

@@ -1,9 +1,10 @@
-package com.processbalancing.main;
+package com.v3pm_prototype.main;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import com.processbalancing.exceptions.ProjectIsNotInRoadmapException;
+
+import com.v3pm_prototype.exceptions.ProjectIsNotInRoadmapException;
 
 /**
  * The RMRestrictionHandler contains methods to check if the given roadmap violates any restriction or not.

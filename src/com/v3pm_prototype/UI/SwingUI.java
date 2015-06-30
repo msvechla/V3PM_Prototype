@@ -1,4 +1,4 @@
-package com.processbalancing.UI;
+package com.v3pm_prototype.UI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,8 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import com.processbalancing.exceptions.NoValidThetaIDException;
-import com.processbalancing.main.Main;
+import com.v3pm_prototype.exceptions.NoValidThetaIDException;
+import com.v3pm_prototype.main.Main;
 
 /**
  * This class creates the user interface. It handles all the actions like clicking a button in its inner class ActionHandler. It implements runnable to be able

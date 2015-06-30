@@ -1,4 +1,4 @@
-package com.processbalancing.main;
+package com.v3pm_prototype.main;
 
 /**
  * class for value objects which holds all the information about a single process

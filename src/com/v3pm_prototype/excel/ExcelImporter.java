@@ -1,4 +1,4 @@
-package com.processbalancing.excel;
+package com.v3pm_prototype.excel;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,10 +9,10 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 
-import com.processbalancing.main.Main;
-import com.processbalancing.main.Process;
-import com.processbalancing.main.Project;
-import com.processbalancing.rmgeneration.RunConfiguration;
+import com.v3pm_prototype.main.Main;
+import com.v3pm_prototype.main.Process;
+import com.v3pm_prototype.main.Project;
+import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 /**
  * This class is responsible for importing the data from the Excel file and writing them it into the collections and variables of the Main class. The Apache POI

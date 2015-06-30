@@ -1,6 +1,6 @@
-package com.processbalancing.main;
+package com.v3pm_prototype.main;
 
-import com.processbalancing.exceptions.NoValidThetaIDException;
+import com.v3pm_prototype.exceptions.NoValidThetaIDException;
 
 /**
  * This class is is used from the Calculator class in order to calculate the demand of a process for a specific period.

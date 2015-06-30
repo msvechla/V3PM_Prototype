@@ -1,14 +1,14 @@
-package com.processbalancing.main;
+package com.v3pm_prototype.main;
 
 import java.io.File;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import com.processbalancing.UI.SwingUI;
-import com.processbalancing.excel.ExcelImporter;
-import com.processbalancing.rmgeneration.RMContainer;
-import com.processbalancing.rmgeneration.RunConfiguration;
+import com.v3pm_prototype.UI.SwingUI;
+import com.v3pm_prototype.excel.ExcelImporter;
+import com.v3pm_prototype.rmgeneration.RMContainer;
+import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 /**
  * The whole procedure of the Process Balancing Calculation Tool is controlled from this Main-Class
@@ -67,7 +67,7 @@ public class Main {
 		//List<Roadmap> collRM = rmGenerator.generateRoadmapCollection(collProj);
 
 		double millisStart = System.currentTimeMillis();
-		com.processbalancing.rmgeneration.RMGenerator rmGenerator = new com.processbalancing.rmgeneration.RMGenerator();
+		com.v3pm_prototype.rmgeneration.RMGenerator rmGenerator = new com.v3pm_prototype.rmgeneration.RMGenerator();
 		rmGenerator.generateRoadmaps(Project.projectList, RunConfiguration.standardConfig);
 		
 		double millisFinish = System.currentTimeMillis();
