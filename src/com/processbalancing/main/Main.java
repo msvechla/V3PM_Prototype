@@ -124,7 +124,9 @@ public class Main {
 		System.out.println("DuplicateAmountQMIN:                  "+ DuplicateCheck.DuplicateAmountQMIN);
 		System.out.println("");	
 		System.out.println("Final Amount:                         "+ (RMRestrictionHandler.AdmissibleAmount - DuplicateCheck.DuplicateAmount));
-				
+		
+		String s = "TEST";
+		
 		return RETURN_STRING_SUCCESSFUL;
 	}
 }
