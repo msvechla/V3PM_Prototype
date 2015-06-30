@@ -72,20 +72,26 @@ public class Main {
 		
 		double millisFinish = System.currentTimeMillis();
 		
-//		for(RMContainer rmc : RMContainer.lstRMContainerSingle){
-//		System.out.println("");
-//		for(RoadMap rm: rmc.getLstRM()){
-//			System.out.println(rm);
-//		}
-//	}
-//	
-//	for(RMContainer rmc : RMContainer.lstRMContainerCombined){
-//		System.out.println("");
-//		for(RoadMap rm: rmc.getLstRM()){
-//			System.out.println(rm);
-//		}
-//	}
+		for(RMContainer rmc : RMContainer.lstRMContainerSingle){
+			System.out.println("");
+			System.out.println("---"+rmc.getImplementedProjects()+"---");
+		for(com.v3pm_prototype.rmgeneration.RoadMap rm: rmc.getLstRM()){
+			System.out.println(rm);
+		}
+	}
 	
+	for(RMContainer rmc : RMContainer.lstRMContainerCombined){
+		System.out.println("");
+		System.out.println("---"+rmc.getImplementedProjects()+"---");
+		for(com.v3pm_prototype.rmgeneration.RoadMap rm: rmc.getLstRM()){
+			System.out.println(rm);
+		}
+		if(RMContainer.countRoadMapsGenerated >1000)break;
+	}
+	
+	//BEFORE PRE-COMBINEDCONTAINER CHECK: 28071 Roadmaps generated in 365.0ms
+	//AFTER: 8850 Roadmaps generated in 221.0ms
+		
 	System.out.println(RMContainer.countRoadMapsGenerated+" Roadmaps generated in "+(millisFinish-millisStart)+"ms");
 		
 		// -----------------------------------------------------------------------------

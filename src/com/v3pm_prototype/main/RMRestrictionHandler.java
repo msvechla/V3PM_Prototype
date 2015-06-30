@@ -1,6 +1,7 @@
 package com.v3pm_prototype.main;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,6 +29,54 @@ public class RMRestrictionHandler {
 	public static int AmountisMaxBudgetRestriction = 0;  		 //MLe
 	public static int AdmissibleAmount = 0;  					 //MLe
 	
+	/*
+	 * Checks all restrictions that can be checked before two containers are combined
+	 */
+	public static boolean meetsPreCombinedContainerGenerationCheck(HashSet<Integer> implementedProjectIDs){
+		for(Project p : Project.projectList){
+			if(rGlobalMutualExclusiveness(p, implementedProjectIDs) == false) return false;
+			if(rGlobalMutualDependency(p, implementedProjectIDs) == false) return false;
+			//if(rMandatoryProject(p, implementedProjectIDs) == false) return false;
+		}	
+		return true;
+	}
+	
+	//All restriction methods return FALSE if restriction is broken, TRUE otherwise
+	
+	public static boolean rGlobalMutualExclusiveness(Project p, HashSet<Integer> implementedProjectIDs){
+		if(p.getNotTogetherInPeriodWithProject() != -1){
+			if(implementedProjectIDs.contains(p.getId()) && implementedProjectIDs.contains(p.getNotTogetherInPeriodWithProject())){
+				return false;
+			}
+			return true;
+		}
+		return true;
+		
+	}
+	
+	public static boolean rGlobalMutualDependency(Project p, HashSet<Integer> implementedProjectIDs){
+		if(p.getTogetherInPeriodWithProject() != -1){
+			if(implementedProjectIDs.contains(p.getId())){
+				if(implementedProjectIDs.contains(p.getTogetherInPeriodWithProject())){
+					return true;
+				}else{
+					return false;
+				}
+			}
+			return true;
+		}
+		return true;
+	}
+	
+	//TODO
+//	public static boolean rMandatoryProject(Project p, HashSet<Integer> implementedProjectIDs){
+//		if(p.isMandato)
+//		if(implementedProjectIDs.contains(p.getId())){
+//			return true;
+//		}else{
+//			return false;
+//		}
+//	}
 	
 	public static boolean breakRestrictionBeforeAddingToRoadMapCollection(List<String> tempProjectSequence, Collection<Project> collProj) {
 		

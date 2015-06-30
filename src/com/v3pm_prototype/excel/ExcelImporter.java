@@ -67,7 +67,7 @@ public class ExcelImporter {
 			if(cell.getStringCellValue().equals("")){
 				break; // reached the end of the projects-list
 			}
-			Project project = new Project(cell.getStringCellValue(), '0', "", '0', 0, 0, 0, 0, 0, 0, 0, 0, '-', '-', '-', '-', 0, "", "", "");
+			Project project = new Project(cell.getStringCellValue(), '0', "", '0', 0, 0, 0, 0, 0, 0, 0, 0, '-', '-', -1, -1, 0, "", "", "");
 			// set Number of Periods
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
@@ -126,16 +126,18 @@ public class ExcelImporter {
 			// set TogetherInPeriodWithProject
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-				project.setTogetherInPeriodWithProject(Double.toString(cell.getNumericCellValue()).toCharArray()[0]);
+				project.setTogetherInPeriodWithProject((int) cell.getNumericCellValue());
 			} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-				project.setTogetherInPeriodWithProject(cell.getStringCellValue().toCharArray()[0]);
+				project.setTogetherInPeriodWithProject(Integer.parseInt(cell.getStringCellValue()));
 			}
 			// set NotTogetherInPeriodWithProject
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-				project.setNotTogetherInPeriodWithProject(Double.toString(cell.getNumericCellValue()).toCharArray()[0]);
+				project.setNotTogetherInPeriodWithProject((int) cell.getNumericCellValue());
+				System.out.println(cell.getNumericCellValue());
 			} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-				project.setNotTogetherInPeriodWithProject(cell.getStringCellValue().toCharArray()[0]);
+				project.setNotTogetherInPeriodWithProject(Integer.parseInt(cell.getStringCellValue()));
+				System.out.println(Integer.parseInt(cell.getStringCellValue()));
 			}
 			
 			// set Fixkosteneffekt  Neu MLe

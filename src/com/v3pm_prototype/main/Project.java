@@ -26,18 +26,19 @@ public class Project {
 	// variables for restrictions
 	private int earliestImplementationPeriod;
 	private int latestImplementationPeriod;
-	private char predecessorProject;
-	private char successorProject;
-	private char togetherInPeriodWithProject;
-	private char notTogetherInPeriodWithProject;
+	private int predecessorProject;
+	private int successorProject;
+	private int togetherInPeriodWithProject;
+	private int notTogetherInPeriodWithProject;
+	private boolean mandatory;//TODO
 	private double fixedCostEffect; // MLe: FixedCostEffect
 	private String absRelq; // MLe absolute or relative effect for q
 	private String absRelt; // MLe absolute or relative effect for t
 	private String absRelOop; // MLe absolute or relative effect for Oop
 	
 	public Project(String name, int numberOfPeriods, String type, char i, double oinv, double a, double b, double e, double u, double m, int earliestImplementationPeriod,
-			int latestImplementationPeriod, char predecessorProject, char successorProject, char togetherInPeriodWithProject,
-			char notTogetherInPeriodWithProject, double fixedCostEffect, String absRelq, String absRelt, String absRelOop) {
+			int latestImplementationPeriod, int j, int k, int l,
+			int n, double fixedCostEffect, String absRelq, String absRelt, String absRelOop) {
 		super();
 		this.name = name;
 		this.id = projectList.size();
@@ -52,10 +53,10 @@ public class Project {
 		this.m = m;
 		this.earliestImplementationPeriod = earliestImplementationPeriod;
 		this.latestImplementationPeriod = latestImplementationPeriod;
-		this.predecessorProject = predecessorProject;
-		this.successorProject = successorProject;
-		this.togetherInPeriodWithProject = togetherInPeriodWithProject;
-		this.notTogetherInPeriodWithProject = notTogetherInPeriodWithProject;
+		this.predecessorProject = j;
+		this.successorProject = k;
+		this.togetherInPeriodWithProject = l;
+		this.notTogetherInPeriodWithProject = n;
 		this.fixedCostEffect = fixedCostEffect; //MLE
 		this.absRelq = absRelq;					//MLE
 		this.absRelt = absRelt;					//MLE
@@ -65,7 +66,7 @@ public class Project {
 	}
 
 	public String toString(){
-		return this.name;
+		return String.valueOf(this.id);
 	}
 	
 	public boolean equals(Object obj){
@@ -188,7 +189,7 @@ public class Project {
 		this.latestImplementationPeriod = latestImplementationPeriod;
 	}
 
-	public char getPredecessorProject() {
+	public int getPredecessorProject() {
 		return predecessorProject;
 	}
 
@@ -196,7 +197,7 @@ public class Project {
 		this.predecessorProject = predecessorProject;
 	}
 
-	public char getSuccessorProject() {
+	public int getSuccessorProject() {
 		return successorProject;
 	}
 
@@ -204,19 +205,19 @@ public class Project {
 		this.successorProject = successorProject;
 	}
 
-	public char getTogetherInPeriodWithProject() {
+	public int getTogetherInPeriodWithProject() {
 		return togetherInPeriodWithProject;
 	}
 
-	public void setTogetherInPeriodWithProject(char togetherInPeriodWithProject) {
+	public void setTogetherInPeriodWithProject(int togetherInPeriodWithProject) {
 		this.togetherInPeriodWithProject = togetherInPeriodWithProject;
 	}
 
-	public char getNotTogetherInPeriodWithProject() {
+	public int getNotTogetherInPeriodWithProject() {
 		return notTogetherInPeriodWithProject;
 	}
 
-	public void setNotTogetherInPeriodWithProject(char notTogetherInPeriodWithProject) {
+	public void setNotTogetherInPeriodWithProject(int notTogetherInPeriodWithProject) {
 		this.notTogetherInPeriodWithProject = notTogetherInPeriodWithProject;
 	}
 	
