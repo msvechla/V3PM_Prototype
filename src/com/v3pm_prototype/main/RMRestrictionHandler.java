@@ -1,5 +1,6 @@
 package com.v3pm_prototype.main;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,15 +32,28 @@ public class RMRestrictionHandler {
 	public static int AdmissibleAmount = 0;  					 //MLe
 	
 	
+	public static HashSet<Project> tmpImplemented;
+	
 	/**
 	 * Checks all restrictions that can be checked when generating a SingleContainer
 	 * @param p Project that is implemented in the container
 	 * @param startPeriod The implementation start period
 	 * @return False if one of the restrictions is broken, true otherwise
 	 */
-	public static boolean meetsOnSingleContainerGenerationCheck(Project p, int startPeriod){
-		if(rEarliest(p, startPeriod) == false) return false;
-		if(rLatest(p, startPeriod) == false) return false;
+	public static boolean meetsPostRoadmapGenerationCheck(Project[][] roadmap){
+		tmpImplemented = new HashSet<Project>();
+		
+		for(int period = 0; period < roadmap.length; period++){
+			HashSet<Project> tmpNew = new HashSet<Project>();
+			tmpNew.addAll(Arrays.asList(roadmap[period]));
+			tmpNew.remove(null);
+			
+			if(rEarliest(period, tmpNew) == false) return false;
+			if(rLatest(period, tmpNew) == false) return false;
+			if(rPreSuc(period, roadmap, tmpNew) == false) return false;
+			
+			tmpImplemented.addAll(tmpNew);
+		}
 		return true;
 	}
 	
@@ -68,6 +82,38 @@ public class RMRestrictionHandler {
 	
 	//All restriction methods return FALSE if restriction is broken, TRUE otherwise
 	
+	//TODO Wie ist Pre/Suc zu verstehen? Eigentlich nur Predecessor
+	public static boolean rPreSuc(int period, Project[][] roadmap, HashSet<Project> tmpNew){
+		
+		for(Project p : tmpNew){
+			//if restriction is set and project has not been checked yet
+			if(!tmpImplemented.contains(p)){
+				
+				//Predecessor
+				if(p.getPredecessorProject() != null){
+					if(!tmpImplemented.contains(p.getPredecessorProject()))return false;	
+				}
+				
+				//TODO +number of periods-1
+				//Sucessor
+				if(p.getSuccessorProject() != null){
+					boolean successorFound = false;
+					
+					for(int i=period;i<roadmap.length;i++){
+						if(Arrays.asList(roadmap[i]).contains(p.getSuccessorProject())){
+							successorFound = true;
+							break;
+						}
+					}
+					if(!successorFound) return false;
+				}
+			}
+			
+		}
+		
+		return true;
+	}
+	
 	
 	public static boolean rLocMutDep(Project p1, HashSet<Project> combinedProjects){
 		//If restriction not set return true
@@ -88,28 +134,26 @@ public class RMRestrictionHandler {
 		return true;
 	}
 	
-	public static boolean rEarliest(Project p, int startPeriod){
-		
-		//If restriction not set return true
-		if(p.getEarliestImplementationPeriod() == -1) return true;
-		
-		if(startPeriod < p.getEarliestImplementationPeriod()){
-			return false;
-		}else{
-			return true;
+	public static boolean rEarliest(int startPeriod, HashSet<Project> tmpNew){
+		//Check all projects that are newly implemented this period
+		for(Project p : tmpNew){
+			//if restriction is set and project has not been checked yet
+			if((p.getEarliestImplementationPeriod() != -1) && (!tmpImplemented.contains(p))){
+				if(startPeriod < p.getEarliestImplementationPeriod()) return false;
+			}
 		}
+		return true;
 	}
 	
-	public static boolean rLatest(Project p, int startPeriod){
-		
-		//If restriction not set return true
-		if(p.getLatestImplementationPeriod() == -1) return true;
-		
-		if((startPeriod + p.getNumberOfPeriods()-1) > p.getLatestImplementationPeriod()){
-			return false;
-		}else{
-			return true;
+	public static boolean rLatest(int startPeriod, HashSet<Project> tmpNew){
+		//Check all projects that are newly implemented this period
+		for(Project p : tmpNew){
+			//if restriction is set
+			if((p.getEarliestImplementationPeriod() != -1)){
+				if((startPeriod + p.getNumberOfPeriods()-1) > p.getLatestImplementationPeriod()) return false;
+			}
 		}
+		return true;
 	}
 	
 	public static boolean rGloMutEx(Project p, HashSet<Integer> implementedProjectIDs){
@@ -163,14 +207,14 @@ public class RMRestrictionHandler {
 			AmountisNotTogetherWithRestriction = AmountisNotTogetherWithRestriction + 1; //MLe
 			return true;
 		}
-		if (isPredecessorRestrictionViolation(tempProjectSequence, collProj) == true) {
-			AmountisPredecessorRestriction  = AmountisPredecessorRestriction  + 1; //MLe
-			return true;
-		}
-		if (isSuccessorRestrictionViolation(tempProjectSequence, collProj) == true) {
-			AmountisSuccessorRestriction = AmountisSuccessorRestriction + 1; //MLe
-			return true;
-		}
+//		if (isPredecessorRestrictionViolation(tempProjectSequence, collProj) == true) {
+//			AmountisPredecessorRestriction  = AmountisPredecessorRestriction  + 1; //MLe
+//			return true;
+//		}
+//		if (isSuccessorRestrictionViolation(tempProjectSequence, collProj) == true) {
+//			AmountisSuccessorRestriction = AmountisSuccessorRestriction + 1; //MLe
+//			return true;
+//		}
 		if (isEarliestAndLatestImplementationRestrictionViolation(tempProjectSequence, collProj) == true) {
 			AmountisEarliestAndLatest = AmountisEarliestAndLatest + 1; //MLe
 			return true;
@@ -246,67 +290,67 @@ public class RMRestrictionHandler {
 		return false;
 	}
 
-	private static boolean isPredecessorRestrictionViolation(List<String> tempProjectSequence, Collection<Project> collProj) {
-		int projectPositionInRoadmap;
-		int predecessorProjectPositionInRoadmap;
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		// for each project
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		for (Iterator<Project> it_pr = collProj.iterator(); it_pr.hasNext();) {
-			Project project = it_pr.next();
-			// check if there is a predecessor project given ( '-' is none)
-			if (project.getPredecessorProject() != '-' && isProjectInRoadmap(tempProjectSequence, project.getId())){
-//					&& isProjectInRoadmap(tempProjectSequence, project.getPredecessorProject())) {
-				// get the positions of the projects within the project-sequence
-				try {
-					projectPositionInRoadmap = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence, project.getId());
-				} catch (ProjectIsNotInRoadmapException e) {
-					continue; // roadmap does not contain the project -> no restriction violated so far
-				}
-				try {
-					predecessorProjectPositionInRoadmap = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence, project.getPredecessorProject());
-				} catch (ProjectIsNotInRoadmapException e) {
-					return true; // roadmap does not contain the predecessor project -> restriction violated
-				}
-				// handle predecessor restriction
-				if (predecessorProjectPositionInRoadmap >= projectPositionInRoadmap) {
-					return true; // restriction violated
-				}
-			}
-		}
-		return false;
-	}
+//	private static boolean isPredecessorRestrictionViolation(List<String> tempProjectSequence, Collection<Project> collProj) {
+//		int projectPositionInRoadmap;
+//		int predecessorProjectPositionInRoadmap;
+//		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		// for each project
+//		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		for (Iterator<Project> it_pr = collProj.iterator(); it_pr.hasNext();) {
+//			Project project = it_pr.next();
+//			// check if there is a predecessor project given ( '-' is none)
+//			if (project.getPredecessorProject() != '-' && isProjectInRoadmap(tempProjectSequence, project.getId())){
+////					&& isProjectInRoadmap(tempProjectSequence, project.getPredecessorProject())) {
+//				// get the positions of the projects within the project-sequence
+//				try {
+//					projectPositionInRoadmap = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence, project.getId());
+//				} catch (ProjectIsNotInRoadmapException e) {
+//					continue; // roadmap does not contain the project -> no restriction violated so far
+//				}
+//				try {
+//					predecessorProjectPositionInRoadmap = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence, project.getPredecessorProject());
+//				} catch (ProjectIsNotInRoadmapException e) {
+//					return true; // roadmap does not contain the predecessor project -> restriction violated
+//				}
+//				// handle predecessor restriction
+//				if (predecessorProjectPositionInRoadmap >= projectPositionInRoadmap) {
+//					return true; // restriction violated
+//				}
+//			}
+//		}
+//		return false;
+//	}
 
-	private static boolean isSuccessorRestrictionViolation(List<String> tempProjectSequence, Collection<Project> collProj) {
-		int projectPositionInRoadmap;
-		int successorProjectPositionInRoadmap;
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		// for each project
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		for (Iterator<Project> it_pr = collProj.iterator(); it_pr.hasNext();) {
-			Project project = it_pr.next();
-			if (project.getSuccessorProject() != '-' && isProjectInRoadmap(tempProjectSequence, project.getId())
-					&& isProjectInRoadmap(tempProjectSequence, project.getSuccessorProject())) {
-				// check if there is a predecessor Project given ( '-' is none)
-				// get the positions of the projects within the projectSequence
-				try {
-					projectPositionInRoadmap = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence, project.getId());
-				} catch (ProjectIsNotInRoadmapException e) {
-					continue; // roadmap does not contain the project -> no restriction violated so far
-				}
-				try {
-					successorProjectPositionInRoadmap = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence, project.getSuccessorProject());
-				} catch (ProjectIsNotInRoadmapException e) {
-					return true; // roadmap does contain the project AND does not contain the successor project -> restriction violated
-				}
-				// handle successor restriction
-				if (successorProjectPositionInRoadmap <= projectPositionInRoadmap) {
-					return true; // restriction violated
-				}
-			}
-		}
-		return false;
-	}
+//	private static boolean isSuccessorRestrictionViolation(List<String> tempProjectSequence, Collection<Project> collProj) {
+//		int projectPositionInRoadmap;
+//		int successorProjectPositionInRoadmap;
+//		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		// for each project
+//		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		for (Iterator<Project> it_pr = collProj.iterator(); it_pr.hasNext();) {
+//			Project project = it_pr.next();
+//			if (project.getSuccessorProject() != '-' && isProjectInRoadmap(tempProjectSequence, project.getId())
+//					&& isProjectInRoadmap(tempProjectSequence, project.getSuccessorProject())) {
+//				// check if there is a predecessor Project given ( '-' is none)
+//				// get the positions of the projects within the projectSequence
+//				try {
+//					projectPositionInRoadmap = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence, project.getId());
+//				} catch (ProjectIsNotInRoadmapException e) {
+//					continue; // roadmap does not contain the project -> no restriction violated so far
+//				}
+//				try {
+//					successorProjectPositionInRoadmap = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence, project.getSuccessorProject());
+//				} catch (ProjectIsNotInRoadmapException e) {
+//					return true; // roadmap does contain the project AND does not contain the successor project -> restriction violated
+//				}
+//				// handle successor restriction
+//				if (successorProjectPositionInRoadmap <= projectPositionInRoadmap) {
+//					return true; // restriction violated
+//				}
+//			}
+//		}
+//		return false;
+//	}
 
 	/**
 	 * two checks: 1. checks for earliest implementation period restriction. 2. checks for latest implementation period restriction. There are two checks in one

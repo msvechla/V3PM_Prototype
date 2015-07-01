@@ -67,7 +67,7 @@ public class ExcelImporter {
 			if(cell.getStringCellValue().equals("")){
 				break; // reached the end of the projects-list
 			}
-			Project project = new Project(cell.getStringCellValue(), '0', "", '0', 0, 0, 0, 0, 0, 0, 0, 0, '-', '-', -1, -1, 0, "", "", "");
+			Project project = new Project(cell.getStringCellValue(), '0', "", '0', 0, 0, 0, 0, 0, 0, 0, 0, null, null, -1, -1, 0, "", "", "");
 			// set Number of Periods
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
@@ -109,19 +109,21 @@ public class ExcelImporter {
 			// set LIP (Latest Implementation Period)
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			project.setLatestImplementationPeriod((int) cell.getNumericCellValue()-1);
+			
 			// set Predecessor-Project
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-				project.setPredecessorProject(Double.toString(cell.getNumericCellValue()).toCharArray()[0]);
-			} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-				project.setPredecessorProject(cell.getStringCellValue().toCharArray()[0]);
+				if((int)cell.getNumericCellValue() != 0){
+					project.setPredecessorProject(Project.getProject((int)cell.getNumericCellValue()));
+				}
 			}
+			
 			// set Successor-Project
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-				project.setSuccessorProject(Double.toString(cell.getNumericCellValue()).toCharArray()[0]);
-			} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-				project.setSuccessorProject(cell.getStringCellValue().toCharArray()[0]);
+				if((int)cell.getNumericCellValue() != 0){
+					project.setSuccessorProject(Project.getProject((int)cell.getNumericCellValue()));
+				}
 			}
 			// set TogetherInPeriodWithProject
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);

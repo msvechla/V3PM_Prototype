@@ -86,7 +86,7 @@ public class Main {
 		for(com.v3pm_prototype.rmgeneration.RoadMap rm: rmc.getLstRM()){
 			System.out.println(rm);
 		}
-		if(RMContainer.countRoadMapsGenerated >1000)break;
+		
 	}
 	
 	//BEFORE PRE-COMBINEDCONTAINER CHECK: 28071 Roadmaps generated in 365.0ms

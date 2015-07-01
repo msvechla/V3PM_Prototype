@@ -13,7 +13,7 @@ public class Project {
 	
 	private String name; // name of the project
 	public int numberOfPeriods;
-	private int id; // id of the project
+	private int id; // id of the project, starts with 1
 	private int period; // periode in which the project will be implemented (default: null; only required for the NPV-calculation)
 	private String type; // bpmLevel or processLevel
 	private char i; // influenced processes
@@ -26,8 +26,8 @@ public class Project {
 	// variables for restrictions
 	private int earliestImplementationPeriod;
 	private int latestImplementationPeriod;
-	private int predecessorProject;
-	private int successorProject;
+	private Project predecessorProject;
+	private Project successorProject;
 	private int togetherInPeriodWithProject;
 	private int notTogetherInPeriodWithProject;
 	private boolean mandatory;//TODO
@@ -37,9 +37,10 @@ public class Project {
 	private String absRelOop; // MLe absolute or relative effect for Oop
 	
 	public Project(String name, int numberOfPeriods, String type, char i, double oinv, double a, double b, double e, double u, double m, int earliestImplementationPeriod,
-			int latestImplementationPeriod, int j, int k, int l,
+			int latestImplementationPeriod, Project pre, Project suc, int l,
 			int n, double fixedCostEffect, String absRelq, String absRelt, String absRelOop) {
 		super();
+		projectList.add(this);	
 		this.name = name;
 		this.id = projectList.size();
 		this.numberOfPeriods = numberOfPeriods;
@@ -53,18 +54,26 @@ public class Project {
 		this.m = m;
 		this.earliestImplementationPeriod = earliestImplementationPeriod;
 		this.latestImplementationPeriod = latestImplementationPeriod;
-		this.predecessorProject = j;
-		this.successorProject = k;
+		this.predecessorProject = pre;
+		this.successorProject = suc;
 		this.togetherInPeriodWithProject = l;
 		this.notTogetherInPeriodWithProject = n;
 		this.fixedCostEffect = fixedCostEffect; //MLE
 		this.absRelq = absRelq;					//MLE
 		this.absRelt = absRelt;					//MLE
 		this.absRelOop = absRelOop;				//MLE
-		projectList.add(this);	
 		
 	}
 
+	
+	//TODO get via index?
+	public static Project getProject(int id){
+		for(Project p: projectList){
+			if(p.getId() == id) return p;
+		}
+		return null;
+	}
+	
 	public String toString(){
 		return String.valueOf(this.id);
 	}
@@ -189,19 +198,19 @@ public class Project {
 		this.latestImplementationPeriod = latestImplementationPeriod;
 	}
 
-	public int getPredecessorProject() {
+	public Project getPredecessorProject() {
 		return predecessorProject;
 	}
 
-	public void setPredecessorProject(char predecessorProject) {
+	public void setPredecessorProject(Project predecessorProject) {
 		this.predecessorProject = predecessorProject;
 	}
 
-	public int getSuccessorProject() {
+	public Project getSuccessorProject() {
 		return successorProject;
 	}
 
-	public void setSuccessorProject(char successorProject) {
+	public void setSuccessorProject(Project successorProject) {
 		this.successorProject = successorProject;
 	}
 

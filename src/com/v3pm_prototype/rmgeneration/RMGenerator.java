@@ -29,7 +29,6 @@ public class RMGenerator {
 			
 			//add a roadmaps to the container for implementation start in each period
 			for(int period = 0; period < config.getCountPeriods() - p.numberOfPeriods+1; period++){
-				if(RMRestrictionHandler.meetsOnSingleContainerGenerationCheck(p, period)){
 					Project[][] roadmap = new Project[config.getCountPeriods()][config.getCountProjectsMaxPerPeriod()];
 					
 					for(int i = 0; i < config.getCountPeriods();i++){
@@ -42,7 +41,6 @@ public class RMGenerator {
 					}
 					//add roadmap to the SingleContainer
 					rmc.addRoadMap(new RoadMap(roadmap,implementedProjectIDs));
-				}
 			}
 			
 		}
@@ -82,8 +80,11 @@ public class RMGenerator {
 									Project[][] roadmap = combineRoadMaps(rmSingle,rmSingle2,config);
 									if(roadmap != null){
 										
-										if(rmcCombined == null) rmcCombined = new RMContainer(true, implementedProjectIDs);
-										rmcCombined.addRoadMap(new RoadMap(roadmap,implementedProjectIDs));
+										//Post Roadmap Generation Restriction Check
+										if(RMRestrictionHandler.meetsPostRoadmapGenerationCheck(roadmap)){
+											if(rmcCombined == null) rmcCombined = new RMContainer(true, implementedProjectIDs);
+											rmcCombined.addRoadMap(new RoadMap(roadmap,implementedProjectIDs));
+										}
 									}
 
 								}
