@@ -40,7 +40,7 @@ public class RMRestrictionHandler {
 	 * @param startPeriod The implementation start period
 	 * @return False if one of the restrictions is broken, true otherwise
 	 */
-	public static boolean meetsPostRoadmapGenerationCheck(Project[][] roadmap){
+	public static boolean meetsPostRoadmapGenerationCheck(Project[][] roadmap,HashSet<Integer> implementedProjects){
 		tmpImplemented = new HashSet<Project>();
 		
 		for(int period = 0; period < roadmap.length; period++){
@@ -99,7 +99,7 @@ public class RMRestrictionHandler {
 				if(p.getSuccessorProject() != null){
 					boolean successorFound = false;
 					
-					for(int i=period;i<roadmap.length;i++){
+					for(int i=period+p.getNumberOfPeriods();i<roadmap.length;i++){
 						if(Arrays.asList(roadmap[i]).contains(p.getSuccessorProject())){
 							successorFound = true;
 							break;

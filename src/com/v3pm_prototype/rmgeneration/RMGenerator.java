@@ -16,7 +16,6 @@ public class RMGenerator {
 	 * @param projectList A list of all projects that can be implemented
 	 */
 	public static void generateRoadmaps(List<Project> projectList, RunConfiguration config) {
-		
 		System.out.println("--- START: generateRoadmaps()");
 		
 		//STEP1 Generate SingleContainers
@@ -81,7 +80,7 @@ public class RMGenerator {
 									if(roadmap != null){
 										
 										//Post Roadmap Generation Restriction Check
-										if(RMRestrictionHandler.meetsPostRoadmapGenerationCheck(roadmap)){
+										if(RMRestrictionHandler.meetsPostRoadmapGenerationCheck(roadmap, implementedProjectIDs)){
 											if(rmcCombined == null) rmcCombined = new RMContainer(true, implementedProjectIDs);
 											rmcCombined.addRoadMap(new RoadMap(roadmap,implementedProjectIDs));
 										}
