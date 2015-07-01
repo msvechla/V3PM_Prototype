@@ -105,10 +105,10 @@ public class ExcelImporter {
 			project.setM(cell.getNumericCellValue());
 			// set EIP (Earliest Implementation Period)
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
-			project.setEarliestImplementationPeriod((int) cell.getNumericCellValue());
+			project.setEarliestImplementationPeriod((int) cell.getNumericCellValue()-1);
 			// set LIP (Latest Implementation Period)
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
-			project.setLatestImplementationPeriod((int) cell.getNumericCellValue());
+			project.setLatestImplementationPeriod((int) cell.getNumericCellValue()-1);
 			// set Predecessor-Project
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {

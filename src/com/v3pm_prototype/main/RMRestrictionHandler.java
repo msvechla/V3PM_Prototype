@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.v3pm_prototype.exceptions.ProjectIsNotInRoadmapException;
+import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 /**
  * The RMRestrictionHandler contains methods to check if the given roadmap violates any restriction or not.
@@ -29,13 +30,29 @@ public class RMRestrictionHandler {
 	public static int AmountisMaxBudgetRestriction = 0;  		 //MLe
 	public static int AdmissibleAmount = 0;  					 //MLe
 	
-	/*
+	
+	/**
+	 * Checks all restrictions that can be checked when generating a SingleContainer
+	 * @param p Project that is implemented in the container
+	 * @param startPeriod The implementation start period
+	 * @return False if one of the restrictions is broken, true otherwise
+	 */
+	public static boolean meetsOnSingleContainerGenerationCheck(Project p, int startPeriod){
+		if(rEarliest(p, startPeriod) == false) return false;
+		if(rLatest(p, startPeriod) == false) return false;
+		return true;
+	}
+	
+	
+	/**
 	 * Checks all restrictions that can be checked before two containers are combined
+	 * @param implementedProjectIDs A list of project IDs that the container combines
+	 * @return False if one of the restrictions is broken, true otherwise
 	 */
 	public static boolean meetsPreCombinedContainerGenerationCheck(HashSet<Integer> implementedProjectIDs){
 		for(Project p : Project.projectList){
-			if(rGlobalMutualExclusiveness(p, implementedProjectIDs) == false) return false;
-			if(rGlobalMutualDependency(p, implementedProjectIDs) == false) return false;
+			if(rGloMutEx(p, implementedProjectIDs) == false) return false;
+			if(rGloMutDep(p, implementedProjectIDs) == false) return false;
 			//if(rMandatoryProject(p, implementedProjectIDs) == false) return false;
 		}	
 		return true;
@@ -43,7 +60,31 @@ public class RMRestrictionHandler {
 	
 	//All restriction methods return FALSE if restriction is broken, TRUE otherwise
 	
-	public static boolean rGlobalMutualExclusiveness(Project p, HashSet<Integer> implementedProjectIDs){
+	public static boolean rEarliest(Project p, int startPeriod){
+		
+		//If restriction not set return true
+		if(p.getEarliestImplementationPeriod() == -1) return true;
+		
+		if(startPeriod < p.getEarliestImplementationPeriod()){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	public static boolean rLatest(Project p, int startPeriod){
+		
+		//If restriction not set return true
+		if(p.getLatestImplementationPeriod() == -1) return true;
+		
+		if((startPeriod + p.getNumberOfPeriods()-1) > p.getLatestImplementationPeriod()){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	public static boolean rGloMutEx(Project p, HashSet<Integer> implementedProjectIDs){
 		if(p.getNotTogetherInPeriodWithProject() != -1){
 			if(implementedProjectIDs.contains(p.getId()) && implementedProjectIDs.contains(p.getNotTogetherInPeriodWithProject())){
 				return false;
@@ -54,7 +95,7 @@ public class RMRestrictionHandler {
 		
 	}
 	
-	public static boolean rGlobalMutualDependency(Project p, HashSet<Integer> implementedProjectIDs){
+	public static boolean rGloMutDep(Project p, HashSet<Integer> implementedProjectIDs){
 		if(p.getTogetherInPeriodWithProject() != -1){
 			if(implementedProjectIDs.contains(p.getId())){
 				if(implementedProjectIDs.contains(p.getTogetherInPeriodWithProject())){

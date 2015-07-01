@@ -91,6 +91,7 @@ public class Main {
 	
 	//BEFORE PRE-COMBINEDCONTAINER CHECK: 28071 Roadmaps generated in 365.0ms
 	//AFTER: 8850 Roadmaps generated in 221.0ms
+	//AFTER: 7048 Roadmaps generated in 218.0ms
 		
 	System.out.println(RMContainer.countRoadMapsGenerated+" Roadmaps generated in "+(millisFinish-millisStart)+"ms");
 		
