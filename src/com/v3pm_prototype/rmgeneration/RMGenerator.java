@@ -121,7 +121,9 @@ public class RMGenerator {
 			projectsInPeriod.addAll(Arrays.asList(rmSingle.getRMArray()[period]));
 			projectsInPeriod.addAll(Arrays.asList(rmSingle2.getRMArray()[period]));
 			projectsInPeriod.remove(null);
-		
+			
+			RMRestrictionHandler.meetsOnCombinedContainerGenerationCheck(projectsInPeriod);
+			
 			//save period if COUNT_PROJECTS_MAX_PER_PERIOD is not exceeded, otherwise stop combination
 			if(projectsInPeriod.size() <= config.getCountProjectsMaxPerPeriod()){
 				int i=0;

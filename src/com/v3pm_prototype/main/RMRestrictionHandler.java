@@ -1,12 +1,12 @@
 package com.v3pm_prototype.main;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
 import com.v3pm_prototype.exceptions.ProjectIsNotInRoadmapException;
-import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 /**
  * The RMRestrictionHandler contains methods to check if the given roadmap violates any restriction or not.
@@ -50,15 +50,43 @@ public class RMRestrictionHandler {
 	 * @return False if one of the restrictions is broken, true otherwise
 	 */
 	public static boolean meetsPreCombinedContainerGenerationCheck(HashSet<Integer> implementedProjectIDs){
-		for(Project p : Project.projectList){
-			if(rGloMutEx(p, implementedProjectIDs) == false) return false;
-			if(rGloMutDep(p, implementedProjectIDs) == false) return false;
-			//if(rMandatoryProject(p, implementedProjectIDs) == false) return false;
-		}	
+//		for(Project p : Project.projectList){
+//			if(rGloMutEx(p, implementedProjectIDs) == false) return false;
+//			if(rGloMutDep(p, implementedProjectIDs) == false) return false;
+//			//if(rMandatoryProject(p, implementedProjectIDs) == false) return false;
+//		}	
+		return true;
+	}
+	
+	public static boolean meetsOnCombinedContainerGenerationCheck(HashSet<Project> combinedProjects){
+		for(Project p1 : combinedProjects){
+			if(rLocMutDep(p1, combinedProjects) == false) return false;
+			if(rLocMutEx(p1, combinedProjects) == false) return false;
+		}
 		return true;
 	}
 	
 	//All restriction methods return FALSE if restriction is broken, TRUE otherwise
+	
+	
+	public static boolean rLocMutDep(Project p1, HashSet<Project> combinedProjects){
+		//If restriction not set return true
+		if(p1.getTogetherInPeriodWithProject() == -1) return true;
+		
+		for(Project p2 : combinedProjects){
+			if(p1.getTogetherInPeriodWithProject() == p2.getId()) return true;
+		}
+		return false;
+	}
+	
+	public static boolean rLocMutEx(Project p1, HashSet<Project> combinedProjects){
+		if(p1.getNotTogetherInPeriodWithProject() != -1){
+			for(Project p2 : combinedProjects){
+				if(p1.getNotTogetherInPeriodWithProject() == p2.getId()) return false;
+			}
+		}
+		return true;
+	}
 	
 	public static boolean rEarliest(Project p, int startPeriod){
 		
