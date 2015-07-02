@@ -152,7 +152,7 @@ public class RMRestrictionHandler {
 		//Check all projects that are newly implemented this period
 		for(Project p : tmpNew){
 			//if restriction is set
-			if((p.getEarliestImplementationPeriod() != -1)){
+			if((p.getLatestImplementationPeriod() != -1)){
 				if((startPeriod + p.getNumberOfPeriods()-1) > p.getLatestImplementationPeriod()) return false;
 			}
 		}
@@ -184,7 +184,7 @@ public class RMRestrictionHandler {
 		return true;
 	}
 	
-	//TODO
+	//TODO Mandatory2
 //	public static boolean rMandatoryProject(Project p, HashSet<Integer> implementedProjectIDs){
 //		if(p.isMandato)
 //		if(implementedProjectIDs.contains(p.getId())){

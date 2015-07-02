@@ -30,7 +30,7 @@ public class Project {
 	private Project successorProject;
 	private Project togetherInPeriodWith;
 	private Project notTogetherInPeriodWith;
-	private boolean mandatory;//TODO
+	private boolean mandatory;//TODO Mandatory
 	private double fixedCostEffect; // MLe: FixedCostEffect
 	private String absRelq; // MLe absolute or relative effect for q
 	private String absRelt; // MLe absolute or relative effect for t
