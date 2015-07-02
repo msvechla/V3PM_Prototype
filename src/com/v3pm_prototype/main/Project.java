@@ -15,6 +15,7 @@ public class Project {
 	public int numberOfPeriods;
 	private int id; // id of the project, starts with 1
 	private int period; // periode in which the project will be implemented (default: null; only required for the NPV-calculation)
+	private int startPeriod; //Used for multi-period projects. Indicates when the implementation originally started (can differ from current period)
 	private String type; // bpmLevel or processLevel
 	private char i; // influenced processes
 	private double oinv; // investment-outflows
@@ -64,6 +65,33 @@ public class Project {
 		this.absRelOop = absRelOop;				//MLE
 		
 	}
+	
+	public Project(int id, String name, int numberOfPeriods, String type, char i, double oinv, double a, double b, double e, double u, double m, int earliestImplementationPeriod,
+			int latestImplementationPeriod, Project pre, Project suc, Project tipw,
+			Project ntipw, double fixedCostEffect, String absRelq, String absRelt, String absRelOop) {
+		super();
+		this.name = name;
+		this.id = id;
+		this.numberOfPeriods = numberOfPeriods;
+		this.type = type;
+		this.i = i;
+		this.oinv = oinv;
+		this.a = a;
+		this.b = b;
+		this.e = e;
+		this.u = u;
+		this.m = m;
+		this.earliestImplementationPeriod = earliestImplementationPeriod;
+		this.latestImplementationPeriod = latestImplementationPeriod;
+		this.predecessorProject = pre;
+		this.successorProject = suc;
+		this.togetherInPeriodWith = tipw;
+		this.notTogetherInPeriodWith = ntipw;
+		this.fixedCostEffect = fixedCostEffect; //MLE
+		this.absRelq = absRelq;					//MLE
+		this.absRelt = absRelt;					//MLE
+		this.absRelOop = absRelOop;				//MLE
+	}
 
 	
 	//TODO get via index?
@@ -86,6 +114,14 @@ public class Project {
 		return false;
 	}
 	
+	public int getStartPeriod() {
+		return startPeriod;
+	}
+
+	public void setStartPeriod(int startPeriod) {
+		this.startPeriod = startPeriod;
+	}
+
 	public String getName() {
 		return name;
 	}

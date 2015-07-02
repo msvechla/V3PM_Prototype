@@ -5,23 +5,25 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.v3pm_prototype.exceptions.NoValidThetaIDException;
+import com.v3pm_prototype.rmgeneration.*;
 
 /**
  * This Class is used to calculate the NPV of each roadmap.
  */
 public class Calculator {
-
+	
+	
 	/**
 	 * calculates the NPV and set the NPV-value for each roadmap
 	 * @throws NoValidThetaIDException 
 	 */
-	public static void calculateNPVs(List<Roadmap> collRM, Collection<Process> collProcess, Collection<Project> collProj) throws NoValidThetaIDException {
+	public static void calculateNPVs(List<RoadMap> collRM, Collection<Process> collProcess, Collection<Project> collProj) throws NoValidThetaIDException {
 
 		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		// for each roadmap
 		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		for (Iterator<Roadmap> itRM = collRM.iterator(); itRM.hasNext();) {
-			Roadmap RM = itRM.next();
+		for (Iterator<RoadMap> itRM = collRM.iterator(); itRM.hasNext();) {
+			RoadMap RM = itRM.next();
 			double inflows = 0;
 			double outflows = 0;
 			double fixedCostsOA = Main.overarchingFixedOutflows;  //MLe
