@@ -117,21 +117,24 @@ public class RMRestrictionHandler {
 	
 	public static boolean rLocMutDep(Project p1, HashSet<Project> combinedProjects){
 		//If restriction not set return true
-		if(p1.getTogetherInPeriodWithProject() == -1) return true;
+		if(p1.getTogetherInPeriodWith() == null) return true;
 		
-		for(Project p2 : combinedProjects){
-			if(p1.getTogetherInPeriodWithProject() == p2.getId()) return true;
+		if(combinedProjects.contains(p1)){
+			return true;
+		}else{
+			return false;
 		}
-		return false;
 	}
 	
 	public static boolean rLocMutEx(Project p1, HashSet<Project> combinedProjects){
-		if(p1.getNotTogetherInPeriodWithProject() != -1){
-			for(Project p2 : combinedProjects){
-				if(p1.getNotTogetherInPeriodWithProject() == p2.getId()) return false;
-			}
+		//If restriction not set return true
+		if(p1.getNotTogetherInPeriodWith() == null) return true;
+		
+		if(combinedProjects.contains(p1)){
+			return false;
+		}else{
+			return true;
 		}
-		return true;
 	}
 	
 	public static boolean rEarliest(int startPeriod, HashSet<Project> tmpNew){
@@ -157,8 +160,8 @@ public class RMRestrictionHandler {
 	}
 	
 	public static boolean rGloMutEx(Project p, HashSet<Integer> implementedProjectIDs){
-		if(p.getNotTogetherInPeriodWithProject() != -1){
-			if(implementedProjectIDs.contains(p.getId()) && implementedProjectIDs.contains(p.getNotTogetherInPeriodWithProject())){
+		if(p.getNotTogetherInPeriodWith() != null){
+			if(implementedProjectIDs.contains(p.getId()) && implementedProjectIDs.contains(p.getNotTogetherInPeriodWith().getId())){
 				return false;
 			}
 			return true;
@@ -168,9 +171,9 @@ public class RMRestrictionHandler {
 	}
 	
 	public static boolean rGloMutDep(Project p, HashSet<Integer> implementedProjectIDs){
-		if(p.getTogetherInPeriodWithProject() != -1){
+		if(p.getTogetherInPeriodWith() != null){
 			if(implementedProjectIDs.contains(p.getId())){
-				if(implementedProjectIDs.contains(p.getTogetherInPeriodWithProject())){
+				if(implementedProjectIDs.contains(p.getTogetherInPeriodWith().getId())){
 					return true;
 				}else{
 					return false;
@@ -199,14 +202,14 @@ public class RMRestrictionHandler {
 			AmountisNoProjectInPeriodRestriction = AmountisNoProjectInPeriodRestriction + 1; //MLe
 			return true;
 		}
-		if (isTogetherWithRestrictionViolation(tempProjectSequence, collProj) == true) {
-			AmountisTogetherWithRestriction = AmountisTogetherWithRestriction + 1; //MLe
-			return true;
-		}
-		if (isNotTogetherWithRestrictionViolation(tempProjectSequence, collProj) == true) {
-			AmountisNotTogetherWithRestriction = AmountisNotTogetherWithRestriction + 1; //MLe
-			return true;
-		}
+//		if (isTogetherWithRestrictionViolation(tempProjectSequence, collProj) == true) {
+//			AmountisTogetherWithRestriction = AmountisTogetherWithRestriction + 1; //MLe
+//			return true;
+//		}
+//		if (isNotTogetherWithRestrictionViolation(tempProjectSequence, collProj) == true) {
+//			AmountisNotTogetherWithRestriction = AmountisNotTogetherWithRestriction + 1; //MLe
+//			return true;
+//		}
 //		if (isPredecessorRestrictionViolation(tempProjectSequence, collProj) == true) {
 //			AmountisPredecessorRestriction  = AmountisPredecessorRestriction  + 1; //MLe
 //			return true;
@@ -233,62 +236,62 @@ public class RMRestrictionHandler {
 	 * 
 	 * @return true if the two projects are in the same period (restriction violated)
 	 */
-	private static boolean isNotTogetherWithRestrictionViolation(List<String> tempProjectSequence, Collection<Project> collProj) {
-		int projectPositionInRoadmap;
-		int projectPositionInRoadmapWhichShouldNotBeInSamePeriod;
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		// for each project
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		for (Iterator<Project> it_pr = collProj.iterator(); it_pr.hasNext();) {
-			Project project = it_pr.next();
-			if (project.getNotTogetherInPeriodWithProject() != '-' && isProjectInRoadmap(tempProjectSequence, project.getId()) == true) {
-				try {
-					projectPositionInRoadmap = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence, project.getId());
-					projectPositionInRoadmapWhichShouldNotBeInSamePeriod = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence,
-							project.getNotTogetherInPeriodWithProject());
-					if (projectPositionInRoadmap == projectPositionInRoadmapWhichShouldNotBeInSamePeriod) {
-						return true; // restriction violated
-					}
-				} catch (ProjectIsNotInRoadmapException e) {
-					continue; // roadmap does not contain one of the projects -> no restriction violated so far
-				}
-			}
-		}
-		return false;
-	}
+//	private static boolean isNotTogetherWithRestrictionViolation(List<String> tempProjectSequence, Collection<Project> collProj) {
+//		int projectPositionInRoadmap;
+//		int projectPositionInRoadmapWhichShouldNotBeInSamePeriod;
+//		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		// for each project
+//		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		for (Iterator<Project> it_pr = collProj.iterator(); it_pr.hasNext();) {
+//			Project project = it_pr.next();
+//			if (project.getNotTogetherInPeriodWith() != '-' && isProjectInRoadmap(tempProjectSequence, project.getId()) == true) {
+//				try {
+//					projectPositionInRoadmap = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence, project.getId());
+//					projectPositionInRoadmapWhichShouldNotBeInSamePeriod = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence,
+//							project.getNotTogetherInPeriodWith());
+//					if (projectPositionInRoadmap == projectPositionInRoadmapWhichShouldNotBeInSamePeriod) {
+//						return true; // restriction violated
+//					}
+//				} catch (ProjectIsNotInRoadmapException e) {
+//					continue; // roadmap does not contain one of the projects -> no restriction violated so far
+//				}
+//			}
+//		}
+//		return false;
+//	}
 
 	/**
 	 * compares the position of a project and the position of the project which must be in the same period.
 	 * 
 	 * @return true if the two projects are not in the same period (restriction violated)
 	 */
-	private static boolean isTogetherWithRestrictionViolation(List<String> tempProjectSequence, Collection<Project> collProj) {
-		int projectPositionInRoadmap;
-		int projectPositionInRoadmapWhichShouldBeInSamePeriod;
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		// for each project
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		for (Iterator<Project> it_pr = collProj.iterator(); it_pr.hasNext();) {
-			Project project = it_pr.next();
-			if (project.getTogetherInPeriodWithProject() != '-') {
-				try {
-					projectPositionInRoadmap = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence, project.getId());
-				} catch (ProjectIsNotInRoadmapException e) {
-					continue; // roadmap does not contain the project -> no restriction violated so far
-				}
-				try {
-					projectPositionInRoadmapWhichShouldBeInSamePeriod = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence,
-							project.getTogetherInPeriodWithProject());
-					if (projectPositionInRoadmap != projectPositionInRoadmapWhichShouldBeInSamePeriod) {
-						return true; // restriction violated
-					}
-				} catch (ProjectIsNotInRoadmapException e) {
-					return true; // roadmap does not contain the projects which should be in the same period -> restriction violated
-				}
-			}
-		}
-		return false;
-	}
+//	private static boolean isTogetherWithRestrictionViolation(List<String> tempProjectSequence, Collection<Project> collProj) {
+//		int projectPositionInRoadmap;
+//		int projectPositionInRoadmapWhichShouldBeInSamePeriod;
+//		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		// for each project
+//		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		for (Iterator<Project> it_pr = collProj.iterator(); it_pr.hasNext();) {
+//			Project project = it_pr.next();
+//			if (project.getTogetherInPeriodWithProject() != '-') {
+//				try {
+//					projectPositionInRoadmap = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence, project.getId());
+//				} catch (ProjectIsNotInRoadmapException e) {
+//					continue; // roadmap does not contain the project -> no restriction violated so far
+//				}
+//				try {
+//					projectPositionInRoadmapWhichShouldBeInSamePeriod = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence,
+//							project.getTogetherInPeriodWithProject());
+//					if (projectPositionInRoadmap != projectPositionInRoadmapWhichShouldBeInSamePeriod) {
+//						return true; // restriction violated
+//					}
+//				} catch (ProjectIsNotInRoadmapException e) {
+//					return true; // roadmap does not contain the projects which should be in the same period -> restriction violated
+//				}
+//			}
+//		}
+//		return false;
+//	}
 
 //	private static boolean isPredecessorRestrictionViolation(List<String> tempProjectSequence, Collection<Project> collProj) {
 //		int projectPositionInRoadmap;

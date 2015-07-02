@@ -28,8 +28,8 @@ public class Project {
 	private int latestImplementationPeriod;
 	private Project predecessorProject;
 	private Project successorProject;
-	private int togetherInPeriodWithProject;
-	private int notTogetherInPeriodWithProject;
+	private Project togetherInPeriodWith;
+	private Project notTogetherInPeriodWith;
 	private boolean mandatory;//TODO
 	private double fixedCostEffect; // MLe: FixedCostEffect
 	private String absRelq; // MLe absolute or relative effect for q
@@ -37,8 +37,8 @@ public class Project {
 	private String absRelOop; // MLe absolute or relative effect for Oop
 	
 	public Project(String name, int numberOfPeriods, String type, char i, double oinv, double a, double b, double e, double u, double m, int earliestImplementationPeriod,
-			int latestImplementationPeriod, Project pre, Project suc, int l,
-			int n, double fixedCostEffect, String absRelq, String absRelt, String absRelOop) {
+			int latestImplementationPeriod, Project pre, Project suc, Project tipw,
+			Project ntipw, double fixedCostEffect, String absRelq, String absRelt, String absRelOop) {
 		super();
 		projectList.add(this);	
 		this.name = name;
@@ -56,8 +56,8 @@ public class Project {
 		this.latestImplementationPeriod = latestImplementationPeriod;
 		this.predecessorProject = pre;
 		this.successorProject = suc;
-		this.togetherInPeriodWithProject = l;
-		this.notTogetherInPeriodWithProject = n;
+		this.togetherInPeriodWith = tipw;
+		this.notTogetherInPeriodWith = ntipw;
 		this.fixedCostEffect = fixedCostEffect; //MLE
 		this.absRelq = absRelq;					//MLE
 		this.absRelt = absRelt;					//MLE
@@ -214,20 +214,20 @@ public class Project {
 		this.successorProject = successorProject;
 	}
 
-	public int getTogetherInPeriodWithProject() {
-		return togetherInPeriodWithProject;
+	public Project getTogetherInPeriodWith() {
+		return togetherInPeriodWith;
 	}
 
-	public void setTogetherInPeriodWithProject(int togetherInPeriodWithProject) {
-		this.togetherInPeriodWithProject = togetherInPeriodWithProject;
+	public void setTogetherInPeriodWith(Project togetherInPeriodWith) {
+		this.togetherInPeriodWith = togetherInPeriodWith;
 	}
 
-	public int getNotTogetherInPeriodWithProject() {
-		return notTogetherInPeriodWithProject;
+	public Project getNotTogetherInPeriodWith() {
+		return notTogetherInPeriodWith;
 	}
 
-	public void setNotTogetherInPeriodWithProject(int notTogetherInPeriodWithProject) {
-		this.notTogetherInPeriodWithProject = notTogetherInPeriodWithProject;
+	public void setNotTogetherInPeriodWith(Project notTogetherInPeriodWith) {
+		this.notTogetherInPeriodWith = notTogetherInPeriodWith;
 	}
 	
 	//MLe 

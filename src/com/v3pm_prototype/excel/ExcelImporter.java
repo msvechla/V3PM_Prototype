@@ -67,7 +67,7 @@ public class ExcelImporter {
 			if(cell.getStringCellValue().equals("")){
 				break; // reached the end of the projects-list
 			}
-			Project project = new Project(cell.getStringCellValue(), '0', "", '0', 0, 0, 0, 0, 0, 0, 0, 0, null, null, -1, -1, 0, "", "", "");
+			Project project = new Project(cell.getStringCellValue(), '0', "", '0', 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, 0, "", "", "");
 			// set Number of Periods
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
@@ -125,21 +125,17 @@ public class ExcelImporter {
 					project.setSuccessorProject(Project.getProject((int)cell.getNumericCellValue()));
 				}
 			}
+			
 			// set TogetherInPeriodWithProject
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-				project.setTogetherInPeriodWithProject((int) cell.getNumericCellValue());
-			} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-				project.setTogetherInPeriodWithProject(Integer.parseInt(cell.getStringCellValue()));
-			}
+				project.setTogetherInPeriodWith(Project.getProject((int) cell.getNumericCellValue()));
+			} 
+			
 			// set NotTogetherInPeriodWithProject
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-				project.setNotTogetherInPeriodWithProject((int) cell.getNumericCellValue());
-				System.out.println(cell.getNumericCellValue());
-			} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-				project.setNotTogetherInPeriodWithProject(Integer.parseInt(cell.getStringCellValue()));
-				System.out.println(Integer.parseInt(cell.getStringCellValue()));
+				project.setNotTogetherInPeriodWith(Project.getProject((int) cell.getNumericCellValue()));
 			}
 			
 			// set Fixkosteneffekt  Neu MLe

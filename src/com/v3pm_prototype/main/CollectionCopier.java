@@ -24,7 +24,7 @@ public class CollectionCopier {
 					if (p.getId() == projectsInPeriod[i]) {
 						Project copy = new Project(p.getName(), p.getId(), p.getType(), p.getI(), p.getOinv(), p.getA(), p.getB(), p.getE(), p.getU(),
 								p.getM(), p.getEarliestImplementationPeriod(), p.getLatestImplementationPeriod(), p.getPredecessorProject(),
-								p.getSuccessorProject(), p.getTogetherInPeriodWithProject(), p.getNotTogetherInPeriodWithProject(), p.getFixedCostEffect(), p.getAbsRelq(), p.getAbsRelt(), p.getAbsRelOop());
+								p.getSuccessorProject(), p.getTogetherInPeriodWith(), p.getNotTogetherInPeriodWith(), p.getFixedCostEffect(), p.getAbsRelq(), p.getAbsRelt(), p.getAbsRelOop());
 						copy.setPeriod(periodCounter);
 						tempCollPoj.add(copy);
 						break;
