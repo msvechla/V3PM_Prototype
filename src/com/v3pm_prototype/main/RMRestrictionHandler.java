@@ -64,11 +64,11 @@ public class RMRestrictionHandler {
 	 * @return False if one of the restrictions is broken, true otherwise
 	 */
 	public static boolean meetsPreCombinedContainerGenerationCheck(HashSet<Integer> implementedProjectIDs){
-//		for(Project p : Project.projectList){
+		for(Project p : Project.projectList){
 //			if(rGloMutEx(p, implementedProjectIDs) == false) return false;
 //			if(rGloMutDep(p, implementedProjectIDs) == false) return false;
-//			//if(rMandatoryProject(p, implementedProjectIDs) == false) return false;
-//		}	
+			if(rMandatoryProject(p, implementedProjectIDs) == false) return false;
+		}	
 		return true;
 	}
 	
@@ -185,14 +185,16 @@ public class RMRestrictionHandler {
 	}
 	
 	//TODO Mandatory2
-//	public static boolean rMandatoryProject(Project p, HashSet<Integer> implementedProjectIDs){
-//		if(p.isMandato)
-//		if(implementedProjectIDs.contains(p.getId())){
-//			return true;
-//		}else{
-//			return false;
-//		}
-//	}
+	public static boolean rMandatoryProject(Project p, HashSet<Integer> implementedProjectIDs){
+		if(p.isMandatory()){
+			if(implementedProjectIDs.contains(p.getId())){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	public static boolean breakRestrictionBeforeAddingToRoadMapCollection(List<String> tempProjectSequence, Collection<Project> collProj) {
 		

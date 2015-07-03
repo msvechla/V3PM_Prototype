@@ -31,7 +31,7 @@ public class Project {
 	private Project successorProject;
 	private Project togetherInPeriodWith;
 	private Project notTogetherInPeriodWith;
-	private boolean mandatory;//TODO Mandatory
+	private boolean mandatory = false;//TODO Mandatory
 	private double fixedCostEffect; // MLe: FixedCostEffect
 	private String absRelq; // MLe absolute or relative effect for q
 	private String absRelt; // MLe absolute or relative effect for t
@@ -64,6 +64,10 @@ public class Project {
 		this.absRelt = absRelt;					//MLE
 		this.absRelOop = absRelOop;				//MLE
 		
+		if((earliestImplementationPeriod != -1) || (latestImplementationPeriod != -1)){
+			this.mandatory = true;
+		}
+		
 	}
 	
 	public Project(int id, String name, int numberOfPeriods, String type, char i, double oinv, double a, double b, double e, double u, double m, int earliestImplementationPeriod,
@@ -91,8 +95,23 @@ public class Project {
 		this.absRelq = absRelq;					//MLE
 		this.absRelt = absRelt;					//MLE
 		this.absRelOop = absRelOop;				//MLE
+		
+		if((earliestImplementationPeriod != -1) || (latestImplementationPeriod != -1)){
+			this.mandatory = true;
+		}
 	}
 
+	
+	public static List<Project> getMandatoryProjects(){
+		List<Project> lstMandatory = new ArrayList<Project>();
+		
+		for(Project p : projectList){
+			if(p.mandatory){
+				lstMandatory.add(p);
+			}
+		}
+		return lstMandatory;
+	}
 	
 	//TODO get via index?
 	public static Project getProject(int id){
@@ -224,6 +243,12 @@ public class Project {
 
 	public void setEarliestImplementationPeriod(int earliestImplementationPeriod) {
 		this.earliestImplementationPeriod = earliestImplementationPeriod;
+		
+		if(earliestImplementationPeriod != -1){
+			this.mandatory = true;
+		}else{
+			this.mandatory = false;
+		}
 	}
 
 	public int getLatestImplementationPeriod() {
@@ -232,6 +257,12 @@ public class Project {
 
 	public void setLatestImplementationPeriod(int latestImplementationPeriod) {
 		this.latestImplementationPeriod = latestImplementationPeriod;
+		
+		if(latestImplementationPeriod != -1){
+			this.mandatory = true;
+		}else{
+			this.mandatory = false;
+		}
 	}
 
 	public Project getPredecessorProject() {
@@ -300,6 +331,10 @@ public class Project {
 
 	public void setAbsRelOop(String absRelOop) {
 		this.absRelOop = absRelOop;
+	}
+
+	public boolean isMandatory() {
+		return this.mandatory;
 	}
 	
 

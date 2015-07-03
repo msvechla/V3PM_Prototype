@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import com.v3pm_prototype.main.Project;
+
 
 public class RMContainer {
 	
@@ -46,9 +48,15 @@ public class RMContainer {
 	public static List<RoadMap> createRMList(){
 		List<RoadMap> rmList = new ArrayList<RoadMap>();
 		
-		for(RMContainer rmc : lstRMContainerSingle){
-			rmList.addAll(rmc.getLstRM());
+		if(Project.getMandatoryProjects().size() == 1){
+			for(RMContainer rmc : lstRMContainerSingle){
+				//Only add Single Containers if it contains mandatory projects
+				if(rmc.implementedProjects.contains(Project.getMandatoryProjects().get(0).getId())){
+					rmList.addAll(rmc.getLstRM());
+				}
+			}
 		}
+		
 		
 		for(RMContainer rmc : lstRMContainerCombined){
 			rmList.addAll(rmc.getLstRM());
