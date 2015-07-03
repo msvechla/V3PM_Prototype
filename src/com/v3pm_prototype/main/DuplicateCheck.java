@@ -17,27 +17,27 @@ public class DuplicateCheck {
 	 * deletes roadmaps with the same NPV. This is by far the fastest approach to delete duplicates. Attention: The algorithm only works if the list
 	 * of roadmaps is already sorted by NPV!
 	 */
-	public static void deleteDuplicatesWithSameNPV(List<Roadmap> sortedCollRM) {
-		Roadmap tempRoadmap_previous = null;
-		for (ListIterator<Roadmap> itRM = sortedCollRM.listIterator(); itRM.hasNext();) {
-			Roadmap tempRoadmap = itRM.next();
-			if (tempRoadmap_previous != null) {
-				
-				if ((tempRoadmap_previous.getNpv() != tempRoadmap.getNpv()) && (tempRoadmap_previous.getNpv() <-5000000 )) {
-					DuplicateAmountQMIN++;	
-				}
-				
-				if (tempRoadmap_previous.getNpv() == tempRoadmap.getNpv()) {
-					DuplicateAmount++;
-										
-					itRM.remove();
-					continue;
-				}
-							
-			
-			}
-			tempRoadmap_previous = new Roadmap(tempRoadmap.getProjectSequence(), tempRoadmap.getNpv());
-		}
-	}
+//	public static void deleteDuplicatesWithSameNPV(List<Roadmap> sortedCollRM) {
+//		Roadmap tempRoadmap_previous = null;
+//		for (ListIterator<Roadmap> itRM = sortedCollRM.listIterator(); itRM.hasNext();) {
+//			Roadmap tempRoadmap = itRM.next();
+//			if (tempRoadmap_previous != null) {
+//				
+//				if ((tempRoadmap_previous.getNpv() != tempRoadmap.getNpv()) && (tempRoadmap_previous.getNpv() <-5000000 )) {
+//					DuplicateAmountQMIN++;	
+//				}
+//				
+//				if (tempRoadmap_previous.getNpv() == tempRoadmap.getNpv()) {
+//					DuplicateAmount++;
+//										
+//					itRM.remove();
+//					continue;
+//				}
+//							
+//			
+//			}
+//			tempRoadmap_previous = new Roadmap(tempRoadmap.getProjectSequence(), tempRoadmap.getNpv());
+//		}
+//	}
 
 }

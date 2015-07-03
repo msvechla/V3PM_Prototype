@@ -1,5 +1,7 @@
 package com.v3pm_prototype.rmgeneration;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import com.v3pm_prototype.main.Main;
 import com.v3pm_prototype.main.Project;
@@ -33,6 +35,45 @@ public class RoadMap {
 	public Project[][] getRMArray(){
 		return this.rmArray;
 	}
+	
+	public Collection<Project> createCollection(RunConfiguration config){
+		
+		Collection<Project> collProjects = new LinkedHashSet<Project>();
+		HashSet<Project> implementedProjects = new HashSet<Project>();
+		
+		for(int period = 0; period < config.getCountPeriods(); period++){
+			for(int slot = 0; slot < config.getCountProjectsMaxPerPeriod();slot++){
+				Project p = this.rmArray[period][slot];
+				if(p != null){
+					Project copy = new Project(p.getId(), p.getName(), p.getId(), p.getType(), p.getI(), p.getOinv(), p.getA(), p.getB(), p.getE(), p.getU(),
+							p.getM(), p.getEarliestImplementationPeriod(), p.getLatestImplementationPeriod(), p.getPredecessorProject(),
+							p.getSuccessorProject(), p.getTogetherInPeriodWith(), p.getNotTogetherInPeriodWith(), p.getFixedCostEffect(), p.getAbsRelq(), p.getAbsRelt(), p.getAbsRelOop());
+					copy.setPeriod(period);
+					
+					//Set the starting period
+					if(implementedProjects.contains(copy)){
+						for(Project i : implementedProjects){
+							if(i.getId() == copy.getId()){
+								copy.setStartPeriod(i.getStartPeriod());
+								break;
+							}
+						}
+					}else{
+						copy.setStartPeriod(period);
+						implementedProjects.add(copy);
+					}
+					
+					collProjects.add(copy);
+				}else{
+					Project emptyProject = new Project(-1,"Empty", '0', "", '0', 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, 0, "", "", "");
+					emptyProject.setPeriod(period);
+					collProjects.add(emptyProject);
+				}
+			}
+		}
+		return collProjects;
+	}
+	
 	
 	public Project[][] createTempRMArrayCopy(RunConfiguration config){
 		
@@ -103,6 +144,16 @@ public class RoadMap {
 			
 		}
 		
+	}
+
+
+	public void setNpv(double npv) {
+		this.npv = npv;
+	}
+
+
+	public double getNpv() {
+		return this.npv;
 	}
 	
 }

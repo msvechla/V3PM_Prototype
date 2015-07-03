@@ -42,5 +42,18 @@ public class RMContainer {
 	public HashSet<Integer> getImplementedProjects(){
 		return this.implementedProjects;
 	}
+	
+	public static List<RoadMap> createRMList(){
+		List<RoadMap> rmList = new ArrayList<RoadMap>();
+		
+		for(RMContainer rmc : lstRMContainerSingle){
+			rmList.addAll(rmc.getLstRM());
+		}
+		
+		for(RMContainer rmc : lstRMContainerCombined){
+			rmList.addAll(rmc.getLstRM());
+		}
+		return rmList;
+	}
 
 }

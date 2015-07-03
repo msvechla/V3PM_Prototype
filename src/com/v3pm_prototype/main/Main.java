@@ -2,12 +2,15 @@ package com.v3pm_prototype.main;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
 import com.v3pm_prototype.UI.SwingUI;
+import com.v3pm_prototype.excel.ExcelExporter;
 import com.v3pm_prototype.excel.ExcelImporter;
 import com.v3pm_prototype.rmgeneration.RMContainer;
+import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 /**
@@ -72,22 +75,22 @@ public class Main {
 		
 		double millisFinish = System.currentTimeMillis();
 		
-		for(RMContainer rmc : RMContainer.lstRMContainerSingle){
-			System.out.println("");
-			System.out.println("---"+rmc.getImplementedProjects()+"---");
-		for(com.v3pm_prototype.rmgeneration.RoadMap rm: rmc.getLstRM()){
-			System.out.println(rm);
-		}
-	}
-	
-	for(RMContainer rmc : RMContainer.lstRMContainerCombined){
-		System.out.println("");
-		System.out.println("---"+rmc.getImplementedProjects()+"---");
-		for(com.v3pm_prototype.rmgeneration.RoadMap rm: rmc.getLstRM()){
-			System.out.println(rm);
-		}
-		
-	}
+//		for(RMContainer rmc : RMContainer.lstRMContainerSingle){
+//			System.out.println("");
+//			System.out.println("---"+rmc.getImplementedProjects()+"---");
+//		for(com.v3pm_prototype.rmgeneration.RoadMap rm: rmc.getLstRM()){
+//			System.out.println(rm);
+//		}
+//	}
+//	
+//	for(RMContainer rmc : RMContainer.lstRMContainerCombined){
+//		System.out.println("");
+//		System.out.println("---"+rmc.getImplementedProjects()+"---");
+//		for(com.v3pm_prototype.rmgeneration.RoadMap rm: rmc.getLstRM()){
+//			System.out.println(rm);
+//		}
+//		
+//	}
 	
 	//BEFORE PRE-COMBINEDCONTAINER CHECK: 28071 Roadmaps generated in 365.0ms
 	//AFTER: 8850 Roadmaps generated in 221.0ms
@@ -103,12 +106,14 @@ public class Main {
 		// -----------------------------------------------------------------------------
 		// calculate NPV of each roadmap
 		// -----------------------------------------------------------------------------
-		//Calculator.calculateNPVs(collRM, collProcess, collProj);
+	
+		List<RoadMap> rmList = RMContainer.createRMList();
+		Calculator.calculateNPVs(rmList, collProcess, collProj,RunConfiguration.standardConfig);
 
 		// -----------------------------------------------------------------------------
 		// sort roadmaps by NPV
 		// -----------------------------------------------------------------------------
-		//Collections.sort(collRM, new RMComparator());
+		Collections.sort(rmList, new RMComparator());
 
 		// -----------------------------------------------------------------------------
 		// delete duplicates with same NPV
@@ -127,7 +132,7 @@ public class Main {
 		// -----------------------------------------------------------------------------
 		// print output-data to excel file
 		// -----------------------------------------------------------------------------
-//		ExcelExporter.exportToExcel(collRM, excelFile, collProj.size());
+		ExcelExporter.exportToExcel(rmList, excelFile, collProj.size());
 
 		// -----------------------------------------------------------------------------
 		// print output-data to console (only for future debugging purposes)

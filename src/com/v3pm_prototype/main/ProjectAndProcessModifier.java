@@ -16,7 +16,7 @@ public class ProjectAndProcessModifier {
 	 * the values affected by the b-parameter.
 	 */
 	public static void modifyProcessesAndProjectsByProject(Collection<Process> tempCollPocess, Collection<Process> bufferedTempCollProcess,
-			Project tempProject, Collection<Project> tempCollPoj_sorted, int projectNumberWithinPeriod, List<String> ProjectSequence) {
+			Project tempProject, Collection<Project> tempCollPoj_sorted, int projectNumberWithinPeriod) {
 		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		// for each process
 		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -117,7 +117,7 @@ public class ProjectAndProcessModifier {
 						
 			if (tempProcess.getT() > tempProcess.getTmax()) {
 				
-				System.out.println("Diese Roadmap verletzt TMAX " + ProjectSequence + "; Prozess: " + tempProcess.getName() + " hat die Grenze i.H.v. " + tempProcess.getTmax() + " mit dem Wert " + tempProcess.getT() +" überschritten.");
+				//System.out.println("Diese Roadmap verletzt TMAX " + ProjectSequence + "; Prozess: " + tempProcess.getName() + " hat die Grenze i.H.v. " + tempProcess.getTmax() + " mit dem Wert " + tempProcess.getT() +" überschritten.");
 				//Test MLe
 				tempProcess.setFixedCosts(10000000);
 				
@@ -203,7 +203,7 @@ public class ProjectAndProcessModifier {
 				
 			if (tempProcess.getQ() < tempProcess.getQmin()) {
 				
-				System.out.println("Diese Roadmap verletzt QMIN " + ProjectSequence + "; Prozess: " + tempProcess.getName() + " hat die Grenze i.H.v. " + tempProcess.getQmin() + " mit dem Wert " + tempProcess.getQ() +" unterschritten.");
+				//System.out.println("Diese Roadmap verletzt QMIN " + ProjectSequence + "; Prozess: " + tempProcess.getName() + " hat die Grenze i.H.v. " + tempProcess.getQmin() + " mit dem Wert " + tempProcess.getQ() +" unterschritten.");
 				//Test MLe
 				tempProcess.setFixedCosts(10000000);
 			

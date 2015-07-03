@@ -14,7 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
-import com.v3pm_prototype.main.Roadmap;
+import com.v3pm_prototype.rmgeneration.RoadMap;
 
 /**
  * This class is responsible for exporting the data to the Excel file and . The Apache POI 3.10 library is used for the work with Excel files. For more
@@ -35,7 +35,7 @@ public class ExcelExporter {
 	private static HSSFSheet sheet;
 	private static int rowcounter;
 
-	public static void exportToExcel(List<Roadmap> collRM, File excelFile, int numberOfProjects) throws Exception {
+	public static void exportToExcel(List<RoadMap> collRM, File excelFile, int numberOfProjects) throws Exception {
 		FileInputStream file = null;
 		try {
 			file = new FileInputStream(excelFile);
@@ -121,45 +121,33 @@ public class ExcelExporter {
 		cell.setCellStyle(getBoldStyle());
 	}
 
-	private static void writeRoadmapAndNPVListDesc(List<Roadmap> collRM, int numberOfProjects) {
+	private static void writeRoadmapAndNPVListDesc(List<RoadMap> collRM, int numberOfProjects) {
 		rowcounter = START_ROW_FOR_FULL_ROADMAP_PRINT + numberOfProjects + 1;
-		for (ListIterator<Roadmap> listItRM = collRM.listIterator(collRM.size()); listItRM.hasPrevious();) {
-			Roadmap tempRoadmap = listItRM.previous();
-			List<String> projectSequence = tempRoadmap.getProjectSequence();
-			for (Iterator<String> itPS = projectSequence.iterator(); itPS.hasNext();) {
-				SB.append(itPS.next());
-				SB.append(" ");
-			}
+		for (ListIterator<RoadMap> listItRM = collRM.listIterator(collRM.size()); listItRM.hasPrevious();) {
+			RoadMap tempRoadmap = listItRM.previous();
 			if (rowcounter < MaxWritableRows) {
 				row = sheet.createRow(rowcounter); // to avoid nullpointer caused by empty rows
 				printOneRoadmapAndNPV(rowcounter, tempRoadmap, 0);
 			}
-			SB.delete(0, SB.length());
 			rowcounter++;
 		}
 	}
 
-	private static void writeRoadmapAndNPVListAsc(List<Roadmap> collRM, int numberOfProjects) {
+	private static void writeRoadmapAndNPVListAsc(List<RoadMap> collRM, int numberOfProjects) {
 		rowcounter = START_ROW_FOR_FULL_ROADMAP_PRINT + numberOfProjects + 1;
-		for (Iterator<Roadmap> itRM = collRM.iterator(); itRM.hasNext();) {
-			Roadmap tempRoadmap = itRM.next();
-			List<String> projectSequence = tempRoadmap.getProjectSequence();
-			for (Iterator<String> itPS = projectSequence.iterator(); itPS.hasNext();) {
-				SB.append(itPS.next());
-				SB.append(" ");
-			}
+		for (Iterator<RoadMap> itRM = collRM.iterator(); itRM.hasNext();) {
+			RoadMap tempRoadmap = itRM.next();
 			if (rowcounter < MaxWritableRows) {
 				printOneRoadmapAndNPV(rowcounter, tempRoadmap, 3);
 			}
-			SB.delete(0, SB.length());
 			rowcounter++;
 		}
 	}
 
-	private static void printOneRoadmapAndNPV(int rowcounter, Roadmap tempRoadmap, int additionalColums) {
+	private static void printOneRoadmapAndNPV(int rowcounter, RoadMap tempRoadmap, int additionalColums) {
 		row = sheet.getRow(rowcounter);
 		cell = row.createCell(START_CELL_FOR_FULL_ROADMAP_PRINT + additionalColums);
-		cell.setCellValue(SB.toString());
+		cell.setCellValue(tempRoadmap.toString());
 		cell = row.createCell(START_CELL_FOR_FULL_ROADMAP_PRINT + additionalColums + 1);
 		cell.setCellValue(tempRoadmap.getNpv());
 	}

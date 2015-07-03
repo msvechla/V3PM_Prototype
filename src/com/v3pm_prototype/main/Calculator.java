@@ -17,7 +17,7 @@ public class Calculator {
 	 * calculates the NPV and set the NPV-value for each roadmap
 	 * @throws NoValidThetaIDException 
 	 */
-	public static void calculateNPVs(List<RoadMap> collRM, Collection<Process> collProcess, Collection<Project> collProj) throws NoValidThetaIDException {
+	public static void calculateNPVs(List<RoadMap> collRM, Collection<Process> collProcess, Collection<Project> collProj, RunConfiguration config) throws NoValidThetaIDException {
 
 		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		// for each roadmap
@@ -33,8 +33,7 @@ public class Calculator {
 			// Create a temporary sorted (according to the roadmap) deep copy of the PROJECT-collection and a deep copy of the PROCESS-collection to be able to
 			// modify them without touching the original collections. Create another deep copy of the tempProcess Collection to be able to compare t and q from
 			// the previous and the actual period (for degeneration handling in multiproject scenarios)
-			Collection<Project> tempCollPoj_sorted = CollectionCopier.createTemporaryOrderedProjectCollectionAccordingToRoadmap(collProj,
-					RM.getProjectSequence());
+			Collection<Project> tempCollPoj_sorted = RM.createCollection(config);
 			Collection<Process> tempCollPocess = CollectionCopier.createTemporaryProcessCollection(collProcess);
 			Collection<Process> bufferedTempCollProcess = CollectionCopier.createTemporaryProcessCollection(collProcess);
 
@@ -43,6 +42,7 @@ public class Calculator {
 			// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			for (Iterator<Project> itProj = tempCollPoj_sorted.iterator(); itProj.hasNext();) {
 				Project tempProject = itProj.next();
+
 				// calculate inflows
 				if (tempProject.getPeriod() > prePeriod) {
 					// In case this is the first project of a new period. For further projects within the same period, no inflows will be added.
@@ -75,7 +75,7 @@ public class Calculator {
 				// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				// modify processes by project for next iteration
 				ProjectAndProcessModifier.modifyProcessesAndProjectsByProject(tempCollPocess, bufferedTempCollProcess, tempProject, tempCollPoj_sorted,
-						projectNumberWithinPeriod, RM.getProjectSequence());
+						projectNumberWithinPeriod);
 				prePeriod = tempProject.getPeriod();
 				projectNumberWithinPeriod++;
 				if (projectNumberWithinPeriod > Main.maxProjectsPerPeriod) {

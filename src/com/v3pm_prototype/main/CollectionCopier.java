@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import com.v3pm_prototype.rmgeneration.RoadMap;
+
 public class CollectionCopier {
 
 	/**
@@ -53,18 +55,18 @@ public class CollectionCopier {
 	/**
 	 * creates an exact copy of the roadmap-collection
 	 */
-	public static List<Roadmap> createTemporaryRoadMapCollection(List<Roadmap> collRM) {
-		List<Roadmap> tempCollRM = new ArrayList<Roadmap>();
-		for (Iterator<Roadmap> itRM = collRM.iterator(); itRM.hasNext();) {
-			Roadmap tempRoadmap = itRM.next();
-			List<String> projectSequence = tempRoadmap.getProjectSequence();
-			List<String> projectSequenceCopy = new ArrayList<String>();
-			for (Iterator<String> itPS = projectSequence.iterator(); itPS.hasNext();) {
-				projectSequenceCopy.add(itPS.next());
-			}
-			tempCollRM.add(new Roadmap(projectSequenceCopy, tempRoadmap.getNpv()));
-		}
-		return tempCollRM;
-	}
+//	public static List<Roadmap> createTemporaryRoadMapCollection(List<RoadMap> collRM) {
+//		List<RoadMap> tempCollRM = new ArrayList<RoadMap>();
+//		for (Iterator<RoadMap> itRM = collRM.iterator(); itRM.hasNext();) {
+//			RoadMap tempRoadmap = itRM.next();
+//			List<String> projectSequence = tempRoadmap.getProjectSequence();
+//			List<String> projectSequenceCopy = new ArrayList<String>();
+//			for (Iterator<String> itPS = projectSequence.iterator(); itPS.hasNext();) {
+//				projectSequenceCopy.add(itPS.next());
+//			}
+//			tempCollRM.add(new RoadMap(projectSequenceCopy, tempRoadmap.getNpv()));
+//		}
+//		return tempCollRM;
+//	}
 
 }
