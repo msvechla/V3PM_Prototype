@@ -95,10 +95,6 @@ public class Project {
 		this.absRelq = absRelq;					//MLE
 		this.absRelt = absRelt;					//MLE
 		this.absRelOop = absRelOop;				//MLE
-		
-		if((earliestImplementationPeriod != -1) || (latestImplementationPeriod != -1)){
-			this.mandatory = true;
-		}
 	}
 
 	
@@ -108,6 +104,17 @@ public class Project {
 		for(Project p : projectList){
 			if(p.mandatory){
 				lstMandatory.add(p);
+			}
+		}
+		return lstMandatory;
+	}
+	
+	public static List<Integer> getMandatoryProjectIDs(){
+		List<Integer> lstMandatory = new ArrayList<Integer>();
+		
+		for(Project p : projectList){
+			if(p.mandatory){
+				lstMandatory.add(p.getId());
 			}
 		}
 		return lstMandatory;
@@ -243,12 +250,6 @@ public class Project {
 
 	public void setEarliestImplementationPeriod(int earliestImplementationPeriod) {
 		this.earliestImplementationPeriod = earliestImplementationPeriod;
-		
-		if(earliestImplementationPeriod != -1){
-			this.mandatory = true;
-		}else{
-			this.mandatory = false;
-		}
 	}
 
 	public int getLatestImplementationPeriod() {
@@ -257,12 +258,6 @@ public class Project {
 
 	public void setLatestImplementationPeriod(int latestImplementationPeriod) {
 		this.latestImplementationPeriod = latestImplementationPeriod;
-		
-		if(latestImplementationPeriod != -1){
-			this.mandatory = true;
-		}else{
-			this.mandatory = false;
-		}
 	}
 
 	public Project getPredecessorProject() {
@@ -335,6 +330,14 @@ public class Project {
 
 	public boolean isMandatory() {
 		return this.mandatory;
+	}
+
+	public void SetMandaytory(String stringCellValue) {
+		if(stringCellValue.equals("true")){
+			this.mandatory = true;
+		}else{
+			this.mandatory = false;
+		}
 	}
 	
 

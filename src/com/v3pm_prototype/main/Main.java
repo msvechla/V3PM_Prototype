@@ -76,7 +76,7 @@ public class Main {
 		double millisFinish = System.currentTimeMillis();
 		
 //		for(RMContainer rmc : RMContainer.lstRMContainerSingle){
-//			System.out.println("");
+//			System.out.println("Single");
 //			System.out.println("---"+rmc.getImplementedProjects()+"---");
 //		for(com.v3pm_prototype.rmgeneration.RoadMap rm: rmc.getLstRM()){
 //			System.out.println(rm);
@@ -84,7 +84,7 @@ public class Main {
 //	}
 //	
 //	for(RMContainer rmc : RMContainer.lstRMContainerCombined){
-//		System.out.println("");
+//		System.out.println("Combined");
 //		System.out.println("---"+rmc.getImplementedProjects()+"---");
 //		for(com.v3pm_prototype.rmgeneration.RoadMap rm: rmc.getLstRM()){
 //			System.out.println(rm);
@@ -108,6 +108,11 @@ public class Main {
 		// -----------------------------------------------------------------------------
 	
 		List<RoadMap> rmList = RMContainer.createRMList();
+		
+		for(RoadMap rm : rmList){
+			System.out.println(rm);
+		}
+		
 		Calculator.calculateNPVs(rmList, collProcess, collProj,RunConfiguration.standardConfig);
 
 		// -----------------------------------------------------------------------------

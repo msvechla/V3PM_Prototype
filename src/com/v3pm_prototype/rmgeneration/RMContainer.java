@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.v3pm_prototype.main.Project;
+import com.v3pm_prototype.main.RMRestrictionHandler;
 
 
 public class RMContainer {
@@ -47,19 +48,28 @@ public class RMContainer {
 	
 	public static List<RoadMap> createRMList(){
 		List<RoadMap> rmList = new ArrayList<RoadMap>();
+		int countMandatory = Project.getMandatoryProjects().size();
 		
-		if(Project.getMandatoryProjects().size() == 1){
 			for(RMContainer rmc : lstRMContainerSingle){
 				//Only add Single Containers if it contains mandatory projects
-				if(rmc.implementedProjects.contains(Project.getMandatoryProjects().get(0).getId())){
-					rmList.addAll(rmc.getLstRM());
+				if(countMandatory == 1){
+					if(rmc.implementedProjects.contains(Project.getMandatoryProjects().get(0).getId())){
+						rmList.addAll(rmc.getLstRM());
+					}
 				}
-			}
-		}
-		
+				
+				if(countMandatory == 0){
+					rmList.addAll(rmc.getLstRM());
+				}		
+			}	
 		
 		for(RMContainer rmc : lstRMContainerCombined){
-			rmList.addAll(rmc.getLstRM());
+			//if container passes cleanup-check -> add all roadmaps in container to final list
+			
+			//TODO NTH: If restriction passed one time -> dont check it anymore
+			if(RMRestrictionHandler.cMandatoryProject(rmc, countMandatory)){
+				rmList.addAll(rmc.getLstRM());
+			}
 		}
 		return rmList;
 	}

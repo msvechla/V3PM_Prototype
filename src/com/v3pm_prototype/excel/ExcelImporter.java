@@ -75,6 +75,11 @@ public class ExcelImporter {
 			} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
 				project.setNumberOfPeriods((Integer.parseInt(cell.getStringCellValue())));
 			}
+			
+			//Set Mandatory
+			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
+			project.SetMandaytory(cell.getStringCellValue());
+			
 			// set type
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			project.setType(cell.getStringCellValue());

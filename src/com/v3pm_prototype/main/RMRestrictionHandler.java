@@ -1,5 +1,6 @@
 package com.v3pm_prototype.main;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.v3pm_prototype.exceptions.ProjectIsNotInRoadmapException;
+import com.v3pm_prototype.rmgeneration.RMContainer;
+import com.v3pm_prototype.rmgeneration.RoadMap;
 
 /**
  * The RMRestrictionHandler contains methods to check if the given roadmap violates any restriction or not.
@@ -67,8 +70,10 @@ public class RMRestrictionHandler {
 		for(Project p : Project.projectList){
 //			if(rGloMutEx(p, implementedProjectIDs) == false) return false;
 //			if(rGloMutDep(p, implementedProjectIDs) == false) return false;
-			if(rMandatoryProject(p, implementedProjectIDs) == false) return false;
 		}	
+		
+		if(rMandatoryProject(implementedProjectIDs) == false) return false;
+		
 		return true;
 	}
 	
@@ -185,15 +190,41 @@ public class RMRestrictionHandler {
 	}
 	
 	//TODO Mandatory2
-	public static boolean rMandatoryProject(Project p, HashSet<Integer> implementedProjectIDs){
-		if(p.isMandatory()){
-			if(implementedProjectIDs.contains(p.getId())){
-				return true;
-			}else{
-				return false;
-			}
+	/**
+	 * Checks that only mandatory projects are implemented. Needs clean-up method to remove containers that don't implement all mandatory projects.
+	 * Because containers are generated procedurally, clean-up has to be called after RMGeneration is finished -> cMandatoryProjects()
+	 * @param implementedProjectIDs
+	 * @return
+	 */
+	public static boolean rMandatoryProject(HashSet<Integer> implementedProjectIDs){
+		
+		List<Integer> mandatoryIDs = Project.getMandatoryProjectIDs();
+		
+		//When more projects are implemented than there are mandatory projects -> all mandatory projects have to be implemented
+		if(implementedProjectIDs.size() >= mandatoryIDs.size()){
+			return implementedProjectIDs.containsAll(mandatoryIDs);
+		}else{
+			//Else only mandatory projects have to be implemented
+			return mandatoryIDs.containsAll(implementedProjectIDs);
+			
 		}
-		return true;
+	}
+	
+	/**
+	 * Performs clean-up check: Returns false if the container-size is smaller than the amount of mandatory projects.
+	 * Because containers are generated procedurally, clean-up has to be called after RMGeneration is finished.
+	 * @param rmc
+	 * @param countMandatory
+	 * @return
+	 */
+	public static boolean cMandatoryProject(RMContainer rmc, int countMandatory){
+		if(rmc.getImplementedProjects().size() < countMandatory){
+			return false;
+		}else{
+			return true;
+		}
+		
+		
 	}
 	
 	public static boolean breakRestrictionBeforeAddingToRoadMapCollection(List<String> tempProjectSequence, Collection<Project> collProj) {
