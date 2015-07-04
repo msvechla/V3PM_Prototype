@@ -140,6 +140,10 @@ public class Project {
 		return false;
 	}
 	
+	public void adjustForMultiPeriodScenario(){
+		this.oinv = this.oinv / this.numberOfPeriods;
+	}
+	
 	public int getStartPeriod() {
 		return startPeriod;
 	}

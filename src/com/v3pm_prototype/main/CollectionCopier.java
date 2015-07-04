@@ -12,33 +12,6 @@ import com.v3pm_prototype.rmgeneration.RoadMap;
 public class CollectionCopier {
 
 	/**
-	 * loops through the roadmap and copies every project which is indicated in the roadmap to a new collection (tempCollProj)
-	 */
-	public static Collection<Project> createTemporaryOrderedProjectCollectionAccordingToRoadmap(Collection<Project> collProj, List<String> projectSequence) {
-		Collection<Project> tempCollPoj = new LinkedHashSet<Project>(); // LinkedHashSet because we want to keep the order in which we add the elements.
-		char[] projectsInPeriod;
-		int periodCounter = 0;
-		for (Iterator<String> itPS = projectSequence.iterator(); itPS.hasNext();) {
-			projectsInPeriod = itPS.next().toCharArray();
-			for (int i = 0; i < projectsInPeriod.length; i++) {
-				for (Iterator<Project> itProj = collProj.iterator(); itProj.hasNext();) {
-					Project p = itProj.next();
-					if (p.getId() == projectsInPeriod[i]) {
-						Project copy = new Project(p.getName(), p.getId(), p.getType(), p.getI(), p.getOinv(), p.getA(), p.getB(), p.getE(), p.getU(),
-								p.getM(), p.getEarliestImplementationPeriod(), p.getLatestImplementationPeriod(), p.getPredecessorProject(),
-								p.getSuccessorProject(), p.getTogetherInPeriodWith(), p.getNotTogetherInPeriodWith(), p.getFixedCostEffect(), p.getAbsRelq(), p.getAbsRelt(), p.getAbsRelOop());
-						copy.setPeriod(periodCounter);
-						tempCollPoj.add(copy);
-						break;
-					}
-				}
-			}
-			periodCounter++;
-		}
-		return tempCollPoj;
-	}
-
-	/**
 	 * creates an exact copy of the process-collection
 	 */
 	public static Collection<Process> createTemporaryProcessCollection(Collection<Process> collProcess) {

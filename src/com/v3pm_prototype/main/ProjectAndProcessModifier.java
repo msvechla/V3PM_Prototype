@@ -17,6 +17,15 @@ public class ProjectAndProcessModifier {
 	 */
 	public static void modifyProcessesAndProjectsByProject(Collection<Process> tempCollPocess, Collection<Process> bufferedTempCollProcess,
 			Project tempProject, Collection<Project> tempCollPoj_sorted, int projectNumberWithinPeriod) {
+		
+		//Indicates whether the current project is finishing this period
+		boolean projectFinishes;
+		if(tempProject.getPeriod() == (tempProject.getStartPeriod() + tempProject.getNumberOfPeriods() -1)){
+			projectFinishes = true;
+		}else{
+			projectFinishes = false;
+		}
+		
 		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		// for each process
 		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -28,11 +37,11 @@ public class ProjectAndProcessModifier {
 				projectRegardsProcess = true;
 			}
 			
-		
+				
 			// ------------------------------------------------------
 			// a
 			// ------------------------------------------------------
-			if (projectRegardsProcess && tempProject.getA() != 0) {
+			if (projectFinishes && projectRegardsProcess && tempProject.getA() != 0) {
 				tempProcess.setOop(tempProcess.getOop() * tempProject.getA());
 			}
 			
@@ -64,7 +73,7 @@ public class ProjectAndProcessModifier {
 			// ------------------------------------------------------
 			// e  mit Absolutem Effekt
 			// ------------------------------------------------------
-			if (projectRegardsProcess && tempProject.getE() != 0) {
+			if (projectFinishes && projectRegardsProcess && tempProject.getE() != 0) {
 				
 				if (tempProject.getAbsRelt().equals("relativ")){
 					
@@ -150,7 +159,7 @@ public class ProjectAndProcessModifier {
 			// ------------------------------------------------------
 			// u
 			// ------------------------------------------------------
-			if (projectRegardsProcess && tempProject.getU() != 0) {
+			if (projectFinishes && projectRegardsProcess && tempProject.getU() != 0) {
 				
 				if (tempProject.getAbsRelq().equals("relativ")){
 					
@@ -227,7 +236,7 @@ public class ProjectAndProcessModifier {
 		
 		// Neu MLe  Oop mit absolutem Effekt - Scheint korrekt zu sein. Ausführlicher Test erforderlich
 		
-		if (projectRegardsProcess && tempProject.getM() != 0) {
+		if (projectFinishes && projectRegardsProcess && tempProject.getM() != 0) {
 			
 			if (tempProject.getAbsRelOop().equals("relativ")){
 			
@@ -257,7 +266,7 @@ public class ProjectAndProcessModifier {
 		// ------------------------------------------------------	
 		
 		
-		if (tempProject.getType().equals("processLevel") && tempProject.getFixedCostEffect()!= 0)
+		if (projectFinishes && tempProject.getType().equals("processLevel") && tempProject.getFixedCostEffect()!= 0)
 			{
 				
 			tempProcess.setFixedCosts(tempProcess.getFixedCosts() + tempProject.getFixedCostEffect());
@@ -276,7 +285,7 @@ public class ProjectAndProcessModifier {
 		// ------------------------------------------------------
 		// b
 		// ------------------------------------------------------
-		if (tempProject.getB() != 0) {
+		if (projectFinishes && tempProject.getB() != 0) {
 			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			// for each project
 			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

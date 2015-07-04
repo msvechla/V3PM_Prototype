@@ -159,6 +159,8 @@ public class ExcelImporter {
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			project.setAbsRelOop(cell.getStringCellValue());
 			
+			project.adjustForMultiPeriodScenario();
+			
 			// add project to collection and initialize cell for next iteration
 			collProj.add(project);
 			rowCount++;
