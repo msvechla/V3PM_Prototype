@@ -30,17 +30,8 @@ import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 
 public class Main {
-	public static final char CHAR_FOR_EMPTY_PROJECTS = 'x';
 	public static final String RETURN_STRING_SUCCESSFUL = "Kalkulation erfolgreich abgeschlossen";
 	public static final String processLevel = "processLevel";
-//	public static double discountRatePerPeriod;
-//	public static int periodsUnderInvestigation;
-//	public static int maxProjectsPerPeriod;
-//	public static int periodWithNoScheduledProjects;
-//	public static double budgetMaxPerPeriod; // global budget restrictions for every period
-//	public static List<Double> budgetMaxforEachPeriod; // use of an ArrayList because it keeps the order and is faster in accessing it via index
-//	public static double overarchingFixedOutflows;  //Neu MLe
-
 	
 	public static void main(String[] args) {
 		// -----------------------------------------------------------------------------
@@ -96,11 +87,6 @@ public class Main {
 	System.out.println(RMContainer.countRoadMapsGenerated+" Roadmaps generated in "+(millisFinish-millisStart)+"ms");
 		
 		// -----------------------------------------------------------------------------
-		// add empty project to collection (for NPV calculation)
-		// -----------------------------------------------------------------------------
-		//collProj.add(new Project("No Project", CHAR_FOR_EMPTY_PROJECTS, "empty", CHAR_FOR_EMPTY_PROJECTS, 0, 0, 0, 0, 0, 0, 0, 0, '-', '-', '-', '-', 0, "empty", "empty", "empty"));
-
-		// -----------------------------------------------------------------------------
 		// calculate NPV of each roadmap
 		// -----------------------------------------------------------------------------
 		
@@ -113,34 +99,13 @@ public class Main {
 		// -----------------------------------------------------------------------------
 		// sort roadmaps by NPV
 		// -----------------------------------------------------------------------------
-		Collections.sort(rmList, new RMComparator());
-
-		// -----------------------------------------------------------------------------
-		// sort projects within period
-		// -----------------------------------------------------------------------------
-//		if (maxProjectsPerPeriod > 1) {
-//			ProjectSorter.sortProjects(collRM);
-//		}
+		Collections.sort(rmList);
 
 		// -----------------------------------------------------------------------------
 		// print output-data to excel file
 		// -----------------------------------------------------------------------------
 		ExcelExporter.exportToExcel(rmList, excelFile, RunConfiguration.standardConfig.getLstProjects().size());
 
-		// -----------------------------------------------------------------------------
-		// print output-data to console (only for future debugging purposes)
-		// -----------------------------------------------------------------------------
-		// for (Iterator<Roadmap> itRM = collRM.iterator(); itRM.hasNext();) {
-		// Roadmap tempRoadmap = itRM.next();
-		//  List<String> projectSequence = tempRoadmap.getProjectSequence();
-		//  for (Iterator<String> itPS = projectSequence.iterator(); itPS.hasNext();) {
-		//  System.out.print(itPS.next());
-		//  System.out.print(" ");
-		//  }
-		//  System.out.print(" NPV: " + tempRoadmap.getNpv());
-		//  System.out.println(" ");
-		//  }
-		 
 		// MLe
 		
 //		System.out.println("OverallAmount:                        "+ RMRestrictionHandler.OverallAmount);

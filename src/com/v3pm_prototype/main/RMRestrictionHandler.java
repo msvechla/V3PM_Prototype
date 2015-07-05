@@ -518,15 +518,15 @@ public class RMRestrictionHandler {
 		throw new ProjectIsNotInRoadmapException();
 	}
 
-	private static boolean isPeriodWithNoProjects(String SequenceInPeriod) {
-		char[] projectsInPeriod = SequenceInPeriod.toCharArray();
-		for (int i = 0; i < projectsInPeriod.length; i++) {
-			if (projectsInPeriod[i] != Main.CHAR_FOR_EMPTY_PROJECTS) {
-				return false;
-			}
-		}
-		return true;
-	}
+//	private static boolean isPeriodWithNoProjects(String SequenceInPeriod) {
+//		char[] projectsInPeriod = SequenceInPeriod.toCharArray();
+//		for (int i = 0; i < projectsInPeriod.length; i++) {
+//			if (projectsInPeriod[i] != Main.CHAR_FOR_EMPTY_PROJECTS) {
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
 
 	/**
 	 * @return true if the roadmap contains this project

@@ -6,7 +6,7 @@ import java.util.LinkedHashSet;
 import com.v3pm_prototype.main.Main;
 import com.v3pm_prototype.main.Project;
 
-public class RoadMap {
+public class RoadMap implements Comparable<RoadMap>{
 	private Project[][] rmArray;
 	public HashSet<Integer> implementedProjectIDs;
 	private double npv;
@@ -154,6 +154,12 @@ public class RoadMap {
 
 	public double getNpv() {
 		return this.npv;
+	}
+
+
+	@Override
+	public int compareTo(RoadMap rm) {
+		return Double.compare(this.getNpv(), rm.getNpv());
 	}
 	
 }
