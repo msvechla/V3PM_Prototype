@@ -11,6 +11,7 @@ import java.util.List;
 import com.v3pm_prototype.exceptions.ProjectIsNotInRoadmapException;
 import com.v3pm_prototype.rmgeneration.RMContainer;
 import com.v3pm_prototype.rmgeneration.RoadMap;
+import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 /**
  * The RMRestrictionHandler contains methods to check if the given roadmap violates any restriction or not.
@@ -66,13 +67,13 @@ public class RMRestrictionHandler {
 	 * @param implementedProjectIDs A list of project IDs that the container combines
 	 * @return False if one of the restrictions is broken, true otherwise
 	 */
-	public static boolean meetsPreCombinedContainerGenerationCheck(HashSet<Integer> implementedProjectIDs){
-		for(Project p : Project.projectList){
+	public static boolean meetsPreCombinedContainerGenerationCheck(HashSet<Integer> implementedProjectIDs, RunConfiguration config){
+		for(Project p : config.getLstProjects()){
 //			if(rGloMutEx(p, implementedProjectIDs) == false) return false;
 //			if(rGloMutDep(p, implementedProjectIDs) == false) return false;
 		}	
 		
-		if(rMandatoryProject(implementedProjectIDs) == false) return false;
+		if(rMandatoryProject(implementedProjectIDs, config) == false) return false;
 		
 		return true;
 	}
@@ -196,9 +197,9 @@ public class RMRestrictionHandler {
 	 * @param implementedProjectIDs
 	 * @return
 	 */
-	public static boolean rMandatoryProject(HashSet<Integer> implementedProjectIDs){
+	public static boolean rMandatoryProject(HashSet<Integer> implementedProjectIDs, RunConfiguration config){
 		
-		List<Integer> mandatoryIDs = Project.getMandatoryProjectIDs();
+		List<Integer> mandatoryIDs = config.getMandatoryProjectIDs();
 		
 		//When more projects are implemented than there are mandatory projects -> all mandatory projects have to be implemented
 		if(implementedProjectIDs.size() >= mandatoryIDs.size()){

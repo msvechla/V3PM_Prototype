@@ -13,13 +13,12 @@ public class RMGenerator {
 
 	/**
 	 * Algorithm for generating all possible Roadmaps from pre-defined projects
-	 * @param projectList A list of all projects that can be implemented
 	 */
-	public static void generateRoadmaps(List<Project> projectList, RunConfiguration config) {
+	public static List<RoadMap> generateRoadmaps(RunConfiguration config) {
 		System.out.println("--- START: generateRoadmaps()");
 		
 		//STEP1 Generate SingleContainers
-		for(Project p : projectList){
+		for(Project p : config.getLstProjects()){
 			
 			//create a container for every project
 			HashSet<Integer> implementedProjectIDs = new HashSet<Integer>();
@@ -65,7 +64,7 @@ public class RMGenerator {
 					implementedProjectIDs.addAll(rmcSingle2.getImplementedProjects());
 					
 					//Perform Pre-CombinedContainerGeneration Restriction Check
-					if(RMRestrictionHandler.meetsPreCombinedContainerGenerationCheck(implementedProjectIDs)){
+					if(RMRestrictionHandler.meetsPreCombinedContainerGenerationCheck(implementedProjectIDs, config)){
 						
 						//If combination has not been generated yet -> Generate
 						if(!RMContainer.lstCombinedProjectIDs.contains(implementedProjectIDs)){
@@ -99,7 +98,9 @@ public class RMGenerator {
 			
 		}
 		
+		List<RoadMap> rmListFinal = RMContainer.createRMList(config);
 		System.out.println("--- FINISH: generateRoadmaps()");
+		return rmListFinal;
 		
 	}
 

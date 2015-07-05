@@ -1,6 +1,10 @@
 package com.v3pm_prototype.rmgeneration;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.v3pm_prototype.main.Process;
+import com.v3pm_prototype.main.Project;
 
 public class RunConfiguration {
 	private int countPeriods;
@@ -11,12 +15,49 @@ public class RunConfiguration {
 	private List<Double> budgetMaxforEachPeriod;
 	private int overarchingFixedOutflows;
 	
+	private List<Project> lstProjects;
+	private List<Process> lstProcesses;
+	
 	public static RunConfiguration standardConfig = null;
 	
 	public RunConfiguration() {
 		super();
+		this.lstProjects = new ArrayList<Project>();
+		this.lstProcesses = new ArrayList<Process>();
 	}
 
+	
+	public Project getProject(int id){
+		for(Project p : lstProjects){
+			if(p.getId() == id){
+				return p;
+			}
+		}
+		return null;
+	}
+	
+	public List<Project> getMandatoryProjects(){
+		List<Project> lstMandatory = new ArrayList<Project>();
+		
+		for(Project p : lstProjects){
+			if(p.isMandatory()){
+				lstMandatory.add(p);
+			}
+		}
+		return lstMandatory;
+	}
+	
+	public List<Integer> getMandatoryProjectIDs(){
+		List<Integer> lstMandatory = new ArrayList<Integer>();
+		
+		for(Project p : lstProjects){
+			if(p.isMandatory()){
+				lstMandatory.add(p.getId());
+			}
+		}
+		return lstMandatory;
+	}
+	
 	public int getCountPeriods() {
 		return countPeriods;
 	}
@@ -73,8 +114,20 @@ public class RunConfiguration {
 		this.budgetMaxforEachPeriod = budgetMaxforEachPeriod;
 	}
 
-	
-	
-	
-	
+	public List<Project> getLstProjects() {
+		return lstProjects;
+	}
+
+	public void setLstProjects(List<Project> lstProjects) {
+		this.lstProjects = lstProjects;
+	}
+
+	public List<Process> getLstProcesses() {
+		return lstProcesses;
+	}
+
+	public void setLstProcesses(List<Process> lstProcesses) {
+		this.lstProcesses = lstProcesses;
+	}
+
 }

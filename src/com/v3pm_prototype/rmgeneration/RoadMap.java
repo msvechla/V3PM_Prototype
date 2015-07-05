@@ -75,39 +75,39 @@ public class RoadMap {
 	}
 	
 	
-	public Project[][] createTempRMArrayCopy(RunConfiguration config){
-		
-		Project[][] rmArrayCopy = new Project[config.getCountPeriods()][config.getCountProjectsMaxPerPeriod()];
-		HashSet<Project> implementedProjects = new HashSet<Project>();
-		
-		for(int period = 0; period < this.rmArray.length; period++){
-			for(int slot = 0; slot < rmArray[period].length;slot++){
-				Project p = this.rmArray[period][slot];
-				if(p != null){
-					Project copy = new Project(p.getId(), p.getName(), p.getNumberOfPeriods(), p.getType(), p.getI(), p.getOinv(), p.getA(), p.getB(), p.getE(), p.getU(),
-							p.getM(), p.getEarliestImplementationPeriod(), p.getLatestImplementationPeriod(), p.getPredecessorProject(),
-							p.getSuccessorProject(), p.getTogetherInPeriodWith(), p.getNotTogetherInPeriodWith(), p.getFixedCostEffect(), p.getAbsRelq(), p.getAbsRelt(), p.getAbsRelOop());
-					copy.setPeriod(period);
-					
-					//Set the starting period
-					if(implementedProjects.contains(copy)){
-						for(Project i : implementedProjects){
-							if(i.getId() == copy.getId()){
-								copy.setStartPeriod(i.getStartPeriod());
-								break;
-							}
-						}
-					}else{
-						copy.setStartPeriod(period);
-						implementedProjects.add(copy);
-					}
-					
-					rmArrayCopy[period][slot] = copy;
-				}
-			}
-		}
-		return rmArrayCopy;
-	}
+//	public Project[][] createTempRMArrayCopy(RunConfiguration config){
+//		
+//		Project[][] rmArrayCopy = new Project[config.getCountPeriods()][config.getCountProjectsMaxPerPeriod()];
+//		HashSet<Project> implementedProjects = new HashSet<Project>();
+//		
+//		for(int period = 0; period < this.rmArray.length; period++){
+//			for(int slot = 0; slot < rmArray[period].length;slot++){
+//				Project p = this.rmArray[period][slot];
+//				if(p != null){
+//					Project copy = new Project(p.getId(), p.getName(), p.getNumberOfPeriods(), p.getType(), p.getI(), p.getOinv(), p.getA(), p.getB(), p.getE(), p.getU(),
+//							p.getM(), p.getEarliestImplementationPeriod(), p.getLatestImplementationPeriod(), p.getPredecessorProject(),
+//							p.getSuccessorProject(), p.getTogetherInPeriodWith(), p.getNotTogetherInPeriodWith(), p.getFixedCostEffect(), p.getAbsRelq(), p.getAbsRelt(), p.getAbsRelOop());
+//					copy.setPeriod(period);
+//					
+//					//Set the starting period
+//					if(implementedProjects.contains(copy)){
+//						for(Project i : implementedProjects){
+//							if(i.getId() == copy.getId()){
+//								copy.setStartPeriod(i.getStartPeriod());
+//								break;
+//							}
+//						}
+//					}else{
+//						copy.setStartPeriod(period);
+//						implementedProjects.add(copy);
+//					}
+//					
+//					rmArrayCopy[period][slot] = copy;
+//				}
+//			}
+//		}
+//		return rmArrayCopy;
+//	}
 	
 	
 //	public void calculateNPV(RunConfiguration config){

@@ -10,6 +10,7 @@ import com.v3pm_prototype.UI.SwingUI;
 import com.v3pm_prototype.excel.ExcelExporter;
 import com.v3pm_prototype.excel.ExcelImporter;
 import com.v3pm_prototype.rmgeneration.RMContainer;
+import com.v3pm_prototype.rmgeneration.RMGenerator;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
@@ -53,15 +54,11 @@ public class Main {
 
 	public static String processMainCalculation(File excelFile) throws Exception {
 		// -----------------------------------------------------------------------------
-		// create project- and process-collection
-		// -----------------------------------------------------------------------------
-		Collection<Process> collProcess = new HashSet<Process>();
-		Collection<Project> collProj = new HashSet<Project>();
-
-		// -----------------------------------------------------------------------------
 		// read excel input-data and write them into the collections and the static class variables
 		// -----------------------------------------------------------------------------
-		ExcelImporter.importAllExcelData(collProj, collProcess, excelFile);
+		
+		RunConfiguration.standardConfig = new RunConfiguration();
+		ExcelImporter.importAllExcelData(excelFile, RunConfiguration.standardConfig);
 
 		// -----------------------------------------------------------------------------
 		// generate all possible roadmaps and filter them by restrictions
@@ -70,8 +67,8 @@ public class Main {
 		//List<Roadmap> collRM = rmGenerator.generateRoadmapCollection(collProj);
 
 		double millisStart = System.currentTimeMillis();
-		com.v3pm_prototype.rmgeneration.RMGenerator rmGenerator = new com.v3pm_prototype.rmgeneration.RMGenerator();
-		rmGenerator.generateRoadmaps(Project.projectList, RunConfiguration.standardConfig);
+		RMGenerator rmGenerator = new com.v3pm_prototype.rmgeneration.RMGenerator();
+		List<RoadMap> rmList = rmGenerator.generateRoadmaps(RunConfiguration.standardConfig);
 		
 		double millisFinish = System.currentTimeMillis();
 		
@@ -106,26 +103,17 @@ public class Main {
 		// -----------------------------------------------------------------------------
 		// calculate NPV of each roadmap
 		// -----------------------------------------------------------------------------
-	
-		List<RoadMap> rmList = RMContainer.createRMList();
 		
 		for(RoadMap rm : rmList){
 			System.out.println(rm);
 		}
 		
-		Calculator.calculateNPVs(rmList, collProcess, collProj,RunConfiguration.standardConfig);
+		Calculator.calculateNPVs(rmList, RunConfiguration.standardConfig.getLstProcesses(), RunConfiguration.standardConfig.getLstProjects(),RunConfiguration.standardConfig);
 
 		// -----------------------------------------------------------------------------
 		// sort roadmaps by NPV
 		// -----------------------------------------------------------------------------
 		Collections.sort(rmList, new RMComparator());
-
-		// -----------------------------------------------------------------------------
-		// delete duplicates with same NPV
-		// -----------------------------------------------------------------------------
-//		if (maxProjectsPerPeriod > 1) {
-//			DuplicateCheck.deleteDuplicatesWithSameNPV(collRM);
-//		}
 
 		// -----------------------------------------------------------------------------
 		// sort projects within period
@@ -137,7 +125,7 @@ public class Main {
 		// -----------------------------------------------------------------------------
 		// print output-data to excel file
 		// -----------------------------------------------------------------------------
-		ExcelExporter.exportToExcel(rmList, excelFile, collProj.size());
+		ExcelExporter.exportToExcel(rmList, excelFile, RunConfiguration.standardConfig.getLstProjects().size());
 
 		// -----------------------------------------------------------------------------
 		// print output-data to console (only for future debugging purposes)

@@ -46,14 +46,14 @@ public class RMContainer {
 		return this.implementedProjects;
 	}
 	
-	public static List<RoadMap> createRMList(){
+	public static List<RoadMap> createRMList(RunConfiguration config){
 		List<RoadMap> rmList = new ArrayList<RoadMap>();
-		int countMandatory = Project.getMandatoryProjects().size();
+		int countMandatory = config.getMandatoryProjects().size();
 		
 			for(RMContainer rmc : lstRMContainerSingle){
 				//Only add Single Containers if it contains mandatory projects
 				if(countMandatory == 1){
-					if(rmc.implementedProjects.contains(Project.getMandatoryProjects().get(0).getId())){
+					if(rmc.implementedProjects.contains(config.getMandatoryProjects().get(0).getId())){
 						rmList.addAll(rmc.getLstRM());
 					}
 				}

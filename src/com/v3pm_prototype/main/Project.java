@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Project {
 
-	public static List<Project> projectList = new ArrayList<Project>();
+	//public static List<Project> projectList = new ArrayList<Project>();
 	
 	private String name; // name of the project
 	public int numberOfPeriods;
@@ -37,38 +37,33 @@ public class Project {
 	private String absRelt; // MLe absolute or relative effect for t
 	private String absRelOop; // MLe absolute or relative effect for Oop
 	
-	public Project(String name, int numberOfPeriods, String type, char i, double oinv, double a, double b, double e, double u, double m, int earliestImplementationPeriod,
-			int latestImplementationPeriod, Project pre, Project suc, Project tipw,
-			Project ntipw, double fixedCostEffect, String absRelq, String absRelt, String absRelOop) {
-		super();
-		projectList.add(this);	
-		this.name = name;
-		this.id = projectList.size();
-		this.numberOfPeriods = numberOfPeriods;
-		this.type = type;
-		this.i = i;
-		this.oinv = oinv;
-		this.a = a;
-		this.b = b;
-		this.e = e;
-		this.u = u;
-		this.m = m;
-		this.earliestImplementationPeriod = earliestImplementationPeriod;
-		this.latestImplementationPeriod = latestImplementationPeriod;
-		this.predecessorProject = pre;
-		this.successorProject = suc;
-		this.togetherInPeriodWith = tipw;
-		this.notTogetherInPeriodWith = ntipw;
-		this.fixedCostEffect = fixedCostEffect; //MLE
-		this.absRelq = absRelq;					//MLE
-		this.absRelt = absRelt;					//MLE
-		this.absRelOop = absRelOop;				//MLE
-		
-		if((earliestImplementationPeriod != -1) || (latestImplementationPeriod != -1)){
-			this.mandatory = true;
-		}
-		
-	}
+//	public Project(String name, int numberOfPeriods, String type, char i, double oinv, double a, double b, double e, double u, double m, int earliestImplementationPeriod,
+//			int latestImplementationPeriod, Project pre, Project suc, Project tipw,
+//			Project ntipw, double fixedCostEffect, String absRelq, String absRelt, String absRelOop) {
+//		super();
+//		projectList.add(this);	
+//		this.name = name;
+//		this.id = projectList.size();
+//		this.numberOfPeriods = numberOfPeriods;
+//		this.type = type;
+//		this.i = i;
+//		this.oinv = oinv;
+//		this.a = a;
+//		this.b = b;
+//		this.e = e;
+//		this.u = u;
+//		this.m = m;
+//		this.earliestImplementationPeriod = earliestImplementationPeriod;
+//		this.latestImplementationPeriod = latestImplementationPeriod;
+//		this.predecessorProject = pre;
+//		this.successorProject = suc;
+//		this.togetherInPeriodWith = tipw;
+//		this.notTogetherInPeriodWith = ntipw;
+//		this.fixedCostEffect = fixedCostEffect; //MLE
+//		this.absRelq = absRelq;					//MLE
+//		this.absRelt = absRelt;					//MLE
+//		this.absRelOop = absRelOop;				//MLE
+//	}
 	
 	public Project(int id, String name, int numberOfPeriods, String type, char i, double oinv, double a, double b, double e, double u, double m, int earliestImplementationPeriod,
 			int latestImplementationPeriod, Project pre, Project suc, Project tipw,
@@ -96,37 +91,14 @@ public class Project {
 		this.absRelt = absRelt;					//MLE
 		this.absRelOop = absRelOop;				//MLE
 	}
-
-	
-	public static List<Project> getMandatoryProjects(){
-		List<Project> lstMandatory = new ArrayList<Project>();
-		
-		for(Project p : projectList){
-			if(p.mandatory){
-				lstMandatory.add(p);
-			}
-		}
-		return lstMandatory;
-	}
-	
-	public static List<Integer> getMandatoryProjectIDs(){
-		List<Integer> lstMandatory = new ArrayList<Integer>();
-		
-		for(Project p : projectList){
-			if(p.mandatory){
-				lstMandatory.add(p.getId());
-			}
-		}
-		return lstMandatory;
-	}
 	
 	//TODO get via index?
-	public static Project getProject(int id){
-		for(Project p: projectList){
-			if(p.getId() == id) return p;
-		}
-		return null;
-	}
+//	public static Project getProject(int id){
+//		for(Project p: projectList){
+//			if(p.getId() == id) return p;
+//		}
+//		return null;
+//	}
 	
 	public String toString(){
 		return String.valueOf(this.id);

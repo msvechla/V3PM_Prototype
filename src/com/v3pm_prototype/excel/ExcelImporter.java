@@ -36,8 +36,9 @@ public class ExcelImporter {
 
 	/**
 	 * this is the main method of this class and sums up the other methods by calling them one after another
+	 * @param standardConfig 
 	 */
-	public static void importAllExcelData(Collection<Project> collProj, Collection<Process> collProcess, File excelFile) throws Exception {
+	public static void importAllExcelData(File excelFile, RunConfiguration standardConfig) throws Exception {
 		FileInputStream file = null;
 		try {
 			// load excel file
@@ -47,27 +48,58 @@ public class ExcelImporter {
 			// get first sheet from the workbook
 			HSSFSheet sheet = workbook.getSheetAt(0);
 			// call methods to import data for Projects, Processes and general static values
-			importExcelDataAndFillProjectCollection(collProj, sheet);
-			importExcelDataAndFillProcessCollection(collProcess, sheet);
-			importExcelDataAndFillGeneralStaticValues(sheet);
-			importExcelDataAndFillMaximumBudgetPerPeriodList(sheet);
+			generateProjects(sheet, standardConfig);
+			importExcelDataAndFillProjectCollection(sheet, standardConfig);
+			importExcelDataAndFillProcessCollection(sheet, standardConfig);
+			importExcelDataAndFillGeneralStaticValues(sheet, standardConfig);
+			importExcelDataAndFillMaximumBudgetPerPeriodList(sheet, standardConfig);
 		} finally {
 			file.close();
 		}
 	}
-
+	
 	/**
-	 * iterates through the project-specific, non-empty rows of the Excel file, read the data and after each row, creates a project-instance and saves it in the
-	 * project collection
+	 * Generates placeholders for all Projects beforehand, so Suc, Pre restrictions can be set with type Project
+	 * @param sheet
+	 * @param standardConfig
 	 */
-	private static void importExcelDataAndFillProjectCollection(Collection<Project> collProj, HSSFSheet sheet) {
+	private static void generateProjects(HSSFSheet sheet, RunConfiguration standardConfig){
 		int rowCount = START_ROW_FOR_PROJECT_SEARCH;
 		cell = sheet.getRow(rowCount).getCell(START_CELL_FOR_PROJECT_SEARCH);
 		while (cell != null) {
 			if(cell.getStringCellValue().equals("")){
 				break; // reached the end of the projects-list
 			}
-			Project project = new Project(cell.getStringCellValue(), '0', "", '0', 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, 0, "", "", "");
+			
+			int tempID = standardConfig.getLstProjects().size()+1;
+			Project project = new Project(tempID, cell.getStringCellValue(), 1, "", '0', 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, 0, "", "", "");
+			standardConfig.getLstProjects().add(project);
+			
+			// Initialize cell for next iteration
+			rowCount++;
+			cell = sheet.getRow(rowCount).getCell(START_CELL_FOR_PROJECT_SEARCH);
+		}
+	}
+		
+		
+
+	/**
+	 * iterates through the project-specific, non-empty rows of the Excel file, read the data and after each row, creates a project-instance and saves it in the
+	 * project collection
+	 * @param standardConfig 
+	 */
+	private static void importExcelDataAndFillProjectCollection(HSSFSheet sheet, RunConfiguration standardConfig) {
+		int rowCount = START_ROW_FOR_PROJECT_SEARCH;
+		cell = sheet.getRow(rowCount).getCell(START_CELL_FOR_PROJECT_SEARCH);
+		int id = 0;
+		while (cell != null) {
+			if(cell.getStringCellValue().equals("")){
+				break; // reached the end of the projects-list
+			}
+			
+			id++;
+			Project project = standardConfig.getProject(id);		
+			
 			// set Number of Periods
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
@@ -119,7 +151,7 @@ public class ExcelImporter {
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
 				if((int)cell.getNumericCellValue() != 0){
-					project.setPredecessorProject(Project.getProject((int)cell.getNumericCellValue()));
+					project.setPredecessorProject(standardConfig.getProject((int)cell.getNumericCellValue()));
 				}
 			}
 			
@@ -127,20 +159,20 @@ public class ExcelImporter {
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
 				if((int)cell.getNumericCellValue() != 0){
-					project.setSuccessorProject(Project.getProject((int)cell.getNumericCellValue()));
+					project.setSuccessorProject(standardConfig.getProject((int)cell.getNumericCellValue()));
 				}
 			}
 			
 			// set TogetherInPeriodWithProject
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-				project.setTogetherInPeriodWith(Project.getProject((int) cell.getNumericCellValue()));
+				project.setTogetherInPeriodWith(standardConfig.getProject((int) cell.getNumericCellValue()));
 			} 
 			
 			// set NotTogetherInPeriodWithProject
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-				project.setNotTogetherInPeriodWith(Project.getProject((int) cell.getNumericCellValue()));
+				project.setNotTogetherInPeriodWith(standardConfig.getProject((int) cell.getNumericCellValue()));
 			}
 			
 			// set Fixkosteneffekt  Neu MLe
@@ -161,8 +193,7 @@ public class ExcelImporter {
 			
 			project.adjustForMultiPeriodScenario();
 			
-			// add project to collection and initialize cell for next iteration
-			collProj.add(project);
+			// Initialize cell for next iteration
 			rowCount++;
 			cell = sheet.getRow(rowCount).getCell(START_CELL_FOR_PROJECT_SEARCH);
 		}
@@ -171,8 +202,9 @@ public class ExcelImporter {
 	/**
 	 * iterates through the the process-specific, non-empty rows of the Excel file, read the data and after each row, creates a process-instance and saves it in
 	 * the process collection
+	 * @param standardConfig 
 	 */
-	private static void importExcelDataAndFillProcessCollection(Collection<Process> collProcess, HSSFSheet sheet) {
+	private static void importExcelDataAndFillProcessCollection(HSSFSheet sheet, RunConfiguration standardConfig) {
 		int rowCount = START_ROW_FOR_PROCESS_SEARCH;
 		cell = sheet.getRow(rowCount).getCell(START_CELL_FOR_PROCESS_SEARCH);
 		while (cell != null) {
@@ -237,8 +269,9 @@ public class ExcelImporter {
 			// set thetaID_t
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			process.setThetaID_t((int) cell.getNumericCellValue());
-			// add process to collection and initialize cell for next iteration
-			collProcess.add(process);
+			
+			// add process to standard config and initialize cell for next iteration
+			standardConfig.getLstProcesses().add(process);
 			rowCount++;
 			cell = sheet.getRow(rowCount).getCell(START_CELL_FOR_PROCESS_SEARCH);
 		}
@@ -246,39 +279,39 @@ public class ExcelImporter {
 
 	/**
 	 * iterates through the the cells of the Excel file, read the data and writes them into the according variables of the Main class
+	 * @param standardConfig 
 	 */
-	private static void importExcelDataAndFillGeneralStaticValues(HSSFSheet sheet) {
+	private static void importExcelDataAndFillGeneralStaticValues(HSSFSheet sheet, RunConfiguration standardConfig) {
 		int rowCount = START_ROW_FOR_GENERAL_VALUES_SEARCH;
-
-		RunConfiguration.standardConfig = new RunConfiguration();
 		
 		cell = sheet.getRow(rowCount++).getCell(START_CELL_FOR_GENERAL_VALUES_SEARCH);
 		int periodsUnderInvestigation = (int) cell.getNumericCellValue();
 		
 		cell = sheet.getRow(rowCount++).getCell(cell.getColumnIndex());
-		RunConfiguration.standardConfig.setCountProjectsMaxPerPeriod((int) cell.getNumericCellValue());
-		RunConfiguration.standardConfig.setCountPeriods(periodsUnderInvestigation / RunConfiguration.standardConfig.getCountProjectsMaxPerPeriod());
+		standardConfig.setCountProjectsMaxPerPeriod((int) cell.getNumericCellValue());
+		standardConfig.setCountPeriods(periodsUnderInvestigation / standardConfig.getCountProjectsMaxPerPeriod());
 		
 		cell = sheet.getRow(rowCount++).getCell(cell.getColumnIndex());
-		RunConfiguration.standardConfig.setDiscountRate(cell.getNumericCellValue());
+		standardConfig.setDiscountRate(cell.getNumericCellValue());
 		
 		cell = sheet.getRow(rowCount++).getCell(cell.getColumnIndex());
-		RunConfiguration.standardConfig.setPeriodWithNoScheduledProjects((int) cell.getNumericCellValue());
+		standardConfig.setPeriodWithNoScheduledProjects((int) cell.getNumericCellValue());
 
 		cell = sheet.getRow(rowCount++).getCell(cell.getColumnIndex());
-		RunConfiguration.standardConfig.setBudgetMaxPerPeriod((int) cell.getNumericCellValue());
+		standardConfig.setBudgetMaxPerPeriod((int) cell.getNumericCellValue());
 		
 		//Neu MLe
 		cell = sheet.getRow(rowCount).getCell(cell.getColumnIndex());
-		RunConfiguration.standardConfig.setBudgetMaxPerPeriod((int) cell.getNumericCellValue());
+		standardConfig.setBudgetMaxPerPeriod((int) cell.getNumericCellValue());
 	}
 
 	/**
 	 * iterates through the the cells of the MaximumBudgetPerPeriod-table of the Excel file, read the data and writes them into the Array-List of the Main class
+	 * @param standardConfig 
 	 */
-	private static void importExcelDataAndFillMaximumBudgetPerPeriodList(HSSFSheet sheet) {
+	private static void importExcelDataAndFillMaximumBudgetPerPeriodList(HSSFSheet sheet, RunConfiguration standardConfig) {
 		
-		RunConfiguration.standardConfig.setBudgetMaxforEachPeriod(new ArrayList<Double>());
+		standardConfig.setBudgetMaxforEachPeriod(new ArrayList<Double>());
 
 		int maxProjectsAllowedInExcelFile = getMaxProjectsAllowedInExcelFile(sheet);
 		cell = sheet.getRow(START_ROW_FOR_BUDGET_RESTRICTION_VALUES_SEARCH + 1).getCell(START_CELL_FOR_BUDGET_RESTRICTION_VALUES_SEARCH);
@@ -286,9 +319,9 @@ public class ExcelImporter {
 			// check if there is a number in this cell because it could be not null or empty
 			if (cell.getNumericCellValue() != 0) {
 				// add maximum Budget for a Period to the ArrayList
-				RunConfiguration.standardConfig.getBudgetMaxforEachPeriod().add(cell.getNumericCellValue());
+				standardConfig.getBudgetMaxforEachPeriod().add(cell.getNumericCellValue());
 			} else {
-				RunConfiguration.standardConfig.getBudgetMaxforEachPeriod().add(0.0);
+				standardConfig.getBudgetMaxforEachPeriod().add(0.0);
 			}
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 		}
