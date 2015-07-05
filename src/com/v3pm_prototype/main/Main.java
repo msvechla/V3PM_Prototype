@@ -32,13 +32,13 @@ public class Main {
 	public static final char CHAR_FOR_EMPTY_PROJECTS = 'x';
 	public static final String RETURN_STRING_SUCCESSFUL = "Kalkulation erfolgreich abgeschlossen";
 	public static final String processLevel = "processLevel";
-	public static double discountRatePerPeriod;
-	public static int periodsUnderInvestigation;
-	public static int maxProjectsPerPeriod;
-	public static int periodWithNoScheduledProjects;
-	public static double budgetMaxPerPeriod; // global budget restrictions for every period
-	public static List<Double> budgetMaxforEachPeriod; // use of an ArrayList because it keeps the order and is faster in accessing it via index
-	public static double overarchingFixedOutflows;  //Neu MLe
+//	public static double discountRatePerPeriod;
+//	public static int periodsUnderInvestigation;
+//	public static int maxProjectsPerPeriod;
+//	public static int periodWithNoScheduledProjects;
+//	public static double budgetMaxPerPeriod; // global budget restrictions for every period
+//	public static List<Double> budgetMaxforEachPeriod; // use of an ArrayList because it keeps the order and is faster in accessing it via index
+//	public static double overarchingFixedOutflows;  //Neu MLe
 
 	
 	public static void main(String[] args) {

@@ -110,41 +110,41 @@ public class RoadMap {
 	}
 	
 	
-	public void calculateNPV(RunConfiguration config){
-		
-		double outflows = 0;
-		double fixedCostsOA = 0;
-		
-		Project[][] tmpRMArray = this.createTempRMArrayCopy(config);
-		
-		for(int period = 0; period < config.getCountPeriods(); period++){
-			
-			// (2) Book fixedCostsOA once at beginning of period
-			fixedCostsOA = fixedCostsOA + (Main.overarchingFixedOutflows / (Math.pow(1 + Main.discountRatePerPeriod, period)));
-			
-			for(int slot = 0; slot < config.getCountProjectsMaxPerPeriod(); slot++){
-				Project p = tmpRMArray[slot][period];
-				if(p != null){
-					
-					//TODO: DiscountRate in config
-					// (1) Add-up investment outflows of every project
-					outflows = outflows + (p.getOinv() / (Math.pow(1 + Main.discountRatePerPeriod, period)));
-					
-					// (2) Manipulating fixedCostsOA by finished BPM-Level Projects
-					if(p.getType().equals("bpmLevel")){
-						//If project is finishing this period
-						if(period == (p.getStartPeriod() + p.getNumberOfPeriods()-1) ){
-							fixedCostsOA = fixedCostsOA + p.getFixedCostEffect();
-						}
-					}
-				}
-
-			}
-			
-			
-		}
-		
-	}
+//	public void calculateNPV(RunConfiguration config){
+//		
+//		double outflows = 0;
+//		double fixedCostsOA = 0;
+//		
+//		Project[][] tmpRMArray = this.createTempRMArrayCopy(config);
+//		
+//		for(int period = 0; period < config.getCountPeriods(); period++){
+//			
+//			// (2) Book fixedCostsOA once at beginning of period
+//			fixedCostsOA = fixedCostsOA + (Main.overarchingFixedOutflows / (Math.pow(1 + Main.discountRatePerPeriod, period)));
+//			
+//			for(int slot = 0; slot < config.getCountProjectsMaxPerPeriod(); slot++){
+//				Project p = tmpRMArray[slot][period];
+//				if(p != null){
+//					
+//					//TODO: DiscountRate in config
+//					// (1) Add-up investment outflows of every project
+//					outflows = outflows + (p.getOinv() / (Math.pow(1 + Main.discountRatePerPeriod, period)));
+//					
+//					// (2) Manipulating fixedCostsOA by finished BPM-Level Projects
+//					if(p.getType().equals("bpmLevel")){
+//						//If project is finishing this period
+//						if(period == (p.getStartPeriod() + p.getNumberOfPeriods()-1) ){
+//							fixedCostsOA = fixedCostsOA + p.getFixedCostEffect();
+//						}
+//					}
+//				}
+//
+//			}
+//			
+//			
+//		}
+//		
+//	}
 
 
 	public void setNpv(double npv) {

@@ -231,10 +231,10 @@ public class RMRestrictionHandler {
 		
 		OverallAmount = OverallAmount + 1; //MLe
 						
-		if (isNoProjectInPeriodRestrictionViolation(tempProjectSequence) == true) {
-			AmountisNoProjectInPeriodRestriction = AmountisNoProjectInPeriodRestriction + 1; //MLe
-			return true;
-		}
+//		if (isNoProjectInPeriodRestrictionViolation(tempProjectSequence) == true) {
+//			AmountisNoProjectInPeriodRestriction = AmountisNoProjectInPeriodRestriction + 1; //MLe
+//			return true;
+//		}
 //		if (isTogetherWithRestrictionViolation(tempProjectSequence, collProj) == true) {
 //			AmountisTogetherWithRestriction = AmountisTogetherWithRestriction + 1; //MLe
 //			return true;
@@ -251,14 +251,14 @@ public class RMRestrictionHandler {
 //			AmountisSuccessorRestriction = AmountisSuccessorRestriction + 1; //MLe
 //			return true;
 //		}
-		if (isEarliestAndLatestImplementationRestrictionViolation(tempProjectSequence, collProj) == true) {
-			AmountisEarliestAndLatest = AmountisEarliestAndLatest + 1; //MLe
-			return true;
-		}
-		if (isMaxBudgetRestrictionViolation(tempProjectSequence, collProj) == true) {
-			AmountisMaxBudgetRestriction = AmountisMaxBudgetRestriction + 1; //MLe
-			return true;
-		}
+//		if (isEarliestAndLatestImplementationRestrictionViolation(tempProjectSequence, collProj) == true) {
+//			AmountisEarliestAndLatest = AmountisEarliestAndLatest + 1; //MLe
+//			return true;
+//		}
+//		if (isMaxBudgetRestrictionViolation(tempProjectSequence, collProj) == true) {
+//			AmountisMaxBudgetRestriction = AmountisMaxBudgetRestriction + 1; //MLe
+//			return true;
+//		}
 		
 		AdmissibleAmount = AdmissibleAmount + 1; //MLe		
 		return false; // no restriction is violated
@@ -424,86 +424,86 @@ public class RMRestrictionHandler {
 		return false; // no restriction violation
 	}
 
-	private static boolean isNoProjectInPeriodRestrictionViolation(List<String> tempProjectSequence) {
-		if (Main.periodWithNoScheduledProjects == 0) { // if no period with no scheduled project is set, the value is 0
-			return false; // no restriction set -> no restriction violation
-		}
-		int periodCounter = 1;
-		for (Iterator<String> itPS = tempProjectSequence.iterator(); itPS.hasNext();) {
-			String SequenceInPeriod = itPS.next();
-			if (Main.periodWithNoScheduledProjects == periodCounter && isPeriodWithNoProjects(SequenceInPeriod) == false) {
-				return true;
-			}
-			periodCounter++;
-		}
-		return false; // no restriction violation
-	}
+//	private static boolean isNoProjectInPeriodRestrictionViolation(List<String> tempProjectSequence) {
+//		if (Main.periodWithNoScheduledProjects == 0) { // if no period with no scheduled project is set, the value is 0
+//			return false; // no restriction set -> no restriction violation
+//		}
+//		int periodCounter = 1;
+//		for (Iterator<String> itPS = tempProjectSequence.iterator(); itPS.hasNext();) {
+//			String SequenceInPeriod = itPS.next();
+//			if (Main.periodWithNoScheduledProjects == periodCounter && isPeriodWithNoProjects(SequenceInPeriod) == false) {
+//				return true;
+//			}
+//			periodCounter++;
+//		}
+//		return false; // no restriction violation
+//	}
 
 	/**
 	 * two checks: 1. check if there is any period of the roadmap in which projects exceed the general budget-limit. 2. check for individual budged restriction
 	 * violations (check every period for its own budget-limit). There are two checks in one method for better performance.
 	 */
-	private static boolean isMaxBudgetRestrictionViolation(List<String> tempProjectSequence, Collection<Project> collProj) {
-		if (isGlobalMaxBudgetSet() == false && isMaxBudgetPerPeriodSet() == false) {
-			return false; // no budget-restriction is set -> no restriction violation
-		}
-		double outflowsPerPeriod = 0;
-		int periodCounter = 0;
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		// for each period within the project-sequence
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		for (Iterator<String> itPS = tempProjectSequence.iterator(); itPS.hasNext();) {
-			char[] projectsInPeriod = itPS.next().toCharArray();
-			outflowsPerPeriod = 0;
-			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			// for each project-slot within period
-			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			for (int i = 0; i < projectsInPeriod.length; i++) {
-				// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				// for each project
-				// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				for (Iterator<Project> it_pr = collProj.iterator(); it_pr.hasNext();) {
-					Project project = it_pr.next();
-					if (project.getId() == projectsInPeriod[i]) {
-						outflowsPerPeriod = outflowsPerPeriod + project.getOinv();
-						break; // found project, go to the next project slot
-					}
-				}
-			}
-			if (isGlobalMaxBudgetSet() == true && outflowsPerPeriod > Main.budgetMaxPerPeriod) {
-				return true;
-			}
-			if (Main.budgetMaxforEachPeriod.get(periodCounter) > 0 && outflowsPerPeriod > Main.budgetMaxforEachPeriod.get(periodCounter)) {
-				return true;
-			}
-			periodCounter++;
-		}
-		return false; // no restriction violation
-	}
+//	private static boolean isMaxBudgetRestrictionViolation(List<String> tempProjectSequence, Collection<Project> collProj) {
+//		if (isGlobalMaxBudgetSet() == false && isMaxBudgetPerPeriodSet() == false) {
+//			return false; // no budget-restriction is set -> no restriction violation
+//		}
+//		double outflowsPerPeriod = 0;
+//		int periodCounter = 0;
+//		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		// for each period within the project-sequence
+//		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		for (Iterator<String> itPS = tempProjectSequence.iterator(); itPS.hasNext();) {
+//			char[] projectsInPeriod = itPS.next().toCharArray();
+//			outflowsPerPeriod = 0;
+//			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//			// for each project-slot within period
+//			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//			for (int i = 0; i < projectsInPeriod.length; i++) {
+//				// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//				// for each project
+//				// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//				for (Iterator<Project> it_pr = collProj.iterator(); it_pr.hasNext();) {
+//					Project project = it_pr.next();
+//					if (project.getId() == projectsInPeriod[i]) {
+//						outflowsPerPeriod = outflowsPerPeriod + project.getOinv();
+//						break; // found project, go to the next project slot
+//					}
+//				}
+//			}
+//			if (isGlobalMaxBudgetSet() == true && outflowsPerPeriod > Main.budgetMaxPerPeriod) {
+//				return true;
+//			}
+//			if (Main.budgetMaxforEachPeriod.get(periodCounter) > 0 && outflowsPerPeriod > Main.budgetMaxforEachPeriod.get(periodCounter)) {
+//				return true;
+//			}
+//			periodCounter++;
+//		}
+//		return false; // no restriction violation
+//	}
 
 	/**
 	 * checks if a global maximum Budget is set
 	 */
-	private static boolean isGlobalMaxBudgetSet() {
-		if (Main.budgetMaxPerPeriod > 0) { // if no maximum Budget is set, the value is 0
-			return true;
-		}
-		return false;
-	}
+//	private static boolean isGlobalMaxBudgetSet() {
+//		if (Main.budgetMaxPerPeriod > 0) { // if no maximum Budget is set, the value is 0
+//			return true;
+//		}
+//		return false;
+//	}
 
 	/**
 	 * checks if there is any value in the budgetMaxforEachPeriod-list
 	 * 
 	 * @return true if there is any value
 	 */
-	private static boolean isMaxBudgetPerPeriodSet() {
-		for (Iterator<Double> itBudget = Main.budgetMaxforEachPeriod.iterator(); itBudget.hasNext();) {
-			if (itBudget.next() != 0.0) {
-				return true;
-			}
-		}
-		return false;
-	}
+//	private static boolean isMaxBudgetPerPeriodSet() {
+//		for (Iterator<Double> itBudget = Main.budgetMaxforEachPeriod.iterator(); itBudget.hasNext();) {
+//			if (itBudget.next() != 0.0) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	private static int getThePeriodForWhichThisProjectIsScheduled(List<String> projectSequence, int i) throws ProjectIsNotInRoadmapException {
 		int position = 1;

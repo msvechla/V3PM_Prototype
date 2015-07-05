@@ -250,42 +250,45 @@ public class ExcelImporter {
 	private static void importExcelDataAndFillGeneralStaticValues(HSSFSheet sheet) {
 		int rowCount = START_ROW_FOR_GENERAL_VALUES_SEARCH;
 
+		RunConfiguration.standardConfig = new RunConfiguration();
+		
 		cell = sheet.getRow(rowCount++).getCell(START_CELL_FOR_GENERAL_VALUES_SEARCH);
-		Main.periodsUnderInvestigation = (int) cell.getNumericCellValue();
-
-		cell = sheet.getRow(rowCount++).getCell(cell.getColumnIndex());
-		Main.maxProjectsPerPeriod = (int) cell.getNumericCellValue();
-		
-		RunConfiguration.standardConfig = new RunConfiguration(Main.periodsUnderInvestigation / Main.maxProjectsPerPeriod, Main.maxProjectsPerPeriod);
+		int periodsUnderInvestigation = (int) cell.getNumericCellValue();
 		
 		cell = sheet.getRow(rowCount++).getCell(cell.getColumnIndex());
-		Main.discountRatePerPeriod = cell.getNumericCellValue();
+		RunConfiguration.standardConfig.setCountProjectsMaxPerPeriod((int) cell.getNumericCellValue());
+		RunConfiguration.standardConfig.setCountPeriods(periodsUnderInvestigation / RunConfiguration.standardConfig.getCountProjectsMaxPerPeriod());
+		
+		cell = sheet.getRow(rowCount++).getCell(cell.getColumnIndex());
+		RunConfiguration.standardConfig.setDiscountRate(cell.getNumericCellValue());
+		
+		cell = sheet.getRow(rowCount++).getCell(cell.getColumnIndex());
+		RunConfiguration.standardConfig.setPeriodWithNoScheduledProjects((int) cell.getNumericCellValue());
 
 		cell = sheet.getRow(rowCount++).getCell(cell.getColumnIndex());
-		Main.periodWithNoScheduledProjects = (int) cell.getNumericCellValue();
-
-		cell = sheet.getRow(rowCount++).getCell(cell.getColumnIndex());
-		Main.budgetMaxPerPeriod = (int) cell.getNumericCellValue();
+		RunConfiguration.standardConfig.setBudgetMaxPerPeriod((int) cell.getNumericCellValue());
 		
 		//Neu MLe
 		cell = sheet.getRow(rowCount).getCell(cell.getColumnIndex());
-		Main.overarchingFixedOutflows = (int) cell.getNumericCellValue();
+		RunConfiguration.standardConfig.setBudgetMaxPerPeriod((int) cell.getNumericCellValue());
 	}
 
 	/**
 	 * iterates through the the cells of the MaximumBudgetPerPeriod-table of the Excel file, read the data and writes them into the Array-List of the Main class
 	 */
 	private static void importExcelDataAndFillMaximumBudgetPerPeriodList(HSSFSheet sheet) {
-		Main.budgetMaxforEachPeriod = new ArrayList<Double>();
+		
+		RunConfiguration.standardConfig.setBudgetMaxforEachPeriod(new ArrayList<Double>());
+
 		int maxProjectsAllowedInExcelFile = getMaxProjectsAllowedInExcelFile(sheet);
 		cell = sheet.getRow(START_ROW_FOR_BUDGET_RESTRICTION_VALUES_SEARCH + 1).getCell(START_CELL_FOR_BUDGET_RESTRICTION_VALUES_SEARCH);
 		for (int i = 0; i < maxProjectsAllowedInExcelFile; i++) {
 			// check if there is a number in this cell because it could be not null or empty
 			if (cell.getNumericCellValue() != 0) {
 				// add maximum Budget for a Period to the ArrayList
-				Main.budgetMaxforEachPeriod.add(cell.getNumericCellValue());
+				RunConfiguration.standardConfig.getBudgetMaxforEachPeriod().add(cell.getNumericCellValue());
 			} else {
-				Main.budgetMaxforEachPeriod.add(0.0);
+				RunConfiguration.standardConfig.getBudgetMaxforEachPeriod().add(0.0);
 			}
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 		}

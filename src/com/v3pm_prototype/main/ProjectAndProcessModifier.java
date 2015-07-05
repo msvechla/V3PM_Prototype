@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import com.v3pm_prototype.rmgeneration.RunConfiguration;
+
 /**
  * This class is used to support the Calculator class. It is responsible for changing the values of the processes and projects according to the conducted
  * project.
@@ -16,7 +18,7 @@ public class ProjectAndProcessModifier {
 	 * the values affected by the b-parameter.
 	 */
 	public static void modifyProcessesAndProjectsByProject(Collection<Process> tempCollPocess, Collection<Process> bufferedTempCollProcess,
-			Project tempProject, Collection<Project> tempCollPoj_sorted, int projectNumberWithinPeriod) {
+			Project tempProject, Collection<Project> tempCollPoj_sorted, int projectNumberWithinPeriod, RunConfiguration config) {
 		
 		//Indicates whether the current project is finishing this period
 		boolean projectFinishes;
@@ -107,11 +109,11 @@ public class ProjectAndProcessModifier {
 			else {
 				// degeneration-effect on time
 				// differ between one or multiple projects per period
-				if (Main.maxProjectsPerPeriod == 1) {
+				if (config.getCountProjectsMaxPerPeriod() == 1) {
 					tempProcess.setT(tempProcess.getT() * (1 + tempProcess.getV())); // degeneration
 				} else {
 					// check if it is the last handled project of a period.
-					if (Main.maxProjectsPerPeriod == projectNumberWithinPeriod) {
+					if (config.getCountProjectsMaxPerPeriod() == projectNumberWithinPeriod) {
 						// check if there are any changes of t between handling the first and the last project in a period
 						if (isTheSameValue(tempProcess.getT(), bufferedTempCollProcess, tempProcess.getId(), 't')) {
 							tempProcess.setT(tempProcess.getT() * (1 + tempProcess.getV())); // degeneration
@@ -187,11 +189,11 @@ public class ProjectAndProcessModifier {
 			else {
 				// degeneration-effect on quality
 				// differ between one or multiple projects per period
-				if (Main.maxProjectsPerPeriod == 1) {
+				if (config.getCountProjectsMaxPerPeriod() == 1) {
 					tempProcess.setQ(tempProcess.getQ() * (1 - tempProcess.getD())); // degeneration
 				} else {
 					// check if it is the last handled project of a period.
-					if (Main.maxProjectsPerPeriod == projectNumberWithinPeriod) {
+					if (config.getCountProjectsMaxPerPeriod() == projectNumberWithinPeriod) {
 						// check if there are any changes of q between handling the first and the last project in a period
 						if (isTheSameValue(tempProcess.getQ(), bufferedTempCollProcess, tempProcess.getId(), 'q')) {
 							tempProcess.setQ(tempProcess.getQ() * (1 - tempProcess.getD())); // degeneration

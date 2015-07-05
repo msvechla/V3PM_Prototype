@@ -26,7 +26,7 @@ public class Calculator {
 			RoadMap RM = itRM.next();
 			double inflows = 0;
 			double outflows = 0;
-			double fixedCostsOA = Main.overarchingFixedOutflows;  //MLe
+			double fixedCostsOA = config.getOverarchingFixedOutflows();  //MLe
 			double fixedCostsOAGes = 0;  //MLe
 			int prePeriod = -1;
 			int projectNumberWithinPeriod = 1; // to indicate the last project of a period
@@ -46,18 +46,18 @@ public class Calculator {
 				// calculate inflows
 				if (tempProject.getPeriod() > prePeriod) {
 					// In case this is the first project of a new period. For further projects within the same period, no inflows will be added.
-					inflows = inflows + calculateInflowsPerPeriode(tempCollPocess, tempProject);
+					inflows = inflows + calculateInflowsPerPeriode(tempCollPocess, tempProject, config);
 					
 					//MLe  korrekt und getestet!
 					
-					fixedCostsOAGes = fixedCostsOAGes + (fixedCostsOA / (Math.pow((1 + Main.discountRatePerPeriod), tempProject.getPeriod())));
+					fixedCostsOAGes = fixedCostsOAGes + (fixedCostsOA / (Math.pow((1 + config.getDiscountRate()), tempProject.getPeriod())));
 														
 					// Create a deep copy of the tempProcess collection to be able to compare t and q for degeneration handling in multiproject scenarios.
 					bufferedTempCollProcess = CollectionCopier.createTemporaryProcessCollection(tempCollPocess);
 				}
 				// calculate outflows
 		
-				outflows = outflows + (tempProject.getOinv() / (Math.pow((1 + Main.discountRatePerPeriod), tempProject.getPeriod())));
+				outflows = outflows + (tempProject.getOinv() / (Math.pow((1 + config.getDiscountRate()), tempProject.getPeriod())));
 
 				// MLe Übergreifende Fixkosteneffekte durch Projekte müssen noch verbucht werden 
 				// Hier nun je Projekt. Wirkung in der nächsten Periode vorschüssig.
@@ -75,10 +75,10 @@ public class Calculator {
 				// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				// modify processes by project for next iteration
 				ProjectAndProcessModifier.modifyProcessesAndProjectsByProject(tempCollPocess, bufferedTempCollProcess, tempProject, tempCollPoj_sorted,
-						projectNumberWithinPeriod);
+						projectNumberWithinPeriod, config);
 				prePeriod = tempProject.getPeriod();
 				projectNumberWithinPeriod++;
-				if (projectNumberWithinPeriod > Main.maxProjectsPerPeriod) {
+				if (projectNumberWithinPeriod > config.getCountProjectsMaxPerPeriod()) {
 					projectNumberWithinPeriod = 1;
 				}
 			}
@@ -94,14 +94,14 @@ public class Calculator {
 	 * calculate inflows for each process and adds them up to the total inflows
 	 * @throws NoValidThetaIDException 
 	 */
-	private static double calculateInflowsPerPeriode(Collection<Process> tempCollPocess, Project tempProject) throws NoValidThetaIDException {
+	private static double calculateInflowsPerPeriode(Collection<Process> tempCollPocess, Project tempProject, RunConfiguration config) throws NoValidThetaIDException {
 		double inflowsPerPeriode = 0;
 		for (Iterator<Process> itProcess = tempCollPocess.iterator(); itProcess.hasNext();) {
 			Process p = itProcess.next();
 			//MLe: Die Formel muss um Fixkosten ergänzt werden, aber mit anderer Diskontierung!
 			
-			double inflowsPerPeriodePerProcess = (((DemandCalculator.calculateN(p) * (p.getP() - p.getOop())) / (Math.pow(1 + Main.discountRatePerPeriod,
-					tempProject.getPeriod() + 1))) - ((p.getFixedCosts())/ (Math.pow(1 + Main.discountRatePerPeriod,
+			double inflowsPerPeriodePerProcess = (((DemandCalculator.calculateN(p) * (p.getP() - p.getOop())) / (Math.pow(1 + config.getDiscountRate(),
+					tempProject.getPeriod() + 1))) - ((p.getFixedCosts())/ (Math.pow(1 + config.getDiscountRate(),
 							tempProject.getPeriod()))));
 			inflowsPerPeriode = inflowsPerPeriode + inflowsPerPeriodePerProcess;
 			
