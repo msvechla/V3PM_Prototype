@@ -84,8 +84,6 @@ public class Main {
 	//AFTER: 8850 Roadmaps generated in 221.0ms
 	//AFTER: 7048 Roadmaps generated in 218.0ms
 		
-	System.out.println(RMContainer.countRoadMapsGenerated+" Roadmaps generated in "+(millisFinish-millisStart)+"ms");
-		
 		// -----------------------------------------------------------------------------
 		// calculate NPV of each roadmap
 		// -----------------------------------------------------------------------------
@@ -93,7 +91,7 @@ public class Main {
 		for(RoadMap rm : rmList){
 			System.out.println(rm);
 		}
-		System.out.println(RMContainer.countRoadMapsGenerated+" Roadmaps generated in "+(millisFinish-millisStart)+"ms");
+		System.out.println(rmList.size()+" Roadmaps generated in "+(millisFinish-millisStart)+"ms.   "+RMContainer.countRoadMapsGenerated+ " Roadmaps before Post-Gen Check");
 		
 		Calculator.calculateNPVs(rmList, RunConfiguration.standardConfig.getLstProcesses(), RunConfiguration.standardConfig.getLstProjects(),RunConfiguration.standardConfig);
 

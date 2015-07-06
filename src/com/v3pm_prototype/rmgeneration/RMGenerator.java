@@ -76,13 +76,9 @@ public class RMGenerator {
 									
 									//combine both roadmaps
 									Project[][] roadmap = combineRoadMaps(rmSingle,rmSingle2,config);
-									if(roadmap != null){
-										
-										//Post Roadmap Generation Restriction Check
-										if(RMRestrictionHandler.meetsPostRoadmapGenerationCheck(roadmap, implementedProjectIDs)){
-											if(rmcCombined == null) rmcCombined = new RMContainer(true, implementedProjectIDs);
-											rmcCombined.addRoadMap(new RoadMap(roadmap,implementedProjectIDs));
-										}
+									if(roadmap != null){				
+										if(rmcCombined == null) rmcCombined = new RMContainer(true, implementedProjectIDs);
+										rmcCombined.addRoadMap(new RoadMap(roadmap,implementedProjectIDs));
 									}
 
 								}
@@ -98,9 +94,18 @@ public class RMGenerator {
 			
 		}
 		
-		List<RoadMap> rmListFinal = RMContainer.createRMList(config);
+		List<RoadMap> rmList = RMContainer.createRMList(config);
+		List<RoadMap> rmListPostRMGenCheck = new ArrayList<RoadMap>();
+		
+		for(RoadMap rm : rmList){
+			if(RMRestrictionHandler.meetsPostRoadmapGenerationCheck(rm.getRMArray(), rm.implementedProjectIDs, config)){
+				rmListPostRMGenCheck.add(rm);
+			}
+		}
+		
+		
 		System.out.println("--- FINISH: generateRoadmaps()");
-		return rmListFinal;
+		return rmListPostRMGenCheck;
 		
 	}
 

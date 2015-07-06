@@ -44,8 +44,11 @@ public class RMRestrictionHandler {
 	 * @param startPeriod The implementation start period
 	 * @return False if one of the restrictions is broken, true otherwise
 	 */
-	public static boolean meetsPostRoadmapGenerationCheck(Project[][] roadmap,HashSet<Integer> implementedProjects){
+	public static boolean meetsPostRoadmapGenerationCheck(Project[][] roadmap,HashSet<Integer> implementedProjects, RunConfiguration config){
 		tmpImplemented = new HashSet<Project>();
+		
+		if(rGloMutEx(implementedProjects, config) == false) return false;
+		if(rGloMutDep(implementedProjects, config) == false) return false;
 		
 		for(int period = 0; period < roadmap.length; period++){
 			HashSet<Project> tmpNew = new HashSet<Project>();
@@ -68,11 +71,6 @@ public class RMRestrictionHandler {
 	 * @return False if one of the restrictions is broken, true otherwise
 	 */
 	public static boolean meetsPreCombinedContainerGenerationCheck(HashSet<Integer> implementedProjectIDs, RunConfiguration config){
-		for(Project p : config.getLstProjects()){
-			//if(rGloMutEx(p, implementedProjectIDs) == false) return false;
-			//if(rGloMutDep(p, implementedProjectIDs) == false) return false;
-		}	
-		
 		if(rMandatoryProject(implementedProjectIDs, config) == false) return false;
 		
 		return true;
@@ -149,26 +147,16 @@ public class RMRestrictionHandler {
 		return true;
 	}
 	
-	public static boolean rGloMutEx(Project p, HashSet<Integer> implementedProjectIDs){
-		if(p.getGloMutEx() != null){
-			if(implementedProjectIDs.contains(p.getId()) && implementedProjectIDs.contains(p.getGloMutEx().getId())){
-				return false;
-			}
-			return true;
+	public static boolean rGloMutEx(HashSet<Integer> implementedProjectIDs, RunConfiguration config){
+		for(HashSet<Integer> hsGloMutEx : config.getGloMutExs()){
+			if(implementedProjectIDs.containsAll(hsGloMutEx)) return false;
 		}
 		return true;
-		
 	}
 	
-	public static boolean rGloMutDep(Project p, HashSet<Integer> implementedProjectIDs){
-		if(p.getGloMutDep() != null){
-			if(implementedProjectIDs.contains(p.getId()) || implementedProjectIDs.contains(p.getGloMutDep().getId())){
-				if(implementedProjectIDs.contains(p.getGloMutDep().getId()) && implementedProjectIDs.contains(p.getId())){
-					return true;
-				}else{
-					return false;
-				}
-			}
+	public static boolean rGloMutDep(HashSet<Integer> implementedProjectIDs, RunConfiguration config){
+		for(HashSet<Integer> hsGloMutDep : config.getGloMutDeps()){
+			if(!implementedProjectIDs.containsAll(hsGloMutDep)) return false;
 		}
 		return true;
 	}

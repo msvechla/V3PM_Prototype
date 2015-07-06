@@ -1,6 +1,7 @@
 package com.v3pm_prototype.rmgeneration;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import com.v3pm_prototype.main.Process;
@@ -56,6 +57,47 @@ public class RunConfiguration {
 			}
 		}
 		return lstMandatory;
+	}
+	
+	public List<HashSet<Integer>> getGloMutDeps(){
+		List<HashSet<Integer>> lstGloMutDep = new ArrayList<HashSet<Integer>>();
+		
+		for(Project p : lstProjects){
+			if(p.getGloMutDep() != null){
+				HashSet<Integer> hs = new HashSet<Integer>();
+				hs.add(p.getId());
+				hs.add(p.getGloMutDep().getId());
+				lstGloMutDep.add(hs);
+			}
+		}
+		
+		return lstGloMutDep;
+	}
+	
+	public List<HashSet<Integer>> getGloMutExs(){
+		List<HashSet<Integer>> lstGloMutEx = new ArrayList<HashSet<Integer>>();
+		
+		for(Project p : lstProjects){
+			if(p.getGloMutEx() != null){
+				HashSet<Integer> hs = new HashSet<Integer>();
+				hs.add(p.getId());
+				hs.add(p.getGloMutEx().getId());
+				lstGloMutEx.add(hs);
+			}
+		}
+		
+		return lstGloMutEx;
+	}
+	
+	public List<Project> getGloMutDepProjects(){
+		List<Project> lstGloMutDep = new ArrayList<Project>();
+		
+		for(Project p : lstProjects){
+			if(p.getGloMutDep() != null){
+				lstGloMutDep.add(p);
+			}
+		}
+		return lstGloMutDep;
 	}
 	
 	public int getCountPeriods() {

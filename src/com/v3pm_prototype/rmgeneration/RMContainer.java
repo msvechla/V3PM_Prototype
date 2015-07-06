@@ -49,27 +49,23 @@ public class RMContainer {
 	public static List<RoadMap> createRMList(RunConfiguration config){
 		List<RoadMap> rmList = new ArrayList<RoadMap>();
 		int countMandatory = config.getMandatoryProjects().size();
+		int countGloMutDep = config.getGloMutDepProjects().size();
 		
 			for(RMContainer rmc : lstRMContainerSingle){
 				//Only add Single Containers if it contains mandatory projects
-				if(countMandatory == 1){
+				if(countMandatory == 1 && countGloMutDep == 0){
 					if(rmc.implementedProjects.contains(config.getMandatoryProjects().get(0).getId())){
 						rmList.addAll(rmc.getLstRM());
 					}
 				}
 				
-				if(countMandatory == 0){
+				if(countMandatory == 0 && countGloMutDep == 0){
 					rmList.addAll(rmc.getLstRM());
 				}		
 			}	
 		
 		for(RMContainer rmc : lstRMContainerCombined){
-			//if container passes cleanup-check -> add all roadmaps in container to final list
-			
-			//TODO NTH: If restriction passed one time -> dont check it anymore
-			if(RMRestrictionHandler.cMandatoryProject(rmc, countMandatory)){
-				rmList.addAll(rmc.getLstRM());
-			}
+			rmList.addAll(rmc.getLstRM());
 		}
 		return rmList;
 	}
