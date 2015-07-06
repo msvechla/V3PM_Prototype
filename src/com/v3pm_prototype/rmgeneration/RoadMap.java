@@ -47,7 +47,7 @@ public class RoadMap implements Comparable<RoadMap>{
 				if(p != null){
 					Project copy = new Project(p.getId(), p.getName(), p.getNumberOfPeriods(), p.getType(), p.getI(), p.getOinv(), p.getA(), p.getB(), p.getE(), p.getU(),
 							p.getM(), p.getEarliestImplementationPeriod(), p.getLatestImplementationPeriod(), p.getPredecessorProject(),
-							p.getSuccessorProject(), p.getTogetherInPeriodWith(), p.getNotTogetherInPeriodWith(), p.getFixedCostEffect(), p.getAbsRelq(), p.getAbsRelt(), p.getAbsRelOop());
+							p.getSuccessorProject(), p.getTogetherInPeriodWith(), p.getNotTogetherInPeriodWith(), p.getGloMutEx(), p.getGloMutDep(), p.getFixedCostEffect(), p.getAbsRelq(), p.getAbsRelt(), p.getAbsRelOop());
 					copy.setPeriod(period);
 					
 					//Set the starting period
@@ -65,7 +65,7 @@ public class RoadMap implements Comparable<RoadMap>{
 					
 					collProjects.add(copy);
 				}else{
-					Project emptyProject = new Project(-1,"Empty", 0, "", '0', 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, 0, "", "", "");
+					Project emptyProject = new Project(-1,"Empty", 0, "", '0', 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, null, null, 0, "", "", "");
 					emptyProject.setPeriod(period);
 					collProjects.add(emptyProject);
 				}

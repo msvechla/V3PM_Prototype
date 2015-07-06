@@ -93,6 +93,7 @@ public class Main {
 		for(RoadMap rm : rmList){
 			System.out.println(rm);
 		}
+		System.out.println(RMContainer.countRoadMapsGenerated+" Roadmaps generated in "+(millisFinish-millisStart)+"ms");
 		
 		Calculator.calculateNPVs(rmList, RunConfiguration.standardConfig.getLstProcesses(), RunConfiguration.standardConfig.getLstProjects(),RunConfiguration.standardConfig);
 

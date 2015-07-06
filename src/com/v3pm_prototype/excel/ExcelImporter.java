@@ -24,13 +24,13 @@ public class ExcelImporter {
 	private static int START_CELL_FOR_PROJECT_SEARCH = 0; // defines in which column the search for projects begins
 
 	private static int START_ROW_FOR_PROCESS_SEARCH = 34; // defines in which row the search for processes begins
-	private static int START_CELL_FOR_PROCESS_SEARCH = 21; // defines in which column the search for processes begins
+	private static int START_CELL_FOR_PROCESS_SEARCH = 23; // defines in which column the search for processes begins
 
 	private static int START_ROW_FOR_GENERAL_VALUES_SEARCH = 6; // defines in which row the search for general data begins
 	private static int START_CELL_FOR_GENERAL_VALUES_SEARCH = 3; // defines in which column the search general data begins
 
 	private static int START_ROW_FOR_BUDGET_RESTRICTION_VALUES_SEARCH = 6; // defines in which row the search for budget restrictions for each period begins
-	private static int START_CELL_FOR_BUDGET_RESTRICTION_VALUES_SEARCH = 22; // defines in which column the search budget restrictions for each period begins
+	private static int START_CELL_FOR_BUDGET_RESTRICTION_VALUES_SEARCH = 24; // defines in which column the search budget restrictions for each period begins
 
 	private static Cell cell;
 
@@ -72,7 +72,7 @@ public class ExcelImporter {
 			}
 			
 			int tempID = standardConfig.getLstProjects().size()+1;
-			Project project = new Project(tempID, cell.getStringCellValue(), 1, "", '0', 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, 0, "", "", "");
+			Project project = new Project(tempID, cell.getStringCellValue(), 1, "", '0', 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, null, null, 0, "", "", "");
 			standardConfig.getLstProjects().add(project);
 			
 			// Initialize cell for next iteration
@@ -173,6 +173,18 @@ public class ExcelImporter {
 			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
 				project.setNotTogetherInPeriodWith(standardConfig.getProject((int) cell.getNumericCellValue()));
+			}
+			
+			// set GloMutEx
+			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
+			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+				project.setGloMutEx(standardConfig.getProject((int) cell.getNumericCellValue()));
+			} 
+			
+			// set GloMutDep
+			cell = sheet.getRow(cell.getRowIndex()).getCell(cell.getColumnIndex() + 1);
+			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+				project.setGloMutDep(standardConfig.getProject((int) cell.getNumericCellValue()));
 			}
 			
 			// set Fixkosteneffekt  Neu MLe

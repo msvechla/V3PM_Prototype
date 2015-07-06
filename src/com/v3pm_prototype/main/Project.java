@@ -31,43 +31,17 @@ public class Project {
 	private Project successorProject;
 	private Project togetherInPeriodWith;
 	private Project notTogetherInPeriodWith;
+	private Project gloMutEx;
+	private Project gloMutDep;
 	private boolean mandatory = false;//TODO Mandatory
 	private double fixedCostEffect; // MLe: FixedCostEffect
 	private String absRelq; // MLe absolute or relative effect for q
 	private String absRelt; // MLe absolute or relative effect for t
 	private String absRelOop; // MLe absolute or relative effect for Oop
 	
-//	public Project(String name, int numberOfPeriods, String type, char i, double oinv, double a, double b, double e, double u, double m, int earliestImplementationPeriod,
-//			int latestImplementationPeriod, Project pre, Project suc, Project tipw,
-//			Project ntipw, double fixedCostEffect, String absRelq, String absRelt, String absRelOop) {
-//		super();
-//		projectList.add(this);	
-//		this.name = name;
-//		this.id = projectList.size();
-//		this.numberOfPeriods = numberOfPeriods;
-//		this.type = type;
-//		this.i = i;
-//		this.oinv = oinv;
-//		this.a = a;
-//		this.b = b;
-//		this.e = e;
-//		this.u = u;
-//		this.m = m;
-//		this.earliestImplementationPeriod = earliestImplementationPeriod;
-//		this.latestImplementationPeriod = latestImplementationPeriod;
-//		this.predecessorProject = pre;
-//		this.successorProject = suc;
-//		this.togetherInPeriodWith = tipw;
-//		this.notTogetherInPeriodWith = ntipw;
-//		this.fixedCostEffect = fixedCostEffect; //MLE
-//		this.absRelq = absRelq;					//MLE
-//		this.absRelt = absRelt;					//MLE
-//		this.absRelOop = absRelOop;				//MLE
-//	}
-	
 	public Project(int id, String name, int numberOfPeriods, String type, char i, double oinv, double a, double b, double e, double u, double m, int earliestImplementationPeriod,
 			int latestImplementationPeriod, Project pre, Project suc, Project tipw,
-			Project ntipw, double fixedCostEffect, String absRelq, String absRelt, String absRelOop) {
+			Project ntipw, Project gloMutEx, Project gloMutDep, double fixedCostEffect, String absRelq, String absRelt, String absRelOop) {
 		super();
 		this.name = name;
 		this.id = id;
@@ -86,6 +60,8 @@ public class Project {
 		this.successorProject = suc;
 		this.togetherInPeriodWith = tipw;
 		this.notTogetherInPeriodWith = ntipw;
+		this.gloMutEx = gloMutEx;
+		this.gloMutDep = gloMutDep;
 		this.fixedCostEffect = fixedCostEffect; //MLE
 		this.absRelq = absRelq;					//MLE
 		this.absRelt = absRelt;					//MLE
@@ -268,6 +244,22 @@ public class Project {
 		this.notTogetherInPeriodWith = notTogetherInPeriodWith;
 	}
 	
+	public Project getGloMutEx() {
+		return gloMutEx;
+	}
+
+	public void setGloMutEx(Project gloMutEx) {
+		this.gloMutEx = gloMutEx;
+	}
+
+	public Project getGloMutDep() {
+		return gloMutDep;
+	}
+
+	public void setGloMutDep(Project gloMutDep) {
+		this.gloMutDep = gloMutDep;
+	}
+
 	//MLe 
 	public double getFixedCostEffect() {
 		return fixedCostEffect;

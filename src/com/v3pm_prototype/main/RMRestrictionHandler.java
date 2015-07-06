@@ -69,8 +69,8 @@ public class RMRestrictionHandler {
 	 */
 	public static boolean meetsPreCombinedContainerGenerationCheck(HashSet<Integer> implementedProjectIDs, RunConfiguration config){
 		for(Project p : config.getLstProjects()){
-//			if(rGloMutEx(p, implementedProjectIDs) == false) return false;
-//			if(rGloMutDep(p, implementedProjectIDs) == false) return false;
+			//if(rGloMutEx(p, implementedProjectIDs) == false) return false;
+			//if(rGloMutDep(p, implementedProjectIDs) == false) return false;
 		}	
 		
 		if(rMandatoryProject(implementedProjectIDs, config) == false) return false;
@@ -87,8 +87,7 @@ public class RMRestrictionHandler {
 	}
 	
 	//All restriction methods return FALSE if restriction is broken, TRUE otherwise
-	
-	//TODO Wie ist Pre/Suc zu verstehen? Eigentlich nur Predecessor
+
 	public static boolean rPreSuc(int period, Project[][] roadmap, HashSet<Project> tmpNew){
 		
 		for(Project p : tmpNew){
@@ -100,23 +99,8 @@ public class RMRestrictionHandler {
 					if(!tmpImplemented.contains(p.getPredecessorProject()))return false;	
 				}
 				
-				//TODO +number of periods-1
-				//Sucessor
-				if(p.getSuccessorProject() != null){
-					boolean successorFound = false;
-					
-					for(int i=period+p.getNumberOfPeriods();i<roadmap.length;i++){
-						if(Arrays.asList(roadmap[i]).contains(p.getSuccessorProject())){
-							successorFound = true;
-							break;
-						}
-					}
-					if(!successorFound) return false;
-				}
 			}
-			
 		}
-		
 		return true;
 	}
 	
@@ -166,8 +150,8 @@ public class RMRestrictionHandler {
 	}
 	
 	public static boolean rGloMutEx(Project p, HashSet<Integer> implementedProjectIDs){
-		if(p.getNotTogetherInPeriodWith() != null){
-			if(implementedProjectIDs.contains(p.getId()) && implementedProjectIDs.contains(p.getNotTogetherInPeriodWith().getId())){
+		if(p.getGloMutEx() != null){
+			if(implementedProjectIDs.contains(p.getId()) && implementedProjectIDs.contains(p.getGloMutEx().getId())){
 				return false;
 			}
 			return true;
@@ -177,20 +161,19 @@ public class RMRestrictionHandler {
 	}
 	
 	public static boolean rGloMutDep(Project p, HashSet<Integer> implementedProjectIDs){
-		if(p.getTogetherInPeriodWith() != null){
-			if(implementedProjectIDs.contains(p.getId())){
-				if(implementedProjectIDs.contains(p.getTogetherInPeriodWith().getId())){
+		if(p.getGloMutDep() != null){
+			if(implementedProjectIDs.contains(p.getId()) || implementedProjectIDs.contains(p.getGloMutDep().getId())){
+				if(implementedProjectIDs.contains(p.getGloMutDep().getId()) && implementedProjectIDs.contains(p.getId())){
 					return true;
 				}else{
 					return false;
 				}
 			}
-			return true;
 		}
 		return true;
 	}
 	
-	//TODO Mandatory2
+
 	/**
 	 * Checks that only mandatory projects are implemented. Needs clean-up method to remove containers that don't implement all mandatory projects.
 	 * Because containers are generated procedurally, clean-up has to be called after RMGeneration is finished -> cMandatoryProjects()
