@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
@@ -77,19 +78,96 @@
                                     <TableColumn minWidth="5.0" prefWidth="106.0" text="Fix Costs" />
                                 </columns>
                               </TableView>
-                              <TableView layoutX="637.0" layoutY="74.0" prefHeight="199.0" prefWidth="479.0">
+                              <TableView layoutX="637.0" layoutY="74.0" prefHeight="199.0" prefWidth="548.0">
                                  <columns>
                                     <TableColumn prefWidth="147.0" text="Process" />
                                     <TableColumn prefWidth="68.0" text="Quality" />
                                     <TableColumn prefWidth="74.0" text="Time" />
                                     <TableColumn prefWidth="89.0" text="Price" />
-                                    <TableColumn prefWidth="121.0" text="Fix Costs" />
-                                    <TableColumn minWidth="5.0" prefWidth="106.0" text="Fix Costs" />
+                                    <TableColumn prefWidth="76.0" text="Fix Costs" />
+                                    <TableColumn minWidth="5.0" prefWidth="93.0" text="Fix Costs" />
                                  </columns>
                               </TableView>
                               <Label layoutX="637.0" layoutY="49.0" text="Processes">
                                  <font>
                                     <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="14.0" layoutY="288.0" text="Solution:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="15.0" layoutY="346.0" text="Roadmap">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <StackPane layoutX="16.0" layoutY="377.0" prefHeight="22.0" prefWidth="26.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="22.0" stroke="BLACK" strokeType="INSIDE" width="26.0" />
+                                    <Text fill="#e42222" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </StackPane>
+                              <StackPane layoutX="44.0" layoutY="377.0" prefHeight="22.0" prefWidth="26.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="22.0" stroke="BLACK" strokeType="INSIDE" width="26.0" />
+                                    <Text fill="#ffa30e" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </StackPane>
+                              <Label layoutX="15.0" layoutY="310.0" prefHeight="25.0" prefWidth="633.0" text="182712 Roadmaps were generated using this configuration. The optimal Roadmap generates a NPV of 4711231€">
+                                 <font>
+                                    <Font name="System Italic" size="12.0" />
+                                 </font>
+                              </Label>
+                              <StackPane layoutX="104.0" layoutY="377.0" prefHeight="22.0" prefWidth="26.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="22.0" stroke="BLACK" strokeType="INSIDE" width="26.0" />
+                                    <Text fill="#ffaa00" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </StackPane>
+                              <StackPane layoutX="76.0" layoutY="377.0" prefHeight="22.0" prefWidth="26.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="22.0" stroke="BLACK" strokeType="INSIDE" width="26.0" />
+                                    <Text fill="#14e34d" strokeType="OUTSIDE" strokeWidth="0.0" text="4">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </StackPane>
+                              <StackPane layoutX="164.0" layoutY="377.0" prefHeight="22.0" prefWidth="26.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="22.0" stroke="BLACK" strokeType="INSIDE" width="26.0" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+                                 </children>
+                              </StackPane>
+                              <StackPane layoutX="136.0" layoutY="377.0" prefHeight="22.0" prefWidth="26.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="22.0" stroke="BLACK" strokeType="INSIDE" width="26.0" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+                                 </children>
+                              </StackPane>
+                              <Label layoutX="714.0" layoutY="346.0" text="Net Present Value">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="714.0" layoutY="375.0" text="471.123,96€" textFill="#1fe118">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
                                  </font>
                               </Label>
                            </children>
