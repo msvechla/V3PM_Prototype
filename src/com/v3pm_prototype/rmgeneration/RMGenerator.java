@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.v3pm_prototype.main.Main;
+import com.v3pm_prototype.main.MainApp;
 import com.v3pm_prototype.main.Project;
 import com.v3pm_prototype.main.RMRestrictionHandler;
 
@@ -13,8 +14,14 @@ public class RMGenerator {
 
 	/**
 	 * Algorithm for generating all possible Roadmaps from pre-defined projects
+	 * @param mainApp 
 	 */
+	
 	public static List<RoadMap> generateRoadmaps(RunConfiguration config) {
+		return generateRoadmaps(config, null);
+	}
+	
+	public static List<RoadMap> generateRoadmaps(RunConfiguration config, MainApp mainApp) {
 		System.out.println("--- START: generateRoadmaps()");
 		
 		//STEP1 Generate SingleContainers

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.V3PMGUIController">
+  <children>
+    <MenuBar VBox.vgrow="NEVER">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem fx:id="menuOpen" mnemonicParsing="false" text="Open…" />
+            <Menu mnemonicParsing="false" text="Open Recent" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Close" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Preferences…" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem fx:id="menuQuit" mnemonicParsing="false" text="Quit" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About V3PM Prototype" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+      <BorderPane prefHeight="592.0" prefWidth="1200.0">
+         <center>
+            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+              <tabs>
+                <Tab text="Start">
+                  <content>
+                  	<fx:include fx:id="tabStart" source="TabStart.fxml" />
+                  </content>
+                </Tab>
+                <Tab text="Roadmap Analysis">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </center>
+         <bottom>
+            <TitledPane collapsible="false" prefHeight="64.0" prefWidth="1211.0" text="Status" BorderPane.alignment="CENTER">
+               <content>
+                  <BorderPane prefHeight="72.0" prefWidth="1209.0">
+                     <left>
+                        <Label fx:id="lblStatusText" text="Ready.." BorderPane.alignment="CENTER" />
+                     </left>
+                     <right>
+                        <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.0" BorderPane.alignment="CENTER" />
+                     </right>
+                  </BorderPane>
+               </content></TitledPane>
+         </bottom>
+      </BorderPane>
+  </children>
+  <stylesheets><URL value="@V3PMGUI.css" /></stylesheets>
+</VBox>
