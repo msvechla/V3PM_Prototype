@@ -2,6 +2,7 @@ package com.v3pm_prototype.view;
 
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,8 +13,9 @@ import com.v3pm_prototype.main.MainApp;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
+import com.v3pm_prototype.utility.ThreadCompleteListener;
 
-public class TabStartController implements EventHandler<ActionEvent>{
+public class TabStartController implements EventHandler<ActionEvent>, ThreadCompleteListener{
 
 	private MainApp mainApp;
 	
@@ -51,16 +53,30 @@ public class TabStartController implements EventHandler<ActionEvent>{
 			Button button = (Button) event.getSource();
 			
 			if(button == btnStartCalc){
-				RMGenerator rmGenerator = new RMGenerator();
+				RMGenerator rmGenerator = new RMGenerator(RunConfiguration.standardConfig, this.mainApp);
+				rmGenerator.addListener(this);
 				
 				this.mainApp.getV3pmGUIController().setProgress(-1);
 				this.mainApp.getV3pmGUIController().setStatus("Generating Roadmaps...");
-				List<RoadMap> rmList = rmGenerator.generateRoadmaps(RunConfiguration.standardConfig, mainApp);
-				this.mainApp.getV3pmGUIController().setProgress(0);
-				this.mainApp.getV3pmGUIController().setStatus("Roadmaps generated.");
-				
+				rmGenerator.start();
 			}
 		}
+		
+	}
+
+	@Override
+	public void onThreadFinish(Thread thread) {
+		
+		Platform.runLater(new Runnable(){
+			
+			@Override
+			public void run() {
+				MainApp.instance.getV3pmGUIController().setProgress(0);
+				MainApp.instance.getV3pmGUIController().setStatus("Roadmaps generated.");
+			}
+			
+		});
+		
 		
 	}
 	

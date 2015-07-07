@@ -4,24 +4,46 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import com.v3pm_prototype.main.Main;
 import com.v3pm_prototype.main.MainApp;
 import com.v3pm_prototype.main.Project;
 import com.v3pm_prototype.main.RMRestrictionHandler;
+import com.v3pm_prototype.utility.NotifyingThread;
+import com.v3pm_prototype.utility.ThreadCompleteListener;
 
-public class RMGenerator {
-
+public class RMGenerator extends NotifyingThread {
+	
+	private RunConfiguration config;
+	private MainApp mainApp;
+	private List<RoadMap> generatedRoadmaps;
+	
+	private final Set<ThreadCompleteListener> listeners = new CopyOnWriteArraySet<ThreadCompleteListener>();
+	
+	public RMGenerator(RunConfiguration config){
+		new RMGenerator(config, null);
+	}
+	
+	public RMGenerator(RunConfiguration config, MainApp mainApp){
+		this.config = config;
+		this.mainApp = mainApp;
+	}
+	
+	
+	@Override
+	public void doRun() {
+		this.generateRoadmaps();
+	}
+	
+	
 	/**
 	 * Algorithm for generating all possible Roadmaps from pre-defined projects
 	 * @param mainApp 
 	 */
 	
-	public static List<RoadMap> generateRoadmaps(RunConfiguration config) {
-		return generateRoadmaps(config, null);
-	}
-	
-	public static List<RoadMap> generateRoadmaps(RunConfiguration config, MainApp mainApp) {
+	private List<RoadMap> generateRoadmaps() {
 		System.out.println("--- START: generateRoadmaps()");
 		
 		//STEP1 Generate SingleContainers
@@ -112,6 +134,8 @@ public class RMGenerator {
 		
 		
 		System.out.println("--- FINISH: generateRoadmaps()");
+		System.out.println(rmListPostRMGenCheck.size() + " Roadmaps generated.");
+		this.generatedRoadmaps = rmListPostRMGenCheck;
 		return rmListPostRMGenCheck;
 		
 	}
@@ -151,5 +175,10 @@ public class RMGenerator {
 
 		return rmCombined;
 	}
-
+	
+	
+	public List<RoadMap> getGeneratedRoadmaps(){
+		return this.generatedRoadmaps;
+	}
+	
 }

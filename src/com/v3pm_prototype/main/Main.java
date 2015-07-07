@@ -13,6 +13,7 @@ import com.v3pm_prototype.rmgeneration.RMContainer;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
+import com.v3pm_prototype.utility.ThreadCompleteListener;
 
 /**
  * The whole procedure of the Process Balancing Calculation Tool is controlled from this Main-Class
@@ -29,7 +30,8 @@ import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 
 
-public class Main {
+public class Main implements ThreadCompleteListener{
+	private static RMGenerator rmGenerator;
 	public static final String RETURN_STRING_SUCCESSFUL = "Kalkulation erfolgreich abgeschlossen";
 	public static final String processLevel = "processLevel";
 	
@@ -58,8 +60,18 @@ public class Main {
 		//List<Roadmap> collRM = rmGenerator.generateRoadmapCollection(collProj);
 
 		double millisStart = System.currentTimeMillis();
-		RMGenerator rmGenerator = new com.v3pm_prototype.rmgeneration.RMGenerator();
-		List<RoadMap> rmList = rmGenerator.generateRoadmaps(RunConfiguration.standardConfig);
+		RMGenerator rmGenerator = new RMGenerator(RunConfiguration.standardConfig);
+		rmGenerator.start();
+		
+		
+		
+		
+		return RETURN_STRING_SUCCESSFUL;
+	}
+
+	@Override
+	public void onThreadFinish(Thread thread) {
+		List<RoadMap> rmList = rmGenerator.getGeneratedRoadmaps();
 		
 		double millisFinish = System.currentTimeMillis();
 		
@@ -91,9 +103,9 @@ public class Main {
 		for(RoadMap rm : rmList){
 			System.out.println(rm);
 		}
-		System.out.println(rmList.size()+" Roadmaps generated in "+(millisFinish-millisStart)+"ms.   "+RMContainer.countRoadMapsGenerated+ " Roadmaps before Post-Gen Check");
+		//System.out.println(rmList.size()+" Roadmaps generated in "+(millisFinish-millisStart)+"ms.   "+RMContainer.countRoadMapsGenerated+ " Roadmaps before Post-Gen Check");
 		
-		Calculator.calculateNPVs(rmList, RunConfiguration.standardConfig.getLstProcesses(), RunConfiguration.standardConfig.getLstProjects(),RunConfiguration.standardConfig);
+		//Calculator.calculateNPVs(rmList, RunConfiguration.standardConfig.getLstProcesses(), RunConfiguration.standardConfig.getLstProjects(),RunConfiguration.standardConfig);
 
 		// -----------------------------------------------------------------------------
 		// sort roadmaps by NPV
@@ -103,7 +115,7 @@ public class Main {
 		// -----------------------------------------------------------------------------
 		// print output-data to excel file
 		// -----------------------------------------------------------------------------
-		ExcelExporter.exportToExcel(rmList, excelFile, RunConfiguration.standardConfig.getLstProjects().size());
+		//ExcelExporter.exportToExcel(rmList, excelFile, RunConfiguration.standardConfig.getLstProjects().size());
 
 		// MLe
 		
@@ -120,7 +132,5 @@ public class Main {
 //		System.out.println("");	
 //		System.out.println("Final Amount:                         "+ (RMRestrictionHandler.AdmissibleAmount - DuplicateCheck.DuplicateAmount));
 		
-		
-		return RETURN_STRING_SUCCESSFUL;
 	}
 }

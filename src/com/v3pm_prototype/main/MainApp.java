@@ -20,9 +20,11 @@ public class MainApp extends Application {
 	private Stage primaryStage;
 	private VBox rootLayout;
 	private V3PMGUIController v3pmGUIController;
+	public static MainApp instance;
 	
 	@Override
 	public void start(Stage primaryStage) {
+		instance = this;
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("V3PM Prototype");
 		
