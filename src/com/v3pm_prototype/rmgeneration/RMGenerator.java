@@ -4,40 +4,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 
-import com.v3pm_prototype.main.Main;
-import com.v3pm_prototype.main.MainApp;
+import javafx.concurrent.Task;
+
 import com.v3pm_prototype.main.Project;
 import com.v3pm_prototype.main.RMRestrictionHandler;
-import com.v3pm_prototype.utility.NotifyingThread;
-import com.v3pm_prototype.utility.ThreadCompleteListener;
 
-public class RMGenerator extends NotifyingThread {
+public class RMGenerator extends Task<List<RoadMap>> {
 	
 	private RunConfiguration config;
-	private MainApp mainApp;
 	private List<RoadMap> generatedRoadmaps;
 	
-	private final Set<ThreadCompleteListener> listeners = new CopyOnWriteArraySet<ThreadCompleteListener>();
-	
 	public RMGenerator(RunConfiguration config){
-		new RMGenerator(config, null);
-	}
-	
-	public RMGenerator(RunConfiguration config, MainApp mainApp){
 		this.config = config;
-		this.mainApp = mainApp;
 	}
-	
+
 	
 	@Override
-	public void doRun() {
+	protected List<RoadMap> call() throws Exception {
 		this.generateRoadmaps();
+		return this.generatedRoadmaps;
 	}
-	
-	
+
 	/**
 	 * Algorithm for generating all possible Roadmaps from pre-defined projects
 	 * @param mainApp 

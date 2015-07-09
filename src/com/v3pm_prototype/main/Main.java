@@ -1,19 +1,14 @@
 package com.v3pm_prototype.main;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import com.v3pm_prototype.UI.SwingUI;
-import com.v3pm_prototype.excel.ExcelExporter;
 import com.v3pm_prototype.excel.ExcelImporter;
-import com.v3pm_prototype.rmgeneration.RMContainer;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
-import com.v3pm_prototype.utility.ThreadCompleteListener;
 
 /**
  * The whole procedure of the Process Balancing Calculation Tool is controlled from this Main-Class
@@ -30,7 +25,7 @@ import com.v3pm_prototype.utility.ThreadCompleteListener;
 
 
 
-public class Main implements ThreadCompleteListener{
+public class Main {
 	private static RMGenerator rmGenerator;
 	public static final String RETURN_STRING_SUCCESSFUL = "Kalkulation erfolgreich abgeschlossen";
 	public static final String processLevel = "processLevel";
@@ -61,17 +56,9 @@ public class Main implements ThreadCompleteListener{
 
 		double millisStart = System.currentTimeMillis();
 		RMGenerator rmGenerator = new RMGenerator(RunConfiguration.standardConfig);
-		rmGenerator.start();
+		//rmGenerator.call();
 		
-		
-		
-		
-		return RETURN_STRING_SUCCESSFUL;
-	}
-
-	@Override
-	public void onThreadFinish(Thread thread) {
-		List<RoadMap> rmList = rmGenerator.getGeneratedRoadmaps();
+List<RoadMap> rmList = rmGenerator.getGeneratedRoadmaps();
 		
 		double millisFinish = System.currentTimeMillis();
 		
@@ -132,5 +119,9 @@ public class Main implements ThreadCompleteListener{
 //		System.out.println("");	
 //		System.out.println("Final Amount:                         "+ (RMRestrictionHandler.AdmissibleAmount - DuplicateCheck.DuplicateAmount));
 		
+		
+		
+		return RETURN_STRING_SUCCESSFUL;
 	}
+
 }
