@@ -1,5 +1,6 @@
 package com.v3pm_prototype.view;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,11 +19,16 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.database.DBProcess;
@@ -60,8 +66,8 @@ public class TabStartController implements EventHandler<ActionEvent>{
 	@FXML
 	private TableColumn clmProcessProcess;
 	
-	private static ObservableList<DBProject> olProject = FXCollections.observableArrayList();
-	private static ObservableList<DBProcess> olProcess = FXCollections.observableArrayList();
+	public static ObservableList<DBProject> olProject = FXCollections.observableArrayList();
+	public static ObservableList<DBProcess> olProcess = FXCollections.observableArrayList();
 	
 	public TabStartController() {
 		
@@ -129,6 +135,42 @@ public class TabStartController implements EventHandler<ActionEvent>{
 		Thread t = new Thread(loadProcessesTask);
 		t.setDaemon(true);
 		t.start();
+	}
+	
+	public void openNewProjectWindow(){
+		// Load root layout from fxml file.
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("/com/v3pm_prototype/view/NewProject.fxml"));
+        AnchorPane root;
+		try {
+			root = (AnchorPane) loader.load();
+			
+			// Show the scene containing the root layout.
+	        Stage stage = new Stage();
+	        stage.setTitle("New Project");
+	        stage.setScene(new Scene(root));
+	        stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}    
+	}
+	
+	public void openNewProcessWindow(){
+		// Load root layout from fxml file.
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("/com/v3pm_prototype/view/NewProcess.fxml"));
+        AnchorPane root;
+		try {
+			root = (AnchorPane) loader.load();
+			
+			// Show the scene containing the root layout.
+	        Stage stage = new Stage();
+	        stage.setTitle("New Process");
+	        stage.setScene(new Scene(root));
+	        stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}    
 	}
 
 	public void setMainApp(MainApp mainApp){

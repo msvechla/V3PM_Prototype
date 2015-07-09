@@ -7,7 +7,6 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-
 <SplitPane dividerPositions="0.5" prefHeight="400.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.TabStartController">
    <items>
       <AnchorPane prefHeight="180.0" prefWidth="200.0">
@@ -48,7 +47,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </TableView>
-            <Button fx:id="btnNewProject" mnemonicParsing="false" text="New Project">
+            <Button fx:id="btnNewProject" mnemonicParsing="false" onAction="#openNewProjectWindow" text="New Project">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
@@ -66,7 +65,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </TableView>
-            <Button fx:id="btnNewProcess" mnemonicParsing="false" text="New Process">
+            <Button fx:id="btnNewProcess" mnemonicParsing="false" onAction="#openNewProcessWindow" text="New Process">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
