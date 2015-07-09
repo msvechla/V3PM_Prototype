@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
-import com.v3pm_prototype.UI.SwingUI;
 import com.v3pm_prototype.excel.ExcelImporter;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
 import com.v3pm_prototype.rmgeneration.RoadMap;
@@ -36,8 +35,8 @@ public class Main {
 		// -----------------------------------------------------------------------------
 		// callback method will trigger Main.processMainCalculation(File Excelfile)
 		// exception handling happens in the SwingUI class
-		SwingUI sUI = new SwingUI();
-		sUI.createSwingUI();
+//		SwingUI sUI = new SwingUI();
+//		sUI.createSwingUI();
 	}
 
 	public static String processMainCalculation(File excelFile) throws Exception {
