@@ -33,8 +33,8 @@
       </TableView>
       <ComboBox fx:id="cbProject" layoutX="16.0" layoutY="397.0" maxHeight="-Infinity" prefWidth="284.0" />
       <Button fx:id="btnAddProject" layoutX="321.0" layoutY="397.0" mnemonicParsing="false" onAction="#addProject" text="Add project to scenario" />
-      <Button fx:id="btnAddProject1" layoutX="320.0" layoutY="763.0" mnemonicParsing="false" onAction="#addProject" text="Add process to scenario" />
-      <ComboBox fx:id="cbProject1" layoutX="15.0" layoutY="763.0" maxHeight="-Infinity" prefWidth="284.0" />
+      <Button fx:id="btnAddProcess" layoutX="320.0" layoutY="763.0" mnemonicParsing="false" onAction="#openAddProcessWindow" text="Add process to scenario" />
+      <ComboBox fx:id="cbProcess" layoutX="15.0" layoutY="763.0" maxHeight="-Infinity" prefWidth="284.0" />
       <TableView fx:id="tvProjects1" editable="true" layoutX="14.0" layoutY="501.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
          <columns>
             <TableColumn fx:id="clmProjectsProject1" editable="false" prefWidth="258.0" text="Process" />

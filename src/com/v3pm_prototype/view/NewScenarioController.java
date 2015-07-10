@@ -1,5 +1,6 @@
 package com.v3pm_prototype.view;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
@@ -17,6 +20,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.converter.FloatStringConverter;
 import javafx.util.converter.IntegerStringConverter;
@@ -25,14 +31,19 @@ import javafx.util.converter.NumberStringConverter;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.database.DBScenarioProject;
+import com.v3pm_prototype.main.MainApp;
 
 public class NewScenarioController {
 	@FXML
 	private Button btnAddProject;
 	@FXML
+	private Button btnAddProcess;
+	@FXML
 	private TextField tfName;
 	@FXML
 	private ComboBox<DBProject> cbProject;
+	@FXML
+	private ComboBox<DBProcess> cbProcess;
 	
 	@FXML
 	private TableView<DBScenarioProject> tvProjects;
@@ -74,8 +85,33 @@ public class NewScenarioController {
 		cbProject.setItems(availableProjects);
 		cbProject.setValue(availableProjects.get(0));
 		
+		//Setup process combobox
+		cbProcess.setItems(TabStartController.olProcess);
+		cbProcess.setValue(TabStartController.olProcess.get(0));
+		
 		//Setup the Projects TableView
 		initTVProjects();
+	}
+	
+	public void openAddProcessWindow(){
+		// Load root layout from fxml file. 
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("/com/v3pm_prototype/view/AddProcess.fxml"));
+        VBox root;
+		try {
+			root = (VBox) loader.load();
+			
+			AddProcessController controller = loader.getController();
+	        controller.setSelectedProcess(cbProcess.getValue());
+			
+			// Show the scene containing the root layout.
+	        Stage stage = new Stage();
+	        stage.setTitle("Add Process");
+	        stage.setScene(new Scene(root));
+	        stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}    
 	}
 	
 	public void initTVProjects(){
