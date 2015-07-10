@@ -238,6 +238,7 @@ public class NewScenarioController {
 	            }
 	        );
 		
+		//TODO Only show projects related to processes
 		tvProjects.setItems(olProjects);
 		
 	}

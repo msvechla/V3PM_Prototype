@@ -15,8 +15,8 @@
       </Label>
       <Label layoutX="14.0" layoutY="63.0" text="Name:" />
       <TextField fx:id="tfName" layoutX="75.0" layoutY="57.0" promptText="Enter Scenario Name" />
-      <Label layoutX="15.0" layoutY="108.0" text="Project list" />
-      <TableView fx:id="tvProjects" editable="true" layoutX="15.0" layoutY="135.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
+      <Label layoutX="15.0" layoutY="463.0" text="Project list" />
+      <TableView fx:id="tvProjects" editable="true" layoutX="14.0" layoutY="496.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
         <columns>
           <TableColumn fx:id="clmProjectsProject" editable="false" prefWidth="258.0" text="Project" />
           <TableColumn fx:id="clmProjectsPeriods" editable="false" minWidth="0.0" prefWidth="73.0" text="Periods" />
@@ -31,11 +31,9 @@
             <TableColumn fx:id="clmProjectsM" prefWidth="54.0" text="m" />
         </columns>
       </TableView>
-      <ComboBox fx:id="cbProject" layoutX="16.0" layoutY="397.0" maxHeight="-Infinity" prefWidth="284.0" />
-      <Button fx:id="btnAddProject" layoutX="321.0" layoutY="397.0" mnemonicParsing="false" onAction="#addProject" text="Add project to scenario" />
-      <Button fx:id="btnAddProcess" layoutX="320.0" layoutY="763.0" mnemonicParsing="false" onAction="#openAddProcessWindow" text="Add process to scenario" />
-      <ComboBox fx:id="cbProcess" layoutX="15.0" layoutY="763.0" maxHeight="-Infinity" prefWidth="284.0" />
-      <TableView fx:id="tvProjects1" editable="true" layoutX="14.0" layoutY="501.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
+      <ComboBox fx:id="cbProject" layoutX="15.0" layoutY="758.0" maxHeight="-Infinity" prefWidth="284.0" />
+      <Button fx:id="btnAddProject" layoutX="320.0" layoutY="758.0" mnemonicParsing="false" onAction="#addProject" text="Add project to scenario" />
+      <TableView fx:id="tvProjects1" editable="true" layoutX="14.0" layoutY="141.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
          <columns>
             <TableColumn fx:id="clmProjectsProject1" editable="false" prefWidth="258.0" text="Process" />
             <TableColumn fx:id="clmProjectsE1" prefWidth="96.0" text="FixCosts" />
@@ -51,7 +49,9 @@
             <TableColumn fx:id="clmProjectsB11" prefWidth="181.0" text="NachfrageFunktion" />
          </columns>
       </TableView>
-      <Label layoutX="14.0" layoutY="474.0" text="Process list" />
+      <Label layoutX="12.0" layoutY="108.0" text="Process list" />
+      <Button fx:id="btnAddProcess" layoutX="320.0" layoutY="403.0" mnemonicParsing="false" onAction="#openAddProcessWindow" text="Add process to scenario" />
+      <ComboBox fx:id="cbProcess" layoutX="15.0" layoutY="403.0" maxHeight="-Infinity" prefWidth="284.0" />
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
