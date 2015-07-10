@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.NewScenarioController">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="New Scenario" textFill="#2e8ce4">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="63.0" text="Name:" />
+      <TextField fx:id="tfName" layoutX="75.0" layoutY="57.0" promptText="Enter Scenario Name" />
+      <Label layoutX="15.0" layoutY="108.0" text="Project list" />
+      <TableView fx:id="tvProjects" editable="true" layoutX="15.0" layoutY="135.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
+        <columns>
+          <TableColumn fx:id="clmProjectsProject" editable="false" prefWidth="258.0" text="Project" />
+          <TableColumn fx:id="clmProjectsPeriods" editable="false" minWidth="0.0" prefWidth="73.0" text="Periods" />
+            <TableColumn fx:id="clmProjectsType" editable="false" prefWidth="136.0" text="Type" />
+            <TableColumn fx:id="clmProjectsProcess" prefWidth="205.0" text="Process" />
+            <TableColumn fx:id="clmProjectsFixCosts" prefWidth="122.0" text="FixCosts" />
+            <TableColumn fx:id="clmProjectsOInv" prefWidth="125.0" text="OInv" />
+            <TableColumn fx:id="clmProjectsA" prefWidth="51.0" text="a" />
+            <TableColumn fx:id="clmProjectsB" prefWidth="47.0" text="b" />
+            <TableColumn fx:id="clmProjectsE" prefWidth="51.0" text="e" />
+            <TableColumn fx:id="clmProjectsU" prefWidth="49.0" text="u" />
+            <TableColumn fx:id="clmProjectsM" prefWidth="54.0" text="m" />
+        </columns>
+      </TableView>
+      <ComboBox fx:id="cbProject" layoutX="16.0" layoutY="397.0" maxHeight="-Infinity" prefWidth="284.0" />
+      <Button fx:id="btnAddProject" layoutX="321.0" layoutY="397.0" mnemonicParsing="false" onAction="#addProject" text="Add project to scenario" />
+      <Button fx:id="btnAddProject1" layoutX="320.0" layoutY="763.0" mnemonicParsing="false" onAction="#addProject" text="Add process to scenario" />
+      <ComboBox fx:id="cbProject1" layoutX="15.0" layoutY="763.0" maxHeight="-Infinity" prefWidth="284.0" />
+      <TableView fx:id="tvProjects1" editable="true" layoutX="14.0" layoutY="501.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
+         <columns>
+            <TableColumn fx:id="clmProjectsProject1" editable="false" prefWidth="258.0" text="Process" />
+            <TableColumn fx:id="clmProjectsE1" prefWidth="96.0" text="FixCosts" />
+            <TableColumn fx:id="clmProjectsPeriods1" editable="false" minWidth="0.0" prefWidth="65.0" text="q" />
+            <TableColumn fx:id="clmProjectsU1" prefWidth="75.0" text="qMin" />
+            <TableColumn fx:id="clmProjectsType1" editable="false" prefWidth="73.0" text="qMax" />
+            <TableColumn fx:id="clmProjectsProcess1" prefWidth="57.0" text="t" />
+            <TableColumn fx:id="clmProjectsM1" prefWidth="75.0" text="tMax" />
+            <TableColumn fx:id="clmProjectsFixCosts1" prefWidth="70.0" text="Preis" />
+            <TableColumn fx:id="clmProjectsOInv1" prefWidth="91.0" text="OOp" />
+            <TableColumn fx:id="clmProjectsA1" prefWidth="62.0" text="d(q)" />
+            <TableColumn fx:id="clmProjectsB1" prefWidth="68.0" text="v(t)" />
+            <TableColumn fx:id="clmProjectsB11" prefWidth="181.0" text="NachfrageFunktion" />
+         </columns>
+      </TableView>
+      <Label layoutX="14.0" layoutY="474.0" text="Process list" />
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</AnchorPane>

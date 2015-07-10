@@ -1,6 +1,9 @@
 package com.v3pm_prototype.database;
 
 public class DBProcess {
+	public static final int ID_EMPTYPROCESS = 0;
+	public static final String NAME_EMPTYPROCESS = "No Process";
+	
 	private int id;
 	private String name;
 	
@@ -9,7 +12,11 @@ public class DBProcess {
 		this.id = id;
 		this.name = name;
 	}
-
+	
+	public String toString(){
+		return this.name;
+	}
+	
 	public int getId() {
 		return id;
 	}

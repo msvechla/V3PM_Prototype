@@ -5,13 +5,21 @@ public class DBProject {
 	private String name;
 	private String type;
 	private int periods;
+	private DBProcess process;
 	
-	public DBProject(int id, String name, String type, int periods) {
+	//TODO ADD process to DBProject
+	
+	public DBProject(int id, String name, String type, int periods, DBProcess process) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.periods = periods;
+		this.setProcess(process);
+	}
+	
+	public String toString(){
+		return this.name + " "+this.type+ " "+this.periods+"p";
 	}
 
 	public int getId() {
@@ -44,6 +52,14 @@ public class DBProject {
 
 	public void setPeriods(int periods) {
 		this.periods = periods;
+	}
+
+	public DBProcess getProcess() {
+		return process;
+	}
+
+	public void setProcess(DBProcess process) {
+		this.process = process;
 	}
 	
 	

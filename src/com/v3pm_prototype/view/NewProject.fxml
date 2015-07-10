@@ -19,19 +19,25 @@
          </font>
       </Label>
       <TextField fx:id="tfName" layoutX="85.0" layoutY="49.0" prefHeight="25.0" prefWidth="184.0" />
-      <Label layoutX="14.0" layoutY="84.0" text="Type:">
+      <Label layoutX="14.0" layoutY="100.0" text="Type:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <ChoiceBox fx:id="cbType" layoutX="85.0" layoutY="82.0" prefWidth="150.0" />
-      <Label layoutX="14.0" layoutY="118.0" text="Periods:">
+      <ChoiceBox fx:id="cbType" layoutX="85.0" layoutY="98.0" prefWidth="150.0" />
+      <Label layoutX="277.0" layoutY="52.0" text="Periods:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="tfPeriods" layoutX="85.0" layoutY="115.0" prefHeight="25.0" prefWidth="46.0" />
-      <Button fx:id="btnCreate" layoutX="90.0" layoutY="158.0" mnemonicParsing="false" onAction="#createProject" prefHeight="25.0" prefWidth="220.0" text="Create" />
+      <TextField fx:id="tfPeriods" layoutX="348.0" layoutY="49.0" prefHeight="25.0" prefWidth="46.0" />
+      <Button fx:id="btnCreate" layoutX="90.0" layoutY="199.0" mnemonicParsing="false" onAction="#createProject" prefHeight="25.0" prefWidth="220.0" text="Create" />
+      <ChoiceBox fx:id="cbProcess" layoutX="85.0" layoutY="147.0" prefWidth="150.0" />
+      <Label layoutX="14.0" layoutY="149.0" text="Process:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

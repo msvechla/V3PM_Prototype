@@ -50,21 +50,23 @@ public class TabStartController implements EventHandler<ActionEvent>{
 	private Button btnNewProcess;
 	
 	@FXML
-	private TableView tvScenarios;
+	private TableView<?> tvScenarios;
 	
 	@FXML
-	private TableView tvProjects;
+	private TableView<DBProject> tvProjects;
 	@FXML
-	private TableColumn clmProjectProject;
+	private TableColumn<DBProject, String> clmProjectProject;
 	@FXML
-	private TableColumn clmProjectType;
+	private TableColumn<DBProject, String> clmProjectType;
 	@FXML
-	private TableColumn clmProjectPeriods;
+	private TableColumn<DBProject, Integer> clmProjectPeriods;
+	@FXML
+	private TableColumn<DBProject, DBProcess> clmProjectProcess;
 	
 	@FXML
-	private TableView tvProcesses;
+	private TableView<DBProcess> tvProcesses;
 	@FXML
-	private TableColumn clmProcessProcess;
+	private TableColumn<DBProcess, String> clmProcessProcess;
 	
 	public static ObservableList<DBProject> olProject = FXCollections.observableArrayList();
 	public static ObservableList<DBProcess> olProcess = FXCollections.observableArrayList();
@@ -80,14 +82,15 @@ public class TabStartController implements EventHandler<ActionEvent>{
 		clmProjectProject.setCellValueFactory(new PropertyValueFactory<DBProject, String>("name"));
 		clmProjectType.setCellValueFactory(new PropertyValueFactory<DBProject, String>("type"));
 		clmProjectPeriods.setCellValueFactory(new PropertyValueFactory<DBProject, Integer>("periods"));
+		clmProjectProcess.setCellValueFactory(new PropertyValueFactory<DBProject, DBProcess>("process"));
 		tvProjects.setItems(olProject);
 		
 		//Setup the Process TableView
 		clmProcessProcess.setCellValueFactory(new PropertyValueFactory<DBProcess, String>("name"));
 		tvProcesses.setItems(olProcess);
 		
-		loadProjects();
-		loadProcesses();
+		loadProjectsAndProcesses();
+		
 		
 	}
 	
@@ -95,7 +98,7 @@ public class TabStartController implements EventHandler<ActionEvent>{
 	 * Starts a task that loads all projects from the database
 	 */
 	private void loadProjects() {
-		Task loadProjectTask = new Task(){
+		Task<?> loadProjectTask = new Task<Object>(){
 			@Override
 			protected Object call() throws Exception {
 				Connection conn = DBConnection.getInstance().getConnection();
@@ -103,7 +106,18 @@ public class TabStartController implements EventHandler<ActionEvent>{
 				ResultSet rs = st.executeQuery("SELECT * FROM Project");
 				
 				while(rs.next()){
-					olProject.add(new DBProject(rs.getInt("id"),rs.getString("name"),rs.getString("type"), rs.getInt("periods")));
+					//Lookup the affected process
+					int processID = rs.getInt("processID");
+					if(processID == DBProcess.ID_EMPTYPROCESS){
+						olProject.add(new DBProject(rs.getInt("id"),rs.getString("name"),rs.getString("type"), rs.getInt("periods"),new DBProcess(DBProcess.ID_EMPTYPROCESS, DBProcess.NAME_EMPTYPROCESS)));
+					}else{
+						for(DBProcess p : olProcess){
+							if(p.getId() == processID){
+								olProject.add(new DBProject(rs.getInt("id"),rs.getString("name"),rs.getString("type"), rs.getInt("periods"),p));
+								break;
+							}
+						}
+					}
 				}
 				return null;
 			}	
@@ -117,8 +131,9 @@ public class TabStartController implements EventHandler<ActionEvent>{
 	/**
 	 * Starts a task that loads all projects from the database
 	 */
-	private void loadProcesses() {
-		Task loadProcessesTask = new Task(){
+	private void loadProjectsAndProcesses() {
+		//First load all Processes
+		Task<?> loadProcessesTask = new Task<Object>(){
 			@Override
 			protected Object call() throws Exception {
 				Connection conn = DBConnection.getInstance().getConnection();
@@ -129,7 +144,17 @@ public class TabStartController implements EventHandler<ActionEvent>{
 					olProcess.add(new DBProcess(rs.getInt("id"),rs.getString("name")));
 				}
 				return null;
+			}
+
+			@Override
+			protected void succeeded() {
+				super.succeeded();
+				//When loading processes finished, load projects
+				loadProjects();
 			}	
+			
+			
+			
 		};
 		
 		Thread t = new Thread(loadProcessesTask);
@@ -166,6 +191,24 @@ public class TabStartController implements EventHandler<ActionEvent>{
 			// Show the scene containing the root layout.
 	        Stage stage = new Stage();
 	        stage.setTitle("New Process");
+	        stage.setScene(new Scene(root));
+	        stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}    
+	}
+	
+	public void openNewScenarioWindow(){
+		// Load root layout from fxml file.
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("/com/v3pm_prototype/view/NewScenario.fxml"));
+        AnchorPane root;
+		try {
+			root = (AnchorPane) loader.load();
+			
+			// Show the scene containing the root layout.
+	        Stage stage = new Stage();
+	        stage.setTitle("New Scenario");
 	        stage.setScene(new Scene(root));
 	        stage.show();
 		} catch (IOException e) {

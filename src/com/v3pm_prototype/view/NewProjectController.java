@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import com.v3pm_prototype.database.DBConnection;
+import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
 
 public class NewProjectController {
@@ -21,9 +22,13 @@ public class NewProjectController {
 	@FXML
 	private TextField tfName;
 	@FXML
-	private ChoiceBox cbType;
+	private ChoiceBox<String> cbType;
+	@FXML
+	private ChoiceBox<DBProcess> cbProcess;
 	@FXML
 	private TextField tfPeriods;
+	
+	private ObservableList<DBProcess> availableProcesses = FXCollections.observableArrayList();
 	
 	public NewProjectController(){
 		
@@ -35,6 +40,11 @@ public class NewProjectController {
 		ObservableList<String> typeData = FXCollections.observableArrayList("processLevel","bpmLevel");
 		cbType.setItems(typeData);
 		cbType.setValue("processLevel");
+		
+		availableProcesses.add(new DBProcess(DBProcess.ID_EMPTYPROCESS, DBProcess.NAME_EMPTYPROCESS));
+		availableProcesses.addAll(TabStartController.olProcess);
+		cbProcess.setItems(availableProcesses);
+		cbProcess.setValue(availableProcesses.get(0));
 	}
 	
 	/**
@@ -45,10 +55,10 @@ public class NewProjectController {
 		
 		try {
 			Statement st = conn.createStatement();
-			st.executeUpdate("INSERT INTO Project(name, type, periods) VALUES ('"+tfName.getText()+"', '"+cbType.getValue()+"',"+tfPeriods.getText()+");");
+			st.executeUpdate("INSERT INTO Project(name, type, periods,processID) VALUES ('"+tfName.getText()+"', '"+cbType.getValue()+"',"+tfPeriods.getText()+","+cbProcess.getValue().getId()+");");
 			int insertedID = st.getGeneratedKeys().getInt(1);
 			
-			TabStartController.olProject.add(new DBProject(insertedID, tfName.getText(), cbType.getValue().toString(), Integer.parseInt(tfPeriods.getText())));
+			TabStartController.olProject.add(new DBProject(insertedID, tfName.getText(), cbType.getValue().toString(), Integer.parseInt(tfPeriods.getText()),cbProcess.getValue()));
 			
 			//Close the window
 			Stage stage = (Stage) btnCreate.getScene().getWindow();
