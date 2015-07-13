@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.NewScenarioController">
+<AnchorPane maxWidth="-Infinity" minHeight="0" minWidth="0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.NewScenarioController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" text="New Scenario" textFill="#2e8ce4">
          <font>
@@ -33,20 +33,20 @@
       </TableView>
       <ComboBox fx:id="cbProject" layoutX="15.0" layoutY="758.0" maxHeight="-Infinity" prefWidth="284.0" />
       <Button fx:id="btnAddProject" layoutX="320.0" layoutY="758.0" mnemonicParsing="false" onAction="#addProject" text="Add project to scenario" />
-      <TableView fx:id="tvProjects1" editable="true" layoutX="14.0" layoutY="141.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
+      <TableView fx:id="tvProcesses" editable="true" layoutX="14.0" layoutY="141.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
          <columns>
-            <TableColumn fx:id="clmProjectsProject1" editable="false" prefWidth="258.0" text="Process" />
-            <TableColumn fx:id="clmProjectsE1" prefWidth="96.0" text="FixCosts" />
-            <TableColumn fx:id="clmProjectsPeriods1" editable="false" minWidth="0.0" prefWidth="65.0" text="q" />
-            <TableColumn fx:id="clmProjectsU1" prefWidth="75.0" text="qMin" />
-            <TableColumn fx:id="clmProjectsType1" editable="false" prefWidth="73.0" text="qMax" />
-            <TableColumn fx:id="clmProjectsProcess1" prefWidth="57.0" text="t" />
-            <TableColumn fx:id="clmProjectsM1" prefWidth="75.0" text="tMax" />
-            <TableColumn fx:id="clmProjectsFixCosts1" prefWidth="70.0" text="Preis" />
-            <TableColumn fx:id="clmProjectsOInv1" prefWidth="91.0" text="OOp" />
-            <TableColumn fx:id="clmProjectsA1" prefWidth="62.0" text="d(q)" />
-            <TableColumn fx:id="clmProjectsB1" prefWidth="68.0" text="v(t)" />
-            <TableColumn fx:id="clmProjectsB11" prefWidth="181.0" text="NachfrageFunktion" />
+            <TableColumn fx:id="clmProcessesProcess" editable="false" prefWidth="258.0" text="Process" />
+            <TableColumn fx:id="clmProcessesFixCosts" prefWidth="96.0" text="FixCosts" />
+            <TableColumn fx:id="clmProcessesQ" editable="false" minWidth="0.0" prefWidth="65.0" text="q" />
+            <TableColumn fx:id="clmProcessesQMin" prefWidth="75.0" text="qMin" />
+            <TableColumn fx:id="clmProcessesQMax" editable="false" prefWidth="73.0" text="qMax" />
+            <TableColumn fx:id="clmProcessesT" prefWidth="57.0" text="t" />
+            <TableColumn fx:id="clmProcessesTMax" prefWidth="75.0" text="tMax" />
+            <TableColumn fx:id="clmProcessesP" prefWidth="70.0" text="Preis" />
+            <TableColumn fx:id="clmProcessesOop" prefWidth="91.0" text="OOp" />
+            <TableColumn fx:id="clmProcessesDGQ" prefWidth="62.0" text="d(q)" />
+            <TableColumn fx:id="clmProcessesDGT" prefWidth="68.0" text="v(t)" />
+            <TableColumn fx:id="clmProcessesDFKT" prefWidth="181.0" text="NachfrageFunktion" />
          </columns>
       </TableView>
       <Label layoutX="12.0" layoutY="108.0" text="Process list" />

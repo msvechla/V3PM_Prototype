@@ -6,8 +6,8 @@ public class DBScenarioProject {
 	private String name;
 	private String type;
 	private int periods;
-	private int fixCosts;
-	private int oInv;
+	private float fixCosts;
+	private float oInv;
 	private DBProcess process;
 	private float a;
 	private float b;
@@ -16,7 +16,7 @@ public class DBScenarioProject {
 	private float m;
 	
 	public DBScenarioProject(int id, int projectID, String name, String type, int periods,DBProcess process,
-			int fixedCosts, int oInv, float a, float b,
+			float fixedCosts, float oInv, float a, float b,
 			float e, float u, float m) {
 		super();
 		this.id = id;
@@ -70,19 +70,19 @@ public class DBScenarioProject {
 		this.periods = periods;
 	}
 
-	public int getFixCosts() {
+	public float getFixCosts() {
 		return fixCosts;
 	}
 
-	public void setFixCosts(int fixCosts) {
+	public void setFixCosts(float fixCosts) {
 		this.fixCosts = fixCosts;
 	}
 
-	public int getOInv() {
+	public float getOInv() {
 		return oInv;
 	}
 
-	public void setOInv(int oInv) {
+	public void setOInv(float oInv) {
 		this.oInv = oInv;
 	}
 

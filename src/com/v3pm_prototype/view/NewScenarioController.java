@@ -30,6 +30,7 @@ import javafx.util.converter.NumberStringConverter;
 
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
+import com.v3pm_prototype.database.DBScenarioProcess;
 import com.v3pm_prototype.database.DBScenarioProject;
 import com.v3pm_prototype.main.MainApp;
 
@@ -70,9 +71,39 @@ public class NewScenarioController {
 	@FXML
 	private TableColumn<DBScenarioProject, Float> clmProjectsM;
 	
+	@FXML
+	private TableView<DBScenarioProcess> tvProcesses;
+	@FXML
+	private TableColumn<DBScenarioProcess, String> clmProcessesProcess;
+	@FXML
+	private TableColumn<DBScenarioProcess, Float> clmProcessesFixCosts;
+	@FXML
+	private TableColumn<DBScenarioProcess, Float> clmProcessesQ;
+	@FXML
+	private TableColumn<DBScenarioProcess, Float> clmProcessesQMin;
+	@FXML
+	private TableColumn<DBScenarioProcess, Float> clmProcessesQMax;
+	@FXML
+	private TableColumn<DBScenarioProcess, Float> clmProcessesT;
+	@FXML
+	private TableColumn<DBScenarioProcess, Float> clmProcessesTMax;
+	@FXML
+	private TableColumn<DBScenarioProcess, Float> clmProcessesP;
+	@FXML
+	private TableColumn<DBScenarioProcess, Float> clmProcessesOop;
+	@FXML
+	private TableColumn<DBScenarioProcess, Float> clmProcessesDGQ;
+	@FXML
+	private TableColumn<DBScenarioProcess, Float> clmProcessesDGT;
+	@FXML
+	private TableColumn<DBScenarioProcess, String> clmProcessesDFKT;
+	
+	
 	private ObservableList<DBProject> availableProjects = FXCollections.observableArrayList();
+	public static ObservableList<DBProcess> availableProcesses = FXCollections.observableArrayList();
 	
 	private ObservableList<DBScenarioProject> olProjects = FXCollections.observableArrayList();
+	public static ObservableList<DBScenarioProcess> olProcesses = FXCollections.observableArrayList();
 	
 	public NewScenarioController(){
 
@@ -81,16 +112,37 @@ public class NewScenarioController {
 	@FXML
 	public void initialize(){
 		//Setup project combobox
-		availableProjects.addAll(TabStartController.olProject);
 		cbProject.setItems(availableProjects);
-		cbProject.setValue(availableProjects.get(0));
+		
 		
 		//Setup process combobox
-		cbProcess.setItems(TabStartController.olProcess);
-		cbProcess.setValue(TabStartController.olProcess.get(0));
+		availableProcesses.addAll(TabStartController.olProcess);
+		cbProcess.setItems(availableProcesses);
+		cbProcess.setValue(availableProcesses.get(0));
 		
-		//Setup the Projects TableView
+		//Setup the Projects & Process TableView
 		initTVProjects();
+		initTVProcesses();
+	}
+	
+	/**
+	 * Updates the list of available projects for the scenario
+	 */
+	public void updateAvailableProjects(){
+		boolean added = false;
+		for(DBScenarioProcess process : this.olProcesses){
+			for(DBProject project : TabStartController.olProject){
+				if(project.getProcess().getId() == process.getId() || project.getProcess().getId() == DBProcess.ID_EMPTYPROCESS){
+					availableProjects.add(project);
+					added = true;
+				}
+			}
+		}
+		
+		if(added){
+			cbProject.setValue(availableProjects.get(0));
+		}
+		
 	}
 	
 	public void openAddProcessWindow(){
@@ -112,6 +164,34 @@ public class NewScenarioController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}    
+	}
+	
+	public void initTVProcesses(){
+		clmProcessesProcess.setCellValueFactory(
+	            new PropertyValueFactory<DBScenarioProcess, String>("name"));
+		clmProcessesP.setCellValueFactory(
+	            new PropertyValueFactory<DBScenarioProcess, Float>("p"));
+		clmProcessesOop.setCellValueFactory(
+	            new PropertyValueFactory<DBScenarioProcess, Float>("oop"));
+		clmProcessesFixCosts.setCellValueFactory(
+	            new PropertyValueFactory<DBScenarioProcess, Float>("fixedCosts"));
+		clmProcessesQ.setCellValueFactory(
+	            new PropertyValueFactory<DBScenarioProcess, Float>("q"));
+		clmProcessesQMin.setCellValueFactory(
+	            new PropertyValueFactory<DBScenarioProcess, Float>("qMin"));
+		clmProcessesQMax.setCellValueFactory(
+	            new PropertyValueFactory<DBScenarioProcess, Float>("p"));
+		clmProcessesDGQ.setCellValueFactory(
+	            new PropertyValueFactory<DBScenarioProcess, Float>("degQ"));
+		clmProcessesT.setCellValueFactory(
+	            new PropertyValueFactory<DBScenarioProcess, Float>("t"));
+		clmProcessesTMax.setCellValueFactory(
+	            new PropertyValueFactory<DBScenarioProcess, Float>("tMax"));
+		clmProcessesDGT.setCellValueFactory(
+	            new PropertyValueFactory<DBScenarioProcess, Float>("degT"));
+		clmProcessesDFKT.setCellValueFactory(
+	            new PropertyValueFactory<DBScenarioProcess, String>("demandFunction"));
+		tvProcesses.setItems(this.olProcesses);
 	}
 	
 	public void initTVProjects(){

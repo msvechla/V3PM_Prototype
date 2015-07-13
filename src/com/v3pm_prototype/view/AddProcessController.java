@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
+import com.v3pm_prototype.database.DBScenarioProcess;
 
 public class AddProcessController {
 	@FXML
@@ -61,6 +62,8 @@ public class AddProcessController {
 	private ComboBox<String> cbDMFktQ;
 	@FXML
 	private ComboBox<String> cbDMFktT;
+	@FXML
+	private Button btnAddProcess;
 	
 	//Contains demand functions
 	private ObservableList<String> dmFktQList = FXCollections.observableArrayList("0q","q","ln q","e^(1/q)");
@@ -95,24 +98,31 @@ public class AddProcessController {
 	/**
 	 * Writes the new 
 	 */
-//	public void createSceneProcess(){
-//		Connection conn = DBConnection.getInstance().getConnection();
-//		
-//		try {
-//			Statement st = conn.createStatement();
-//			st.executeUpdate("INSERT INTO Project(name, type, periods,processID) VALUES ('"+tfName.getText()+"', '"+cbType.getValue()+"',"+tfPeriods.getText()+","+cbProcess.getValue().getId()+");");
-//			int insertedID = st.getGeneratedKeys().getInt(1);
-//			
-//			TabStartController.olProject.add(new DBProject(insertedID, tfName.getText(), cbType.getValue().toString(), Integer.parseInt(tfPeriods.getText()),cbProcess.getValue()));
-//			
-//			//Close the window
-//			Stage stage = (Stage) btnCreate.getScene().getWindow();
-//			stage.close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		
-//	}
+	public void createSceneProcess(){
+		DBScenarioProcess process = new DBScenarioProcess(-1,
+				this.selectedProcess.getId(), this.selectedProcess.getName(),
+				Float.valueOf(this.tfP.getText()), Float.valueOf(this.tfOop
+						.getText()),
+				Float.valueOf(this.tfFixedCosts.getText()),
+				(float) this.slQ.getValue(), (float) this.slQMin.getValue(),
+				(float) this.slQMax.getValue(), Float.valueOf(this.tfDegQ
+						.getText()), Float.valueOf(this.tfT.getText()),
+				Float.valueOf(this.tfTMax.getText()), Float.valueOf(this.tfDegT
+						.getText()), Float.valueOf(this.tfDMP.getText()),
+				Float.valueOf(this.tfDMLambda.getText()),
+				Float.valueOf(this.tfDMAlpha.getText()),
+				Float.valueOf(this.tfDMBeta.getText()),
+				this.cbDMFktQ.getValue(),
+				this.cbDMFktT.getValue());
+		
+		NewScenarioController.olProcesses.add(process);
+		NewScenarioController.availableProcesses.remove(this.selectedProcess);
+		
+		//Close the window
+		Stage stage = (Stage) btnAddProcess.getScene().getWindow();
+		stage.close();
+		
+	}
 	
 	
 }
