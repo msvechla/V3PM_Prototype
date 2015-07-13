@@ -32,7 +32,7 @@
         </columns>
       </TableView>
       <ComboBox fx:id="cbProject" layoutX="15.0" layoutY="758.0" maxHeight="-Infinity" prefWidth="284.0" />
-      <Button fx:id="btnAddProject" layoutX="320.0" layoutY="758.0" mnemonicParsing="false" onAction="#addProject" text="Add project to scenario" />
+      <Button fx:id="btnAddProject" layoutX="320.0" layoutY="758.0" mnemonicParsing="false" onAction="#openAddProjectWindow" text="Add project to scenario" />
       <TableView fx:id="tvProcesses" editable="true" layoutX="14.0" layoutY="141.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
          <columns>
             <TableColumn fx:id="clmProcessesProcess" editable="false" prefWidth="258.0" text="Process" />

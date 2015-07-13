@@ -145,6 +145,28 @@ public class NewScenarioController {
 		
 	}
 	
+	public void openAddProjectWindow(){
+		// Load root layout from fxml file. 
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("/com/v3pm_prototype/view/AddProject.fxml"));
+        VBox root;
+		try {
+			root = (VBox) loader.load();
+			
+			AddProjectController controller = loader.getController();
+	        controller.setSelectedProject(cbProject.getValue());
+	        controller.setNSC(this);
+			
+			// Show the scene containing the root layout.
+	        Stage stage = new Stage();
+	        stage.setTitle("Add Project");
+	        stage.setScene(new Scene(root));
+	        stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}    
+	}
+	
 	public void openAddProcessWindow(){
 		// Load root layout from fxml file. 
         FXMLLoader loader = new FXMLLoader();
@@ -324,16 +346,16 @@ public class NewScenarioController {
 		
 	}
 	
-	public void addProject(){
-		DBProject selectedProject = (DBProject) cbProject.getValue();
-		availableProjects.remove(selectedProject);
-		
-		//Create a new DBScenarioProject from selected project
-		DBScenarioProject dbSP = new DBScenarioProject(-1,selectedProject.getId(), selectedProject.getName(), selectedProject.getType(), selectedProject.getPeriods(), selectedProject.getProcess(), 0, 0, 0, 0, 0, 0, 0);
-		olProjects.add(dbSP);
-		cbProject.setValue(availableProjects.get(0));
-		tvProjects.setEditable(true);
-	}
+//	public void addProject(){
+//		DBProject selectedProject = (DBProject) cbProject.getValue();
+//		availableProjects.remove(selectedProject);
+//		
+//		//Create a new DBScenarioProject from selected project
+//		DBScenarioProject dbSP = new DBScenarioProject(-1,selectedProject.getId(), selectedProject.getName(), selectedProject.getType(), selectedProject.getPeriods(), selectedProject.getProcess(), 0, 0, 0, 0, 0, 0, 0);
+//		olProjects.add(dbSP);
+//		cbProject.setValue(availableProjects.get(0));
+//		tvProjects.setEditable(true);
+//	}
 	
 	public ComboBox getCBProcess(){
 		return this.cbProcess;

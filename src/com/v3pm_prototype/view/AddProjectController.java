@@ -59,8 +59,6 @@ public class AddProjectController {
 	@FXML
 	private ToggleButton tbA;
 	@FXML
-	private ToggleButton tbB;
-	@FXML
 	private ToggleButton tbE;
 	@FXML
 	private ToggleButton tbU;
@@ -100,15 +98,26 @@ public class AddProjectController {
 		this.selectedProject = selectedProject;
 		lblProjectName.setText(selectedProject.getName());
 		
+		lblPeriods.setText(String.valueOf(selectedProject.getPeriods()));
+		lblAffectedProcess.setText(selectedProject.getProcess().toString());
+		
 		if(this.selectedProject.getType().equals("processLevel")){
 			//Hide b
 			apB.setVisible(false);
+			apB.setPrefHeight(0);
 			tfB.setText("0");
 		}else{
 			tbA.setSelected(true);
 			tbA.setDisable(true);
 			
-			//TODO
+			//Hide e & u
+			apE.setVisible(false);
+			apE.setPrefHeight(0);
+			tfE.setText("0");
+			apU.setVisible(false);
+			apU.setPrefHeight(0);
+			tfU.setText("0");
+			
 		}
 	}
 
