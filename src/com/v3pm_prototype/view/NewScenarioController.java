@@ -57,9 +57,9 @@ public class NewScenarioController {
 	@FXML
 	private TableColumn<DBScenarioProject, DBProcess> clmProjectsProcess;
 	@FXML
-	private TableColumn<DBScenarioProject, Integer> clmProjectsFixCosts;
+	private TableColumn<DBScenarioProject, Float> clmProjectsFixCosts;
 	@FXML
-	private TableColumn<DBScenarioProject, Integer> clmProjectsOInv;
+	private TableColumn<DBScenarioProject, Float> clmProjectsOInv;
 	@FXML
 	private TableColumn<DBScenarioProject, Float> clmProjectsA;
 	@FXML
@@ -155,6 +155,7 @@ public class NewScenarioController {
 			
 			AddProcessController controller = loader.getController();
 	        controller.setSelectedProcess(cbProcess.getValue());
+	        controller.setNSC(this);
 			
 			// Show the scene containing the root layout.
 	        Stage stage = new Stage();
@@ -207,12 +208,12 @@ public class NewScenarioController {
 	            new PropertyValueFactory<DBScenarioProject, DBProcess>("process"));
 		
 		clmProjectsFixCosts.setCellValueFactory(
-	            new PropertyValueFactory<DBScenarioProject, Integer>("fixCosts"));
-		clmProjectsFixCosts.setCellFactory(TextFieldTableCell.<DBScenarioProject, Integer>forTableColumn(new IntegerStringConverter()));
+	            new PropertyValueFactory<DBScenarioProject, Float>("fixCosts"));
+		clmProjectsFixCosts.setCellFactory(TextFieldTableCell.<DBScenarioProject, Float>forTableColumn(new FloatStringConverter()));
 		clmProjectsFixCosts.setOnEditCommit(
-	            new EventHandler<CellEditEvent<DBScenarioProject, Integer>>() {
+	            new EventHandler<CellEditEvent<DBScenarioProject, Float>>() {
 	                @Override
-	                public void handle(CellEditEvent<DBScenarioProject, Integer> t) {
+	                public void handle(CellEditEvent<DBScenarioProject, Float> t) {
 	                    ((DBScenarioProject) t.getTableView().getItems().get(
 	                            t.getTablePosition().getRow())
 	                            ).setFixCosts(t.getNewValue());
@@ -221,12 +222,12 @@ public class NewScenarioController {
 	        );
 		
 		clmProjectsOInv.setCellValueFactory(
-	            new PropertyValueFactory<DBScenarioProject, Integer>("oInv"));
-		clmProjectsOInv.setCellFactory(TextFieldTableCell.<DBScenarioProject, Integer>forTableColumn(new IntegerStringConverter()));
+	            new PropertyValueFactory<DBScenarioProject, Float>("oInv"));
+		clmProjectsOInv.setCellFactory(TextFieldTableCell.<DBScenarioProject, Float>forTableColumn(new FloatStringConverter()));
 		clmProjectsOInv.setOnEditCommit(
-	            new EventHandler<CellEditEvent<DBScenarioProject, Integer>>() {
+	            new EventHandler<CellEditEvent<DBScenarioProject, Float>>() {
 	                @Override
-	                public void handle(CellEditEvent<DBScenarioProject, Integer> t) {
+	                public void handle(CellEditEvent<DBScenarioProject, Float> t) {
 	                    ((DBScenarioProject) t.getTableView().getItems().get(
 	                            t.getTablePosition().getRow())
 	                            ).setOInv(t.getNewValue());
@@ -332,6 +333,10 @@ public class NewScenarioController {
 		olProjects.add(dbSP);
 		cbProject.setValue(availableProjects.get(0));
 		tvProjects.setEditable(true);
+	}
+	
+	public ComboBox getCBProcess(){
+		return this.cbProcess;
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -18,7 +19,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="tfName" layoutX="79.0" layoutY="46.0" prefHeight="25.0" prefWidth="184.0" />
+      <TextField fx:id="tfName" layoutX="79.0" layoutY="46.0" prefHeight="25.0" prefWidth="184.0"></TextField>
       <Button fx:id="btnCreate" layoutX="90.0" layoutY="88.0" mnemonicParsing="false" onAction="#createProcess" prefHeight="25.0" prefWidth="220.0" text="Create" />
    </children>
    <padding>

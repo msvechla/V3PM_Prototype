@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import sun.util.locale.provider.AvailableLanguageTags;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -69,6 +70,8 @@ public class AddProcessController {
 	private ObservableList<String> dmFktQList = FXCollections.observableArrayList("0q","q","ln q","e^(1/q)");
 	private ObservableList<String> dmFktTList = FXCollections.observableArrayList("0t","t","ln t","e^(1/t)");
 	
+	private NewScenarioController nsc;
+	
 	public AddProcessController(){
 	}
 	
@@ -93,7 +96,9 @@ public class AddProcessController {
 		lblProcessName.setText(selectedProcess.getName());
 	}
 
-	
+	public void setNSC(NewScenarioController nsc){
+		this.nsc = nsc;
+	}
 	
 	/**
 	 * Writes the new 
@@ -115,8 +120,11 @@ public class AddProcessController {
 				this.cbDMFktQ.getValue(),
 				this.cbDMFktT.getValue());
 		
+		//TODO un-static
 		NewScenarioController.olProcesses.add(process);
 		NewScenarioController.availableProcesses.remove(this.selectedProcess);
+		nsc.getCBProcess().setValue(NewScenarioController.availableProcesses.get(0));
+		nsc.updateAvailableProjects();
 		
 		//Close the window
 		Stage stage = (Stage) btnAddProcess.getScene().getWindow();
