@@ -1,6 +1,8 @@
 package com.v3pm_prototype.database;
 
-public class DBProcess {
+import java.io.Serializable;
+
+public class DBProcess implements Serializable{
 	public static final int ID_ALLPROCESSES = 0;
 	public static final String NAME_ALLPROCESSES = "All Processes";
 	

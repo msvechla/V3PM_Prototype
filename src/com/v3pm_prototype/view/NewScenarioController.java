@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
@@ -20,8 +21,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.converter.FloatStringConverter;
@@ -35,17 +43,28 @@ import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.main.MainApp;
 
 public class NewScenarioController {
+	private TabStartController tsc;
+	private static final DataFormat DF_PROJECT = new DataFormat("com.v3pm_prototype.database.DBProject");
+	private static final DataFormat DF_PROCESS = new DataFormat("com.v3pm_prototype.database.DBProcess");
+	
 	@FXML
 	private Button btnAddProject;
 	@FXML
 	private Button btnAddProcess;
 	@FXML
 	private TextField tfName;
-	@FXML
-	private ComboBox<DBProject> cbProject;
-	@FXML
-	private ComboBox<DBProcess> cbProcess;
 	
+	//ListViews (Pools)
+	@FXML
+	private ListView<DBProject> lvProjectPool;
+	@FXML
+	private ListView<DBProcess> lvProcessPool;
+	
+	private ObservableList<DBProject> availableProjects = FXCollections.observableArrayList();
+	private ObservableList<DBProcess> availableProcesses = FXCollections.observableArrayList();
+	
+	
+	//Project Table
 	@FXML
 	private TableView<DBProject> tvProjects;
 	@FXML
@@ -98,10 +117,6 @@ public class NewScenarioController {
 	@FXML
 	private TableColumn<DBProcess, String> clmProcessesDFKT;
 	
-	
-	private ObservableList<DBProject> availableProjects = FXCollections.observableArrayList();
-	public static ObservableList<DBProcess> availableProcesses = FXCollections.observableArrayList();
-	
 	private ObservableList<DBProject> olProjects = FXCollections.observableArrayList();
 	public static ObservableList<DBProcess> olProcesses = FXCollections.observableArrayList();
 	
@@ -111,81 +126,70 @@ public class NewScenarioController {
 	
 	@FXML
 	public void initialize(){
-		//Setup project combobox
-		cbProject.setItems(availableProjects);
-		
-		
-		//Setup process combobox
-		availableProcesses.addAll(TabStartController.olProcesses);
-		cbProcess.setItems(availableProcesses);
-		cbProcess.setValue(availableProcesses.get(0));
-		
 		//Setup the Projects & Process TableView
 		initTVProjects();
 		initTVProcesses();
+		
+		//Setup Pools
+		initPools();
 	}
 	
-	/**
-	 * Updates the list of available projects for the scenario
-	 */
-	public void updateAvailableProjects(){
-		boolean added = false;
-		for(DBProcess process : this.olProcesses){
-			for(DBProject project : TabStartController.olProjects){
-				if(project.getProcess().getId() == process.getId() || project.getProcess().getId() == DBProcess.ID_ALLPROCESSES){
-					availableProjects.add(project);
-					added = true;
-				}
+//	/**
+//	 * Updates the list of available projects for the scenario
+//	 */
+//	public void updateAvailableProjects(){
+//		boolean added = false;
+//		for(DBProcess process : this.olProcesses){
+//			for(DBProject project : TabStartController.olProjects){
+//				if(project.getProcess().getId() == process.getId() || project.getProcess().getId() == DBProcess.ID_ALLPROCESSES){
+//					availableProjects.add(project);
+//					added = true;
+//				}
+//			}
+//		}
+//		
+//		if(added){
+//			cbProject.setValue(availableProjects.get(0));
+//		}
+//		
+//	}
+	
+	private void initPools(){
+		availableProjects.addAll(tsc.olProjects);
+		lvProjectPool.setItems(availableProjects);
+		availableProcesses.addAll(tsc.olProcesses);
+		lvProcessPool.setItems(availableProcesses);
+		
+		
+		//-------------------- DRAG AND DROP --------------------
+		
+		lvProjectPool.setOnDragDetected(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				//Save Project in Clipboard
+				Dragboard db = lvProjectPool.startDragAndDrop(TransferMode.ANY);
+				ClipboardContent content = new ClipboardContent();
+				DBProject project = lvProjectPool.getSelectionModel().getSelectedItem();
+				content.put(DF_PROJECT, project);
+				db.setContent(content);
+                
+                event.consume();
 			}
-		}
+		});
 		
-		if(added){
-			cbProject.setValue(availableProjects.get(0));
-		}
-		
-	}
-	
-	public void openAddProjectWindow(){
-		// Load root layout from fxml file. 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/com/v3pm_prototype/view/AddProject.fxml"));
-        VBox root;
-		try {
-			root = (VBox) loader.load();
-			
-			AddProjectController controller = loader.getController();
-	        //controller.setTSC(this);
-			
-			// Show the scene containing the root layout.
-	        Stage stage = new Stage();
-	        stage.setTitle("Add Project");
-	        stage.setScene(new Scene(root));
-	        stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}    
-	}
-	
-	public void openAddProcessWindow(){
-		// Load root layout from fxml file. 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/com/v3pm_prototype/view/AddProcess.fxml"));
-        VBox root;
-		try {
-			root = (VBox) loader.load();
-			
-			AddProcessController controller = loader.getController();
-	        //controller.setSelectedProcess(cbProcess.getValue());
-	       // controller.setNSC(this);
-			
-			// Show the scene containing the root layout.
-	        Stage stage = new Stage();
-	        stage.setTitle("Add Process");
-	        stage.setScene(new Scene(root));
-	        stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}    
+		lvProcessPool.setOnDragDetected(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				//Save Process in Clipboard
+				Dragboard db = lvProcessPool.startDragAndDrop(TransferMode.ANY);
+				ClipboardContent content = new ClipboardContent();
+				DBProcess process = lvProcessPool.getSelectionModel().getSelectedItem();
+				content.put(DF_PROCESS, process);
+				db.setContent(content);
+                
+                event.consume();
+			}
+		});
 	}
 	
 	public void initTVProcesses(){
@@ -214,11 +218,41 @@ public class NewScenarioController {
 		clmProcessesDFKT.setCellValueFactory(
 	            new PropertyValueFactory<DBProcess, String>("demandFunction"));
 		tvProcesses.setItems(this.olProcesses);
+		
+		// -------------------- DRAG AND DROP --------------------
+
+		tvProcesses.setOnDragOver(new EventHandler<DragEvent>() {
+			public void handle(DragEvent event) {
+				// accept it only if it is not dragged from the same node and if
+				// it has Process Data
+				if (event.getGestureSource() != tvProcesses
+						&& event.getDragboard().hasContent(DF_PROCESS)) {
+					event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+				}
+				event.consume();
+			}
+		});
+
+		tvProcesses.setOnDragDropped(new EventHandler<DragEvent>() {
+			public void handle(DragEvent event) {
+				Dragboard db = event.getDragboard();
+				boolean success = false;
+				if (db.hasContent(DF_PROCESS)) {
+					// Drop process on scenario and remove from available list
+					olProcesses.add((DBProcess) db.getContent(DF_PROCESS));
+					availableProcesses.remove(lvProcessPool.getSelectionModel().getSelectedItem());
+					success = true;
+				}
+				event.setDropCompleted(success);
+				event.consume();
+			}
+		});
 	}
 	
 	public void initTVProjects(){
 		tvProjects.setEditable(true);
 		
+		//Setup Table Columns
 		clmProjectsProject.setCellValueFactory(
 	            new PropertyValueFactory<DBProject, String>("name"));
 		clmProjectsType.setCellValueFactory(
@@ -227,158 +261,62 @@ public class NewScenarioController {
 	            new PropertyValueFactory<DBProject, Integer>("periods"));		
 		clmProjectsProcess.setCellValueFactory(
 	            new PropertyValueFactory<DBProject, DBProcess>("process"));
-		
 		clmProjectsFixCosts.setCellValueFactory(
 	            new PropertyValueFactory<DBProject, Float>("fixCosts"));
-		clmProjectsFixCosts.setCellFactory(TextFieldTableCell.<DBProject, Float>forTableColumn(new FloatStringConverter()));
-		clmProjectsFixCosts.setOnEditCommit(
-	            new EventHandler<CellEditEvent<DBProject, Float>>() {
-	                @Override
-	                public void handle(CellEditEvent<DBProject, Float> t) {
-	                    ((DBProject) t.getTableView().getItems().get(
-	                            t.getTablePosition().getRow())
-	                            ).setFixedCosts(t.getNewValue());
-	                }
-	            }
-	        );
-		
 		clmProjectsOInv.setCellValueFactory(
 	            new PropertyValueFactory<DBProject, Float>("oInv"));
-		clmProjectsOInv.setCellFactory(TextFieldTableCell.<DBProject, Float>forTableColumn(new FloatStringConverter()));
-		clmProjectsOInv.setOnEditCommit(
-	            new EventHandler<CellEditEvent<DBProject, Float>>() {
-	                @Override
-	                public void handle(CellEditEvent<DBProject, Float> t) {
-	                    ((DBProject) t.getTableView().getItems().get(
-	                            t.getTablePosition().getRow())
-	                            ).setOInv(t.getNewValue());
-	                }
-	            }
-	        );
-		
 		clmProjectsA.setCellValueFactory(
 	            new PropertyValueFactory<DBProject, Float>("a"));
-		clmProjectsA.setCellFactory(TextFieldTableCell.<DBProject, Float>forTableColumn(new FloatStringConverter()));
-		clmProjectsA.setOnEditCommit(
-	            new EventHandler<CellEditEvent<DBProject, Float>>() {
-	                @Override
-	                public void handle(CellEditEvent<DBProject, Float> t) {
-	                    ((DBProject) t.getTableView().getItems().get(
-	                            t.getTablePosition().getRow())
-	                            ).setA(t.getNewValue());
-	                }
-	            }
-	        );
-		
 		clmProjectsA.setCellValueFactory(
 	            new PropertyValueFactory<DBProject, Float>("a"));
-		clmProjectsA.setCellFactory(TextFieldTableCell.<DBProject, Float>forTableColumn(new FloatStringConverter()));
-		clmProjectsA.setOnEditCommit(
-	            new EventHandler<CellEditEvent<DBProject, Float>>() {
-	                @Override
-	                public void handle(CellEditEvent<DBProject, Float> t) {
-	                    ((DBProject) t.getTableView().getItems().get(
-	                            t.getTablePosition().getRow())
-	                            ).setA(t.getNewValue());
-	                }
-	            }
-	        );
-		
 		clmProjectsB.setCellValueFactory(
 	            new PropertyValueFactory<DBProject, Float>("b"));
-		clmProjectsB.setCellFactory(TextFieldTableCell.<DBProject, Float>forTableColumn(new FloatStringConverter()));
-		clmProjectsB.setOnEditCommit(
-	            new EventHandler<CellEditEvent<DBProject, Float>>() {
-	                @Override
-	                public void handle(CellEditEvent<DBProject, Float> t) {
-	                    ((DBProject) t.getTableView().getItems().get(
-	                            t.getTablePosition().getRow())
-	                            ).setB(t.getNewValue());
-	                }
-	            }
-	        );
-		
 		clmProjectsE.setCellValueFactory(
 	            new PropertyValueFactory<DBProject, Float>("e"));
-		clmProjectsE.setCellFactory(TextFieldTableCell.<DBProject, Float>forTableColumn(new FloatStringConverter()));
-		clmProjectsE.setOnEditCommit(
-	            new EventHandler<CellEditEvent<DBProject, Float>>() {
-	                @Override
-	                public void handle(CellEditEvent<DBProject, Float> t) {
-	                    ((DBProject) t.getTableView().getItems().get(
-	                            t.getTablePosition().getRow())
-	                            ).setE(t.getNewValue());
-	                }
-	            }
-	        );
-		
 		clmProjectsU.setCellValueFactory(
 	            new PropertyValueFactory<DBProject, Float>("u"));
-		clmProjectsU.setCellFactory(TextFieldTableCell.<DBProject, Float>forTableColumn(new FloatStringConverter()));
-		clmProjectsU.setOnEditCommit(
-	            new EventHandler<CellEditEvent<DBProject, Float>>() {
-	                @Override
-	                public void handle(CellEditEvent<DBProject, Float> t) {
-	                    ((DBProject) t.getTableView().getItems().get(
-	                            t.getTablePosition().getRow())
-	                            ).setU(t.getNewValue());
-	                }
-	            }
-	        );
-		
 		clmProjectsM.setCellValueFactory(
 	            new PropertyValueFactory<DBProject, Float>("m"));
-		clmProjectsM.setCellFactory(TextFieldTableCell.<DBProject, Float>forTableColumn(new FloatStringConverter()));
-		clmProjectsM.setOnEditCommit(
-	            new EventHandler<CellEditEvent<DBProject, Float>>() {
-	                @Override
-	                public void handle(CellEditEvent<DBProject, Float> t) {
-	                    ((DBProject) t.getTableView().getItems().get(
-	                            t.getTablePosition().getRow())
-	                            ).setM(t.getNewValue());
-	                }
-	            }
-	        );
 		
-		//TODO Only show projects related to processes
 		tvProjects.setItems(olProjects);
+
+		
+		//-------------------- DRAG AND DROP --------------------
+		
+		tvProjects.setOnDragOver(new EventHandler <DragEvent>() {
+            public void handle(DragEvent event) {
+                //accept it only if it is  not dragged from the same node and if it has Project Data
+                if (event.getGestureSource() != tvProjects &&
+                        event.getDragboard().hasContent(DF_PROJECT)) {
+                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                }
+                event.consume();
+            }
+        });
+		
+		tvProjects.setOnDragDropped(new EventHandler <DragEvent>() {
+            public void handle(DragEvent event) {
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                if (db.hasContent(DF_PROJECT)) {
+                	//Drop project on scenario and remove from available list
+                    olProjects.add((DBProject) db.getContent(DF_PROJECT));
+                    availableProjects.remove(lvProjectPool.getSelectionModel().getSelectedItem());
+                    success = true;
+                }
+                event.setDropCompleted(success); 
+                event.consume();
+            }
+        });
 		
 	}
-	
-//	public void addProject(){
-//		DBProject selectedProject = (DBProject) cbProject.getValue();
-//		availableProjects.remove(selectedProject);
-//		
-//		//Create a new DBScenarioProject from selected project
-//		DBScenarioProject dbSP = new DBScenarioProject(-1,selectedProject.getId(), selectedProject.getName(), selectedProject.getType(), selectedProject.getPeriods(), selectedProject.getProcess(), 0, 0, 0, 0, 0, 0, 0);
-//		olProjects.add(dbSP);
-//		cbProject.setValue(availableProjects.get(0));
-//		tvProjects.setEditable(true);
-//	}
-	
-	public ComboBox getCBProcess(){
-		return this.cbProcess;
+
+	public TabStartController getTsc() {
+		return tsc;
+	}
+
+	public void setTsc(TabStartController tsc) {
+		this.tsc = tsc;
 	}
 	
-	/**
-	 * Writes the new Scenario into the Database and adds it to the Scenario List
-	 */
-	public void createScenario(){
-//		Connection conn = DBConnection.getInstance().getConnection();
-//		
-//		try {
-//			Statement st = conn.createStatement();
-//			st.executeUpdate("INSERT INTO Project(name, type, periods) VALUES ('"+tfName.getText()+"', '"+cbType.getValue()+"',"+tfPeriods.getText()+");");
-//			int insertedID = st.getGeneratedKeys().getInt(1);
-//			
-//			TabStartController.olProject.add(new DBProject(insertedID, tfName.getText(), cbType.getValue().toString(), Integer.parseInt(tfPeriods.getText())));
-//			
-//			//Close the window
-//			Stage stage = (Stage) btnCreate.getScene().getWindow();
-//			stage.close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-		
-	}
 }

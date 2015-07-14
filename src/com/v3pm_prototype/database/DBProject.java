@@ -1,6 +1,8 @@
 package com.v3pm_prototype.database;
 
-public class DBProject {
+import java.io.Serializable;
+
+public class DBProject implements Serializable {
 	private int id;
 	private String name;
 	private String type;

@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxWidth="-Infinity" minHeight="0" minWidth="0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.NewScenarioController">
+<AnchorPane maxWidth="-Infinity" minHeight="0" minWidth="0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.NewScenarioController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" text="New Scenario" textFill="#2e8ce4">
          <font>
@@ -15,45 +15,85 @@
       </Label>
       <Label layoutX="14.0" layoutY="63.0" text="Name:" />
       <TextField fx:id="tfName" layoutX="75.0" layoutY="57.0" promptText="Enter Scenario Name" />
-      <Label layoutX="15.0" layoutY="463.0" text="Project list" />
-      <TableView fx:id="tvProjects" editable="true" layoutX="14.0" layoutY="496.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
-        <columns>
-          <TableColumn fx:id="clmProjectsProject" editable="false" prefWidth="258.0" text="Project" />
-          <TableColumn fx:id="clmProjectsPeriods" editable="false" minWidth="0.0" prefWidth="73.0" text="Periods" />
-            <TableColumn fx:id="clmProjectsType" editable="false" prefWidth="136.0" text="Type" />
-            <TableColumn fx:id="clmProjectsProcess" prefWidth="205.0" text="Process" />
-            <TableColumn fx:id="clmProjectsFixCosts" prefWidth="122.0" text="FixCosts" />
-            <TableColumn fx:id="clmProjectsOInv" prefWidth="125.0" text="OInv" />
-            <TableColumn fx:id="clmProjectsA" prefWidth="51.0" text="a" />
-            <TableColumn fx:id="clmProjectsB" prefWidth="47.0" text="b" />
-            <TableColumn fx:id="clmProjectsE" prefWidth="51.0" text="e" />
-            <TableColumn fx:id="clmProjectsU" prefWidth="49.0" text="u" />
-            <TableColumn fx:id="clmProjectsM" prefWidth="54.0" text="m" />
-        </columns>
-      </TableView>
-      <ComboBox fx:id="cbProject" layoutX="15.0" layoutY="758.0" maxHeight="-Infinity" prefWidth="284.0" />
-      <Button fx:id="btnAddProject" layoutX="320.0" layoutY="758.0" mnemonicParsing="false" onAction="#openAddProjectWindow" text="Add project to scenario" />
-      <TableView fx:id="tvProcesses" editable="true" layoutX="14.0" layoutY="141.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
-         <columns>
-            <TableColumn fx:id="clmProcessesProcess" editable="false" prefWidth="258.0" text="Process" />
-            <TableColumn fx:id="clmProcessesFixCosts" prefWidth="96.0" text="FixCosts" />
-            <TableColumn fx:id="clmProcessesQ" editable="false" minWidth="0.0" prefWidth="65.0" text="q" />
-            <TableColumn fx:id="clmProcessesQMin" prefWidth="75.0" text="qMin" />
-            <TableColumn fx:id="clmProcessesQMax" editable="false" prefWidth="73.0" text="qMax" />
-            <TableColumn fx:id="clmProcessesT" prefWidth="57.0" text="t" />
-            <TableColumn fx:id="clmProcessesTMax" prefWidth="75.0" text="tMax" />
-            <TableColumn fx:id="clmProcessesP" prefWidth="70.0" text="Preis" />
-            <TableColumn fx:id="clmProcessesOop" prefWidth="91.0" text="OOp" />
-            <TableColumn fx:id="clmProcessesDGQ" prefWidth="62.0" text="d(q)" />
-            <TableColumn fx:id="clmProcessesDGT" prefWidth="68.0" text="v(t)" />
-            <TableColumn fx:id="clmProcessesDFKT" prefWidth="181.0" text="NachfrageFunktion" />
-         </columns>
-      </TableView>
-      <Label layoutX="12.0" layoutY="108.0" text="Process list" />
-      <Button fx:id="btnAddProcess" layoutX="320.0" layoutY="403.0" mnemonicParsing="false" onAction="#openAddProcessWindow" text="Add process to scenario" />
-      <ComboBox fx:id="cbProcess" layoutX="15.0" layoutY="403.0" maxHeight="-Infinity" prefWidth="284.0" />
+      <SplitPane dividerPositions="0.76" layoutY="107.0">
+         <items>
+            <TabPane>
+               <tabs>
+                  <Tab closable="false" text="Project and Process Setup">
+                     <content>
+                        <VBox layoutX="12.0" layoutY="108.0" spacing="10.0">
+                           <children>
+                              <Label layoutX="12.0" layoutY="108.0" text="Process list" />
+                              <TableView fx:id="tvProcesses" editable="true" layoutX="14.0" layoutY="141.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
+                                 <columns>
+                                    <TableColumn fx:id="clmProcessesProcess" editable="false" prefWidth="258.0" text="Process" />
+                                    <TableColumn fx:id="clmProcessesFixCosts" prefWidth="96.0" text="FixCosts" />
+                                    <TableColumn fx:id="clmProcessesQ" editable="false" minWidth="0.0" prefWidth="65.0" text="q" />
+                                    <TableColumn fx:id="clmProcessesT" prefWidth="57.0" text="t" />
+                                    <TableColumn fx:id="clmProcessesP" prefWidth="70.0" text="Preis" />
+                                    <TableColumn fx:id="clmProcessesOop" prefWidth="91.0" text="OOp" />
+                                    <TableColumn fx:id="clmProcessesDGQ" prefWidth="62.0" text="d(q)" />
+                                    <TableColumn fx:id="clmProcessesDGT" prefWidth="68.0" text="v(t)" />
+                                    <TableColumn fx:id="clmProcessesDFKT" prefWidth="181.0" text="NachfrageFunktion" />
+                                 </columns>
+                              </TableView>
+                              <Label layoutX="15.0" layoutY="463.0" text="Project list" />
+                              <TableView fx:id="tvProjects" editable="true" layoutX="14.0" layoutY="496.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
+                                <columns>
+                                  <TableColumn fx:id="clmProjectsProject" editable="false" prefWidth="258.0" text="Project" />
+                                  <TableColumn fx:id="clmProjectsPeriods" editable="false" minWidth="0.0" prefWidth="73.0" text="Periods" />
+                                    <TableColumn fx:id="clmProjectsType" editable="false" prefWidth="136.0" text="Type" />
+                                    <TableColumn fx:id="clmProjectsProcess" prefWidth="205.0" text="Process" />
+                                    <TableColumn fx:id="clmProjectsFixCosts" prefWidth="122.0" text="FixCosts" />
+                                    <TableColumn fx:id="clmProjectsOInv" prefWidth="125.0" text="OInv" />
+                                    <TableColumn fx:id="clmProjectsA" prefWidth="51.0" text="a" />
+                                    <TableColumn fx:id="clmProjectsB" prefWidth="47.0" text="b" />
+                                    <TableColumn fx:id="clmProjectsE" prefWidth="51.0" text="e" />
+                                    <TableColumn fx:id="clmProjectsU" prefWidth="49.0" text="u" />
+                                    <TableColumn fx:id="clmProjectsM" prefWidth="54.0" text="m" />
+                                </columns>
+                              </TableView>
+                           </children>
+                           <padding>
+                              <Insets left="14.0" right="14.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </Tab>
+                  <Tab text="Constraint Setup">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Accordion maxHeight="1.7976931348623157E308" prefHeight="753.0" prefWidth="330.0">
+                    <panes>
+                      <TitledPane animated="false" text="Process Pool">
+                           <content>
+                              <ListView fx:id="lvProcessPool" prefHeight="200.0" prefWidth="200.0" />
+                           </content>
+                        </TitledPane>
+                      <TitledPane animated="false" expanded="false" text="Project Pool">
+                           <content>
+                              <ListView fx:id="lvProjectPool" prefHeight="200.0" prefWidth="200.0" />
+                           </content>
+                        </TitledPane>
+                        <TitledPane animated="false" expanded="false" text="Constraint Pool">
+                           <content>
+                              <ListView prefHeight="200.0" prefWidth="200.0" />
+                           </content>
+                        </TitledPane>
+                    </panes>
+                  </Accordion>
+               </children>
+            </VBox>
+         </items>
+      </SplitPane>
    </children>
    <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      <Insets bottom="10.0" top="10.0" />
    </padding>
 </AnchorPane>
