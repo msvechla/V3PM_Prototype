@@ -61,15 +61,28 @@
                      </content>
                   </Tab>
                   <Tab text="Constraint Setup">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                    </content>
+                     <content>
+                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                           <padding>
+                              <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
+                           </padding>
+                           <children>
+                              <Label text="Constraint List" />
+                              <ListView fx:id="lvConstraints" prefHeight="200.0" prefWidth="200.0" />
+                              <Label alignment="CENTER" disable="true" prefHeight="27.0" prefWidth="1150.0" text="Drag and drop constraints from the pool onto this list to add constraints" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </content>
                   </Tab>
                </tabs>
             </TabPane>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Accordion maxHeight="1.7976931348623157E308" prefHeight="753.0" prefWidth="330.0">
+                  <Accordion maxHeight="1.7976931348623157E308" prefHeight="432.0" prefWidth="366.0">
                     <panes>
                       <TitledPane animated="false" text="Process Pool">
                            <content>
@@ -81,13 +94,36 @@
                               <ListView fx:id="lvProjectPool" prefHeight="200.0" prefWidth="200.0" />
                            </content>
                         </TitledPane>
-                        <TitledPane animated="false" expanded="false" text="Constraint Pool">
-                           <content>
-                              <ListView prefHeight="200.0" prefWidth="200.0" />
-                           </content>
-                        </TitledPane>
                     </panes>
                   </Accordion>
+                  <TitledPane collapsible="false" text="Constraint Pool">
+                     <content>
+                        <Accordion prefHeight="308.0" prefWidth="334.0">
+                          <panes>
+                            <TitledPane animated="false" text="Interactions among projects">
+                                 <content>
+                                    <ListView fx:id="lvCAmongProjects" prefHeight="200.0" prefWidth="200.0" />
+                                 </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="Project-specific constraints">
+                                 <content>
+                                    <ListView fx:id="lvCProjectSpecific" prefHeight="200.0" prefWidth="200.0" />
+                                 </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="Process-specific constraints">
+                                 <content>
+                                    <ListView fx:id="lvCProcessSpecific" prefHeight="200.0" prefWidth="200.0" />
+                                 </content>
+                            </TitledPane>
+                              <TitledPane animated="false" text="Period-specific constraints">
+                                 <content>
+                                    <ListView fx:id="lvCPeriodSpecific" prefHeight="200.0" prefWidth="200.0" />
+                                 </content>
+                              </TitledPane>
+                          </panes>
+                        </Accordion>
+                     </content>
+                  </TitledPane>
                </children>
             </VBox>
          </items>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.AddConstraintController">
+   <children>
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+         <children>
+            <Label fx:id="lblType" text="LocMutEx( ">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="cbS" prefWidth="150.0" promptText="s" />
+            <TextField fx:id="tfX" prefWidth="150.0" promptText="Critical boundary x" />
+            <Label fx:id="lblComma1" text=" , ">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="cbSI" prefWidth="150.0" promptText="s'" />
+            <ComboBox fx:id="cbI" prefWidth="150.0" promptText="i" />
+            <Label fx:id="lblComma2" text=" , ">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tfY" prefWidth="150.0" promptText="Period y" />
+            <Label text=" )">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+         <VBox.margin>
+            <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
+         </VBox.margin>
+      </HBox>
+      <BorderPane prefWidth="200.0">
+         <bottom>
+            <Button alignment="CENTER" mnemonicParsing="false" text="Add Constraint" BorderPane.alignment="CENTER" />
+         </bottom>
+         <padding>
+            <Insets bottom="14.0" />
+         </padding>
+      </BorderPane>
+   </children>
+</VBox>
