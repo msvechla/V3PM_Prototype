@@ -3,14 +3,19 @@ package com.v3pm_prototype.view;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import sun.util.locale.provider.AvailableLanguageTags;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -21,21 +26,20 @@ import javafx.stage.Stage;
 import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
-import com.v3pm_prototype.database.DBScenarioProcess;
+import com.v3pm_prototype.database.DBProcess;
 
 public class AddProjectController {
-	@FXML
-	private Label lblProjectName;
-	
-	private DBProject selectedProject;
 	
 	//General Infos
 	@FXML
-	private Label lblPeriods;
+	private TextField tfName;
+	
 	@FXML
-	private Label lblType;
+	private TextField tfPeriods;
 	@FXML
-	private Label lblAffectedProcess;
+	private ComboBox<String> cbType;
+	@FXML
+	private ComboBox<DBProcess> cbAffectedProcess;
 	
 	//General Settings
 	@FXML
@@ -79,34 +83,67 @@ public class AddProjectController {
 	@FXML
 	private Button btnAddProject;
 	
-	private NewScenarioController nsc;
+	private TabStartController tsc;
+	
+	private ObservableList<DBProcess> availableProcesses = FXCollections.observableArrayList();
+	private ObservableList<String> projectTypes = FXCollections.observableArrayList("processLevel","bpmLevel");
 	
 	public AddProjectController(){
 	}
 	
 	@FXML
 	public void initialize(){
+		cbAffectedProcess.setItems(availableProcesses);
+
+		cbType.setItems(projectTypes);
+		cbType.setValue(projectTypes.get(0));
 		
-		
+		//Update the available input field for process / bpm level
+		cbType.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				updateType();
+			}
+		});
 	}
 
-	public DBProject getSelectedProject() {
-		return selectedProject;
-	}
 
-	public void setSelectedProject(DBProject selectedProject) {
-		this.selectedProject = selectedProject;
-		lblProjectName.setText(selectedProject.getName());
+	public void updateType() {
+		String type = cbType.getValue();
+		double standardHeight = apM.getHeight();
 		
-		lblPeriods.setText(String.valueOf(selectedProject.getPeriods()));
-		lblAffectedProcess.setText(selectedProject.getProcess().toString());
-		
-		if(this.selectedProject.getType().equals("processLevel")){
+		if(type.equals("processLevel")){
 			//Hide b
 			apB.setVisible(false);
 			apB.setPrefHeight(0);
 			tfB.setText("0");
+			
+			//enable a
+			tbA.setDisable(false);
+			tbA.setSelected(false);
+			
+			//Show e & u
+			apE.setVisible(true);
+			apE.setPrefHeight(standardHeight);
+			tfE.setText("0");
+			apU.setVisible(true);
+			apU.setPrefHeight(standardHeight);
+			tfU.setText("0");
+			
+			//Update available processes
+			availableProcesses.clear();
+			availableProcesses.addAll(tsc.olProcesses);
+			if(availableProcesses.size()>0){
+				cbAffectedProcess.setValue(availableProcesses.get(0));
+			}
+			
 		}else{
+			//Show b
+			apB.setVisible(true);
+			apB.setPrefHeight(standardHeight);
+			tfB.setText("0");
+			
+			//disable a
 			tbA.setSelected(true);
 			tbA.setDisable(true);
 			
@@ -118,44 +155,78 @@ public class AddProjectController {
 			apU.setPrefHeight(0);
 			tfU.setText("0");
 			
+			//Update available processes
+			availableProcesses.clear();
+			DBProcess allProcess = new DBProcess(DBProcess.ID_ALLPROCESSES, DBProcess.NAME_ALLPROCESSES, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
+			availableProcesses.add(allProcess);
+			cbAffectedProcess.setValue(availableProcesses.get(0));
+			
+			
 		}
 	}
 
-	public void setNSC(NewScenarioController nsc){
-		this.nsc = nsc;
+	public void setTSC(TabStartController tsc){
+		this.tsc = tsc;
+		availableProcesses.addAll(tsc.olProcesses);
+		if(availableProcesses.size()>0){
+			cbAffectedProcess.setValue(availableProcesses.get(0));
+		}
 	}
 	
 	/**
 	 * Writes the new 
 	 */
-//	public void createSceneProcess(){
-//		DBScenarioProcess process = new DBScenarioProcess(-1,
-//				this.selectedProcess.getId(), this.selectedProcess.getName(),
-//				Float.valueOf(this.tfP.getText()), Float.valueOf(this.tfOop
-//						.getText()),
-//				Float.valueOf(this.tfFixedCosts.getText()),
-//				(float) this.slQ.getValue(), (float) this.slQMin.getValue(),
-//				(float) this.slQMax.getValue(), Float.valueOf(this.tfDegQ
-//						.getText()), Float.valueOf(this.tfT.getText()),
-//				Float.valueOf(this.tfTMax.getText()), Float.valueOf(this.tfDegT
-//						.getText()), Float.valueOf(this.tfDMP.getText()),
-//				Float.valueOf(this.tfDMLambda.getText()),
-//				Float.valueOf(this.tfDMAlpha.getText()),
-//				Float.valueOf(this.tfDMBeta.getText()),
-//				this.cbDMFktQ.getValue(),
-//				this.cbDMFktT.getValue());
-//		
-//		//TODO un-static
-//		NewScenarioController.olProcesses.add(process);
-//		NewScenarioController.availableProcesses.remove(this.selectedProcess);
-//		nsc.getCBProcess().setValue(NewScenarioController.availableProcesses.get(0));
-//		nsc.updateAvailableProjects();
-//		
-//		//Close the window
-//		Stage stage = (Stage) btnAddProcess.getScene().getWindow();
-//		stage.close();
-//		
-//	}
+	public void createProject(){
+		
+		Connection conn = DBConnection.getInstance().getConnection();
+		
+		try {
+			
+			Statement st = conn.createStatement();
+			st.executeUpdate("INSERT INTO Project(name, type, periods, processID, oInv, fixedCosts, a, b, e, u, m, absrelQ, absrelT, absrelOop) VALUES ('"
+					+ tfName.getText()
+					+ "', '"
+					+ cbType.getValue()
+					+ "',"
+					+ tfPeriods.getText()
+					+ ","
+					+ cbAffectedProcess.getValue().getId()
+					+ ","
+					+ Float.valueOf(tfOInv.getText())
+					+ ","
+					+ Float.valueOf(tfFixedCosts.getText())
+					+ ","
+					+ Float.valueOf(tfA.getText())
+					+ ","
+					+ Float.valueOf(tfB.getText())
+					+ ","
+					+ Float.valueOf(tfE.getText())
+					+ ","
+					+ Float.valueOf(tfU.getText())
+					+ ","
+					+ Float.valueOf(tfM.getText())
+					+ ",'"
+					+ getAbsRel(tbU)
+					+ "','" + getAbsRel(tbE) + "','" + getAbsRel(tbA) + "');");
+			int insertedID = st.getGeneratedKeys().getInt(1);
+
+			TabStartController.olProjects.add(new DBProject(insertedID, tfName.getText(), cbType.getValue().toString(), Integer.parseInt(tfPeriods.getText()),cbAffectedProcess.getValue(),Float.valueOf(tfFixedCosts.getText()),Float.valueOf(tfOInv.getText()),Float.valueOf(tfA.getText()),Float.valueOf(tfB.getText()),Float.valueOf(tfE.getText()),Float.valueOf(tfU.getText()),Float.valueOf(tfM.getText())));
+			
+			//Close the window
+			Stage stage = (Stage) btnAddProject.getScene().getWindow();
+			stage.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
+	private String getAbsRel(ToggleButton tb){
+		if(tb.isSelected()){
+			return "relativ";
+		}else{
+			return "absolut";
+		}
+	}
 	
 }
