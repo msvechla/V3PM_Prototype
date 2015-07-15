@@ -46,7 +46,7 @@ public class AddConstraintController {
 	@FXML
 	private TextField tfX;
 	@FXML
-	private TextField tfY;
+	private ComboBox<String> cbY;
 	@FXML
 	private Label lblComma1;
 	@FXML
@@ -55,6 +55,7 @@ public class AddConstraintController {
 	private ObservableList<DBProject> availableS = FXCollections.observableArrayList();
 	private ObservableList<DBProject> availableSI = FXCollections.observableArrayList();
 	private ObservableList<DBProcess> availableI = FXCollections.observableArrayList();
+	private ObservableList<String> availableY = FXCollections.observableArrayList();
 	
 	public AddConstraintController(){
 	}
@@ -64,15 +65,23 @@ public class AddConstraintController {
 		cbS.setItems(availableS);
 		cbSI.setItems(availableSI);
 		cbI.setItems(availableI);
+		cbY.setItems(availableY);
 		
-		availableS.addAll(tsc.olProjects);
-		cbS.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				updateAvailableSI();
-			}
-		});
+		//Some initialization in setNSC
 	}
+	
+	public void addConstraint(){
+		DBConstraint constraint = new DBConstraint(type, cbS.getValue(),
+				cbSI.getValue(), cbI.getValue(), Float.valueOf(tfX.getText()),
+				cbY.getValue());
+
+		nsc.olConstraints.add(constraint);
+		
+		//Close the window
+		Stage stage = (Stage) tfX.getScene().getWindow();
+		stage.close();
+	}
+	
 
 	//Updates the available SI Projects, according to already chosen Project S
 	private void updateAvailableSI(){
@@ -143,51 +152,76 @@ public class AddConstraintController {
 			hideI();
 			hideComma1();
 		}
-			
+		
 	}
 	
 	private void hideComma1(){
 		lblComma1.setVisible(false);
-		lblComma1.setPrefWidth(0);
+		lblComma1.setManaged(false);
 	}
 
 	private void hideComma2(){
 		lblComma2.setVisible(false);
-		lblComma2.setPrefWidth(0);
+		lblComma2.setManaged(false);
 	}
 	
 	private void hideS(){
 		cbS.setVisible(false);
 		cbS.setValue(null);
-		cbS.setPrefWidth(0);
+		cbS.setManaged(false);
 	}
 	
 	private void hideSI(){
 		cbSI.setVisible(false);
 		cbSI.setValue(null);
-		cbSI.setPrefWidth(0);
+		cbSI.setManaged(false);
 	}
 	
 	private void hideI(){
 		cbI.setVisible(false);
 		cbI.setValue(null);
-		cbI.setPrefWidth(0);
+		cbI.setManaged(false);
 	}
 	
 	private void hideX(){
 		tfX.setVisible(false);
-		tfX.setText("0");
-		tfX.setPrefWidth(0);
+		tfX.setText("-1");
+		tfX.setManaged(false);
 	}
 	
 	private void hideY(){
-		tfY.setVisible(false);
-		tfY.setText("0");
-		tfY.setPrefWidth(0);
+		cbY.setVisible(false);
+		cbY.setValue("-1");
+		cbY.setManaged(false);
 	}
 	
 	public void setNSC(NewScenarioController nsc){
 		this.nsc = nsc;
+		//Setup Project and Process lists
+		availableI.addAll(nsc.olProcesses);
+		availableS.addAll(nsc.olProjects);
+		cbS.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				updateAvailableSI();
+			}
+		});
+		
+		//Setup Period list
+		for(int i=0;i<nsc.getPeriods();i++){
+			availableY.add(Integer.toString(i));
+		}
+		
+		//Add all Periods
+		if (type.equals(DBConstraint.TYPE_QUALMIN)
+				|| type.equals(DBConstraint.Type_TIMEMAX)
+				|| type.equals(DBConstraint.TYPE_BUDPRO)
+				|| type.equals(DBConstraint.TYPE_BUDBPM)
+				|| type.equals(DBConstraint.TYPE_BUDGET)
+				|| type.equals(DBConstraint.TYPE_NUMPROJ)) {
+			availableY.add("ALL");
+		}
+		
 	}
 	
 	public void setTSC(TabStartController tsc){

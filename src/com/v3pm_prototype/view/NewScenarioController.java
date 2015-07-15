@@ -1,11 +1,16 @@
 package com.v3pm_prototype.view;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,11 +41,13 @@ import javafx.util.converter.FloatStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
 
+import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.database.DBConstraint;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
+import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
 
 public class NewScenarioController {
@@ -56,6 +63,24 @@ public class NewScenarioController {
 	private Button btnAddProcess;
 	@FXML
 	private TextField tfName;
+	@FXML
+	private Button btnCreateScenario;
+	
+	//General Settings
+	@FXML
+	private ComboBox<Integer> cbPeriods;
+	private ObservableList<Integer> availablePeriods = FXCollections
+			.observableArrayList();
+	@FXML
+	private ComboBox<Integer> cbSlotsPerPeriod;
+	private ObservableList<Integer> availableSlots = FXCollections
+			.observableArrayList();
+	@FXML
+	private TextField tfDiscountRate;
+	@FXML
+	private TextField tfOAFixedOutflows;
+	
+	
 
 	// ListViews (Pools)
 	@FXML
@@ -89,7 +114,7 @@ public class NewScenarioController {
 	//Main Constraint ListView
 	@FXML
 	private ListView<DBConstraint> lvConstraints;
-	private ObservableList<DBConstraint> olConstraints = FXCollections
+	public ObservableList<DBConstraint> olConstraints = FXCollections
 			.observableArrayList();
 	
 	//Project Table
@@ -145,9 +170,9 @@ public class NewScenarioController {
 	@FXML
 	private TableColumn<DBProcess, String> clmProcessesDFKT;
 
-	private ObservableList<DBProject> olProjects = FXCollections
+	public ObservableList<DBProject> olProjects = FXCollections
 			.observableArrayList();
-	private ObservableList<DBProcess> olProcesses = FXCollections
+	public ObservableList<DBProcess> olProcesses = FXCollections
 			.observableArrayList();
 
 	public NewScenarioController() {
@@ -162,6 +187,8 @@ public class NewScenarioController {
 		// Setup Pools
 		initPools();
 		initConstraints();
+		
+		initGeneralSettings();
 	}
 
 	// /**
@@ -184,6 +211,168 @@ public class NewScenarioController {
 	// }
 	//
 	// }
+	
+	private void initGeneralSettings() {
+		cbPeriods.setItems(availablePeriods);
+		cbSlotsPerPeriod.setItems(availableSlots);
+		
+		for(int i=1; i<=12; i++){
+			availablePeriods.add(i);
+		}
+		
+		cbPeriods.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				for(int i=1; i<=4; i++){
+					availableSlots.add(i);
+				}
+				cbSlotsPerPeriod.setValue(availableSlots.get(0));
+			}
+		});
+		
+	}
+
+	/**
+	 * Writes the scenario and all its components to the database
+	 */
+	public void createScenario(){
+		
+		//Close the window
+		Stage stage = (Stage) btnCreateScenario.getScene().getWindow();
+		stage.close();
+		
+		tsc.getMainApp().getV3pmGUIController().setStatus("Writing Scenario to Database...");
+		tsc.getMainApp().getV3pmGUIController().setProgress(-1);
+		
+		Task<?> writeScenarioTask = new Task<Object>(){
+			@Override
+			protected Object call() throws Exception {
+				Connection conn = DBConnection.getInstance().getConnection();
+				Statement st = conn.createStatement();
+				
+				//-------------------- WRITE Scenario TO DB --------------------
+				st.executeUpdate("INSERT INTO Scenario(name, periods, slotsPerPeriod, discountRate, oOAFixed) VALUES('"
+						+ tfName.getText()
+						+ "',"
+						+ cbPeriods.getValue()
+						+ ","
+						+ cbSlotsPerPeriod.getValue()
+						+ ","
+						+ Float.valueOf(tfDiscountRate.getText())
+						+ ","
+						+ Float.valueOf(tfOAFixedOutflows.getText()) + ");");
+				int scenarioID = st.getGeneratedKeys().getInt(1);
+				
+				
+				//Create DBScenario and add it to the Scenario List
+				//TODO Add process, projects & constraints
+				DBScenario scenario = new DBScenario(scenarioID,
+						tfName.getText(), 0, cbPeriods.getValue(),
+						cbSlotsPerPeriod.getValue(),
+						Float.valueOf(tfDiscountRate.getText()),
+						Float.valueOf(tfOAFixedOutflows.getText()));
+
+				tsc.olScenarios.add(scenario);
+				
+				//TODO Loop through classes would be nicer code
+				//-------------------- WRITE ScenarioConstraint TO DB --------------------
+				StringBuilder query = new StringBuilder();
+				query.append("INSERT INTO ScenarioConstraint(scenarioID, type, sID, sIID, iID, x, y) VALUES");
+				
+				for(DBConstraint constraint : olConstraints){
+					int sID = 0;
+					if(constraint.getS() != null){
+						sID = constraint.getS().getId();
+					}
+					int sIID = 0;
+					if(constraint.getSi() != null){
+						sIID = constraint.getSi().getId();
+					}
+					int iID = 0;
+					if(constraint.getI() != null){
+						iID = constraint.getI().getId();
+					}
+					int y = -1;
+					if(constraint.getY().equals("ALL")){
+						y =-2;
+					}else{
+						y = Integer.parseInt(constraint.getY());
+					}
+					
+					query.append("("+scenarioID+", '"+constraint.getType()+"', "+sID+", "+sIID+", "+iID+", "+constraint.getX()+", "+y+")");
+					
+					//If this is the last constraint  close the query ";", else add "," for next values
+					if(olConstraints.indexOf(constraint) == olConstraints.size()-1){
+						query.append(";");
+					}else{
+						query.append(",");
+					}
+				}
+				
+				//Execute the Constraint Query
+				System.out.println("[SQLITE] " + query.toString());
+				st.executeUpdate(query.toString());
+				
+				//-------------------- WRITE ScenarioProcess TO DB --------------------
+				query = new StringBuilder();
+				query.append("INSERT INTO ScenarioProcess(scenarioID, processID) VALUES");
+				
+				for(DBProcess process : olProcesses){
+					
+					query.append("("+scenarioID+", "+process.getId()+")");
+					
+					//If this is the last process  close the query ";", else add "," for next values
+					if(olProcesses.indexOf(process) == olProcesses.size()-1){
+						query.append(";");
+					}else{
+						query.append(",");
+					}
+				}
+				
+				//Execute the Process Query
+				System.out.println("[SQLITE] " + query.toString());
+				st.executeUpdate(query.toString());
+				
+				//-------------------- WRITE ScenarioProject TO DB --------------------
+				query = new StringBuilder();
+				query.append("INSERT INTO ScenarioProject(scenarioID, projectID) VALUES");
+				
+				for(DBProject project : olProjects){
+					
+					query.append("("+scenarioID+", "+project.getId()+")");
+					
+					//If this is the last project  close the query ";", else add "," for next values
+					if(olProjects.indexOf(project) == olProjects.size()-1){
+						query.append(";");
+					}else{
+						query.append(",");
+					}
+				}
+				
+				//Execute the Project Query
+				System.out.println("[SQLITE] " + query.toString());
+				st.executeUpdate(query.toString());
+				
+				return null;
+			}
+
+			@Override
+			protected void succeeded() {
+				super.succeeded();
+				tsc.getMainApp().getV3pmGUIController().setStatus("Scenario saved to Database.");
+				tsc.getMainApp().getV3pmGUIController().setProgress(0);
+				
+//				//Close the window
+//				Stage stage = (Stage) btnCreateScenario.getScene().getWindow();
+//				stage.close();
+			}		
+		};
+		
+		Thread t = new Thread(writeScenarioTask);
+		t.setDaemon(true);
+		t.start();
+	}
 
 	private void initConstraints() {
 		// Set listview content
@@ -447,16 +636,18 @@ public class NewScenarioController {
 			root = (VBox) loader.load();
 			
 			AddConstraintController acController = loader.getController();
+			acController.setType(type);
 			acController.setNSC(this);
 			acController.setTSC(tsc);
-			acController.setType(type);
-	        
+			acController.updateType();
+			
 			// Show the scene containing the root layout.
 	        Stage stage = new Stage();
 	        stage.setTitle("Define Constraint");
 	        stage.setScene(new Scene(root));
+	        stage.hide();
 	        stage.show();
-	        acController.updateType();
+	        
 		} catch (IOException e) {
 			e.printStackTrace();
 		}    
@@ -468,6 +659,10 @@ public class NewScenarioController {
 
 	public void setTsc(TabStartController tsc) {
 		this.tsc = tsc;
+	}
+	
+	public int getPeriods(){
+		return cbPeriods.getValue();
 	}
 
 }

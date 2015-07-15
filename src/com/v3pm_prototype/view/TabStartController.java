@@ -37,6 +37,7 @@ import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
+import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
 import com.v3pm_prototype.rmgeneration.RoadMap;
@@ -54,7 +55,20 @@ public class TabStartController implements EventHandler<ActionEvent>{
 	private Button btnNewProcess;
 	
 	@FXML
-	private TableView<?> tvScenarios;
+	private TableView<DBScenario> tvScenarios;
+	@FXML
+	private TableColumn<DBScenario, String> clmScenariosName;
+	@FXML
+	private TableColumn<DBScenario, Integer> clmScenariosPeriods;
+	@FXML
+	private TableColumn<DBScenario, Integer> clmScenariosSlots;
+	@FXML
+	private TableColumn<DBScenario, Float> clmScenarioDR;
+	@FXML
+	private TableColumn<DBScenario, Float> clmScenarioOAF;
+	
+	public ObservableList<DBScenario> olScenarios = FXCollections.observableArrayList();
+	
 	
 	@FXML
 	private TableView<DBProject> tvProjects;
@@ -114,6 +128,7 @@ public class TabStartController implements EventHandler<ActionEvent>{
 		
 		initTVProjects();
 		initTVProcesses();
+		initTVScenarios();
 		
 		loadProjectsAndProcesses();
 		
@@ -161,6 +176,21 @@ public class TabStartController implements EventHandler<ActionEvent>{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}    
+	}
+	
+	private void initTVScenarios(){
+		clmScenariosName.setCellValueFactory(
+	            new PropertyValueFactory<DBScenario, String>("name"));
+		clmScenariosPeriods.setCellValueFactory(
+	            new PropertyValueFactory<DBScenario, Integer>("periods"));
+		clmScenariosSlots.setCellValueFactory(
+	            new PropertyValueFactory<DBScenario, Integer>("slotsPerPeriod"));
+		clmScenarioDR.setCellValueFactory(
+	            new PropertyValueFactory<DBScenario, Float>("discountRate"));
+		clmScenarioOAF.setCellValueFactory(
+	            new PropertyValueFactory<DBScenario, Float>("oOAFixed"));
+		
+		tvScenarios.setItems(olScenarios);
 	}
 	
 	public void initTVProjects(){
@@ -389,6 +419,8 @@ public class TabStartController implements EventHandler<ActionEvent>{
         AnchorPane root;
 		try {
 			root = (AnchorPane) loader.load();
+			NewScenarioController nsController = loader.getController();
+			nsController.setTsc(this);
 			
 			// Show the scene containing the root layout.
 	        Stage stage = new Stage();
@@ -404,6 +436,9 @@ public class TabStartController implements EventHandler<ActionEvent>{
 		this.mainApp = mainApp;
 	}
 	
+	public MainApp getMainApp(){
+		return this.mainApp;
+	}
 
 	public void myAction(){
 		System.out.println("myAction");

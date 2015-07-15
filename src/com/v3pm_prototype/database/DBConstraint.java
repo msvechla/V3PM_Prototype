@@ -22,11 +22,11 @@ public class DBConstraint {
 	private DBProject s;
 	private DBProject sI;
 	private DBProcess i;
-	private int y;
+	private String y;
 	private float x;
 	private String type;
 	
-	public DBConstraint(String type, DBProject s, DBProject sI, DBProcess i, int y, float x) {
+	public DBConstraint(String type, DBProject s, DBProject sI, DBProcess i, float x,String y) {
 		super();
 		this.type = type;
 		this.s = s;
@@ -36,6 +36,35 @@ public class DBConstraint {
 		this.x = x;
 	}
 	
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(this.type+"( ");
+		
+		if(s != null){
+			sb.append(s.getName());
+		}
+		if( x != -1){
+			sb.append(x);
+		}
+		if(!(sI == null && x == -1 && y == "-1" && i == null)){
+			sb.append(", ");
+		}
+		if(sI != null){
+			sb.append(sI.getName());
+		}
+		if(i != null){
+			sb.append(i.getName());
+			sb.append(", ");
+		}
+		if(y != "-1"){
+			sb.append(y);
+		}
+		
+		sb.append(" )");
+		
+		return sb.toString();
+	}
 	
 	public String getType() {
 		return type;
@@ -69,11 +98,11 @@ public class DBConstraint {
 		this.i = i;
 	}
 
-	public int getY() {
+	public String getY() {
 		return y;
 	}
 
-	public void setY(int y) {
+	public void setY(String y) {
 		this.y = y;
 	}
 

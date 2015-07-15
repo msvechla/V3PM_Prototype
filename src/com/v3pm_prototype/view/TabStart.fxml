@@ -18,10 +18,11 @@
             </Label>
             <TableView fx:id="tvScenarios" layoutX="17.0" layoutY="45.0" prefHeight="200.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="ID" />
-                <TableColumn prefWidth="205.0" text="Name" />
-                  <TableColumn minWidth="0.0" prefWidth="231.0" text="Projects" />
-                  <TableColumn prefWidth="123.0" text="NPV" />
+                <TableColumn prefWidth="262.0" text="Name" />
+                  <TableColumn minWidth="0.0" prefWidth="83.0" text="Periods" />
+                  <TableColumn prefWidth="89.0" text="Slots" />
+                  <TableColumn minWidth="0.0" prefWidth="131.0" text="Discount Rate" />
+                  <TableColumn minWidth="0.0" prefWidth="120.0" text="OA Fixed Costs" />
               </columns>
             </TableView>
             <Button fx:id="btnNewScenario" layoutX="17.0" layoutY="254.0" mnemonicParsing="false" onAction="#openNewScenarioWindow" text="New Scenario" />
