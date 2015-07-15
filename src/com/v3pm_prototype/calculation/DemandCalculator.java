@@ -1,4 +1,4 @@
-package com.v3pm_prototype.main;
+package com.v3pm_prototype.calculation;
 
 import com.v3pm_prototype.exceptions.NoValidThetaIDException;
 

@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import com.v3pm_prototype.main.Process;
-import com.v3pm_prototype.main.Project;
+import com.v3pm_prototype.calculation.Process;
+import com.v3pm_prototype.calculation.Project;
 
 public class RunConfiguration {
-	private int countPeriods;
-	private int countProjectsMaxPerPeriod;
+	private int periods;
+	private int slotsPerPeriod;
 	private double discountRate;
 	private int periodWithNoScheduledProjects;
 	private int budgetMaxPerPeriod;
 	private List<Double> budgetMaxforEachPeriod;
-	private int overarchingFixedOutflows;
+	private double oOAFixed;
 	
 	private List<Project> lstProjects;
 	private List<Process> lstProcesses;
@@ -26,8 +26,22 @@ public class RunConfiguration {
 		this.lstProjects = new ArrayList<Project>();
 		this.lstProcesses = new ArrayList<Process>();
 	}
-
 	
+	public RunConfiguration(int periods, int slotsPerPeriod,
+			double discountRate, double oOAFixed, List<Project> lstProjects,
+			List<Process> lstProcesses) {
+		super();
+		this.periods = periods;
+		this.slotsPerPeriod = slotsPerPeriod;
+		this.discountRate = discountRate;
+		this.oOAFixed = oOAFixed;
+		this.lstProjects = lstProjects;
+		this.lstProcesses = lstProcesses;
+	}
+
+
+
+
 	public Project getProject(int id){
 		for(Project p : lstProjects){
 			if(p.getId() == id){
@@ -100,20 +114,20 @@ public class RunConfiguration {
 		return lstGloMutDep;
 	}
 	
-	public int getCountPeriods() {
-		return countPeriods;
+	public int getPeriods() {
+		return periods;
 	}
 
-	public void setCountPeriods(int countPeriods) {
-		this.countPeriods = countPeriods;
+	public void setPeriods(int countPeriods) {
+		this.periods = countPeriods;
 	}
 
-	public int getCountProjectsMaxPerPeriod() {
-		return countProjectsMaxPerPeriod;
+	public int getSlotsPerPeriod() {
+		return slotsPerPeriod;
 	}
 
-	public void setCountProjectsMaxPerPeriod(int countProjectsMaxPerPeriod) {
-		this.countProjectsMaxPerPeriod = countProjectsMaxPerPeriod;
+	public void setSlotsPerPeriod(int countProjectsMaxPerPeriod) {
+		this.slotsPerPeriod = countProjectsMaxPerPeriod;
 	}
 
 	public double getDiscountRate() {
@@ -140,12 +154,12 @@ public class RunConfiguration {
 		this.budgetMaxPerPeriod = budgetMaxPerPeriod;
 	}
 
-	public int getOverarchingFixedOutflows() {
-		return overarchingFixedOutflows;
+	public double getOOAFixed() {
+		return oOAFixed;
 	}
 
-	public void setOverarchingFixedOutflows(int overarchingFixedOutflows) {
-		this.overarchingFixedOutflows = overarchingFixedOutflows;
+	public void setOOAFixed(double overarchingFixedOutflows) {
+		this.oOAFixed = overarchingFixedOutflows;
 	}
 
 	public List<Double> getBudgetMaxforEachPeriod() {

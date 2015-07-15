@@ -1,4 +1,4 @@
-package com.v3pm_prototype.main;
+package com.v3pm_prototype.calculation;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -26,7 +26,7 @@ public class Calculator {
 			RoadMap RM = itRM.next();
 			double inflows = 0;
 			double outflows = 0;
-			double fixedCostsOA = config.getOverarchingFixedOutflows();  //MLe
+			double fixedCostsOA = config.getOOAFixed();  //MLe
 			double fixedCostsOAGes = 0;  //MLe
 			int prePeriod = -1;
 			int projectNumberWithinPeriod = 1; // to indicate the last project of a period
@@ -78,7 +78,7 @@ public class Calculator {
 						projectNumberWithinPeriod, config);
 				prePeriod = tempProject.getPeriod();
 				projectNumberWithinPeriod++;
-				if (projectNumberWithinPeriod > config.getCountProjectsMaxPerPeriod()) {
+				if (projectNumberWithinPeriod > config.getSlotsPerPeriod()) {
 					projectNumberWithinPeriod = 1;
 				}
 			}

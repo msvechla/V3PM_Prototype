@@ -1,4 +1,4 @@
-package com.v3pm_prototype.main;
+package com.v3pm_prototype.calculation;
 
 /**
  * class for value objects which holds all the information about a single process
@@ -15,9 +15,8 @@ public class Process {
 	private double d; // quality specific degeneration effect
 	private double v; // time specific degeneration effect
 	private double fixedCosts; // MLe
-	private double qmin; // MLe	
-	private double tmax; // MLe	
 	private double n; // demand
+	
 	// variables for calculating the demand
 	private double roh;
 	private double lamda;
@@ -26,7 +25,7 @@ public class Process {
 	private double beta;
 	private int thetaID_t;
 
-	public Process(String name, char id, double q, double qmax, double t, double p, double oop, double d, double v, double fixedCosts, double qmin, double tmax, double n, double roh, double lamda,
+	public Process(String name, char id, double q, double qmax, double t, double p, double oop, double d, double v, double fixedCosts, double n, double roh, double lamda,
 			double alpha, int thetaID_q, double beta, int thetaID_t) {
 		super();
 		this.name = name;
@@ -131,23 +130,6 @@ public class Process {
 		this.fixedCosts = fixedCosts;
 	}
 	
-	//MLe
-	public double getQmin() {
-		return qmin;
-	}
-
-	public void setQmin(double qmin) {
-		this.qmin = qmin;
-	}
-	
-	//MLe
-	public double getTmax() {
-		return tmax;
-	}
-
-	public void setTmax(double tmax) {
-		this.tmax = tmax;
-	}
 		
 	public double getN() {
 		return n;

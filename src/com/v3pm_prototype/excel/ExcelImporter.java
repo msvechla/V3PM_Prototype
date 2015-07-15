@@ -9,9 +9,9 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 
+import com.v3pm_prototype.calculation.Process;
+import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.main.Main;
-import com.v3pm_prototype.main.Process;
-import com.v3pm_prototype.main.Project;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 /**
@@ -300,8 +300,8 @@ public class ExcelImporter {
 		int periodsUnderInvestigation = (int) cell.getNumericCellValue();
 		
 		cell = sheet.getRow(rowCount++).getCell(cell.getColumnIndex());
-		standardConfig.setCountProjectsMaxPerPeriod((int) cell.getNumericCellValue());
-		standardConfig.setCountPeriods(periodsUnderInvestigation / standardConfig.getCountProjectsMaxPerPeriod());
+		standardConfig.setSlotsPerPeriod((int) cell.getNumericCellValue());
+		standardConfig.setPeriods(periodsUnderInvestigation / standardConfig.getSlotsPerPeriod());
 		
 		cell = sheet.getRow(rowCount++).getCell(cell.getColumnIndex());
 		standardConfig.setDiscountRate(cell.getNumericCellValue());

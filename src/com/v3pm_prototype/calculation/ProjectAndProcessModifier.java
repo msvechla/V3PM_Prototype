@@ -1,9 +1,10 @@
-package com.v3pm_prototype.main;
+package com.v3pm_prototype.calculation;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import com.v3pm_prototype.main.Main;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 /**
@@ -109,11 +110,11 @@ public class ProjectAndProcessModifier {
 			else {
 				// degeneration-effect on time
 				// differ between one or multiple projects per period
-				if (config.getCountProjectsMaxPerPeriod() == 1) {
+				if (config.getSlotsPerPeriod() == 1) {
 					tempProcess.setT(tempProcess.getT() * (1 + tempProcess.getV())); // degeneration
 				} else {
 					// check if it is the last handled project of a period.
-					if (config.getCountProjectsMaxPerPeriod() == projectNumberWithinPeriod) {
+					if (config.getSlotsPerPeriod() == projectNumberWithinPeriod) {
 						// check if there are any changes of t between handling the first and the last project in a period
 						if (isTheSameValue(tempProcess.getT(), bufferedTempCollProcess, tempProcess.getId(), 't')) {
 							tempProcess.setT(tempProcess.getT() * (1 + tempProcess.getV())); // degeneration
@@ -189,11 +190,11 @@ public class ProjectAndProcessModifier {
 			else {
 				// degeneration-effect on quality
 				// differ between one or multiple projects per period
-				if (config.getCountProjectsMaxPerPeriod() == 1) {
+				if (config.getSlotsPerPeriod() == 1) {
 					tempProcess.setQ(tempProcess.getQ() * (1 - tempProcess.getD())); // degeneration
 				} else {
 					// check if it is the last handled project of a period.
-					if (config.getCountProjectsMaxPerPeriod() == projectNumberWithinPeriod) {
+					if (config.getSlotsPerPeriod() == projectNumberWithinPeriod) {
 						// check if there are any changes of q between handling the first and the last project in a period
 						if (isTheSameValue(tempProcess.getQ(), bufferedTempCollProcess, tempProcess.getId(), 'q')) {
 							tempProcess.setQ(tempProcess.getQ() * (1 - tempProcess.getD())); // degeneration

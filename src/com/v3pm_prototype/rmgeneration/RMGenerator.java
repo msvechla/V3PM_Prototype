@@ -7,8 +7,8 @@ import java.util.List;
 
 import javafx.concurrent.Task;
 
-import com.v3pm_prototype.main.Project;
-import com.v3pm_prototype.main.RMRestrictionHandler;
+import com.v3pm_prototype.calculation.Project;
+import com.v3pm_prototype.calculation.RMRestrictionHandler;
 
 public class RMGenerator extends Task<List<RoadMap>> {
 	
@@ -43,10 +43,10 @@ public class RMGenerator extends Task<List<RoadMap>> {
 			RMContainer rmc = new RMContainer(false, implementedProjectIDs);
 			
 			//add a roadmaps to the container for implementation start in each period
-			for(int period = 0; period < config.getCountPeriods() - p.numberOfPeriods+1; period++){
-					Project[][] roadmap = new Project[config.getCountPeriods()][config.getCountProjectsMaxPerPeriod()];
+			for(int period = 0; period < config.getPeriods() - p.numberOfPeriods+1; period++){
+					Project[][] roadmap = new Project[config.getPeriods()][config.getSlotsPerPeriod()];
 					
-					for(int i = 0; i < config.getCountPeriods();i++){
+					for(int i = 0; i < config.getPeriods();i++){
 						if((i<period) || (i> (period + p.numberOfPeriods-1))){
 							//no project implemented
 						}else{
@@ -137,7 +137,7 @@ public class RMGenerator extends Task<List<RoadMap>> {
 	private static Project[][] combineRoadMaps(RoadMap rmSingle,
 			RoadMap rmSingle2, RunConfiguration config) {
 		
-		Project[][] rmCombined = new Project[config.getCountPeriods()][config.getCountProjectsMaxPerPeriod()];
+		Project[][] rmCombined = new Project[config.getPeriods()][config.getSlotsPerPeriod()];
 		
 		for(int period = 0; period<rmSingle.getRMArray().length;period++){
 			
@@ -150,7 +150,7 @@ public class RMGenerator extends Task<List<RoadMap>> {
 			RMRestrictionHandler.meetsOnCombinedContainerGenerationCheck(projectsInPeriod);
 			
 			//save period if COUNT_PROJECTS_MAX_PER_PERIOD is not exceeded, otherwise stop combination
-			if(projectsInPeriod.size() <= config.getCountProjectsMaxPerPeriod()){
+			if(projectsInPeriod.size() <= config.getSlotsPerPeriod()){
 				int i=0;
 				for(Project p : projectsInPeriod){
 					rmCombined[period][i] =  p;

@@ -1,6 +1,7 @@
 package com.v3pm_prototype.database;
 
 import java.io.Serializable;
+import com.v3pm_prototype.calculation.Process;
 
 public class DBProcess implements Serializable{
 	public static final int ID_ALLPROCESSES = 0;
@@ -8,28 +9,28 @@ public class DBProcess implements Serializable{
 	
 	private int id;
 	private String name;
-	private float p;
-	private float oop;
-	private float fixedCosts;
-	private float q;
-	private float degQ;
-	private float t;
-	private float degT;
+	private double p;
+	private double oop;
+	private double fixedCosts;
+	private double q;
+	private double degQ;
+	private double t;
+	private double degT;
 	
-	private float dmP;
-	private float dmLambda;
-	private float dmAlpha;
-	private float dmBeta;
+	private double dmP;
+	private double dmLambda;
+	private double dmAlpha;
+	private double dmBeta;
 	private String dmFktQ;
 	private String dmFktT;
 	
 	private String demandFunction;
 	
 	
-	public DBProcess(int id, String name, float p,
-			float oop, float fixedCosts, float q,
-			float degQ, float t, float degT, float dmP,
-			float dmLambda, float dmAlpha, float dmBeta, String dmFktQ,
+	public DBProcess(int id, String name, double p,
+			double oop, double fixedCosts, double q,
+			double degQ, double t, double degT, double dmP,
+			double dmLambda, double dmAlpha, double dmBeta, String dmFktQ,
 			String dmFktT) {
 		super();
 		this.id = id;
@@ -48,6 +49,11 @@ public class DBProcess implements Serializable{
 		this.dmFktQ = dmFktQ;
 		this.dmFktT = dmFktT;
 		generateDemandfunction();
+	}
+	
+	public Process toProcess(){
+		//TODO Convert to Process
+		Process process = new Process(name, id, q, 100, t, p, oop, degQ, degT, fixedCosts, 0, dmP, dmLambda, dmAlpha, dmFktQ, dmBeta, dmFktT);
 	}
 	
 	public String toString(){
@@ -83,91 +89,91 @@ public class DBProcess implements Serializable{
 		this.demandFunction = demandFunction;
 	}
 
-	public float getP() {
+	public double getP() {
 		return p;
 	}
 
-	public void setP(float p) {
+	public void setP(double p) {
 		this.p = p;
 	}
 
-	public float getOop() {
+	public double getOop() {
 		return oop;
 	}
 
-	public void setOop(float oop) {
+	public void setOop(double oop) {
 		this.oop = oop;
 	}
 
-	public float getFixedCosts() {
+	public double getFixedCosts() {
 		return fixedCosts;
 	}
 
-	public void setFixedCosts(float fixedCosts) {
+	public void setFixedCosts(double fixedCosts) {
 		this.fixedCosts = fixedCosts;
 	}
 
-	public float getQ() {
+	public double getQ() {
 		return q;
 	}
 
-	public void setQ(float q) {
+	public void setQ(double q) {
 		this.q = q;
 	}
 
-	public float getDegQ() {
+	public double getDegQ() {
 		return degQ;
 	}
 
-	public void setDegQ(float degQ) {
+	public void setDegQ(double degQ) {
 		this.degQ = degQ;
 	}
 
-	public float getT() {
+	public double getT() {
 		return t;
 	}
 
-	public void setT(float t) {
+	public void setT(double t) {
 		this.t = t;
 	}
 
-	public float getDegT() {
+	public double getDegT() {
 		return degT;
 	}
 
-	public void setDegT(float degT) {
+	public void setDegT(double degT) {
 		this.degT = degT;
 	}
 
-	public float getDmP() {
+	public double getDmP() {
 		return dmP;
 	}
 
-	public void setDmP(float dmP) {
+	public void setDmP(double dmP) {
 		this.dmP = dmP;
 	}
 
-	public float getDmLambda() {
+	public double getDmLambda() {
 		return dmLambda;
 	}
 
-	public void setDmLambda(float dmLambda) {
+	public void setDmLambda(double dmLambda) {
 		this.dmLambda = dmLambda;
 	}
 
-	public float getDmAlpha() {
+	public double getDmAlpha() {
 		return dmAlpha;
 	}
 
-	public void setDmAlpha(float dmAlpha) {
+	public void setDmAlpha(double dmAlpha) {
 		this.dmAlpha = dmAlpha;
 	}
 
-	public float getDmBeta() {
+	public double getDmBeta() {
 		return dmBeta;
 	}
 
-	public void setDmBeta(float dmBeta) {
+	public void setDmBeta(double dmBeta) {
 		this.dmBeta = dmBeta;
 	}
 

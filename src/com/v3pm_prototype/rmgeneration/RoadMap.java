@@ -3,8 +3,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
+import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.main.Main;
-import com.v3pm_prototype.main.Project;
 
 public class RoadMap implements Comparable<RoadMap>{
 	private Project[][] rmArray;
@@ -41,8 +41,8 @@ public class RoadMap implements Comparable<RoadMap>{
 		Collection<Project> collProjects = new LinkedHashSet<Project>();
 		HashSet<Project> implementedProjects = new HashSet<Project>();
 		
-		for(int period = 0; period < config.getCountPeriods(); period++){
-			for(int slot = 0; slot < config.getCountProjectsMaxPerPeriod();slot++){
+		for(int period = 0; period < config.getPeriods(); period++){
+			for(int slot = 0; slot < config.getSlotsPerPeriod();slot++){
 				Project p = this.rmArray[period][slot];
 				if(p != null){
 					Project copy = new Project(p.getId(), p.getName(), p.getNumberOfPeriods(), p.getType(), p.getI(), p.getOinv(), p.getA(), p.getB(), p.getE(), p.getU(),

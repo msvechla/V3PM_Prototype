@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import com.v3pm_prototype.main.Project;
-import com.v3pm_prototype.main.RMRestrictionHandler;
+import com.v3pm_prototype.calculation.Project;
+import com.v3pm_prototype.calculation.RMRestrictionHandler;
 
 
 public class RMContainer {

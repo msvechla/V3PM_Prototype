@@ -1,4 +1,4 @@
-package com.v3pm_prototype.main;
+package com.v3pm_prototype.calculation;
 
 import java.util.ArrayList;
 import java.util.Collection;

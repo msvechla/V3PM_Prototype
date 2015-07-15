@@ -2,23 +2,25 @@ package com.v3pm_prototype.database;
 
 import java.io.Serializable;
 
+import com.v3pm_prototype.calculation.Project;
+
 public class DBProject implements Serializable {
 	private int id;
 	private String name;
 	private String type;
 	private int periods;
-	private float fixedCosts;
-	private float oInv;
+	private double fixedCosts;
+	private double oInv;
 	private DBProcess process;
-	private float a;
-	private float b;
-	private float e;
-	private float u;
-	private float m;
+	private double a;
+	private double b;
+	private double e;
+	private double u;
+	private double m;
 	
 	public DBProject(int id, String name, String type, int periods,DBProcess process,
-			float fixedCosts, float oInv, float a, float b,
-			float e, float u, float m) {
+			double fixedCosts, double oInv, double a, double b,
+			double e, double u, double m) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -34,6 +36,12 @@ public class DBProject implements Serializable {
 		this.m = m;
 	}
 
+	//Converts this object to the Project class (used for calculations)
+	public Project toProject(){
+		Project p = new Project(id, name, periods, type, process.getId(), oInv, a, b, e, u, m);
+		return p;
+	}
+	
 	public String toString(){
 		return this.name + " "+this.type+ " "+this.periods+"p";
 	}
@@ -70,19 +78,19 @@ public class DBProject implements Serializable {
 		this.periods = periods;
 	}
 
-	public float getFixedCosts() {
+	public double getFixedCosts() {
 		return fixedCosts;
 	}
 
-	public void setFixedCosts(float fixCosts) {
+	public void setFixedCosts(double fixCosts) {
 		this.fixedCosts = fixCosts;
 	}
 
-	public float getOInv() {
+	public double getOInv() {
 		return oInv;
 	}
 
-	public void setOInv(float oInv) {
+	public void setOInv(double oInv) {
 		this.oInv = oInv;
 	}
 
@@ -94,43 +102,43 @@ public class DBProject implements Serializable {
 		this.process = process;
 	}
 
-	public float getA() {
+	public double getA() {
 		return a;
 	}
 
-	public void setA(float a) {
+	public void setA(double a) {
 		this.a = a;
 	}
 
-	public float getB() {
+	public double getB() {
 		return b;
 	}
 
-	public void setB(float b) {
+	public void setB(double b) {
 		this.b = b;
 	}
 
-	public float getE() {
+	public double getE() {
 		return e;
 	}
 
-	public void setE(float e) {
+	public void setE(double e) {
 		this.e = e;
 	}
 
-	public float getU() {
+	public double getU() {
 		return u;
 	}
 
-	public void setU(float u) {
+	public void setU(double u) {
 		this.u = u;
 	}
 
-	public float getM() {
+	public double getM() {
 		return m;
 	}
 
-	public void setM(float m) {
+	public void setM(double m) {
 		this.m = m;
 	}
 

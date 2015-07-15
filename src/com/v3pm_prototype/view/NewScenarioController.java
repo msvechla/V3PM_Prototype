@@ -266,13 +266,15 @@ public class NewScenarioController {
 				
 				
 				//Create DBScenario and add it to the Scenario List
-				//TODO Add process, projects & constraints
 				DBScenario scenario = new DBScenario(scenarioID,
 						tfName.getText(), 0, cbPeriods.getValue(),
 						cbSlotsPerPeriod.getValue(),
 						Float.valueOf(tfDiscountRate.getText()),
 						Float.valueOf(tfOAFixedOutflows.getText()));
-
+				
+				scenario.getLstConstraints().addAll(olConstraints);
+				scenario.getLstProcesses().addAll(olProcesses);
+				scenario.getLstProjects().addAll(olProjects);
 				tsc.olScenarios.add(scenario);
 				
 				//TODO Loop through classes would be nicer code
