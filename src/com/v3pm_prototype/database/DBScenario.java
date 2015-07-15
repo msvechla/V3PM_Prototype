@@ -69,11 +69,11 @@ public class DBScenario {
 		this.discountRate = discountRate;
 	}
 
-	public double getOoAFixed() {
+	public double getOOAFixed() {
 		return oOAFixed;
 	}
 
-	public void setOoAFixed(double oOAFixed) {
+	public void setOOAFixed(double oOAFixed) {
 		this.oOAFixed = oOAFixed;
 	}
 	

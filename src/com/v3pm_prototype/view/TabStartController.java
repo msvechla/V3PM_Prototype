@@ -130,9 +130,7 @@ public class TabStartController implements EventHandler<ActionEvent>{
 		initTVProcesses();
 		initTVScenarios();
 		
-		loadProjectsAndProcesses();
-		
-		
+		loadFromDatabase();	
 	}
 	
 	public void openAddProjectWindow(){
@@ -295,6 +293,13 @@ public class TabStartController implements EventHandler<ActionEvent>{
 					}
 				}
 				return null;
+			}
+
+			@Override
+			protected void succeeded() {
+				super.succeeded();
+				//Start loading Scenarios
+				loadScenarios();
 			}	
 		};
 		
@@ -304,9 +309,38 @@ public class TabStartController implements EventHandler<ActionEvent>{
 	}
 	
 	/**
-	 * Starts a task that loads all projects from the database
+	 * Starts a task that loads all Scenarios from the Database
 	 */
-	private void loadProjectsAndProcesses() {
+	private void loadScenarios() {
+		Task<?> loadScenarioTask = new Task<Object>(){
+			@Override
+			protected Object call() throws Exception {
+				Connection conn = DBConnection.getInstance().getConnection();
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery("SELECT * FROM Scenario");
+				
+				while(rs.next()){
+					DBScenario scenario = new DBScenario(rs.getInt("id"), rs.getString("name"),
+							rs.getFloat("npv"), rs.getInt("periods"),
+							rs.getInt("slotsPerPeriod"),
+							rs.getFloat("discountRate"),
+							rs.getFloat("oOAFixed"));
+					olScenarios.add(scenario);
+				}
+				return null;
+			}	
+		};
+		
+		Thread t = new Thread(loadScenarioTask);
+		t.setDaemon(true);
+		t.start();
+	}
+	
+	/**
+	 * Starts a task that loads all data from the DB.
+	 * Calls loadProjects() and loadScenarios()
+	 */
+	private void loadFromDatabase() {
 		//First load all Processes
 		Task<?> loadProcessesTask = new Task<Object>(){
 			@Override
@@ -365,9 +399,7 @@ public class TabStartController implements EventHandler<ActionEvent>{
 				super.succeeded();
 				//When loading processes finished, load projects
 				loadProjects();
-			}	
-			
-			
+			}		
 			
 		};
 		
