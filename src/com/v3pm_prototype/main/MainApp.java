@@ -60,23 +60,24 @@ public class MainApp extends Application {
 	public V3PMGUIController getV3pmGUIController() {
 		return v3pmGUIController;
 	}
+	
 
-	/**
-	 * Creates the standard configuration from an Excel file
-	 * @param excelFile
-	 */
-	public static void loadConfiguration(File excelFile) {
-		try {
-			
-			RunConfiguration.standardConfig = new RunConfiguration();
-			ExcelImporter.importAllExcelData(excelFile, RunConfiguration.standardConfig);
-		
-		} catch (Exception e) {
-			System.err.println("Fehler beim Excel-Import");
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-		}
-	}
+//	/**
+//	 * Creates the standard configuration from an Excel file
+//	 * @param excelFile
+//	 */
+//	public static void loadConfiguration(File excelFile) {
+//		try {
+//			
+//			RunConfiguration.standardConfig = new RunConfiguration();
+//			ExcelImporter.importAllExcelData(excelFile, RunConfiguration.standardConfig);
+//		
+//		} catch (Exception e) {
+//			System.err.println("Fehler beim Excel-Import");
+//			System.err.println(e.getMessage());
+//			e.printStackTrace();
+//		}
+//	}
 	
 	
 }

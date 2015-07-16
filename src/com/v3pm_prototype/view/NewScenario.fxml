@@ -12,7 +12,7 @@
          <items>
             <TabPane>
                <tabs>
-                  <Tab text="General Settings">
+                  <Tab closable="false" text="General Settings">
                      <content>
                         <VBox prefHeight="200.0" prefWidth="100.0" spacing="26.0">
                            <children>

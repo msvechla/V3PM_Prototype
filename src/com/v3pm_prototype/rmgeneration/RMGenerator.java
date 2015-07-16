@@ -114,6 +114,7 @@ public class RMGenerator extends Task<List<RoadMap>> {
 		List<RoadMap> rmList = RMContainer.createRMList(config);
 		List<RoadMap> rmListPostRMGenCheck = new ArrayList<RoadMap>();
 		
+		//TODO ERROR IN HERE
 		for(RoadMap rm : rmList){
 			if(RMRestrictionHandler.meetsPostRoadmapGenerationCheck(rm.getRMArray(), rm.implementedProjectIDs, config)){
 				rmListPostRMGenCheck.add(rm);

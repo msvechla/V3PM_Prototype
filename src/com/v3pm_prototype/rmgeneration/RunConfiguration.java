@@ -24,13 +24,6 @@ public class RunConfiguration {
 	
 	public static RunConfiguration standardConfig = null;
 	
-	public RunConfiguration(ConstraintSet constraintSet) {
-		super();
-		this.lstProjects = new ArrayList<Project>();
-		this.lstProcesses = new ArrayList<Process>();
-		this.constraintSet = constraintSet;
-	}
-	
 	public RunConfiguration(int periods, int slotsPerPeriod,
 			double discountRate, double oOAFixed, List<Project> lstProjects,
 			List<Process> lstProcesses, ConstraintSet constraintSet) {
@@ -44,6 +37,17 @@ public class RunConfiguration {
 		this.constraintSet = constraintSet;
 	}
 
+	public RunConfiguration(int periods, int slotsPerPeriod,
+			double discountRate, double oOAFixed, ConstraintSet constraintSet) {
+		super();
+		this.periods = periods;
+		this.slotsPerPeriod = slotsPerPeriod;
+		this.discountRate = discountRate;
+		this.oOAFixed = oOAFixed;
+		this.lstProjects = new ArrayList<Project>();
+		this.lstProcesses = new ArrayList<Process>();
+		this.constraintSet = constraintSet;
+	}
 
 	public Project getProject(int id){
 		for(Project p : lstProjects){

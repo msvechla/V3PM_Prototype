@@ -44,8 +44,8 @@ public class Main {
 		// read excel input-data and write them into the collections and the static class variables
 		// -----------------------------------------------------------------------------
 		
-		RunConfiguration.standardConfig = new RunConfiguration();
-		ExcelImporter.importAllExcelData(excelFile, RunConfiguration.standardConfig);
+		//RunConfiguration.standardConfig = new RunConfiguration();
+		//ExcelImporter.importAllExcelData(excelFile, RunConfiguration.standardConfig);
 
 		// -----------------------------------------------------------------------------
 		// generate all possible roadmaps and filter them by restrictions

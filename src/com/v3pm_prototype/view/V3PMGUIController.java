@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TabPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -31,6 +32,9 @@ public class V3PMGUIController implements EventHandler<ActionEvent>{
 	private ProgressBar progressBar;
 	
 	@FXML
+	private TabPane tpMain;
+	
+	@FXML
 	private TabStartController tabStartController;
 	
 	private MainApp mainApp;
@@ -48,26 +52,27 @@ public class V3PMGUIController implements EventHandler<ActionEvent>{
 
 	@Override
 	public void handle(ActionEvent event) {
-		MenuItem mItem = (MenuItem) event.getSource();
-		if(mItem == menuOpen){
-			FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Open Resource File");
-			fileChooser.getExtensionFilters().add(new ExtensionFilter("Excel Files", "*.xls"));
-			
-			File selectedFile = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
-			if(selectedFile != null){
-				this.setProgress(-1);
-				this.setStatus(STATUS_LOADING_START);
-				MainApp.loadConfiguration(selectedFile);
-				this.setProgress(0);
-				this.setStatus(STATUS_LOADING_FINISH);
-			}
-		}
+//		MenuItem mItem = (MenuItem) event.getSource();
+//		if(mItem == menuOpen){
+//			FileChooser fileChooser = new FileChooser();
+//			fileChooser.setTitle("Open Resource File");
+//			fileChooser.getExtensionFilters().add(new ExtensionFilter("Excel Files", "*.xls"));
+//			
+//			File selectedFile = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+//			if(selectedFile != null){
+//				this.setProgress(-1);
+//				this.setStatus(STATUS_LOADING_START);
+//				MainApp.loadConfiguration(selectedFile);
+//				this.setProgress(0);
+//				this.setStatus(STATUS_LOADING_FINISH);
+//			}
+//		}
 		
 	}
 	
 	public void setMainApp(MainApp mainApp){
 		this.mainApp = mainApp;
+		tabStartController.setMainApp(mainApp);
 	}
 	
 	public void setStatus(String message){
@@ -81,6 +86,16 @@ public class V3PMGUIController implements EventHandler<ActionEvent>{
 	public TabStartController getTabStartController() {
 		return tabStartController;
 	}
+
+	public TabPane getTpMain() {
+		return tpMain;
+	}
+
+	public void setTpMain(TabPane tpMain) {
+		this.tpMain = tpMain;
+	}
+	
+	
 	
 	
 }

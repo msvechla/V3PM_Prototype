@@ -10,6 +10,7 @@ public class RoadMap implements Comparable<RoadMap>{
 	private Project[][] rmArray;
 	public HashSet<Integer> implementedProjectIDs;
 	private double npv;
+	private boolean restrictionBroken = false;
 	public static int equalsCalls = 0;
 
 	public RoadMap(Project[][] rmArray, HashSet<Integer> implementedProjectIDs) {
@@ -153,6 +154,16 @@ public class RoadMap implements Comparable<RoadMap>{
 
 	public double getNpv() {
 		return this.npv;
+	}
+
+
+	public boolean isRestrictionBroken() {
+		return restrictionBroken;
+	}
+
+
+	public void setRestrictionBroken(boolean restrictionBroken) {
+		this.restrictionBroken = restrictionBroken;
 	}
 
 

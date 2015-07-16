@@ -25,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -32,7 +33,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import com.sun.org.apache.bcel.internal.generic.LSTORE;
+import com.v3pm_prototype.calculation.ConstraintSet;
 import com.v3pm_prototype.database.DBConnection;
+import com.v3pm_prototype.database.DBConstraint;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.database.DBProcess;
@@ -53,6 +57,8 @@ public class TabStartController implements EventHandler<ActionEvent>{
 	private Button btnNewProject;
 	@FXML
 	private Button btnNewProcess;
+	@FXML
+	private Button btnCalculateScenario;
 	
 	@FXML
 	private TableView<DBScenario> tvScenarios;
@@ -131,6 +137,35 @@ public class TabStartController implements EventHandler<ActionEvent>{
 		initTVScenarios();
 		
 		loadFromDatabase();	
+	}
+	
+	public void calculateScenario(){
+		if(tvScenarios.getSelectionModel().getSelectedItem() != null){
+			DBScenario selectedScenario = tvScenarios.getSelectionModel().getSelectedItem();
+			
+			// Load root layout from fxml file.
+	        FXMLLoader loader = new FXMLLoader();
+	        loader.setLocation(MainApp.class.getResource("/com/v3pm_prototype/view/TabScenarioCalculation.fxml"));
+	        VBox root;
+			try {
+				root = (VBox) loader.load();
+				TabScenarioCalculationController scController = loader.getController();
+				scController.setMainApp(this.mainApp);
+				
+				Tab tabSC = new Tab(selectedScenario.getName());
+				tabSC.setContent(root);
+				tabSC.setClosable(true);
+				mainApp.getV3pmGUIController().getTpMain().getSelectionModel().select(tabSC);
+				
+				mainApp.getV3pmGUIController().getTpMain().getTabs().add(tabSC);
+				scController.setScenario(selectedScenario);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}    
+			
+			
+		}
 	}
 	
 	public void openAddProjectWindow(){
@@ -269,6 +304,7 @@ public class TabStartController implements EventHandler<ActionEvent>{
 	
 	/**
 	 * Starts a task that loads all projects from the database
+	 * Calls LoadScenarios()
 	 */
 	private void loadProjects() {
 		Task<?> loadProjectTask = new Task<Object>(){
@@ -319,14 +355,109 @@ public class TabStartController implements EventHandler<ActionEvent>{
 				Statement st = conn.createStatement();
 				ResultSet rs = st.executeQuery("SELECT * FROM Scenario");
 				
+				DBScenario scenario = null;
+				
 				while(rs.next()){
-					DBScenario scenario = new DBScenario(rs.getInt("id"), rs.getString("name"),
+					scenario = new DBScenario(rs.getInt("id"), rs.getString("name"),
 							rs.getFloat("npv"), rs.getInt("periods"),
 							rs.getInt("slotsPerPeriod"),
 							rs.getFloat("discountRate"),
-							rs.getFloat("oOAFixed"));
+							rs.getFloat("oOAFixed"), null, null, null);
 					olScenarios.add(scenario);
 				}
+				
+				//Load ScenarioProcess
+				st = conn.createStatement();
+				rs = st.executeQuery("SELECT * FROM ScenarioProcess WHERE scenarioID = "+scenario.getId());
+				
+				List<DBProcess> lstScenarioProcess = new ArrayList<DBProcess>();
+				while(rs.next()){
+					int processID = rs.getInt("processID");
+					
+					for(DBProcess process : olProcesses){
+						if(process.getId() == processID){
+							lstScenarioProcess.add(process);
+						}
+					}
+				}
+				
+				scenario.setLstProcesses(lstScenarioProcess);
+				
+				//Load ScenarioProject
+				st = conn.createStatement();
+				rs = st.executeQuery("SELECT * FROM ScenarioProject WHERE scenarioID = "+scenario.getId());
+				
+				List<DBProject> lstScenarioProject = new ArrayList<DBProject>();
+				while(rs.next()){
+					int projectID = rs.getInt("projectID");
+					
+					for(DBProject project : olProjects){
+						if(project.getId() == projectID){
+							lstScenarioProject.add(project);
+						}
+					}
+				}
+				
+				scenario.setLstProjects(lstScenarioProject);
+				
+				//Load ScenarioConstraint
+				st = conn.createStatement();
+				rs = st.executeQuery("SELECT * FROM ScenarioConstraint WHERE scenarioID = "+scenario.getId());
+				
+				List<DBConstraint> lstScenarioConstraint = new ArrayList<DBConstraint>();
+				while(rs.next()){
+					int y = rs.getInt("y");
+					String yString = null;
+					if(y == -2){
+						yString = DBConstraint.PERIOD_ALL;
+					}else{
+						y = Integer.valueOf(y);
+					}
+					
+					int sID = rs.getInt("sID");
+					DBProject s = null;
+					int SIID = rs.getInt("sIID");
+					DBProject sI = null;
+					int iID = rs.getInt("iID");
+					DBProcess i = null;
+					
+					//Find s
+					if(sID != 0){
+						for(DBProject p : olProjects){
+							if(p.getId() == sID){
+								s = p;
+								break;
+							}
+						}
+					}
+					
+					//Find sI
+					if(SIID != 0){
+						for(DBProject p : olProjects){
+							if(p.getId() == SIID){
+								sI = p;
+								break;
+							}
+						}
+					}
+					
+					//Find i
+					if(iID != 0){
+						for(DBProcess p : olProcesses){
+							if(p.getId() == iID){
+								i = p;
+								break;
+							}
+						}
+					}
+					
+					lstScenarioConstraint.add(new DBConstraint(rs
+							.getString("type"), s, sI, i, rs.getFloat("x"),
+							yString));
+
+				}
+				scenario.setLstConstraints(lstScenarioConstraint);
+				
 				return null;
 			}	
 		};

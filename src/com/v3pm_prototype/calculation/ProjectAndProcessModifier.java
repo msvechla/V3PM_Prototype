@@ -17,8 +17,9 @@ public class ProjectAndProcessModifier {
 	/**
 	 * loops through every process and modifies the values affected from the conducted project. Thereafter it loops through the project collection and modifies
 	 * the values affected by the b-parameter.
+	 * Returns: TRUE if no restriction is broken, FALSE otherwise
 	 */
-	public static void modifyProcessesAndProjectsByProject(Collection<Process> tempCollPocess, Collection<Process> bufferedTempCollProcess,
+	public static boolean modifyProcessesAndProjectsByProject(Collection<Process> tempCollPocess, Collection<Process> bufferedTempCollProcess,
 			Project tempProject, Collection<Project> tempCollPoj_sorted, int projectNumberWithinPeriod, RunConfiguration config) {
 		
 		//Indicates whether the current project is finishing this period
@@ -78,12 +79,12 @@ public class ProjectAndProcessModifier {
 			// ------------------------------------------------------
 			if (projectFinishes && projectRegardsProcess && tempProject.getE() != 0) {
 				
-				if (tempProject.getAbsRelt().equals("relativ")){
+				if (tempProject.getAbsRelT().equals("relativ")){
 					
 					tempProcess.setT(tempProcess.getT() * tempProject.getE());
 				}
 				
-				else if (tempProject.getAbsRelt().equals("absolut")){
+				else if (tempProject.getAbsRelT().equals("absolut")){
 			
 					tempProcess.setT(tempProcess.getT() + tempProject.getE());
 					
@@ -93,7 +94,7 @@ public class ProjectAndProcessModifier {
 					}	
 			
 				}
-				else if(!tempProject.getAbsRelt().equals("relativ") || !tempProject.getAbsRelt().equals("absolut")) {	
+				else if(!tempProject.getAbsRelT().equals("relativ") || !tempProject.getAbsRelT().equals("absolut")) {	
 			
 					System.out.println("Fehler, absoluter/relativer Effekt nicht korrekt angegeben bei " +tempProject.getName() );
 		   			
@@ -127,13 +128,7 @@ public class ProjectAndProcessModifier {
 			// Platz für T MAX   Genau Zuordnung zu Roadmap ToDo
 			// ------------------------------------------------------
 						
-			if (tempProcess.getT() > tempProcess.getTmax()) {
-				
-				//System.out.println("Diese Roadmap verletzt TMAX " + ProjectSequence + "; Prozess: " + tempProcess.getName() + " hat die Grenze i.H.v. " + tempProcess.getTmax() + " mit dem Wert " + tempProcess.getT() +" überschritten.");
-				//Test MLe
-				tempProcess.setFixedCosts(10000000);
-				
-			}
+			if(RMRestrictionHandler.rTimeMax(tempProject.getPeriod(), tempProcess, config) == false) return false;
 		
 			
 			/*  MLe: 1zu1 Kopie der alten q Berechnung
@@ -164,13 +159,13 @@ public class ProjectAndProcessModifier {
 			// ------------------------------------------------------
 			if (projectFinishes && projectRegardsProcess && tempProject.getU() != 0) {
 				
-				if (tempProject.getAbsRelq().equals("relativ")){
+				if (tempProject.getAbsRelQ().equals("relativ")){
 					
 				tempProcess.setQ(tempProcess.getQ() * tempProject.getU());
 			
 				}
 				
-				else if (tempProject.getAbsRelq().equals("absolut")){
+				else if (tempProject.getAbsRelQ().equals("absolut")){
 			
 					tempProcess.setQ(tempProcess.getQ() + tempProject.getU());
 					
@@ -180,7 +175,7 @@ public class ProjectAndProcessModifier {
 					}	
 			
 				}
-				else if(!tempProject.getAbsRelq().equals("relativ") || !tempProject.getAbsRelq().equals("absolut")) {	
+				else if(!tempProject.getAbsRelQ().equals("relativ") || !tempProject.getAbsRelQ().equals("absolut")) {	
 	
 					System.out.println("Fehler, absoluter/relativer Effekt nicht korrekt angegeben bei " +tempProject.getName() );		   			
 				}			
@@ -213,14 +208,7 @@ public class ProjectAndProcessModifier {
 			//Abfrage, korrekt. Ausgabe enthält noch keine Information darüber, welche Roadmap betroffen ist.
 			
 				
-			if (tempProcess.getQ() < tempProcess.getQmin()) {
-				
-				//System.out.println("Diese Roadmap verletzt QMIN " + ProjectSequence + "; Prozess: " + tempProcess.getName() + " hat die Grenze i.H.v. " + tempProcess.getQmin() + " mit dem Wert " + tempProcess.getQ() +" unterschritten.");
-				//Test MLe
-				tempProcess.setFixedCosts(10000000);
-			
-
-			}
+			if(RMRestrictionHandler.rQualMin(tempProject.getPeriod(), tempProcess, config) == false) return false;
 			
 			
 			/// MLe Ende
@@ -269,10 +257,10 @@ public class ProjectAndProcessModifier {
 		// ------------------------------------------------------	
 		
 		
-		if (projectFinishes && tempProject.getType().equals("processLevel") && tempProject.getFixedCostEffect()!= 0)
+		if (projectFinishes && tempProject.getType().equals("processLevel") && tempProject.getM()!= 0)
 			{
 				
-			tempProcess.setFixedCosts(tempProcess.getFixedCosts() + tempProject.getFixedCostEffect());
+			tempProcess.setFixedCosts(tempProcess.getFixedCosts() + tempProject.getM());
 				
 			// check for FixedCosts (FixedCosts can't be lower than 0)	
 			if (tempProcess.getFixedCosts() < 0) {
@@ -300,9 +288,8 @@ public class ProjectAndProcessModifier {
 				}
 			}
 		}
-
-	
 		
+		return true;
 		
 	}
 
@@ -314,7 +301,7 @@ public class ProjectAndProcessModifier {
 	 * @param dimension
 	 *            (q or t)
 	 */
-	private static boolean isTheSameValue(double dimension_value, Collection<Process> bufferedTempCollProcess, char processId, char dimension) {
+	private static boolean isTheSameValue(double dimension_value, Collection<Process> bufferedTempCollProcess, int processId, char dimension) {
 		for (Iterator<Process> itProcessBuffer = bufferedTempCollProcess.iterator(); itProcessBuffer.hasNext();) {
 			Process tempProcessBuffer = itProcessBuffer.next();
 			if (dimension == 't') {

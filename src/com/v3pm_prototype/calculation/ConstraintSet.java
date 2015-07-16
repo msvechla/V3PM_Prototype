@@ -24,6 +24,22 @@ public class ConstraintSet {
 	//GloMutEx
 	private List<DBConstraint> lstGloMutEx = new ArrayList<DBConstraint>();
 	
+	//GloMutEx
+	private List<DBConstraint> lstPreSuc = new ArrayList<DBConstraint>();
+	
+	//Earliest
+	private List<DBConstraint> lstEarliest = new ArrayList<DBConstraint>();
+	
+	//Latest
+	private List<DBConstraint> lstLatest = new ArrayList<DBConstraint>();
+	
+	//TimeMax
+	private List<DBConstraint> lstTimeMax = new ArrayList<DBConstraint>();
+	
+	//QualMin
+	private List<DBConstraint> lstQualMin = new ArrayList<DBConstraint>();
+	
+	
 	public ConstraintSet(List<DBConstraint> lstConstraints) {
 		this.lstConstraints = lstConstraints;
 		this.amountMandatory = 0;
@@ -53,6 +69,27 @@ public class ConstraintSet {
 			case DBConstraint.TYPE_GLOMUTEX:
 				lstGloMutEx.add(constraint);
 				break;
+				
+			case DBConstraint.TYPE_PRESUC:
+				lstPreSuc.add(constraint);
+				break;
+				
+			case DBConstraint.TYPE_EARLIEST:
+				lstEarliest.add(constraint);
+				break;
+				
+			case DBConstraint.TYPE_LATEST:
+				lstLatest.add(constraint);
+				break;
+				
+			case DBConstraint.Type_TIMEMAX:
+				lstTimeMax.add(constraint);
+				break;
+				
+			case DBConstraint.TYPE_QUALMIN:
+				lstQualMin.add(constraint);
+				break;
+			
 			}
 			
 			
@@ -100,6 +137,29 @@ public class ConstraintSet {
 
 	public List<DBConstraint> getLstGloMutEx() {
 		return lstGloMutEx;
+	}
+
+	public List<DBConstraint> getLstPreSuc() {
+		return lstPreSuc;
+	}
+
+
+	public List<DBConstraint> getLstEarliest() {
+		return lstEarliest;
+	}
+
+	public List<DBConstraint> getLstLatest() {
+		return lstLatest;
+	}
+
+
+	public List<DBConstraint> getLstTimeMax() {
+		return lstTimeMax;
+	}
+
+
+	public List<DBConstraint> getLstQualMin() {
+		return lstQualMin;
 	}
 	
 		

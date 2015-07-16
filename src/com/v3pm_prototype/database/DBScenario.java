@@ -22,7 +22,7 @@ public class DBScenario {
 	private List<DBConstraint> lstConstraints;
 	
 	public DBScenario(int id, String name, double npv, int periods,
-			int slotsPerPeriod, double discountRate, double oOAFixed) {
+			int slotsPerPeriod, double discountRate, double oOAFixed, List<DBProject> lstProjects, List<DBProcess> lstProcesses, List<DBConstraint> lstConstraints) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -31,6 +31,14 @@ public class DBScenario {
 		this.slotsPerPeriod = slotsPerPeriod;
 		this.discountRate = discountRate;
 		this.oOAFixed = oOAFixed;
+		this.lstProjects = lstProjects;
+		this.lstProcesses = lstProcesses;
+		this.lstConstraints = lstConstraints;
+	}
+	
+	public DBScenario(int id, String name, double npv, int periods,
+			int slotsPerPeriod, double discountRate, double oOAFixed){
+		new DBScenario(id, name, npv, periods, slotsPerPeriod, discountRate, oOAFixed, new ArrayList<DBProject>(), new ArrayList<DBProcess>(), new ArrayList<DBConstraint>());
 	}
 
 	public RunConfiguration generateRunConfiguration(){

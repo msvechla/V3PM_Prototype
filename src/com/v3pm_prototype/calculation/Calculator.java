@@ -24,6 +24,7 @@ public class Calculator {
 		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		for (Iterator<RoadMap> itRM = collRM.iterator(); itRM.hasNext();) {
 			RoadMap RM = itRM.next();
+			boolean restrictionBroken = false; //QualMin, TimeMax
 			double inflows = 0;
 			double outflows = 0;
 			double fixedCostsOA = config.getOOAFixed();  //MLe
@@ -65,7 +66,7 @@ public class Calculator {
 				if (tempProject.getType().equals("bpmLevel"))
 				{
 					
-					fixedCostsOA = fixedCostsOA + tempProject.getFixedCostEffect();
+					fixedCostsOA = fixedCostsOA + tempProject.getM();
 					
 				}
 						
@@ -74,17 +75,27 @@ public class Calculator {
 				// for each process
 				// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				// modify processes by project for next iteration
-				ProjectAndProcessModifier.modifyProcessesAndProjectsByProject(tempCollPocess, bufferedTempCollProcess, tempProject, tempCollPoj_sorted,
+				restrictionBroken = ProjectAndProcessModifier.modifyProcessesAndProjectsByProject(tempCollPocess, bufferedTempCollProcess, tempProject, tempCollPoj_sorted,
 						projectNumberWithinPeriod, config);
+				if(restrictionBroken){
+					RM.setRestrictionBroken(true);
+					break;
+				}
+				
 				prePeriod = tempProject.getPeriod();
 				projectNumberWithinPeriod++;
 				if (projectNumberWithinPeriod > config.getSlotsPerPeriod()) {
 					projectNumberWithinPeriod = 1;
 				}
 			}
+			
 			// NPV of a roadmap = sum of all inflows - sum of all outflows
-			double npv = Math.round((inflows - outflows - fixedCostsOAGes) * 100);
-			RM.setNpv(npv / 100);
+			if(RM.isRestrictionBroken()){
+				RM.setNpv(0);
+			}else{
+				double npv = Math.round((inflows - outflows - fixedCostsOAGes) * 100);
+				RM.setNpv(npv / 100);
+			}
 			
 
 		}

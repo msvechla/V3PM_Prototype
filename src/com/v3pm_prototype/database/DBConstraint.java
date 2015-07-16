@@ -19,6 +19,8 @@ public class DBConstraint {
 	public static final String TYPE_BUDGET="Budget";
 	public static final String TYPE_NUMPROJ="NumProj";
 	
+	public static final String PERIOD_ALL="ALL";
+	
 	private DBProject s;
 	private DBProject sI;
 	private DBProcess i;

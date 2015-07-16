@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import sun.misc.GC.LatencyRequest;
+
 import com.sun.org.apache.bcel.internal.generic.LSTORE;
 import com.v3pm_prototype.database.DBConstraint;
 import com.v3pm_prototype.exceptions.ProjectIsNotInRoadmapException;
@@ -37,9 +39,6 @@ public class RMRestrictionHandler {
 	public static int AmountisMaxBudgetRestriction = 0;  		 //MLe
 	public static int AdmissibleAmount = 0;  					 //MLe
 	
-	
-	public static HashSet<Project> tmpImplemented;
-	
 	/**
 	 * Checks all restrictions that can be checked when generating a SingleContainer
 	 * @param p Project that is implemented in the container
@@ -47,22 +46,28 @@ public class RMRestrictionHandler {
 	 * @return False if one of the restrictions is broken, true otherwise
 	 */
 	public static boolean meetsPostRoadmapGenerationCheck(Project[][] roadmap,HashSet<Integer> implementedProjects, RunConfiguration config){
-		tmpImplemented = new HashSet<Project>();
+		
 		
 		if(rGloMutEx(implementedProjects, config) == false) return false;
 		if(rGloMutDep(implementedProjects, config) == false) return false;
 		
+		List<Project> alreadyImplemented = new ArrayList<Project>();
+		
 		for(int period = 0; period < roadmap.length; period++){
-			HashSet<Project> tmpNew = new HashSet<Project>();
+			List<Project> tmpNew = new ArrayList<Project>();
 			tmpNew.addAll(Arrays.asList(roadmap[period]));
 			tmpNew.remove(null);
 			
-			if(rEarliest(period, tmpNew) == false) return false;
-			if(rLatest(period, tmpNew) == false) return false;
-			if(rPreSuc(period, roadmap, tmpNew) == false) return false;
+			if(rEarliest(period, alreadyImplemented, tmpNew, config) == false) return false;
+			if(rLatest(period, alreadyImplemented, tmpNew, config) == false) return false;
+			if(rPreSuc(period, alreadyImplemented, tmpNew, config) == false) return false;
 			
-			//TODO not Thread Save
-			tmpImplemented.addAll(tmpNew);
+			for(Project p: tmpNew){
+				if(!alreadyImplemented.contains(p)){
+					alreadyImplemented.add(p);
+				}
+			}
+
 		}
 		return true;
 	}
@@ -88,17 +93,19 @@ public class RMRestrictionHandler {
 	
 	//All restriction methods return FALSE if restriction is broken, TRUE otherwise
 
-	public static boolean rPreSuc(int period, Project[][] roadmap, HashSet<Project> tmpNew){
+	public static boolean rPreSuc(int period, List<Project> alreadyImplemented, List<Project> tmpNew, RunConfiguration config){
 		
 		for(Project p : tmpNew){
 			//if restriction is set and project has not been checked yet
-			if(!tmpImplemented.contains(p)){
+			if(!alreadyImplemented.contains(p)){
 				
-				//Predecessor
-				if(p.getPredecessorProject() != null){
-					if(!tmpImplemented.contains(p.getPredecessorProject()))return false;	
-				}
-				
+				for(DBConstraint cPreSuc : config.getConstraintSet().getLstPreSuc())
+					//TODO CFE PreSuc
+					if(p.equals(cPreSuc.getSi())){
+						if(!(alreadyImplemented.contains(cPreSuc.getS())) && alreadyImplemented.get(alreadyImplemented.indexOf(cPreSuc.getS())).isFinished(period)){
+							return false;
+						}
+					}
 			}
 		}
 		return true;
@@ -107,8 +114,8 @@ public class RMRestrictionHandler {
 	
 	public static boolean rLocMutDep(HashSet<Project> projectsInPeriod, RunConfiguration config){
 		if(config.getConstraintSet().getLstLocMutDep().size()>0){
-			for(DBConstraint constraint : config.getConstraintSet().getLstLocMutDep()){
-				if(!(projectsInPeriod.contains(constraint.getS().getId()) && projectsInPeriod.contains(constraint.getSi().getId()))){
+			for(DBConstraint cLocMutDep : config.getConstraintSet().getLstLocMutDep()){
+				if(!(projectsInPeriod.contains(cLocMutDep.getS().getId()) && projectsInPeriod.contains(cLocMutDep.getSi().getId()))){
 					return false;
 				}
 			}
@@ -118,8 +125,8 @@ public class RMRestrictionHandler {
 	
 	public static boolean rLocMutEx(HashSet<Project> projectsInPeriod, RunConfiguration config){
 		if(config.getConstraintSet().getLstLocMutEx().size()>0){
-			for(DBConstraint constraint : config.getConstraintSet().getLstLocMutDep()){
-				if(projectsInPeriod.contains(constraint.getS().getId()) && projectsInPeriod.contains(constraint.getSi().getId())){
+			for(DBConstraint cLocMutEx : config.getConstraintSet().getLstLocMutEx()){
+				if(projectsInPeriod.contains(cLocMutEx.getS().getId()) && projectsInPeriod.contains(cLocMutEx.getSi().getId())){
 					return false;
 				}
 			}
@@ -127,23 +134,27 @@ public class RMRestrictionHandler {
 		return true;
 	}
 	
-	public static boolean rEarliest(int startPeriod, HashSet<Project> tmpNew){
+	public static boolean rEarliest(int startPeriod, List<Project> alreadyImplemented, List<Project> tmpNew, RunConfiguration config){
 		//Check all projects that are newly implemented this period
 		for(Project p : tmpNew){
 			//if restriction is set and project has not been checked yet
-			if((p.getEarliestImplementationPeriod() != -1) && (!tmpImplemented.contains(p))){
-				if(startPeriod < p.getEarliestImplementationPeriod()) return false;
+			for(DBConstraint cEarliest : config.getConstraintSet().getLstEarliest()){
+				if(cEarliest.getS().equals(p) && (startPeriod < Integer.valueOf(cEarliest.getY()))){
+					return false;
+				}
 			}
 		}
 		return true;
 	}
 	
-	public static boolean rLatest(int startPeriod, HashSet<Project> tmpNew){
+	public static boolean rLatest(int startPeriod, List<Project> alreadyImplemented, List<Project> tmpNew, RunConfiguration config){
 		//Check all projects that are newly implemented this period
 		for(Project p : tmpNew){
 			//if restriction is set
-			if((p.getLatestImplementationPeriod() != -1)){
-				if((startPeriod + p.getNumberOfPeriods()-1) > p.getLatestImplementationPeriod()) return false;
+			for(DBConstraint cLatest : config.getConstraintSet().getLstLatest()){
+				if(cLatest.getS().equals(p) && (startPeriod + p.getNumberOfPeriods() -1 > Integer.valueOf(cLatest.getY()))){
+					return false;
+				}
 			}
 		}
 		return true;
@@ -167,6 +178,36 @@ public class RMRestrictionHandler {
 							.contains(cGloMutDep.getSi().getId()))) {
 				return false;
 			}	
+		}
+		return true;
+	}
+	
+	public static boolean rTimeMax(int period, Process process, RunConfiguration config){
+		for(DBConstraint cTimeMax : config.getConstraintSet().getLstTimeMax()){
+			if(cTimeMax.getI().equals(process)){
+				if(cTimeMax.getY().equals(DBConstraint.PERIOD_ALL)){
+					if(process.getT() > cTimeMax.getX()) return false;
+				}else{
+					if(process.getT() > cTimeMax.getX() && period == Integer.valueOf(cTimeMax.getY())){
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
+	public static boolean rQualMin(int period, Process process, RunConfiguration config){
+		for(DBConstraint cQualMin : config.getConstraintSet().getLstQualMin()){
+			if(cQualMin.getI().equals(process)){
+				if(cQualMin.getY().equals(DBConstraint.PERIOD_ALL)){
+					if(process.getQ() < cQualMin.getX()) return false;
+				}else{
+					if(process.getQ() < cQualMin.getX() && period == Integer.valueOf(cQualMin.getY())){
+						return false;
+					}
+				}
+			}
 		}
 		return true;
 	}
@@ -373,37 +414,37 @@ public class RMRestrictionHandler {
 	 * two checks: 1. checks for earliest implementation period restriction. 2. checks for latest implementation period restriction. There are two checks in one
 	 * method for better performance.
 	 */
-	private static boolean isEarliestAndLatestImplementationRestrictionViolation(List<String> tempProjectSequence, Collection<Project> collProj) {
-		int projectPositionInRoadmap;
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		// for each project
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		for (Iterator<Project> it_pr = collProj.iterator(); it_pr.hasNext();) {
-			Project project = it_pr.next();
-			// find out for which period this project is scheduled
-			try {
-				projectPositionInRoadmap = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence, project.getId());
-			} catch (ProjectIsNotInRoadmapException e) {
-				// this exception happens if this roadmap does not contain the project
-				if (project.getLatestImplementationPeriod() > 0) {
-					return true; // roadmap does contain the project -> violation against the Latest Implementation Period restriction
-				} else {
-					continue;
-				}
-			}
-			// handle LIP (Latest Implementation Period) restrictions
-			if (project.getLatestImplementationPeriod() > 0 && projectPositionInRoadmap > project.getLatestImplementationPeriod()) {
-				// if no latestImpementationPeriod is set, latestImpementationPeriod will be 0
-				return true;
-			}
-			// handle EIP (Earliest Implementation Period) restrictions
-			if (project.getEarliestImplementationPeriod() > 0 && projectPositionInRoadmap < project.getEarliestImplementationPeriod()) {
-				// if no earliestImplementationPeriod is set, earliestImplementationPeriod will be 0
-				return true;
-			}
-		}
-		return false; // no restriction violation
-	}
+//	private static boolean isEarliestAndLatestImplementationRestrictionViolation(List<String> tempProjectSequence, Collection<Project> collProj) {
+//		int projectPositionInRoadmap;
+//		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		// for each project
+//		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		for (Iterator<Project> it_pr = collProj.iterator(); it_pr.hasNext();) {
+//			Project project = it_pr.next();
+//			// find out for which period this project is scheduled
+//			try {
+//				projectPositionInRoadmap = getThePeriodForWhichThisProjectIsScheduled(tempProjectSequence, project.getId());
+//			} catch (ProjectIsNotInRoadmapException e) {
+//				// this exception happens if this roadmap does not contain the project
+//				if (project.getLatestImplementationPeriod() > 0) {
+//					return true; // roadmap does contain the project -> violation against the Latest Implementation Period restriction
+//				} else {
+//					continue;
+//				}
+//			}
+//			// handle LIP (Latest Implementation Period) restrictions
+//			if (project.getLatestImplementationPeriod() > 0 && projectPositionInRoadmap > project.getLatestImplementationPeriod()) {
+//				// if no latestImpementationPeriod is set, latestImpementationPeriod will be 0
+//				return true;
+//			}
+//			// handle EIP (Earliest Implementation Period) restrictions
+//			if (project.getEarliestImplementationPeriod() > 0 && projectPositionInRoadmap < project.getEarliestImplementationPeriod()) {
+//				// if no earliestImplementationPeriod is set, earliestImplementationPeriod will be 0
+//				return true;
+//			}
+//		}
+//		return false; // no restriction violation
+//	}
 
 //	private static boolean isNoProjectInPeriodRestrictionViolation(List<String> tempProjectSequence) {
 //		if (Main.periodWithNoScheduledProjects == 0) { // if no period with no scheduled project is set, the value is 0

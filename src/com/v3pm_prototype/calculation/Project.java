@@ -76,6 +76,14 @@ public class Project {
 		this.oinv = this.oinv / this.numberOfPeriods;
 	}
 	
+	public boolean isFinished(int currentPeriod){
+		if(currentPeriod >= (this.startPeriod + this.numberOfPeriods)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	public String getAbsRelQ() {
 		return absRelQ;
 	}
