@@ -17,28 +17,38 @@ public class DBProject implements Serializable {
 	private double e;
 	private double u;
 	private double m;
+	private String absRelQ;
+	private String absRelT;
+	private String absRelOop;
 	
-	public DBProject(int id, String name, String type, int periods,DBProcess process,
-			double fixedCosts, double oInv, double a, double b,
-			double e, double u, double m) {
+	
+
+	public DBProject(int id, String name, String type, int periods,
+			double fixedCosts, double oInv, DBProcess process, double a,
+			double b, double e, double u, double m, String absRelQ,
+			String absRelT, String absRelOop) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.periods = periods;
-		this.process = process;
 		this.fixedCosts = fixedCosts;
 		this.oInv = oInv;
+		this.process = process;
 		this.a = a;
 		this.b = b;
 		this.e = e;
 		this.u = u;
 		this.m = m;
+		this.absRelQ = absRelQ;
+		this.absRelT = absRelT;
+		this.absRelOop = absRelOop;
 	}
 
 	//Converts this object to the Project class (used for calculations)
 	public Project toProject(){
-		Project p = new Project(id, name, periods, type, process.getId(), oInv, a, b, e, u, m);
+		Project p = new Project(id, name, periods, type,fixedCosts, oInv,process.getId(),
+				a, b, e, u, m, absRelQ, absRelT, absRelOop);
 		return p;
 	}
 	
@@ -140,6 +150,30 @@ public class DBProject implements Serializable {
 
 	public void setM(double m) {
 		this.m = m;
+	}
+
+	public String getAbsRelQ() {
+		return absRelQ;
+	}
+
+	public void setAbsRelQ(String absRelQ) {
+		this.absRelQ = absRelQ;
+	}
+
+	public String getAbsRelT() {
+		return absRelT;
+	}
+
+	public void setAbsRelT(String absRelT) {
+		this.absRelT = absRelT;
+	}
+
+	public String getAbsRelOop() {
+		return absRelOop;
+	}
+
+	public void setAbsRelOop(String absRelOop) {
+		this.absRelOop = absRelOop;
 	}
 
 	

@@ -48,20 +48,20 @@ public class RMContainer {
 	
 	public static List<RoadMap> createRMList(RunConfiguration config){
 		List<RoadMap> rmList = new ArrayList<RoadMap>();
-		int countMandatory = config.getMandatoryProjects().size();
-		int countGloMutDep = config.getGloMutDepProjects().size();
+		//int countMandatory = config.getMandatoryProjects().size();
+		//int countGloMutDep = config.getGloMutDepProjects().size();
 		
 			for(RMContainer rmc : lstRMContainerSingle){
 				//Only add Single Containers if it contains mandatory projects
-				if(countMandatory == 1 && countGloMutDep == 0){
-					if(rmc.implementedProjects.contains(config.getMandatoryProjects().get(0).getId())){
+//				if(countMandatory == 1 && countGloMutDep == 0){
+//					if(rmc.implementedProjects.contains(config.getMandatoryProjects().get(0).getId())){
 						rmList.addAll(rmc.getLstRM());
-					}
-				}
+//					}
+//				}
 				
-				if(countMandatory == 0 && countGloMutDep == 0){
-					rmList.addAll(rmc.getLstRM());
-				}		
+//				if(countMandatory == 0 && countGloMutDep == 0){
+//					rmList.addAll(rmc.getLstRM());
+//				}		
 			}	
 		
 		for(RMContainer rmc : lstRMContainerCombined){

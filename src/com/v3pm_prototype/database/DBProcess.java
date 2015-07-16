@@ -1,6 +1,9 @@
 package com.v3pm_prototype.database;
 
 import java.io.Serializable;
+
+import javafx.scene.control.ComboBox;
+
 import com.v3pm_prototype.calculation.Process;
 
 public class DBProcess implements Serializable{
@@ -23,7 +26,8 @@ public class DBProcess implements Serializable{
 	private double dmBeta;
 	private String dmFktQ;
 	private String dmFktT;
-	
+	private int dmFktQInt;
+	private int dmFktTInt;
 	private String demandFunction;
 	
 	
@@ -52,12 +56,39 @@ public class DBProcess implements Serializable{
 	}
 	
 	public Process toProcess(){
-		//TODO Convert to Process
-		Process process = new Process(name, id, q, 100, t, p, oop, degQ, degT, fixedCosts, 0, dmP, dmLambda, dmAlpha, dmFktQ, dmBeta, dmFktT);
+		Process process = new Process(name, id, q, 100, t, p, oop, degQ, degT, fixedCosts, 0, dmP, dmLambda, dmAlpha, getDMFktQInt(), dmBeta, getDMFktTInt());
+		return process;
 	}
 	
 	public String toString(){
 		return this.name;
+	}
+	
+	/**
+	 * Converts the demand String functions into the corresponding Integer values
+	 */
+	public int getDMFktQInt(){
+		if(dmFktQ.equals("0q")){
+			return 0;
+		}else if(dmFktQ.equals("q")){
+			return 1;
+		}else if(dmFktQ.equals("ln q")){
+			return 2;
+		}else{
+			return 3;
+		}
+	}
+	
+	public int getDMFktTInt(){
+		if(dmFktT.equals("0t")){
+			return 0;
+		}else if(dmFktT.equals("t")){
+			return 1;
+		}else if(dmFktT.equals("ln t")){
+			return 2;
+		}else{
+			return 3;
+		}
 	}
 	
 	private void generateDemandfunction(){

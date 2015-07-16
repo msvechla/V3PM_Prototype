@@ -6,7 +6,7 @@ package com.v3pm_prototype.calculation;
  */
 public class Process {
 	private String name;
-	private char id;
+	private int id;
 	private double q; // quality
 	private double qmax; // upper quality boundary
 	private double t; // time
@@ -25,7 +25,7 @@ public class Process {
 	private double beta;
 	private int thetaID_t;
 
-	public Process(String name, char id, double q, double qmax, double t, double p, double oop, double d, double v, double fixedCosts, double n, double roh, double lamda,
+	public Process(String name, int id, double q, double qmax, double t, double p, double oop, double d, double v, double fixedCosts, double n, double roh, double lamda,
 			double alpha, int thetaID_q, double beta, int thetaID_t) {
 		super();
 		this.name = name;
@@ -38,8 +38,6 @@ public class Process {
 		this.d = d;
 		this.v = v;
 		this.fixedCosts = fixedCosts;	//MLe
-		this.qmin = qmin;				//MLe
-		this.tmax = tmax;				//MLe
 		this.n = n;
 		this.roh = roh;
 		this.lamda = lamda;
@@ -49,6 +47,14 @@ public class Process {
 		this.thetaID_t = thetaID_t;
 	}
 
+	public boolean equals(Object obj){
+		if(obj instanceof Process){
+			Process p = (Process)obj;
+			return (p.id == this.id);
+		}
+		return false;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -57,11 +63,11 @@ public class Process {
 		this.name = name;
 	}
 
-	public char getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(char id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

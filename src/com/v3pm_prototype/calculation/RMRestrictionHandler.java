@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import com.sun.org.apache.bcel.internal.generic.LSTORE;
+import com.v3pm_prototype.database.DBConstraint;
 import com.v3pm_prototype.exceptions.ProjectIsNotInRoadmapException;
 import com.v3pm_prototype.rmgeneration.RMContainer;
 import com.v3pm_prototype.rmgeneration.RoadMap;
@@ -59,6 +61,7 @@ public class RMRestrictionHandler {
 			if(rLatest(period, tmpNew) == false) return false;
 			if(rPreSuc(period, roadmap, tmpNew) == false) return false;
 			
+			//TODO not Thread Save
 			tmpImplemented.addAll(tmpNew);
 		}
 		return true;
@@ -76,11 +79,10 @@ public class RMRestrictionHandler {
 		return true;
 	}
 	
-	public static boolean meetsOnCombinedContainerGenerationCheck(HashSet<Project> combinedProjects){
-		for(Project p1 : combinedProjects){
-			if(rLocMutDep(p1, combinedProjects) == false) return false;
-			if(rLocMutEx(p1, combinedProjects) == false) return false;
-		}
+	public static boolean meetsOnCombinedContainerGenerationCheck(HashSet<Project> projectsInPeriod, RunConfiguration config){
+			if(rLocMutDep(projectsInPeriod,config) == false) return false;
+			if(rLocMutEx(projectsInPeriod, config) == false) return false;
+		
 		return true;
 	}
 	
@@ -103,26 +105,26 @@ public class RMRestrictionHandler {
 	}
 	
 	
-	public static boolean rLocMutDep(Project p1, HashSet<Project> combinedProjects){
-		//If restriction not set return true
-		if(p1.getTogetherInPeriodWith() == null) return true;
-		
-		if(combinedProjects.contains(p1)){
-			return true;
-		}else{
-			return false;
+	public static boolean rLocMutDep(HashSet<Project> projectsInPeriod, RunConfiguration config){
+		if(config.getConstraintSet().getLstLocMutDep().size()>0){
+			for(DBConstraint constraint : config.getConstraintSet().getLstLocMutDep()){
+				if(!(projectsInPeriod.contains(constraint.getS().getId()) && projectsInPeriod.contains(constraint.getSi().getId()))){
+					return false;
+				}
+			}
 		}
+		return true;
 	}
 	
-	public static boolean rLocMutEx(Project p1, HashSet<Project> combinedProjects){
-		//If restriction not set return true
-		if(p1.getNotTogetherInPeriodWith() == null) return true;
-		
-		if(combinedProjects.contains(p1)){
-			return false;
-		}else{
-			return true;
+	public static boolean rLocMutEx(HashSet<Project> projectsInPeriod, RunConfiguration config){
+		if(config.getConstraintSet().getLstLocMutEx().size()>0){
+			for(DBConstraint constraint : config.getConstraintSet().getLstLocMutDep()){
+				if(projectsInPeriod.contains(constraint.getS().getId()) && projectsInPeriod.contains(constraint.getSi().getId())){
+					return false;
+				}
+			}
 		}
+		return true;
 	}
 	
 	public static boolean rEarliest(int startPeriod, HashSet<Project> tmpNew){
@@ -148,15 +150,23 @@ public class RMRestrictionHandler {
 	}
 	
 	public static boolean rGloMutEx(HashSet<Integer> implementedProjectIDs, RunConfiguration config){
-		for(HashSet<Integer> hsGloMutEx : config.getGloMutExs()){
-			if(implementedProjectIDs.containsAll(hsGloMutEx)) return false;
+		for(DBConstraint cGloMutEx : config.getConstraintSet().getLstGloMutEx()){
+			if (implementedProjectIDs.contains(cGloMutEx.getS().getId())
+					&& implementedProjectIDs
+							.contains(cGloMutEx.getSi().getId())) {
+				return false;
+			}	
 		}
 		return true;
 	}
 	
 	public static boolean rGloMutDep(HashSet<Integer> implementedProjectIDs, RunConfiguration config){
-		for(HashSet<Integer> hsGloMutDep : config.getGloMutDeps()){
-			if(!implementedProjectIDs.containsAll(hsGloMutDep)) return false;
+		for(DBConstraint cGloMutDep : config.getConstraintSet().getLstGloMutDep()){
+			if (!(implementedProjectIDs.contains(cGloMutDep.getS().getId())
+					&& implementedProjectIDs
+							.contains(cGloMutDep.getSi().getId()))) {
+				return false;
+			}	
 		}
 		return true;
 	}
@@ -170,7 +180,7 @@ public class RMRestrictionHandler {
 	 */
 	public static boolean rMandatoryProject(HashSet<Integer> implementedProjectIDs, RunConfiguration config){
 		
-		List<Integer> mandatoryIDs = config.getMandatoryProjectIDs();
+		List<Integer> mandatoryIDs = config.getConstraintSet().getLstMandatory();
 		
 		//When more projects are implemented than there are mandatory projects -> all mandatory projects have to be implemented
 		if(implementedProjectIDs.size() >= mandatoryIDs.size()){
@@ -178,7 +188,6 @@ public class RMRestrictionHandler {
 		}else{
 			//Else only mandatory projects have to be implemented
 			return mandatoryIDs.containsAll(implementedProjectIDs);
-			
 		}
 	}
 	

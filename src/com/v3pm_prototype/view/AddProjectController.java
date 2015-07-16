@@ -210,8 +210,15 @@ public class AddProjectController {
 					+ "','" + getAbsRel(tbE) + "','" + getAbsRel(tbA) + "');");
 			int insertedID = st.getGeneratedKeys().getInt(1);
 
-			TabStartController.olProjects.add(new DBProject(insertedID, tfName.getText(), cbType.getValue().toString(), Integer.parseInt(tfPeriods.getText()),cbAffectedProcess.getValue(),Float.valueOf(tfFixedCosts.getText()),Float.valueOf(tfOInv.getText()),Float.valueOf(tfA.getText()),Float.valueOf(tfB.getText()),Float.valueOf(tfE.getText()),Float.valueOf(tfU.getText()),Float.valueOf(tfM.getText())));
-			
+			TabStartController.olProjects.add(new DBProject(insertedID, tfName
+					.getText(), cbType.getValue().toString(), Integer
+					.parseInt(tfPeriods.getText()), Float.valueOf(tfFixedCosts
+					.getText()), Float.valueOf(tfOInv.getText()),
+					cbAffectedProcess.getValue(), Float.valueOf(tfA.getText()),
+					Float.valueOf(tfB.getText()), Float.valueOf(tfE.getText()),
+					Float.valueOf(tfU.getText()), Float.valueOf(tfM.getText()),
+					getAbsRel(tbU), getAbsRel(tbE), getAbsRel(tbA)));
+
 			//Close the window
 			Stage stage = (Stage) btnAddProject.getScene().getWindow();
 			stage.close();

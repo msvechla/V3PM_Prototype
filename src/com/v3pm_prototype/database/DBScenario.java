@@ -3,7 +3,9 @@ package com.v3pm_prototype.database;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.v3pm_prototype.calculation.ConstraintSet;
 import com.v3pm_prototype.calculation.Project;
+import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 public class DBScenario {
@@ -39,12 +41,12 @@ public class DBScenario {
 		
 		List<Process> processes = new ArrayList<Process>();
 		for(DBProcess dbp:lstProcesses){
-			processes.add(dbp.());
+			processes.add(dbp.toProcess());
 		}
 		
 		
-		RunConfiguration config = new RunConfiguration(periods, slotsPerPeriod, discountRate, oOAFixed, lstProjects, lstProcesses);
-		
+		RunConfiguration config = new RunConfiguration(periods, slotsPerPeriod, discountRate, oOAFixed, projects, processes, new ConstraintSet(lstConstraints));
+		return config;
 	}
 	
 	public List<DBConstraint> getLstConstraints() {

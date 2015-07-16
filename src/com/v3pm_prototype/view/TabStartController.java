@@ -282,11 +282,11 @@ public class TabStartController implements EventHandler<ActionEvent>{
 					//Lookup the affected process
 					int processID = rs.getInt("processID");
 					if(processID == DBProcess.ID_ALLPROCESSES){
-						olProjects.add(new DBProject(rs.getInt("id"),rs.getString("name"),rs.getString("type"), rs.getInt("periods"),new DBProcess(DBProcess.ID_ALLPROCESSES, DBProcess.NAME_ALLPROCESSES, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""),rs.getFloat("fixedCosts"),rs.getFloat("oInv"),rs.getFloat("a"),rs.getFloat("b"),rs.getFloat("e"),rs.getFloat("u"),rs.getFloat("m")));
+						olProjects.add(new DBProject(rs.getInt("id"),rs.getString("name"),rs.getString("type"), rs.getInt("periods"),rs.getFloat("fixedCosts"),rs.getFloat("oInv"),new DBProcess(DBProcess.ID_ALLPROCESSES, DBProcess.NAME_ALLPROCESSES, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""),rs.getFloat("a"),rs.getFloat("b"),rs.getFloat("e"),rs.getFloat("u"),rs.getFloat("m"),rs.getString("absrelQ"),rs.getString("absrelT"),rs.getString("absrelOop")));
 					}else{
 						for(DBProcess p : olProcesses){
 							if(p.getId() == processID){
-								olProjects.add(new DBProject(rs.getInt("id"),rs.getString("name"),rs.getString("type"), rs.getInt("periods"),p,rs.getFloat("fixedCosts"),rs.getFloat("oInv"),rs.getFloat("a"),rs.getFloat("b"),rs.getFloat("e"),rs.getFloat("u"),rs.getFloat("m")));
+								olProjects.add(new DBProject(rs.getInt("id"),rs.getString("name"),rs.getString("type"), rs.getInt("periods"),rs.getFloat("fixedCosts"),rs.getFloat("oInv"),p,rs.getFloat("a"),rs.getFloat("b"),rs.getFloat("e"),rs.getFloat("u"),rs.getFloat("m"),rs.getString("absrelQ"),rs.getString("absrelT"),rs.getString("absrelOop")));
 								break;
 							}
 						}
