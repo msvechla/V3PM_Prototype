@@ -7,23 +7,51 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1200.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.TabScenarioCalculationController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1200.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.TabScenarioCalculationController">
    <children>
       <Label text="Best NPV:" />
-      <Label fx:id="lblNPV" text="calculating..." textFill="#5af533">
+      <Label fx:id="lblNPV" text="calculating..." textFill="#33ccf5">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <ListView fx:id="lvRoadmaps" prefHeight="200.0" prefWidth="200.0" />
-      <LineChart title="Process Quality">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </LineChart>
+      <VBox>
+         <children>
+            <HBox prefWidth="200.0">
+               <children>
+                  <Label text="Filter by Projects: " />
+                  <ChoiceBox prefWidth="150.0" />
+                  <ComboBox prefWidth="150.0" />
+               </children>
+            </HBox>
+            <TableView fx:id="tvRoadmap" minHeight="-Infinity" prefHeight="140.0" prefWidth="200.0">
+              <columns>
+                <TableColumn fx:id="clmRoadmap" prefWidth="389.0" text="Roadmap" />
+                <TableColumn fx:id="clmNPV" minWidth="1.0" prefWidth="184.0" text="NPV" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+      <HBox>
+         <children>
+            <LineChart fx:id="lcProcessQuality" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" title="Process Quality" HBox.hgrow="ALWAYS">
+              <xAxis>
+                <CategoryAxis endMargin="10.0" gapStartAndEnd="false" label="Periods" side="BOTTOM" startMargin="10.0" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis forceZeroInRange="false" label="Quality" side="LEFT" />
+              </yAxis>
+            </LineChart>
+            <LineChart fx:id="lcProcessTime" legendSide="RIGHT" prefHeight="400.0" title="Process Time" HBox.hgrow="ALWAYS">
+               <xAxis>
+                  <CategoryAxis endMargin="10.0" gapStartAndEnd="false" label="Periods" side="BOTTOM" startMargin="10.0" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis forceZeroInRange="false" label="Time" side="LEFT" />
+               </yAxis>
+            </LineChart>
+         </children>
+      </HBox>
    </children>
    <padding>
       <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />

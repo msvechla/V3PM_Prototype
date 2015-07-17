@@ -133,10 +133,18 @@ public class Calculator extends Task<List<RoadMap>>{
 			if(RM.toString().contains("[ 9 null ] [ null null ]")){
 				System.out.println("FOUND");
 			}
+			
+			//Save the calculated quality and time per period
+			saveCalculatedValuesToRM(RM, tempCollProcess);
 
 		}
 	}
 	
+	/**
+	 * Stores the temporarily calculated q and t values per period
+	 * @param rm
+	 * @param tempCollProcess
+	 */
 	public void saveCalculatedValuesToRM(RoadMap rm, Collection<Process> tempCollProcess){
 		List<Process> lstProcessesCaculated = new ArrayList<Process>();
 		lstProcessesCaculated.addAll(tempCollProcess);

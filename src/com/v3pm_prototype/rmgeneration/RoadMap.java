@@ -156,7 +156,9 @@ public class RoadMap implements Comparable<RoadMap>{
 //		
 //	}
 
-	
+	public String getDisplayText(){
+		return this.toString();
+	}
 
 	public void setNpv(double npv) {
 		this.npv = npv;

@@ -9,7 +9,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.V3PMGUIController">
+<VBox maxHeight="1.7976931348623157E308" prefHeight="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.V3PMGUIController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -32,9 +32,9 @@
         </Menu>
       </menus>
     </MenuBar>
-      <BorderPane prefHeight="592.0" prefWidth="1200.0">
+      <BorderPane prefWidth="1200.0" VBox.vgrow="ALWAYS">
          <center>
-            <TabPane fx:id="tpMain" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <TabPane fx:id="tpMain" maxHeight="1.7976931348623157E308" prefWidth="1200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
                 <Tab text="Universe Overview">
                   <content>
@@ -45,9 +45,9 @@
             </TabPane>
          </center>
          <bottom>
-            <TitledPane collapsible="false" prefHeight="64.0" prefWidth="1211.0" text="Status" BorderPane.alignment="CENTER">
+            <TitledPane collapsible="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="64.0" prefWidth="1200.0" text="Status" BorderPane.alignment="CENTER">
                <content>
-                  <BorderPane prefHeight="72.0" prefWidth="1209.0">
+                  <BorderPane prefHeight="72.0" prefWidth="1200.0">
                      <left>
                         <Label fx:id="lblStatusText" text="Ready.." BorderPane.alignment="CENTER" />
                      </left>

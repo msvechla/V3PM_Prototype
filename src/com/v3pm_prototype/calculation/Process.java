@@ -20,6 +20,7 @@ public class Process {
 	private double n; // demand
 	
 	private double[] qPerPeriod = null;
+	private double[] tPerPeriod = null;
 	
 	// variables for calculating the demand
 	private double roh;
@@ -57,6 +58,17 @@ public class Process {
 			return (p.id == this.id);
 		}
 		return false;
+	}
+	
+	public double[] gettPerPeriod(RunConfiguration config) {
+		if(tPerPeriod == null){
+			tPerPeriod = new double[config.getPeriods()];
+		}
+		return tPerPeriod;
+	}
+
+	public void settPerPeriod(double[] tPerPeriod) {
+		this.tPerPeriod = tPerPeriod;
 	}
 	
 	public double[] getqPerPeriod(RunConfiguration config) {

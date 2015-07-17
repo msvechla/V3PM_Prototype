@@ -3,28 +3,27 @@ package com.v3pm_prototype.view;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableFloatArray;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
-import javafx.concurrent.Worker.State;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.SortType;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
+import com.sun.org.apache.bcel.internal.generic.LSTORE;
 import com.v3pm_prototype.calculation.Calculator;
-import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
@@ -34,12 +33,21 @@ import com.v3pm_prototype.rmgeneration.RunConfiguration;
 public class TabScenarioCalculationController {
 	@FXML
 	private Label lblNPV;
-	@FXML
-	private ListView<RoadMap> lvRoadmaps;
-	private ObservableList<RoadMap> olRoadmap = FXCollections.observableArrayList();
 	
 	@FXML
-	private LineChart<Process, double[][]> lcProcessQuality;
+	private TableView<RoadMap> tvRoadmap;
+	private ObservableList<RoadMap> olRoadmap = FXCollections.observableArrayList();
+	@FXML
+	private TableColumn<RoadMap, String> clmRoadmap;
+	@FXML
+	private TableColumn<RoadMap, Double> clmNPV;
+	
+	
+	//Charts
+	@FXML
+	private LineChart<String, Number> lcProcessQuality;
+	@FXML
+	private LineChart<String, Number> lcProcessTime;
 	
 	private MainApp mainApp;
 	private DBScenario scenario;
@@ -52,7 +60,7 @@ public class TabScenarioCalculationController {
 	
 	@FXML
 	public void initialize(){
-		lvRoadmaps.setItems(olRoadmap);
+		initTVRoadmaps();
 	}
 	
 	/**
@@ -73,9 +81,44 @@ public class TabScenarioCalculationController {
 		
 	}
 	
-	private void initLCProcessQuality(){
-		//TODO
+	private void initTVRoadmaps(){
+		this.tvRoadmap.setItems(olRoadmap);
+		clmRoadmap.setCellValueFactory(new PropertyValueFactory<RoadMap, String>("displayText"));
+		clmNPV.setCellValueFactory(new PropertyValueFactory<RoadMap, Double>("npv"));
+		clmNPV.setSortType(SortType.DESCENDING);
+		tvRoadmap.getSortOrder().add(clmNPV);
+		tvRoadmap.sort();
 	}
+	
+	private void initLineCharts(){
+
+		for (com.v3pm_prototype.calculation.Process p : rmList.get(0)
+				.getLstProcessCalculated()) {
+			
+			Series<String, Number> seriesQ = new XYChart.Series<String, Number>();
+			seriesQ.setName(p.getName());
+			
+			Series<String, Number> seriesT = new XYChart.Series<String, Number>();
+			seriesT.setName(p.getName());
+
+			for (int period = 0; period < config.getPeriods(); period++) {
+				seriesQ.getData().add(
+						new XYChart.Data<String, Number>("Period "
+								+ String.valueOf(period), p
+								.getqPerPeriod(config)[period]));
+				
+				seriesT.getData().add(
+						new XYChart.Data<String, Number>("Period "
+								+ String.valueOf(period), p
+								.gettPerPeriod(config)[period]));
+			}
+			
+			lcProcessQuality.getData().add(seriesQ);
+			lcProcessTime.getData().add(seriesT);
+		}
+		
+	}
+	
 	
 	/**
 	 * Generates the initial Roadmaps and updates the UI
@@ -136,6 +179,8 @@ public class TabScenarioCalculationController {
 						olRoadmap.clear();
 						rmList = getValue();
 						olRoadmap.addAll(rmList);
+						
+						initLineCharts();
 						
 					}
 
