@@ -1,5 +1,7 @@
 package com.v3pm_prototype.calculation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -56,10 +58,7 @@ public class Calculator extends Task<List<RoadMap>>{
 			Collection<Process> tempCollPocess = CollectionCopier.createTemporaryProcessCollection(config.getLstProcesses());
 			Collection<Process> bufferedTempCollProcess = CollectionCopier.createTemporaryProcessCollection(config.getLstProcesses());
 			
-			System.out.println(RM);
-			if(RM.toString().contains("[ 9 null ] [ null null ]")){
-				System.out.println("FOUND RM");
-			}
+			List<Project> projectsInPeriod = new ArrayList<Project>();
 			
 			// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			// for each project
@@ -67,6 +66,8 @@ public class Calculator extends Task<List<RoadMap>>{
 			for (Iterator<Project> itProj = tempCollPoj_sorted.iterator(); itProj.hasNext();) {
 				Project tempProject = itProj.next();
 
+				projectsInPeriod.add(tempProject);
+				
 				// calculate inflows
 				if (tempProject.getPeriod() > prePeriod) {
 					// In case this is the first project of a new period. For further projects within the same period, no inflows will be added.
@@ -107,10 +108,19 @@ public class Calculator extends Task<List<RoadMap>>{
 				
 				prePeriod = tempProject.getPeriod();
 				projectNumberWithinPeriod++;
+				
+				//Last project in period
 				if (projectNumberWithinPeriod > config.getSlotsPerPeriod()) {
 					projectNumberWithinPeriod = 1;
+					
+					if(RMRestrictionHandler.rBudget(tempProject.getPeriod(), projectsInPeriod, config) == false){
+						RM.setRestrictionBroken(true);
+					}
+					
+					projectsInPeriod.clear();
 				}
 			}
+			
 			
 			// NPV of a roadmap = sum of all inflows - sum of all outflows
 			if(RM.isRestrictionBroken()){
@@ -120,6 +130,9 @@ public class Calculator extends Task<List<RoadMap>>{
 				RM.setNpv(npv / 100);
 			}
 			
+			if(RM.toString().contains("[ 9 null ] [ null null ]")){
+				System.out.println("FOUND");
+			}
 
 		}
 	}

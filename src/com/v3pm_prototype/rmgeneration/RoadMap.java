@@ -1,9 +1,11 @@
 package com.v3pm_prototype.rmgeneration;
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 import com.v3pm_prototype.calculation.Project;
+import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.main.Main;
 
 public class RoadMap implements Comparable<RoadMap>{
@@ -30,7 +32,8 @@ public class RoadMap implements Comparable<RoadMap>{
 			sb.append("] ");
 		}
 		
-		sb.append(npv);
+		DecimalFormat df = new DecimalFormat("#,###.00 €");
+		sb.append(df.format(npv));
 		
 		return sb.toString();
 	}

@@ -221,6 +221,21 @@ public class RMRestrictionHandler {
 		return true;
 	}
 	
+	public static boolean rBudget(int currentPeriod, List<Project> lstProjectsInPeriod, RunConfiguration config){
+		for(DBConstraint cBudget : config.getConstraintSet().getLstBudget()){
+			if(cBudget.getY().equals(DBConstraint.PERIOD_ALL) || Integer.valueOf(cBudget.getY()) == currentPeriod){
+				double oInvGes = 0;
+				for(Project p : lstProjectsInPeriod){
+					oInvGes += p.getOinv();
+				}
+				if(oInvGes > cBudget.getX()){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
 
 	/**
 	 * Checks that only mandatory projects are implemented. Needs clean-up method to remove containers that don't implement all mandatory projects.

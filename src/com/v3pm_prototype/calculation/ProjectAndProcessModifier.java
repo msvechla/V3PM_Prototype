@@ -271,6 +271,9 @@ public class ProjectAndProcessModifier {
 				
 		
 		}
+		
+		//Save the quality per Period
+		tempProcess.getqPerPeriod(config)[tempProject.getPeriod()] = tempProcess.getQ();
 	
 		}
 		
@@ -289,7 +292,7 @@ public class ProjectAndProcessModifier {
 				}
 			}
 		}
-		
+
 		return true;
 		
 	}

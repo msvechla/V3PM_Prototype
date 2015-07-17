@@ -1,5 +1,7 @@
 package com.v3pm_prototype.calculation;
 
+import com.v3pm_prototype.rmgeneration.RunConfiguration;
+
 /**
  * class for value objects which holds all the information about a single process
  *
@@ -16,6 +18,8 @@ public class Process {
 	private double v; // time specific degeneration effect
 	private double fixedCosts; // MLe
 	private double n; // demand
+	
+	private double[] qPerPeriod = null;
 	
 	// variables for calculating the demand
 	private double roh;
@@ -55,6 +59,17 @@ public class Process {
 		return false;
 	}
 	
+	public double[] getqPerPeriod(RunConfiguration config) {
+		if(qPerPeriod == null){
+			qPerPeriod = new double[config.getPeriods()];
+		}
+		return qPerPeriod;
+	}
+
+	public void setqPerPeriod(double[] qPerPeriod) {
+		this.qPerPeriod = qPerPeriod;
+	}
+
 	public String getName() {
 		return name;
 	}

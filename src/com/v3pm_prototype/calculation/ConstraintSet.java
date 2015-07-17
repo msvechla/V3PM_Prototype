@@ -39,6 +39,9 @@ public class ConstraintSet {
 	//QualMin
 	private List<DBConstraint> lstQualMin = new ArrayList<DBConstraint>();
 	
+	//Budget
+	private List<DBConstraint> lstBudget = new ArrayList<DBConstraint>();
+	
 	
 	public ConstraintSet(List<DBConstraint> lstConstraints) {
 		this.lstConstraints = lstConstraints;
@@ -88,6 +91,10 @@ public class ConstraintSet {
 				
 			case DBConstraint.TYPE_QUALMIN:
 				lstQualMin.add(constraint);
+				break;
+				
+			case DBConstraint.TYPE_BUDGET:
+				lstBudget.add(constraint);
 				break;
 			
 			}
@@ -157,9 +164,12 @@ public class ConstraintSet {
 		return lstTimeMax;
 	}
 
-
 	public List<DBConstraint> getLstQualMin() {
 		return lstQualMin;
+	}
+
+	public List<DBConstraint> getLstBudget() {
+		return lstBudget;
 	}
 	
 		

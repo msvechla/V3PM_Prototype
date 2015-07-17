@@ -121,12 +121,7 @@ public class TabScenarioCalculationController {
 						olRoadmap.clear();
 						rmList = getValue();
 						
-						for(RoadMap rm : rmList){
-							if(rm.implementedProjectIDs.contains(3) && rm.implementedProjectIDs.contains(9)){
-								olRoadmap.add(rm);
-								System.out.println(rm);
-							}
-						}
+						olRoadmap.addAll(rmList);
 						
 					}
 
