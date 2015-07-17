@@ -411,7 +411,7 @@ public class TabStartController implements EventHandler<ActionEvent>{
 					if(y == -2){
 						yString = DBConstraint.PERIOD_ALL;
 					}else{
-						y = Integer.valueOf(y);
+						yString = Integer.toString(y);
 					}
 					
 					int sID = rs.getInt("sID");

@@ -52,6 +52,18 @@ public class DBProject implements Serializable {
 		return p;
 	}
 	
+	public boolean equals(Object obj){
+		if(obj instanceof Project){
+			Project p = (Project)obj;
+			return (p.getId() == this.id);
+		}
+		if(obj instanceof DBProject){
+			DBProject p = (DBProject) obj;
+			return p.getId() == this.id;
+		}
+		return false;
+	}
+	
 	public String toString(){
 		return this.name + " "+this.type+ " "+this.periods+"p";
 	}

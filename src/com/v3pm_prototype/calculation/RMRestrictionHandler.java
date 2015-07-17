@@ -3,6 +3,7 @@ package com.v3pm_prototype.calculation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -56,17 +57,19 @@ public class RMRestrictionHandler {
 		for(int period = 0; period < roadmap.length; period++){
 			List<Project> tmpNew = new ArrayList<Project>();
 			tmpNew.addAll(Arrays.asList(roadmap[period]));
-			tmpNew.remove(null);
+			tmpNew.removeAll(Collections.singleton(null));
 			
-			if(rEarliest(period, alreadyImplemented, tmpNew, config) == false) return false;
-			if(rLatest(period, alreadyImplemented, tmpNew, config) == false) return false;
-			if(rPreSuc(period, alreadyImplemented, tmpNew, config) == false) return false;
-			
-			for(Project p: tmpNew){
-				if(!alreadyImplemented.contains(p)){
-					alreadyImplemented.add(p);
+			if(tmpNew.size() > 0){
+				if(rEarliest(period, alreadyImplemented, tmpNew, config) == false) return false;
+				if(rLatest(period, alreadyImplemented, tmpNew, config) == false) return false;
+				if(rPreSuc(period, alreadyImplemented, tmpNew, config) == false) return false;
+				
+				for(Project p: tmpNew){
+					if(!alreadyImplemented.contains(p)){
+						alreadyImplemented.add(p);
+					}
 				}
-			}
+			}	
 
 		}
 		return true;
@@ -102,9 +105,14 @@ public class RMRestrictionHandler {
 				for(DBConstraint cPreSuc : config.getConstraintSet().getLstPreSuc())
 					//TODO CFE PreSuc
 					if(p.equals(cPreSuc.getSi())){
-						if(!(alreadyImplemented.contains(cPreSuc.getS())) && alreadyImplemented.get(alreadyImplemented.indexOf(cPreSuc.getS())).isFinished(period)){
+						if(alreadyImplemented.contains(cPreSuc.getS())){
+								if(!alreadyImplemented.get(alreadyImplemented.indexOf(cPreSuc.getS())).isFinished(period)){
+									return false;
+								}
+						}else{
 							return false;
 						}
+						
 					}
 			}
 		}

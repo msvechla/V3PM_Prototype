@@ -3,6 +3,8 @@ package com.v3pm_prototype.calculation;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.v3pm_prototype.database.DBProject;
+
 /**
  * class for value objects which holds all the information about a single project
  * 
@@ -68,6 +70,10 @@ public class Project {
 		if(obj instanceof Project){
 			Project p = (Project)obj;
 			return (p.id == this.id);
+		}
+		if(obj instanceof DBProject){
+			DBProject p = (DBProject) obj;
+			return p.getId() == this.id;
 		}
 		return false;
 	}

@@ -13,7 +13,6 @@ import com.v3pm_prototype.calculation.RMRestrictionHandler;
 public class RMGenerator extends Task<List<RoadMap>> {
 	
 	private RunConfiguration config;
-	private List<RoadMap> generatedRoadmaps;
 	
 	public RMGenerator(RunConfiguration config){
 		this.config = config;
@@ -22,13 +21,11 @@ public class RMGenerator extends Task<List<RoadMap>> {
 	
 	@Override
 	protected List<RoadMap> call() throws Exception {
-		this.generateRoadmaps();
-		return this.generatedRoadmaps;
+		return this.generateRoadmaps();
 	}
 
 	/**
 	 * Algorithm for generating all possible Roadmaps from pre-defined projects
-	 * @param mainApp 
 	 */
 	
 	private List<RoadMap> generateRoadmaps() {
@@ -124,7 +121,6 @@ public class RMGenerator extends Task<List<RoadMap>> {
 		
 		System.out.println("--- FINISH: generateRoadmaps()");
 		System.out.println(rmListPostRMGenCheck.size() + " Roadmaps generated.");
-		this.generatedRoadmaps = rmListPostRMGenCheck;
 		return rmListPostRMGenCheck;
 		
 	}
@@ -166,8 +162,9 @@ public class RMGenerator extends Task<List<RoadMap>> {
 	}
 	
 	
-	public List<RoadMap> getGeneratedRoadmaps(){
-		return this.generatedRoadmaps;
+	@Override
+	protected void succeeded() {
+		super.succeeded();
 	}
-	
+
 }

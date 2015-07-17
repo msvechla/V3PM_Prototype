@@ -57,7 +57,7 @@ public class Main {
 		RMGenerator rmGenerator = new RMGenerator(RunConfiguration.standardConfig);
 		//rmGenerator.call();
 		
-List<RoadMap> rmList = rmGenerator.getGeneratedRoadmaps();
+//List<RoadMap> rmList = rmGenerator.getGeneratedRoadmaps();
 		
 		double millisFinish = System.currentTimeMillis();
 		
@@ -86,9 +86,9 @@ List<RoadMap> rmList = rmGenerator.getGeneratedRoadmaps();
 		// calculate NPV of each roadmap
 		// -----------------------------------------------------------------------------
 		
-		for(RoadMap rm : rmList){
-			System.out.println(rm);
-		}
+//		for(RoadMap rm : rmList){
+//			System.out.println(rm);
+//		}
 		//System.out.println(rmList.size()+" Roadmaps generated in "+(millisFinish-millisStart)+"ms.   "+RMContainer.countRoadMapsGenerated+ " Roadmaps before Post-Gen Check");
 		
 		//Calculator.calculateNPVs(rmList, RunConfiguration.standardConfig.getLstProcesses(), RunConfiguration.standardConfig.getLstProjects(),RunConfiguration.standardConfig);
@@ -96,7 +96,7 @@ List<RoadMap> rmList = rmGenerator.getGeneratedRoadmaps();
 		// -----------------------------------------------------------------------------
 		// sort roadmaps by NPV
 		// -----------------------------------------------------------------------------
-		Collections.sort(rmList);
+//		Collections.sort(rmList);
 
 		// -----------------------------------------------------------------------------
 		// print output-data to excel file
