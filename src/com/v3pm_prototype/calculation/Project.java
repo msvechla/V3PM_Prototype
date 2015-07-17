@@ -78,6 +78,10 @@ public class Project {
 		return false;
 	}
 	
+	/**
+	 * Adjusts the oInv to the number of periods Only call this method once per object!
+	 * Not called at constructor because Project copys would be adjusted multiple times!
+	 */
 	public void adjustForMultiPeriodScenario(){
 		this.oinv = this.oinv / this.numberOfPeriods;
 	}

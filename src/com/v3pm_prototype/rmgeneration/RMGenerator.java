@@ -160,11 +160,5 @@ public class RMGenerator extends Task<List<RoadMap>> {
 
 		return rmCombined;
 	}
-	
-	
-	@Override
-	protected void succeeded() {
-		super.succeeded();
-	}
 
 }

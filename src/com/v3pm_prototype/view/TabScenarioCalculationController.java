@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import com.v3pm_prototype.calculation.Calculator;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
@@ -33,6 +34,8 @@ public class TabScenarioCalculationController {
 	
 	private MainApp mainApp;
 	private DBScenario scenario;
+	private RunConfiguration config;
+	private List<RoadMap> rmList;
 	
 	public TabScenarioCalculationController() {
 		
@@ -42,68 +45,102 @@ public class TabScenarioCalculationController {
 	public void initialize(){
 		lvRoadmaps.setItems(olRoadmap);
 	}
+	
+	/**
+	 * Generates the initial Roadmaps and calculates their NPVs
+	 */
+	private void startInitialCalculations(){
+		Service<List<RoadMap>> svRMGen = initialRMGenService();
+		
+		svRMGen.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				System.out.println("TEST");
+				Service<List<RoadMap>> svNPVCalc = initialNPVCalcService((List<RoadMap>) event.getSource().getValue());
+				svNPVCalc.start();
+			}
+		});
+		
+		svRMGen.start();
+		
+	}
+	
+	/**
+	 * Generates the initial Roadmaps and updates the UI
+	 * @return
+	 */
+	private Service<List<RoadMap>> initialRMGenService() {
+		// Update Statusbar
+		this.mainApp.getV3pmGUIController().setProgress(-1);
+		this.mainApp.getV3pmGUIController().setStatus("Generating Roadmaps...");
+
+		// Create a Service that executes the RMGenerator Task and start it
+		Service<List<RoadMap>> service = new Service<List<RoadMap>>() {
+			@Override
+			protected Task<List<RoadMap>> createTask() {
+				return new RMGenerator(config) {
+
+					@Override
+					protected void succeeded() {
+						mainApp.getV3pmGUIController().setProgress(0);
+						mainApp.getV3pmGUIController().setStatus(
+								"Roadmaps generated.");
+						rmList = (List<RoadMap>) getValue();
+						olRoadmap.addAll(rmList);
+						super.succeeded();
+					}
+
+				};
+			}
+		};
+		return service;
+	}
+	
+	/**
+	 * Calculates the NPV of the initial Roadmaps and updates the UI
+	 * @param r 
+	 * @return
+	 */
+	private Service<List<RoadMap>> initialNPVCalcService(final List<RoadMap> generatedRoadmaps) {		// Update Statusbar
+		this.mainApp.getV3pmGUIController().setProgress(-1);
+		this.mainApp.getV3pmGUIController().setStatus("Calculating NPVs...");
+
+		// Create a Service that executes the RMGenerator Task and start it
+		Service<List<RoadMap>> service = new Service<List<RoadMap>>() {
+			@Override
+			protected Task<List<RoadMap>> createTask() {
+				return new Calculator(generatedRoadmaps, config) {
+
+					@Override
+					protected void succeeded() {
+						super.succeeded();
+						mainApp.getV3pmGUIController().setProgress(0);
+						mainApp.getV3pmGUIController().setStatus(
+								"NPVs calculated.");
+						lblNPV.setText(String.valueOf(this.getValue().get(0).getNpv()));
+						olRoadmap.clear();
+						rmList = getValue();
+						
+						for(RoadMap rm : rmList){
+							if(rm.implementedProjectIDs.contains(3) && rm.implementedProjectIDs.contains(9)){
+								olRoadmap.add(rm);
+								System.out.println(rm);
+							}
+						}
+						
+					}
+
+				};
+			}
+		};
+		return service;
+	}
 
 	public void setScenario(DBScenario newScenario) {
 		this.scenario = newScenario;
+		this.config = newScenario.generateRunConfiguration();
+		startInitialCalculations();
 		
-		//Update Statusbar
-		this.mainApp.getV3pmGUIController().setProgress(-1);
-		this.mainApp.getV3pmGUIController().setStatus("Generating Roadmaps...");
-		
-		//Create a Service that executes the RMGenerator Task and start it
-		Service<List<RoadMap>> service = new Service<List<RoadMap>>(){
-			@Override
-			protected Task<List<RoadMap>> createTask() {
-				return new RMGenerator(scenario.generateRunConfiguration());
-			}
-
-			@Override
-			protected void succeeded() {
-				super.succeeded();
-				System.out.println("SUCCEEDED");
-				mainApp.getV3pmGUIController().setProgress(0);
-				mainApp.getV3pmGUIController().setStatus("Roadmaps generated.");
-				olRoadmap.addAll((List<RoadMap>) getValue());
-			}
-
-		};
-		
-		service.stateProperty().addListener(new ChangeListener<Worker.State>() {
-
-			@Override public void changed(ObservableValue<? extends Worker.State> observableValue, Worker.State oldState, Worker.State newState) {
-				switch (newState) {
-		          case SCHEDULED:
-		        	  System.out.println("SCHEDULED");
-		            break;
-		          case READY:
-		          case RUNNING:
-		            System.out.println("RUNNING");
-		            break;
-		          case SUCCEEDED:
-		           System.out.println("SUCCEEDED");
-		            break;
-		          case CANCELLED:
-		        	  System.out.println("CANCELED");
-		          case FAILED:
-		           System.out.println("FAILED");
-		            break;
-		        }
-				
-			}
-			
-		});
-		
-		//When the task is succeeded update Statusbar
-//		service.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
-//			@Override
-//			public void handle(WorkerStateEvent event) {
-//				System.out.println("SUCCEEDED");
-//				mainApp.getV3pmGUIController().setProgress(0);
-//				mainApp.getV3pmGUIController().setStatus("Roadmaps generated.");
-//				olRoadmap.addAll((List<RoadMap>) event.getSource().getValue());
-//			}
-//		});
-		service.start();
 	}
 	
 	public void setMainApp(MainApp mainApp){

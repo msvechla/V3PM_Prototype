@@ -1,8 +1,11 @@
 package com.v3pm_prototype.calculation;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import javafx.concurrent.Task;
 
 import com.v3pm_prototype.exceptions.NoValidThetaIDException;
 import com.v3pm_prototype.rmgeneration.*;
@@ -10,21 +13,36 @@ import com.v3pm_prototype.rmgeneration.*;
 /**
  * This Class is used to calculate the NPV of each roadmap.
  */
-public class Calculator {
+public class Calculator extends Task<List<RoadMap>>{
 	
+	private List<RoadMap> collRM;
+	private RunConfiguration config;
 	
+	public Calculator(List<RoadMap> collRM, RunConfiguration config) {
+		super();
+		this.collRM = collRM;
+		this.config = config;
+	}
+	
+	@Override
+	protected List<RoadMap> call() throws Exception {
+		calculateNPVs();
+		Collections.sort(collRM);
+		return collRM;
+	}
+
 	/**
 	 * calculates the NPV and set the NPV-value for each roadmap
 	 * @throws NoValidThetaIDException 
 	 */
-	public static void calculateNPVs(List<RoadMap> collRM, Collection<Process> collProcess, Collection<Project> collProj, RunConfiguration config) throws NoValidThetaIDException {
+	public void calculateNPVs() throws NoValidThetaIDException {
 
 		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		// for each roadmap
 		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		for (Iterator<RoadMap> itRM = collRM.iterator(); itRM.hasNext();) {
 			RoadMap RM = itRM.next();
-			boolean restrictionBroken = false; //QualMin, TimeMax
+			boolean restrictionClear = false; //QualMin, TimeMax
 			double inflows = 0;
 			double outflows = 0;
 			double fixedCostsOA = config.getOOAFixed();  //MLe
@@ -35,9 +53,14 @@ public class Calculator {
 			// modify them without touching the original collections. Create another deep copy of the tempProcess Collection to be able to compare t and q from
 			// the previous and the actual period (for degeneration handling in multiproject scenarios)
 			Collection<Project> tempCollPoj_sorted = RM.createCollection(config);
-			Collection<Process> tempCollPocess = CollectionCopier.createTemporaryProcessCollection(collProcess);
-			Collection<Process> bufferedTempCollProcess = CollectionCopier.createTemporaryProcessCollection(collProcess);
-
+			Collection<Process> tempCollPocess = CollectionCopier.createTemporaryProcessCollection(config.getLstProcesses());
+			Collection<Process> bufferedTempCollProcess = CollectionCopier.createTemporaryProcessCollection(config.getLstProcesses());
+			
+			System.out.println(RM);
+			if(RM.toString().contains("[ 9 null ] [ null null ]")){
+				System.out.println("FOUND RM");
+			}
+			
 			// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			// for each project
 			// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -75,9 +98,9 @@ public class Calculator {
 				// for each process
 				// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				// modify processes by project for next iteration
-				restrictionBroken = ProjectAndProcessModifier.modifyProcessesAndProjectsByProject(tempCollPocess, bufferedTempCollProcess, tempProject, tempCollPoj_sorted,
+				restrictionClear = ProjectAndProcessModifier.modifyProcessesAndProjectsByProject(tempCollPocess, bufferedTempCollProcess, tempProject, tempCollPoj_sorted,
 						projectNumberWithinPeriod, config);
-				if(restrictionBroken){
+				if(!restrictionClear){
 					RM.setRestrictionBroken(true);
 					break;
 				}
@@ -105,7 +128,7 @@ public class Calculator {
 	 * calculate inflows for each process and adds them up to the total inflows
 	 * @throws NoValidThetaIDException 
 	 */
-	private static double calculateInflowsPerPeriode(Collection<Process> tempCollPocess, Project tempProject, RunConfiguration config) throws NoValidThetaIDException {
+	private static synchronized double calculateInflowsPerPeriode(Collection<Process> tempCollPocess, Project tempProject, RunConfiguration config) throws NoValidThetaIDException {
 		double inflowsPerPeriode = 0;
 		for (Iterator<Process> itProcess = tempCollPocess.iterator(); itProcess.hasNext();) {
 			Process p = itProcess.next();

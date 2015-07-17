@@ -25,17 +25,17 @@ public class DBConstraint {
 	private DBProject sI;
 	private DBProcess i;
 	private String y;
-	private float x;
+	private double x;
 	private String type;
 	
-	public DBConstraint(String type, DBProject s, DBProject sI, DBProcess i, float x,String y) {
+	public DBConstraint(String type, DBProject s, DBProject sI, DBProcess i, double d,String y) {
 		super();
 		this.type = type;
 		this.s = s;
 		this.sI = sI;
 		this.i = i;
 		this.y = y;
-		this.x = x;
+		this.x = d;
 	}
 	
 	public String toString(){
@@ -108,11 +108,11 @@ public class DBConstraint {
 		this.y = y;
 	}
 
-	public float getX() {
+	public double getX() {
 		return x;
 	}
 
-	public void setX(float x) {
+	public void setX(double x) {
 		this.x = x;
 	}
 	

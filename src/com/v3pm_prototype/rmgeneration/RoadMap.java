@@ -30,6 +30,8 @@ public class RoadMap implements Comparable<RoadMap>{
 			sb.append("] ");
 		}
 		
+		sb.append(npv);
+		
 		return sb.toString();
 	}
 	
@@ -65,7 +67,7 @@ public class RoadMap implements Comparable<RoadMap>{
 					
 					collProjects.add(copy);
 				}else{
-					Project emptyProject = new Project(-1, "Empty", 0, null, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null);
+					Project emptyProject = new Project(-1, "Empty", 0, "", 0, 0, 0, 0, 0, 0, 0, 0, null, null, null);
 					emptyProject.setPeriod(period);
 					collProjects.add(emptyProject);
 				}

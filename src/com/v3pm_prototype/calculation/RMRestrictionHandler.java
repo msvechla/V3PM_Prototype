@@ -51,6 +51,7 @@ public class RMRestrictionHandler {
 		
 		if(rGloMutEx(implementedProjects, config) == false) return false;
 		if(rGloMutDep(implementedProjects, config) == false) return false;
+		if(rMandatoryProject(implementedProjects, config) == false) return false;
 		
 		List<Project> alreadyImplemented = new ArrayList<Project>();
 		

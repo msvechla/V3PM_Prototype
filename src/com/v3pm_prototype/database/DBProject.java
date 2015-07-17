@@ -49,6 +49,9 @@ public class DBProject implements Serializable {
 	public Project toProject(){
 		Project p = new Project(id, name, periods, type,fixedCosts, oInv,process.getId(),
 				a, b, e, u, m, absRelQ, absRelT, absRelOop);
+		
+		//Only called once when converting to Project. Not called at constructor because copys don't have to be adjusted anymore
+		p.adjustForMultiPeriodScenario();
 		return p;
 	}
 	

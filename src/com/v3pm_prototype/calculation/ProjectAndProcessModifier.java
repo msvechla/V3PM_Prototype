@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.main.Main;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
@@ -37,7 +38,7 @@ public class ProjectAndProcessModifier {
 		for (Iterator<Process> itProcessModify = tempCollPocess.iterator(); itProcessModify.hasNext();) {
 			Process tempProcess = itProcessModify.next();
 			boolean projectRegardsProcess = false;
-			if (tempProject.getI() == '*' || tempProject.getI() == tempProcess.getId()) {
+			if (tempProject.getI() == DBProcess.ID_ALLPROCESSES || tempProject.getI() == tempProcess.getId()) {
 				projectRegardsProcess = true;
 			}
 			
