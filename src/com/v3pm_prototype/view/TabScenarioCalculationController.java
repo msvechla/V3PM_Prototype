@@ -1,11 +1,13 @@
 package com.v3pm_prototype.view;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableFloatArray;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -14,11 +16,15 @@ import javafx.concurrent.Worker.State;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 import com.v3pm_prototype.calculation.Calculator;
+import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
@@ -31,6 +37,9 @@ public class TabScenarioCalculationController {
 	@FXML
 	private ListView<RoadMap> lvRoadmaps;
 	private ObservableList<RoadMap> olRoadmap = FXCollections.observableArrayList();
+	
+	@FXML
+	private LineChart<Process, double[][]> lcProcessQuality;
 	
 	private MainApp mainApp;
 	private DBScenario scenario;
@@ -55,7 +64,6 @@ public class TabScenarioCalculationController {
 		svRMGen.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			@Override
 			public void handle(WorkerStateEvent event) {
-				System.out.println("TEST");
 				Service<List<RoadMap>> svNPVCalc = initialNPVCalcService((List<RoadMap>) event.getSource().getValue());
 				svNPVCalc.start();
 			}
@@ -63,6 +71,10 @@ public class TabScenarioCalculationController {
 		
 		svRMGen.start();
 		
+	}
+	
+	private void initLCProcessQuality(){
+		//TODO
 	}
 	
 	/**
@@ -117,10 +129,12 @@ public class TabScenarioCalculationController {
 						mainApp.getV3pmGUIController().setProgress(0);
 						mainApp.getV3pmGUIController().setStatus(
 								"NPVs calculated.");
-						lblNPV.setText(String.valueOf(this.getValue().get(0).getNpv()));
+						
+						DecimalFormat df = new DecimalFormat("#,###.00 €");
+						lblNPV.setText(df.format(this.getValue().get(0).getNpv()));
+						
 						olRoadmap.clear();
 						rmList = getValue();
-						
 						olRoadmap.addAll(rmList);
 						
 					}

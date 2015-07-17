@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.TabScenarioCalculationController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1200.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.TabScenarioCalculationController">
    <children>
       <Label text="Best NPV:" />
       <Label fx:id="lblNPV" text="calculating..." textFill="#5af533">
@@ -15,6 +16,14 @@
          </font>
       </Label>
       <ListView fx:id="lvRoadmaps" prefHeight="200.0" prefWidth="200.0" />
+      <LineChart title="Process Quality">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </LineChart>
    </children>
    <padding>
       <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />

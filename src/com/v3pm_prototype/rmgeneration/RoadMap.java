@@ -3,7 +3,9 @@ import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 
+import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.main.Main;
@@ -13,7 +15,10 @@ public class RoadMap implements Comparable<RoadMap>{
 	public HashSet<Integer> implementedProjectIDs;
 	private double npv;
 	private boolean restrictionBroken = false;
+	private List<Process> lstProcessCalculated;
+	
 	public static int equalsCalls = 0;
+	
 
 	public RoadMap(Project[][] rmArray, HashSet<Integer> implementedProjectIDs) {
 		this.rmArray = rmArray;
@@ -151,9 +156,20 @@ public class RoadMap implements Comparable<RoadMap>{
 //		
 //	}
 
+	
 
 	public void setNpv(double npv) {
 		this.npv = npv;
+	}
+
+
+	public List<Process> getLstProcessCalculated() {
+		return lstProcessCalculated;
+	}
+
+
+	public void setLstProcessCalculated(List<Process> lstProcessesCaculated) {
+		this.lstProcessCalculated = lstProcessesCaculated;
 	}
 
 
@@ -174,7 +190,7 @@ public class RoadMap implements Comparable<RoadMap>{
 
 	@Override
 	public int compareTo(RoadMap rm) {
-		return Double.compare(this.getNpv(), rm.getNpv());
+		return Double.compare(rm.getNpv(), this.npv);
 	}
 	
 }

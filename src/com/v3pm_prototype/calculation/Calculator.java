@@ -55,7 +55,7 @@ public class Calculator extends Task<List<RoadMap>>{
 			// modify them without touching the original collections. Create another deep copy of the tempProcess Collection to be able to compare t and q from
 			// the previous and the actual period (for degeneration handling in multiproject scenarios)
 			Collection<Project> tempCollPoj_sorted = RM.createCollection(config);
-			Collection<Process> tempCollPocess = CollectionCopier.createTemporaryProcessCollection(config.getLstProcesses());
+			Collection<Process> tempCollProcess = CollectionCopier.createTemporaryProcessCollection(config.getLstProcesses());
 			Collection<Process> bufferedTempCollProcess = CollectionCopier.createTemporaryProcessCollection(config.getLstProcesses());
 			
 			List<Project> projectsInPeriod = new ArrayList<Project>();
@@ -71,14 +71,14 @@ public class Calculator extends Task<List<RoadMap>>{
 				// calculate inflows
 				if (tempProject.getPeriod() > prePeriod) {
 					// In case this is the first project of a new period. For further projects within the same period, no inflows will be added.
-					inflows = inflows + calculateInflowsPerPeriode(tempCollPocess, tempProject, config);
+					inflows = inflows + calculateInflowsPerPeriode(tempCollProcess, tempProject, config);
 					
 					//MLe  korrekt und getestet!
 					
 					fixedCostsOAGes = fixedCostsOAGes + (fixedCostsOA / (Math.pow((1 + config.getDiscountRate()), tempProject.getPeriod())));
 														
 					// Create a deep copy of the tempProcess collection to be able to compare t and q for degeneration handling in multiproject scenarios.
-					bufferedTempCollProcess = CollectionCopier.createTemporaryProcessCollection(tempCollPocess);
+					bufferedTempCollProcess = CollectionCopier.createTemporaryProcessCollection(tempCollProcess);
 				}
 				// calculate outflows
 		
@@ -99,7 +99,7 @@ public class Calculator extends Task<List<RoadMap>>{
 				// for each process
 				// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				// modify processes by project for next iteration
-				restrictionClear = ProjectAndProcessModifier.modifyProcessesAndProjectsByProject(tempCollPocess, bufferedTempCollProcess, tempProject, tempCollPoj_sorted,
+				restrictionClear = ProjectAndProcessModifier.modifyProcessesAndProjectsByProject(tempCollProcess, bufferedTempCollProcess, tempProject, tempCollPoj_sorted,
 						projectNumberWithinPeriod, config);
 				if(!restrictionClear){
 					RM.setRestrictionBroken(true);
@@ -136,6 +136,14 @@ public class Calculator extends Task<List<RoadMap>>{
 
 		}
 	}
+	
+	public void saveCalculatedValuesToRM(RoadMap rm, Collection<Process> tempCollProcess){
+		List<Process> lstProcessesCaculated = new ArrayList<Process>();
+		lstProcessesCaculated.addAll(tempCollProcess);
+		
+		rm.setLstProcessCalculated(lstProcessesCaculated);
+	}
+	
 
 	/**
 	 * calculate inflows for each process and adds them up to the total inflows
