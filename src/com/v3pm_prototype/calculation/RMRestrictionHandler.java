@@ -9,9 +9,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import sun.misc.GC.LatencyRequest;
-
-import com.sun.org.apache.bcel.internal.generic.LSTORE;
 import com.v3pm_prototype.database.DBConstraint;
 import com.v3pm_prototype.exceptions.ProjectIsNotInRoadmapException;
 import com.v3pm_prototype.rmgeneration.RMContainer;

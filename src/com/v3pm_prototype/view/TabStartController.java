@@ -33,7 +33,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import com.sun.org.apache.bcel.internal.generic.LSTORE;
 import com.v3pm_prototype.calculation.ConstraintSet;
 import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.database.DBConstraint;

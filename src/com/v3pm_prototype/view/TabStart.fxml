@@ -39,7 +39,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TableView fx:id="tvProjects" prefHeight="200.0" prefWidth="565.0">
+            <TableView fx:id="tvProjects" maxWidth="1.7976931348623157E308" prefHeight="200.0" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
@@ -67,7 +67,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TableView fx:id="tvProcesses" prefHeight="103.0" prefWidth="542.0">
+            <TableView fx:id="tvProcesses" maxWidth="1.7976931348623157E308" prefHeight="103.0" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>

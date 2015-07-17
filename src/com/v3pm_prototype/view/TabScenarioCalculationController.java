@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -22,7 +23,6 @@ import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import com.sun.org.apache.bcel.internal.generic.LSTORE;
 import com.v3pm_prototype.calculation.Calculator;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
@@ -88,34 +88,50 @@ public class TabScenarioCalculationController {
 		clmNPV.setSortType(SortType.DESCENDING);
 		tvRoadmap.getSortOrder().add(clmNPV);
 		tvRoadmap.sort();
+		
+		tvRoadmap.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener<Integer>(){
+
+			@Override
+			public void onChanged(
+					javafx.collections.ListChangeListener.Change<? extends Integer> arg0) {
+				initLineCharts();
+				
+			}
+			
+		});
 	}
 	
 	private void initLineCharts(){
 
-		for (com.v3pm_prototype.calculation.Process p : rmList.get(0)
-				.getLstProcessCalculated()) {
-			
-			Series<String, Number> seriesQ = new XYChart.Series<String, Number>();
-			seriesQ.setName(p.getName());
-			
-			Series<String, Number> seriesT = new XYChart.Series<String, Number>();
-			seriesT.setName(p.getName());
-
-			for (int period = 0; period < config.getPeriods(); period++) {
-				seriesQ.getData().add(
-						new XYChart.Data<String, Number>("Period "
-								+ String.valueOf(period), p
-								.getqPerPeriod(config)[period]));
+		lcProcessQuality.getData().clear();
+		lcProcessTime.getData().clear();
+		
+		if(tvRoadmap.getSelectionModel().getSelectedItem() != null){
+			for (com.v3pm_prototype.calculation.Process p : tvRoadmap.getSelectionModel().getSelectedItem()
+					.getLstProcessCalculated()) {
 				
-				seriesT.getData().add(
-						new XYChart.Data<String, Number>("Period "
-								+ String.valueOf(period), p
-								.gettPerPeriod(config)[period]));
+				Series<String, Number> seriesQ = new XYChart.Series<String, Number>();
+				seriesQ.setName(p.getName());
+				
+				Series<String, Number> seriesT = new XYChart.Series<String, Number>();
+				seriesT.setName(p.getName());
+
+				for (int period = 0; period < config.getPeriods(); period++) {
+					seriesQ.getData().add(
+							new XYChart.Data<String, Number>("Period "
+									+ String.valueOf(period), p
+									.getqPerPeriod(config)[period]));
+					
+					seriesT.getData().add(
+							new XYChart.Data<String, Number>("Period "
+									+ String.valueOf(period), p
+									.gettPerPeriod(config)[period]));
+				}
+				
+				lcProcessQuality.getData().add(seriesQ);
+				lcProcessTime.getData().add(seriesT);
 			}
-			
-			lcProcessQuality.getData().add(seriesQ);
-			lcProcessTime.getData().add(seriesT);
-		}
+		}	
 		
 	}
 	
@@ -179,7 +195,7 @@ public class TabScenarioCalculationController {
 						olRoadmap.clear();
 						rmList = getValue();
 						olRoadmap.addAll(rmList);
-						
+						tvRoadmap.getSelectionModel().select(rmList.get(0));
 						initLineCharts();
 						
 					}

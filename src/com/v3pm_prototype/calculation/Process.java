@@ -6,7 +6,7 @@ import com.v3pm_prototype.rmgeneration.RunConfiguration;
  * class for value objects which holds all the information about a single process
  *
  */
-public class Process {
+public class Process implements Comparable<Process>{
 	private String name;
 	private int id;
 	private double q; // quality
@@ -218,6 +218,11 @@ public class Process {
 
 	public void setThetaID_t(int thetaID_t) {
 		this.thetaID_t = thetaID_t;
+	}
+
+	@Override
+	public int compareTo(Process p) {
+		return Integer.compare(p.getId(), this.id);
 	}
 
 }

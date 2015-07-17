@@ -143,11 +143,13 @@ public class Calculator extends Task<List<RoadMap>>{
 	/**
 	 * Stores the temporarily calculated q and t values per period
 	 * @param rm
-	 * @param tempCollProcess
+	 * @param tempCollProcesss
 	 */
 	public void saveCalculatedValuesToRM(RoadMap rm, Collection<Process> tempCollProcess){
 		List<Process> lstProcessesCaculated = new ArrayList<Process>();
 		lstProcessesCaculated.addAll(tempCollProcess);
+		
+		Collections.sort(lstProcessesCaculated);
 		
 		rm.setLstProcessCalculated(lstProcessesCaculated);
 	}
