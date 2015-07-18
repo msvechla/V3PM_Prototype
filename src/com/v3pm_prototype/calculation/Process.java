@@ -219,6 +219,10 @@ public class Process implements Comparable<Process>{
 	public void setThetaID_t(int thetaID_t) {
 		this.thetaID_t = thetaID_t;
 	}
+	
+	public String getNodeID(){
+		return "PROCESS:"+String.valueOf(this.getId()) + String.valueOf(this.getName());
+	}
 
 	@Override
 	public int compareTo(Process p) {

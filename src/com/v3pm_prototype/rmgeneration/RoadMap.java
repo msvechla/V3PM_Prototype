@@ -34,11 +34,8 @@ public class RoadMap implements Comparable<RoadMap>{
 			for(int slot=0; slot< rmArray[period].length;slot++){
 				sb.append(rmArray[period][slot]+" ");
 			}
-			sb.append("] ");
+			sb.append("]");
 		}
-		
-		DecimalFormat df = new DecimalFormat("#,###.00 €");
-		sb.append(df.format(npv));
 		
 		return sb.toString();
 	}
@@ -84,77 +81,10 @@ public class RoadMap implements Comparable<RoadMap>{
 		return collProjects;
 	}
 	
-	
-//	public Project[][] createTempRMArrayCopy(RunConfiguration config){
-//		
-//		Project[][] rmArrayCopy = new Project[config.getCountPeriods()][config.getCountProjectsMaxPerPeriod()];
-//		HashSet<Project> implementedProjects = new HashSet<Project>();
-//		
-//		for(int period = 0; period < this.rmArray.length; period++){
-//			for(int slot = 0; slot < rmArray[period].length;slot++){
-//				Project p = this.rmArray[period][slot];
-//				if(p != null){
-//					Project copy = new Project(p.getId(), p.getName(), p.getNumberOfPeriods(), p.getType(), p.getI(), p.getOinv(), p.getA(), p.getB(), p.getE(), p.getU(),
-//							p.getM(), p.getEarliestImplementationPeriod(), p.getLatestImplementationPeriod(), p.getPredecessorProject(),
-//							p.getSuccessorProject(), p.getTogetherInPeriodWith(), p.getNotTogetherInPeriodWith(), p.getFixedCostEffect(), p.getAbsRelq(), p.getAbsRelt(), p.getAbsRelOop());
-//					copy.setPeriod(period);
-//					
-//					//Set the starting period
-//					if(implementedProjects.contains(copy)){
-//						for(Project i : implementedProjects){
-//							if(i.getId() == copy.getId()){
-//								copy.setStartPeriod(i.getStartPeriod());
-//								break;
-//							}
-//						}
-//					}else{
-//						copy.setStartPeriod(period);
-//						implementedProjects.add(copy);
-//					}
-//					
-//					rmArrayCopy[period][slot] = copy;
-//				}
-//			}
-//		}
-//		return rmArrayCopy;
-//	}
-	
-	
-//	public void calculateNPV(RunConfiguration config){
-//		
-//		double outflows = 0;
-//		double fixedCostsOA = 0;
-//		
-//		Project[][] tmpRMArray = this.createTempRMArrayCopy(config);
-//		
-//		for(int period = 0; period < config.getCountPeriods(); period++){
-//			
-//			// (2) Book fixedCostsOA once at beginning of period
-//			fixedCostsOA = fixedCostsOA + (Main.overarchingFixedOutflows / (Math.pow(1 + Main.discountRatePerPeriod, period)));
-//			
-//			for(int slot = 0; slot < config.getCountProjectsMaxPerPeriod(); slot++){
-//				Project p = tmpRMArray[slot][period];
-//				if(p != null){
-//					
-//					//TODO: DiscountRate in config
-//					// (1) Add-up investment outflows of every project
-//					outflows = outflows + (p.getOinv() / (Math.pow(1 + Main.discountRatePerPeriod, period)));
-//					
-//					// (2) Manipulating fixedCostsOA by finished BPM-Level Projects
-//					if(p.getType().equals("bpmLevel")){
-//						//If project is finishing this period
-//						if(period == (p.getStartPeriod() + p.getNumberOfPeriods()-1) ){
-//							fixedCostsOA = fixedCostsOA + p.getFixedCostEffect();
-//						}
-//					}
-//				}
-//
-//			}
-//			
-//			
-//		}
-//		
-//	}
+	public String getNPVString(){
+		DecimalFormat df = new DecimalFormat("#,###.00 €");
+		return df.format(npv);
+	}
 
 	public String getDisplayText(){
 		return this.toString();

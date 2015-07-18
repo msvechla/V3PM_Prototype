@@ -63,7 +63,7 @@ public class Project {
 //	}
 	
 	public String toString(){
-		return String.valueOf(this.id);
+		return String.valueOf(this.name);
 	}
 	
 	public boolean equals(Object obj){
@@ -228,6 +228,10 @@ public class Project {
 
 	public void setFixedCosts(double fixedCosts) {
 		this.fixedCosts = fixedCosts;
+	}
+	
+	public String getNodeID(){
+		return "PROJECT:"+String.valueOf(this.getId()) + String.valueOf(this.getName());
 	}
 	
 	

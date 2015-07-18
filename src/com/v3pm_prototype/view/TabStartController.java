@@ -7,44 +7,33 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorCompletionService;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import com.v3pm_prototype.calculation.ConstraintSet;
 import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.database.DBConstraint;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
-import com.v3pm_prototype.database.DBProcess;
-import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
-import com.v3pm_prototype.rmgeneration.RMGenerator;
-import com.v3pm_prototype.rmgeneration.RoadMap;
-import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 public class TabStartController implements EventHandler<ActionEvent> {
 
@@ -71,6 +60,8 @@ public class TabStartController implements EventHandler<ActionEvent> {
 	private TableColumn<DBScenario, Float> clmScenarioDR;
 	@FXML
 	private TableColumn<DBScenario, Float> clmScenarioOAF;
+	@FXML
+	private TableColumn<DBScenario, Double> clmScenarioNPV;
 
 	public ObservableList<DBScenario> olScenarios = FXCollections
 			.observableArrayList();
@@ -163,6 +154,7 @@ public class TabStartController implements EventHandler<ActionEvent> {
 						.select(tabSC);
 
 				mainApp.getV3pmGUIController().getTpMain().getTabs().add(tabSC);
+				mainApp.getV3pmGUIController().getTpMain().setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
 				scController.setScenario(selectedScenario);
 
 			} catch (IOException e) {
@@ -233,6 +225,9 @@ public class TabStartController implements EventHandler<ActionEvent> {
 		clmScenarioOAF
 				.setCellValueFactory(new PropertyValueFactory<DBScenario, Float>(
 						"oOAFixed"));
+		clmScenarioNPV
+				.setCellValueFactory(new PropertyValueFactory<DBScenario, Double>(
+						"NPVString"));
 
 		tvScenarios.setItems(olScenarios);
 	}

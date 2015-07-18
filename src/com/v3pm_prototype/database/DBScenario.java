@@ -1,5 +1,6 @@
 package com.v3pm_prototype.database;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +79,6 @@ public class DBScenario {
 	}
 
 
-
 	public void setLstProcesses(List<DBProcess> lstProcesses) {
 		this.lstProcesses = lstProcesses;
 	}
@@ -139,6 +139,11 @@ public class DBScenario {
 
 	public void setOOAFixed(double oOAFixed) {
 		this.oOAFixed = oOAFixed;
+	}
+	
+	public String getNPVString(){
+		DecimalFormat df = new DecimalFormat("#,###.00 €");
+		return df.format(npv); 
 	}
 	
 	
