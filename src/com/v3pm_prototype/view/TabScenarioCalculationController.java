@@ -1,23 +1,18 @@
 package com.v3pm_prototype.view;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.layout.springbox.SpringBox;
 import org.graphstream.ui.swingViewer.View;
 import org.graphstream.ui.swingViewer.Viewer;
 import org.graphstream.ui.swingViewer.Viewer.ThreadingModel;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -29,26 +24,21 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.embed.swing.SwingNode;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.StackPane;
 import javafx.stage.WindowEvent;
 
 import com.v3pm_prototype.calculation.Calculator;
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.database.DBProcess;
-import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
@@ -87,6 +77,7 @@ public class TabScenarioCalculationController {
 	private Graph graph;
 	private Viewer viewer;
 	private View view;
+	SpringBox graphstreamLayout;
 	private HashSet<Project> oldProjectList = new HashSet<Project>();
 	
 	private MainApp mainApp;
@@ -95,7 +86,7 @@ public class TabScenarioCalculationController {
 	
 	protected String styleSheet =
 		    "node {" +
-		    "       fill-color: black;" +
+		    "       text-alignment: above; size: 8px;" +
 		    "}" +
 		    "node.pj1 {fill-color: #001f3f;}" +
 		    "node.pj2 {fill-color: #FF851B;}" +
@@ -106,7 +97,16 @@ public class TabScenarioCalculationController {
 		    "node.pj7 {fill-color: #01FF70;}" +
 		    "node.pj8 {fill-color: #3D9970;}" +
 		    "node.pj9 {fill-color: #85144b;}" +
-		    "node.pj10 {fill-color: #39CCCC;}";
+		    "node.pj10 {fill-color: #39CCCC;}" +
+		    "node.pc1 {size: 12px, 12px; shape: diamond; fill-color: #F3622D;}" +
+		    "node.pc2 {size: 12px, 12px; shape: diamond; fill-color: #66BD66;}" +
+		    "node.pc3 {size: 12px, 12px; shape: diamond; fill-color: #FBA71B;}" +
+		    "node.pc4 {size: 12px, 12px; shape: diamond; fill-color: #41A9C9;}" +
+		    "node.pc5 {size: 12px, 12px; shape: diamond; fill-color: #4258C9;}" +
+		    "node.pc6 {size: 12px, 12px; shape: diamond; fill-color: #9A42C8;}" +
+		    "node.pc7 {size: 12px, 12px; shape: diamond; fill-color: #C84164;}" +
+		    "node.pc8 {size: 12px, 12px; shape: diamond; fill-color: #888888;}"
+		    + "graph {fill-color: #F4F4F4;}";
 	
 
 	public TabScenarioCalculationController() {
@@ -118,9 +118,17 @@ public class TabScenarioCalculationController {
 		lcProcessQuality.setPrefWidth(lcProcessTime.getWidth() / 2);
 		initTVRoadmaps();
 		
+		System.setProperty("gs.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		graph = new SingleGraph("Scenario");
 		graph.addAttribute("ui.stylesheet", styleSheet);
+		graph.addAttribute("ui.quality");
+		graph.addAttribute("ui.antialias");
+		
+		
 		viewer = new Viewer(graph, ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+		
+		graphstreamLayout = new SpringBox(false);
+		viewer.enableAutoLayout(graphstreamLayout);
 		view = viewer.addDefaultView(false);
 		viewer.enableAutoLayout();
 		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.EXIT);
@@ -160,18 +168,21 @@ public class TabScenarioCalculationController {
 					
 			    	//Add all nodes
 					for(Process process : config.getLstProcesses()){
-						Node n = graph.addNode(String.valueOf(process.getNodeID()));
+						Node n = graph.addNode(process.getNodeID());
 						n.addAttribute("ui.label", process.getName());
-						n.addAttribute("ui.class", "pc"+process.getId());
+						n.addAttribute("ui.class", "pc"+String.valueOf(process.getId()));
+						Thread.sleep(300);
 					}
 					
 					for (Project project : proejctsInScenario) {
-
-						Node n = graph.addNode(String.valueOf(project.getNodeID()));
+						Thread.sleep(600);
+						Node n = graph.addNode(project.getNodeID());
 						n.addAttribute("ui.label", project.getName());
 						n.addAttribute("ui.class", "pj"+project.getId());
 						
+						
 						if (project.getI() == DBProcess.ID_ALLPROCESSES) {
+							n.addAttribute("layout.weight", "0.1");
 							for (Process p : config.getLstProcesses()) {
 								Edge e = graph.addEdge(project.getNodeID() + p.getNodeID(),
 										project.getNodeID(), p.getNodeID());
@@ -189,9 +200,12 @@ public class TabScenarioCalculationController {
 						}
 				
 					}		
+
 					oldProjectList.clear();
 					oldProjectList.addAll(proejctsInScenario);
-				}  	
+				}else{
+					graphstreamLayout.shake();
+				}
 		        return 0;
 		    }
 		};

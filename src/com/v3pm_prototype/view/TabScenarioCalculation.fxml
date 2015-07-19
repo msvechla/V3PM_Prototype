@@ -45,7 +45,7 @@
       </VBox>
       <HBox>
          <children>
-            <LineChart fx:id="lcProcessQuality" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" title="Process Quality" HBox.hgrow="ALWAYS">
+            <LineChart fx:id="lcProcessQuality" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Quality" HBox.hgrow="ALWAYS">
               <xAxis>
                 <CategoryAxis endMargin="10.0" gapStartAndEnd="false" label="Periods" side="BOTTOM" startMargin="10.0" />
               </xAxis>
@@ -53,7 +53,7 @@
                 <NumberAxis forceZeroInRange="false" label="Quality" side="LEFT" />
               </yAxis>
             </LineChart>
-            <LineChart fx:id="lcProcessTime" legendSide="RIGHT" prefHeight="400.0" title="Process Time" HBox.hgrow="ALWAYS">
+            <LineChart fx:id="lcProcessTime" legendSide="RIGHT" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Time" HBox.hgrow="ALWAYS">
                <xAxis>
                   <CategoryAxis endMargin="10.0" gapStartAndEnd="false" label="Periods" side="BOTTOM" startMargin="10.0" />
                </xAxis>

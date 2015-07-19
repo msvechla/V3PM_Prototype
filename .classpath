@@ -3,6 +3,8 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="libs/poi-3.10-FINAL-20140208.jar"/>
 	<classpathentry kind="lib" path="libs/sqlite-jdbc-3.8.10.1.jar"/>
+	<classpathentry kind="lib" path="libs/gs-ui-1.1.jar"/>
+	<classpathentry kind="lib" path="libs/gs-algo-1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="libs/gs-core-1.1.jar"/>
