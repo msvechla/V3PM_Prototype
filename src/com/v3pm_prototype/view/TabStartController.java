@@ -36,7 +36,7 @@ import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
 
-public class TabStartController implements EventHandler<ActionEvent> {
+public class TabStartController {
 
 	private MainApp mainApp;
 
@@ -132,6 +132,9 @@ public class TabStartController implements EventHandler<ActionEvent> {
 		loadFromDatabase();
 	}
 
+	/**
+	 * Starts the calculation of the selected scenario and opens it in a new Tab
+	 */
 	public void calculateScenario() {
 		if (tvScenarios.getSelectionModel().getSelectedItem() != null) {
 			DBScenario selectedScenario = tvScenarios.getSelectionModel()
@@ -151,11 +154,13 @@ public class TabStartController implements EventHandler<ActionEvent> {
 				Tab tabSC = new Tab(selectedScenario.getName());
 				tabSC.setContent(root);
 				tabSC.setClosable(true);
+				scController.setTab(tabSC);
 				mainApp.getV3pmGUIController().getTpMain().getSelectionModel()
 						.select(tabSC);
 
 				mainApp.getV3pmGUIController().getTpMain().getTabs().add(tabSC);
-				mainApp.getV3pmGUIController().getTpMain().setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
+				mainApp.getV3pmGUIController().getTpMain()
+						.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
 				scController.setScenario(selectedScenario);
 
 			} catch (IOException e) {
@@ -165,6 +170,9 @@ public class TabStartController implements EventHandler<ActionEvent> {
 		}
 	}
 
+	/**
+	 * Opens the window for creation of a new project
+	 */
 	public void openAddProjectWindow() {
 		// Load root layout from fxml file.
 		FXMLLoader loader = new FXMLLoader();
@@ -188,6 +196,9 @@ public class TabStartController implements EventHandler<ActionEvent> {
 		}
 	}
 
+	/**
+	 * Opens the window for creation of a new process
+	 */
 	public void openAddProcessWindow() {
 		// Load root layout from fxml file.
 		FXMLLoader loader = new FXMLLoader();
@@ -209,7 +220,31 @@ public class TabStartController implements EventHandler<ActionEvent> {
 			e.printStackTrace();
 		}
 	}
+	
+	public void openNewScenarioWindow() {
+		// Load root layout from fxml file.
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(MainApp.class
+				.getResource("/com/v3pm_prototype/view/NewScenario.fxml"));
+		AnchorPane root;
+		try {
+			root = (AnchorPane) loader.load();
+			NewScenarioController nsController = loader.getController();
+			nsController.setTsc(this);
 
+			// Show the scene containing the root layout.
+			Stage stage = new Stage();
+			stage.setTitle("New Scenario");
+			stage.setScene(new Scene(root));
+			stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Initializes the TVScenario
+	 */
 	private void initTVScenarios() {
 		clmScenariosName
 				.setCellValueFactory(new PropertyValueFactory<DBScenario, String>(
@@ -233,6 +268,9 @@ public class TabStartController implements EventHandler<ActionEvent> {
 		tvScenarios.setItems(olScenarios);
 	}
 
+	/**
+	 * Initializes the TVProjects
+	 */
 	public void initTVProjects() {
 		clmProjectsProject
 				.setCellValueFactory(new PropertyValueFactory<DBProject, String>(
@@ -269,11 +307,13 @@ public class TabStartController implements EventHandler<ActionEvent> {
 						"m"));
 
 		tvProjects.setItems(this.olProjects);
+		
+		//-------------------- DELETE CONTEXT MENU --------------------
 
 		final ContextMenu projectsContextMenu = new ContextMenu();
 		MenuItem delete = new MenuItem("Delete");
 		projectsContextMenu.getItems().add(delete);
-
+		
 		tvProjects.setContextMenu(projectsContextMenu);
 
 		delete.setOnAction(new EventHandler<ActionEvent>() {
@@ -292,7 +332,6 @@ public class TabStartController implements EventHandler<ActionEvent> {
 					st.executeUpdate("DELETE FROM Project WHERE id = "
 							+ project.getId() + ";");
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -300,6 +339,9 @@ public class TabStartController implements EventHandler<ActionEvent> {
 
 	}
 
+	/**
+	 * Initializes the TVProcesses
+	 */
 	public void initTVProcesses() {
 		clmProcessesProcess
 				.setCellValueFactory(new PropertyValueFactory<DBProcess, String>(
@@ -330,6 +372,78 @@ public class TabStartController implements EventHandler<ActionEvent> {
 						"demandFunction"));
 		tvProcesses.setItems(this.olProcesses);
 	}
+	
+	/**
+	 * Starts a task that loads all data from the DB. Calls loadProjects() which
+	 * calls LoadScenarios()
+	 */
+	private void loadFromDatabase() {
+		// First load all Processes
+		Task<?> loadProcessesTask = new Task<Object>() {
+			@Override
+			protected Object call() throws Exception {
+				Connection conn = DBConnection.getInstance().getConnection();
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery("SELECT * FROM Process");
+
+				while (rs.next()) {
+					String dmFktQ = null;
+					switch (rs.getInt("dmFktQ")) {
+					case 0:
+						dmFktQ = "0q";
+						break;
+					case 1:
+						dmFktQ = "q";
+						break;
+					case 2:
+						dmFktQ = "ln q";
+						break;
+					case 3:
+						dmFktQ = "e^(1/q)";
+						break;
+					}
+
+					String dmFktT = null;
+					switch (rs.getInt("dmFktT")) {
+					case 0:
+						dmFktT = "0t";
+						break;
+					case 1:
+						dmFktT = "t";
+						break;
+					case 2:
+						dmFktT = "ln t";
+						break;
+					case 3:
+						dmFktT = "e^(1/t)";
+						break;
+					}
+
+					olProcesses.add(new DBProcess(rs.getInt("id"), rs
+							.getString("name"), rs.getDouble("p"), rs
+							.getDouble("oop"), rs.getDouble("fixedCosts"), rs
+							.getDouble("q"), rs.getDouble("degQ"), rs
+							.getDouble("t"), rs.getDouble("degT"), rs
+							.getDouble("dmP"), rs.getDouble("dmLambda"), rs
+							.getDouble("dmAlpha"), rs.getDouble("dmBeta"),
+							dmFktQ, dmFktT));
+				}
+				return null;
+			}
+
+			@Override
+			protected void succeeded() {
+				super.succeeded();
+				// When loading processes finished, load projects
+				loadProjects();
+			}
+
+		};
+
+		Thread t = new Thread(loadProcessesTask);
+		t.setDaemon(true);
+		t.start();
+	}
 
 	/**
 	 * Starts a task that loads all projects from the database Calls
@@ -356,8 +470,8 @@ public class TabStartController implements EventHandler<ActionEvent> {
 										0, 0, 0, 0, 0, 0, 0, 0, "", ""), rs
 										.getDouble("a"), rs.getDouble("b"), rs
 										.getDouble("e"), rs.getDouble("u"), rs
-										.getDouble("m"),
-								rs.getString("absrelQ"), rs
+										.getDouble("m"), rs
+										.getString("absrelQ"), rs
 										.getString("absrelT"), rs
 										.getString("absrelOop")));
 					} else {
@@ -524,137 +638,6 @@ public class TabStartController implements EventHandler<ActionEvent> {
 		t.start();
 	}
 
-	/**
-	 * Starts a task that loads all data from the DB. Calls loadProjects() and
-	 * loadScenarios()
-	 */
-	private void loadFromDatabase() {
-		// First load all Processes
-		Task<?> loadProcessesTask = new Task<Object>() {
-			@Override
-			protected Object call() throws Exception {
-				Connection conn = DBConnection.getInstance().getConnection();
-				Statement st = conn.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM Process");
-
-				while (rs.next()) {
-					String dmFktQ = null;
-					switch (rs.getInt("dmFktQ")) {
-					case 0:
-						dmFktQ = "0q";
-						break;
-					case 1:
-						dmFktQ = "q";
-						break;
-					case 2:
-						dmFktQ = "ln q";
-						break;
-					case 3:
-						dmFktQ = "e^(1/q)";
-						break;
-					}
-
-					String dmFktT = null;
-					switch (rs.getInt("dmFktT")) {
-					case 0:
-						dmFktT = "0t";
-						break;
-					case 1:
-						dmFktT = "t";
-						break;
-					case 2:
-						dmFktT = "ln t";
-						break;
-					case 3:
-						dmFktT = "e^(1/t)";
-						break;
-					}
-
-					olProcesses.add(new DBProcess(rs.getInt("id"), rs
-							.getString("name"), rs.getDouble("p"), rs
-							.getDouble("oop"), rs.getDouble("fixedCosts"), rs
-							.getDouble("q"), rs.getDouble("degQ"), rs
-							.getDouble("t"), rs.getDouble("degT"), rs
-							.getDouble("dmP"), rs.getDouble("dmLambda"), rs
-							.getDouble("dmAlpha"), rs.getDouble("dmBeta"),
-							dmFktQ, dmFktT));
-				}
-				return null;
-			}
-
-			@Override
-			protected void succeeded() {
-				super.succeeded();
-				// When loading processes finished, load projects
-				loadProjects();
-			}
-
-		};
-
-		Thread t = new Thread(loadProcessesTask);
-		t.setDaemon(true);
-		t.start();
-	}
-
-	public void openNewProjectWindow() {
-		// Load root layout from fxml file.
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(MainApp.class
-				.getResource("/com/v3pm_prototype/view/NewProject.fxml"));
-		AnchorPane root;
-		try {
-			root = (AnchorPane) loader.load();
-
-			// Show the scene containing the root layout.
-			Stage stage = new Stage();
-			stage.setTitle("New Project");
-			stage.setScene(new Scene(root));
-			stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void openNewProcessWindow() {
-		// Load root layout from fxml file.
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(MainApp.class
-				.getResource("/com/v3pm_prototype/view/NewProcess.fxml"));
-		AnchorPane root;
-		try {
-			root = (AnchorPane) loader.load();
-
-			// Show the scene containing the root layout.
-			Stage stage = new Stage();
-			stage.setTitle("New Process");
-			stage.setScene(new Scene(root));
-			stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void openNewScenarioWindow() {
-		// Load root layout from fxml file.
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(MainApp.class
-				.getResource("/com/v3pm_prototype/view/NewScenario.fxml"));
-		AnchorPane root;
-		try {
-			root = (AnchorPane) loader.load();
-			NewScenarioController nsController = loader.getController();
-			nsController.setTsc(this);
-
-			// Show the scene containing the root layout.
-			Stage stage = new Stage();
-			stage.setTitle("New Scenario");
-			stage.setScene(new Scene(root));
-			stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 	}
@@ -665,43 +648,6 @@ public class TabStartController implements EventHandler<ActionEvent> {
 
 	public void myAction() {
 		System.out.println("myAction");
-	}
-
-	@Override
-	public void handle(ActionEvent event) {
-
-		if (event.getSource() instanceof Button) {
-			Button button = (Button) event.getSource();
-
-			// :::::::::: START BUTTON BEHAVIOUR ::::::::::
-			// if(button == btnStartCalc){
-			// //Update Statusbar
-			// this.mainApp.getV3pmGUIController().setProgress(-1);
-			// this.mainApp.getV3pmGUIController().setStatus("Generating Roadmaps...");
-			//
-			// //Create a Service that executes the RMGenerator Task and start
-			// it
-			// Service<?> service = new Service(){
-			// @Override
-			// protected Task<List<RoadMap>> createTask() {
-			// return new RMGenerator(RunConfiguration.standardConfig);
-			// }
-			// };
-			//
-			// //When the task is succeeded update Statusbar
-			// service.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
-			// @Override
-			// public void handle(WorkerStateEvent event) {
-			// System.out.println("SUCCEEDED");
-			// MainApp.instance.getV3pmGUIController().setProgress(0);
-			// MainApp.instance.getV3pmGUIController().setStatus("Roadmaps generated.");
-			// }
-			// });
-			// service.start();
-			//
-			// }
-		}
-
 	}
 
 }

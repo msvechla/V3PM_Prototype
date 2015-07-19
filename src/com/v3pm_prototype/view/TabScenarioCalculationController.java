@@ -25,6 +25,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.embed.swing.SwingNode;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -94,6 +95,7 @@ public class TabScenarioCalculationController {
 	private MainApp mainApp;
 	private DBScenario scenario;
 	private RunConfiguration config;
+	private Tab tab;
 	
 
 	public TabScenarioCalculationController() {
@@ -104,23 +106,7 @@ public class TabScenarioCalculationController {
 	public void initialize() {
 		lcProcessQuality.setPrefWidth(lcProcessTime.getWidth() / 2);
 		initTVRoadmaps();
-		
-		System.setProperty("gs.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
-		graph = new SingleGraph("Scenario");
-		graph.addAttribute("ui.stylesheet", Colorpalette.graphStreamCSS);
-		graph.addAttribute("ui.quality");
-		graph.addAttribute("ui.antialias");
-		
-		
-		viewer = new Viewer(graph, ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-		
-		graphstreamLayout = new SpringBox(false);
-		viewer.enableAutoLayout(graphstreamLayout);
-		view = viewer.addDefaultView(false);
-		viewer.enableAutoLayout();
-		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.EXIT);
-		swingNode.setContent(view);
-		
+		bootGraphStream();
 	}
 	
 	private void initRoadmapContainer(){
@@ -137,6 +123,24 @@ public class TabScenarioCalculationController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void bootGraphStream(){
+		System.setProperty("gs.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
+		graph = new SingleGraph("Scenario");
+		graph.addAttribute("ui.stylesheet", Colorpalette.graphStreamCSS);
+		graph.addAttribute("ui.quality");
+		graph.addAttribute("ui.antialias");
+		
+		
+		viewer = new Viewer(graph, ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+		
+		graphstreamLayout = new SpringBox(false);
+		viewer.enableAutoLayout(graphstreamLayout);
+		view = viewer.addDefaultView(false);
+		viewer.enableAutoLayout();
+		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.EXIT);
+		swingNode.setContent(view);
 	}
 	
 	private void initGraphStream(){
@@ -434,6 +438,10 @@ public class TabScenarioCalculationController {
 
 	}
 
+	/**
+	 * Make sure that the GraphStream Thread is closed on exit
+	 * @param mainApp
+	 */
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 		this.mainApp.getPrimaryStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -443,5 +451,20 @@ public class TabScenarioCalculationController {
 			}
 		});
 	}
+
+	/**
+	 * Make sure that the GraphStream Thread is closed on exit
+	 * @param Tab
+	 */
+	public void setTab(Tab Tab) {
+		this.tab = tab;
+		tab.setOnClosed(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				viewer.close();
+			}
+		});
+	}
+
 
 }
