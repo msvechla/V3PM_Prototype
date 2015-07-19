@@ -10,12 +10,32 @@
 
 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1200.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.TabScenarioCalculationController">
    <children>
+      <HBox>
+         <children>
+            <TitledPane collapsible="false" text="Best Roadmap" HBox.hgrow="ALWAYS">
+               <content>
+                  <VBox fx:id="roadmapContainer" prefHeight="112.0" />
+               </content>
+               <HBox.margin>
+                  <Insets right="4.0" />
+               </HBox.margin>
+            </TitledPane>
+            <TitledPane collapsible="false" minWidth="360.0" text="NPV" HBox.hgrow="SOMETIMES">
+               <content>
+                  <VBox fx:id="roadmapContainer1" prefHeight="112.0">
+                     <children>
+                        <Label fx:id="lblNPV" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="calculating..." textFill="#33ccf5" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="36.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </content>
+            </TitledPane>
+         </children>
+      </HBox>
       <Label text="Best NPV:" />
-      <Label fx:id="lblNPV" text="calculating..." textFill="#33ccf5">
-         <font>
-            <Font name="System Bold" size="36.0" />
-         </font>
-      </Label>
       <VBox>
          <children>
             <HBox alignment="TOP_RIGHT" prefWidth="200.0">

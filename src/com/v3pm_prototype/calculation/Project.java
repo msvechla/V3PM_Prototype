@@ -10,8 +10,6 @@ import com.v3pm_prototype.database.DBProject;
  * 
  */
 public class Project {
-
-	//public static List<Project> projectList = new ArrayList<Project>();
 	
 	private int id; // id of the project, starts with 1
 	private String name; // name of the project
@@ -30,6 +28,8 @@ public class Project {
 	private String absRelQ;
 	private String absRelT;
 	private String absRelOop;
+	
+	private double oInvEnd;
 	
 
 	public Project(int id, String name, int numberOfPeriods, String type,
@@ -233,6 +233,15 @@ public class Project {
 	public String getNodeID(){
 		return "PROJECT:"+String.valueOf(this.getId()) + String.valueOf(this.getName());
 	}
+
+	public double getoInvEnd() {
+		return oInvEnd;
+	}
+
+	public void setoInvEnd(double oInvEnd) {
+		this.oInvEnd = oInvEnd;
+	}
+	
 	
 	
 	

@@ -1,10 +1,12 @@
 package com.v3pm_prototype.view;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashSet;
 import java.util.List;
+
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -13,6 +15,7 @@ import org.graphstream.ui.layout.springbox.SpringBox;
 import org.graphstream.ui.swingViewer.View;
 import org.graphstream.ui.swingViewer.Viewer;
 import org.graphstream.ui.swingViewer.Viewer.ThreadingModel;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -24,15 +27,20 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.embed.swing.SwingNode;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.WindowEvent;
 
 import com.v3pm_prototype.calculation.Calculator;
@@ -56,6 +64,9 @@ public class TabScenarioCalculationController {
 			.observableArrayList();
 	private ListChangeListener<Integer> rmListChangeListener;
 	private List<RoadMap> rmList;
+	
+	@FXML
+	private VBox roadmapContainer;
 	
 	@FXML
 	private TableColumn<RoadMap, String> clmRoadmap;
@@ -84,30 +95,6 @@ public class TabScenarioCalculationController {
 	private DBScenario scenario;
 	private RunConfiguration config;
 	
-	protected String styleSheet =
-		    "node {" +
-		    "       text-alignment: above; size: 8px;" +
-		    "}" +
-		    "node.pj1 {fill-color: #001f3f;}" +
-		    "node.pj2 {fill-color: #FF851B;}" +
-		    "node.pj3 {fill-color: #7FDBFF;}" +
-		    "node.pj4 {fill-color: #FFDC00;}" +
-		    "node.pj5 {fill-color: #3D9970;}" +
-		    "node.pj6 {fill-color: #AAAAAA;}" +
-		    "node.pj7 {fill-color: #01FF70;}" +
-		    "node.pj8 {fill-color: #3D9970;}" +
-		    "node.pj9 {fill-color: #85144b;}" +
-		    "node.pj10 {fill-color: #39CCCC;}" +
-		    "node.pc1 {size: 12px, 12px; shape: diamond; fill-color: #F3622D;}" +
-		    "node.pc2 {size: 12px, 12px; shape: diamond; fill-color: #66BD66;}" +
-		    "node.pc3 {size: 12px, 12px; shape: diamond; fill-color: #FBA71B;}" +
-		    "node.pc4 {size: 12px, 12px; shape: diamond; fill-color: #41A9C9;}" +
-		    "node.pc5 {size: 12px, 12px; shape: diamond; fill-color: #4258C9;}" +
-		    "node.pc6 {size: 12px, 12px; shape: diamond; fill-color: #9A42C8;}" +
-		    "node.pc7 {size: 12px, 12px; shape: diamond; fill-color: #C84164;}" +
-		    "node.pc8 {size: 12px, 12px; shape: diamond; fill-color: #888888;}"
-		    + "graph {fill-color: #F4F4F4;}";
-	
 
 	public TabScenarioCalculationController() {
 
@@ -120,7 +107,7 @@ public class TabScenarioCalculationController {
 		
 		System.setProperty("gs.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		graph = new SingleGraph("Scenario");
-		graph.addAttribute("ui.stylesheet", styleSheet);
+		graph.addAttribute("ui.stylesheet", Colorpalette.graphStreamCSS);
 		graph.addAttribute("ui.quality");
 		graph.addAttribute("ui.antialias");
 		
@@ -133,6 +120,22 @@ public class TabScenarioCalculationController {
 		viewer.enableAutoLayout();
 		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.EXIT);
 		swingNode.setContent(view);
+	}
+	
+	private void initRoadmapContainer(){
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(MainApp.class
+				.getResource("/com/v3pm_prototype/view/RoadmapBox.fxml"));
+		VBox root;
+		try {
+			root = (VBox) loader.load();
+			RoadmapBoxController rmbController = loader.getController();
+			rmbController.generate(this.rmList.get(0), config);
+			roadmapContainer.getChildren().clear();
+			roadmapContainer.getChildren().add(root);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void initGraphStream(){
@@ -409,6 +412,7 @@ public class TabScenarioCalculationController {
 						tvRoadmap.getSelectionModel().getSelectedIndices().addListener(rmListChangeListener);
 						initLineCharts();
 						initGraphStream();
+						initRoadmapContainer();
 					}
 
 				};

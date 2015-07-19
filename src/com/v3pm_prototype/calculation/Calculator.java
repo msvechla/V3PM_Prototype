@@ -135,7 +135,7 @@ public class Calculator extends Task<List<RoadMap>>{
 			}
 			
 			//Save the calculated quality and time per period
-			saveCalculatedValuesToRM(RM, tempCollProcess);
+			saveCalculatedValuesToRM(RM, tempCollProcess,tempCollPoj_sorted);
 
 		}
 	}
@@ -145,13 +145,16 @@ public class Calculator extends Task<List<RoadMap>>{
 	 * @param rm
 	 * @param tempCollProcesss
 	 */
-	public void saveCalculatedValuesToRM(RoadMap rm, Collection<Process> tempCollProcess){
+	public void saveCalculatedValuesToRM(RoadMap rm, Collection<Process> tempCollProcess, Collection<Project> tempCollProj){
 		List<Process> lstProcessesCaculated = new ArrayList<Process>();
 		lstProcessesCaculated.addAll(tempCollProcess);
-		
 		Collections.sort(lstProcessesCaculated);
 		
+		List<Project> lstProjectsCalculated = new ArrayList<Project>();
+		lstProjectsCalculated.addAll(tempCollProj);
+		
 		rm.setLstProcessCalculated(lstProcessesCaculated);
+		rm.setLstProjectCalculated(lstProjectsCalculated);
 	}
 	
 

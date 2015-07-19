@@ -16,6 +16,7 @@ public class RoadMap implements Comparable<RoadMap>{
 	private double npv;
 	private boolean restrictionBroken = false;
 	private List<Process> lstProcessCalculated;
+	private List<Project> lstProjectCalculated;
 	
 	public static int equalsCalls = 0;
 	
@@ -102,6 +103,17 @@ public class RoadMap implements Comparable<RoadMap>{
 
 	public void setLstProcessCalculated(List<Process> lstProcessesCaculated) {
 		this.lstProcessCalculated = lstProcessesCaculated;
+	}
+
+	
+
+	public List<Project> getLstProjectCalculated() {
+		return lstProjectCalculated;
+	}
+
+
+	public void setLstProjectCalculated(List<Project> lstProjectCalculated) {
+		this.lstProjectCalculated = lstProjectCalculated;
 	}
 
 
