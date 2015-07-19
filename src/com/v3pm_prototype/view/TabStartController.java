@@ -25,6 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -140,9 +141,9 @@ public class TabStartController implements EventHandler<ActionEvent> {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class
 					.getResource("/com/v3pm_prototype/view/TabScenarioCalculation.fxml"));
-			VBox root;
+			HBox root;
 			try {
-				root = (VBox) loader.load();
+				root = (HBox) loader.load();
 				TabScenarioCalculationController scController = loader
 						.getController();
 				scController.setMainApp(this.mainApp);

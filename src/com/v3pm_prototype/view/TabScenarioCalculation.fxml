@@ -8,83 +8,82 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1200.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.TabScenarioCalculationController">
+
+<HBox maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.TabScenarioCalculationController">
    <children>
-      <HBox>
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1200.0" spacing="10.0" HBox.hgrow="ALWAYS">
          <children>
-            <TitledPane collapsible="false" text="Best Roadmap" HBox.hgrow="ALWAYS">
-               <content>
-                  <VBox fx:id="roadmapContainer" prefHeight="112.0" />
-               </content>
-               <HBox.margin>
-                  <Insets right="4.0" />
-               </HBox.margin>
-            </TitledPane>
-            <TitledPane collapsible="false" minWidth="360.0" text="NPV" HBox.hgrow="SOMETIMES">
-               <content>
-                  <VBox fx:id="roadmapContainer1" prefHeight="112.0">
-                     <children>
-                        <Label fx:id="lblNPV" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="calculating..." textFill="#33ccf5" VBox.vgrow="ALWAYS">
-                           <font>
-                              <Font name="System Bold" size="36.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-               </content>
-            </TitledPane>
-         </children>
-      </HBox>
-      <Label text="Best NPV:" />
-      <VBox>
-         <children>
-            <HBox alignment="TOP_RIGHT" prefWidth="200.0">
+            <HBox>
                <children>
-                  <ChoiceBox fx:id="cbProject" prefHeight="39.0" prefWidth="246.0" />
+                  <TitledPane collapsible="false" text="Best Roadmap" HBox.hgrow="ALWAYS">
+                     <content>
+                        <VBox fx:id="roadmapContainer" prefHeight="112.0" />
+                     </content>
+                     <HBox.margin>
+                        <Insets right="4.0" />
+                     </HBox.margin>
+                  </TitledPane>
+                  <TitledPane collapsible="false" minWidth="360.0" text="NPV" HBox.hgrow="SOMETIMES">
+                     <content>
+                        <VBox fx:id="roadmapContainer1" prefHeight="112.0">
+                           <children>
+                              <Label fx:id="lblNPV" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="calculating..." textFill="#33ccf5" VBox.vgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="36.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
                </children>
-               <VBox.margin>
-                  <Insets bottom="4.0" />
-               </VBox.margin>
             </HBox>
             <HBox>
                <children>
-                  <TableView fx:id="tvRoadmap" minHeight="-Infinity" prefHeight="140.0" prefWidth="1000.0">
-                    <columns>
-                      <TableColumn fx:id="clmRoadmap" prefWidth="464.0" text="Roadmap" />
-                      <TableColumn fx:id="clmNPV" minWidth="1.0" prefWidth="275.0" text="NPV" />
-                    </columns>
-                  </TableView>
                   <SwingNode fx:id="swingNode" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets left="8.0" />
                      </HBox.margin>
                   </SwingNode>
+                  <LineChart fx:id="lcProcessQuality" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Quality" HBox.hgrow="ALWAYS">
+                    <xAxis>
+                      <CategoryAxis endMargin="10.0" gapStartAndEnd="false" label="Periods" side="BOTTOM" startMargin="10.0" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis forceZeroInRange="false" label="Quality" side="LEFT" />
+                    </yAxis>
+                  </LineChart>
+                  <LineChart fx:id="lcProcessTime" legendSide="RIGHT" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Time" HBox.hgrow="ALWAYS">
+                     <xAxis>
+                        <CategoryAxis endMargin="10.0" gapStartAndEnd="false" label="Periods" side="BOTTOM" startMargin="10.0" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis forceZeroInRange="false" label="Time" side="LEFT" />
+                     </yAxis>
+                  </LineChart>
                </children>
             </HBox>
          </children>
+         <padding>
+            <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
+         </padding>
       </VBox>
-      <HBox>
-         <children>
-            <LineChart fx:id="lcProcessQuality" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Quality" HBox.hgrow="ALWAYS">
-              <xAxis>
-                <CategoryAxis endMargin="10.0" gapStartAndEnd="false" label="Periods" side="BOTTOM" startMargin="10.0" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis forceZeroInRange="false" label="Quality" side="LEFT" />
-              </yAxis>
-            </LineChart>
-            <LineChart fx:id="lcProcessTime" legendSide="RIGHT" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Time" HBox.hgrow="ALWAYS">
-               <xAxis>
-                  <CategoryAxis endMargin="10.0" gapStartAndEnd="false" label="Periods" side="BOTTOM" startMargin="10.0" />
-               </xAxis>
-               <yAxis>
-                  <NumberAxis forceZeroInRange="false" label="Time" side="LEFT" />
-               </yAxis>
-            </LineChart>
-         </children>
-      </HBox>
+      <TitledPane collapsible="false" contentDisplay="RIGHT" graphicTextGap="8.0" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="590.0" prefWidth="177.0" text="Roadmap Explorer">
+         <content>
+            <VBox prefHeight="538.0" prefWidth="420.0">
+               <children>
+                  <TableView fx:id="tvRoadmap" maxHeight="1.7976931348623157E308" minHeight="-Infinity" VBox.vgrow="ALWAYS">
+                    <columns>
+                      <TableColumn fx:id="clmRoadmap" prefWidth="265.0" text="Roadmap" />
+                      <TableColumn fx:id="clmNPV" minWidth="1.0" prefWidth="133.0" text="NPV" />
+                    </columns>
+                  </TableView>
+               </children>
+            </VBox>
+         </content>
+         <graphic>
+            <ChoiceBox fx:id="cbProject" nodeOrientation="LEFT_TO_RIGHT" prefHeight="39.0" prefWidth="246.0" />
+         </graphic>
+      </TitledPane>
    </children>
-   <padding>
-      <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
-   </padding>
-</VBox>
+</HBox>

@@ -120,6 +120,7 @@ public class TabScenarioCalculationController {
 		viewer.enableAutoLayout();
 		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.EXIT);
 		swingNode.setContent(view);
+		
 	}
 	
 	private void initRoadmapContainer(){
@@ -174,15 +175,14 @@ public class TabScenarioCalculationController {
 						Node n = graph.addNode(process.getNodeID());
 						n.addAttribute("ui.label", process.getName());
 						n.addAttribute("ui.class", "pc"+String.valueOf(process.getId()));
-						Thread.sleep(300);
+						//Thread.sleep(300);
 					}
 					
 					for (Project project : proejctsInScenario) {
-						Thread.sleep(600);
+						//Thread.sleep(600);
 						Node n = graph.addNode(project.getNodeID());
 						n.addAttribute("ui.label", project.getName());
 						n.addAttribute("ui.class", "pj"+project.getId());
-						
 						
 						if (project.getI() == DBProcess.ID_ALLPROCESSES) {
 							n.addAttribute("layout.weight", "0.1");
