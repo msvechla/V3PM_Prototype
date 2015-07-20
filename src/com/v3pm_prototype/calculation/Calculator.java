@@ -148,7 +148,10 @@ public class Calculator extends Task<List<RoadMap>>{
 	public void saveCalculatedValuesToRM(RoadMap rm, Collection<Process> tempCollProcess, Collection<Project> tempCollProj){
 		List<Process> lstProcessesCaculated = new ArrayList<Process>();
 		lstProcessesCaculated.addAll(tempCollProcess);
+		
+		//Sort processes by id so they have matching colors
 		Collections.sort(lstProcessesCaculated);
+		System.out.println("");
 		
 		List<Project> lstProjectsCalculated = new ArrayList<Project>();
 		lstProjectsCalculated.addAll(tempCollProj);

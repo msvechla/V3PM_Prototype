@@ -226,7 +226,15 @@ public class Process implements Comparable<Process>{
 
 	@Override
 	public int compareTo(Process p) {
-		return Integer.compare(p.getId(), this.id);
+		return Integer.compare(this.id, p.getId());
+	}
+	
+	public double getQDelta(){
+		return q - this.qPerPeriod[0];
+	}
+	
+	public double getTDelta(){
+		return t - this.tPerPeriod[0];
 	}
 
 }

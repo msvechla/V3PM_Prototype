@@ -7,15 +7,6 @@ import java.sql.Statement;
 import java.util.HashSet;
 import java.util.List;
 
-import org.graphstream.graph.Edge;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.SingleGraph;
-import org.graphstream.ui.layout.springbox.SpringBox;
-import org.graphstream.ui.swingViewer.View;
-import org.graphstream.ui.swingViewer.Viewer;
-import org.graphstream.ui.swingViewer.Viewer.ThreadingModel;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -35,16 +26,27 @@ import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
+
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.layout.springbox.SpringBox;
+import org.graphstream.ui.swingViewer.View;
+import org.graphstream.ui.swingViewer.Viewer;
+import org.graphstream.ui.swingViewer.Viewer.ThreadingModel;
 
 import com.v3pm_prototype.calculation.Calculator;
+import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.database.DBProcess;
@@ -53,7 +55,6 @@ import com.v3pm_prototype.main.MainApp;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
-import com.v3pm_prototype.calculation.Process;
 
 public class TabScenarioCalculationController {
 	@FXML
@@ -78,6 +79,30 @@ public class TabScenarioCalculationController {
 	private ObservableList<Project> olProjects = FXCollections
 			.observableArrayList();
 
+	//TVProcesses
+	@FXML
+	private TableView<Process> tvProcesses;
+	private ObservableList<Process> olProcesses = FXCollections
+			.observableArrayList();
+	@FXML
+	private TableColumn<Process, String> clmProcessesName;
+	@FXML
+	private TableColumn<Process, Double> clmProcessesQ;
+	@FXML
+	private TableColumn<Process, Double> clmProcessesQDelta;
+	@FXML
+	private TableColumn<Process, Double> clmProcessesT;
+	@FXML
+	private TableColumn<Process, Double> clmProcessesTDelta;
+	@FXML
+	private TableColumn<Process, Double> clmProcessesOOp;
+	@FXML
+	private TableColumn<Process, Double> clmProcessesOOpDelta;
+	@FXML
+	private TableColumn<Process, Double> clmProcessesFC;
+	@FXML
+	private TableColumn<Process, Double> clmProcessesFCDelta;
+	
 	// Charts
 	@FXML
 	private LineChart<String, Number> lcProcessQuality;
@@ -106,6 +131,7 @@ public class TabScenarioCalculationController {
 	public void initialize() {
 		lcProcessQuality.setPrefWidth(lcProcessTime.getWidth() / 2);
 		initTVRoadmaps();
+		initTVProcesses();
 		bootGraphStream();
 	}
 	
@@ -124,6 +150,75 @@ public class TabScenarioCalculationController {
 			e.printStackTrace();
 		}
 	}
+	
+	private void initTVProcesses(){
+		tvProcesses.setItems(olProcesses);
+		clmProcessesName
+		.setCellValueFactory(new PropertyValueFactory<Process, String>(
+				"Name"));
+		clmProcessesOOp
+		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+				"Oop"));
+		clmProcessesOOpDelta
+		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+				"OopDelta"));
+		clmProcessesFC
+		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+				"fixedCosts"));
+		clmProcessesFCDelta
+		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+				"fixedCostsDelta"));
+		clmProcessesQ
+		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+				"q"));
+		clmProcessesQDelta
+		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+				"qDelta"));
+		clmProcessesT
+		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+				"t"));
+		clmProcessesTDelta
+		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+				"tDelta"));
+		
+		clmProcessesName.setCellFactory(new Callback<TableColumn<Process,String>, TableCell<Process,String>>() {
+			
+			@Override
+			public TableCell<Process, String> call(TableColumn<Process, String> param) {
+				return new TableCell<Process, String>(){
+
+					@Override
+					protected void updateItem(String item, boolean empty) {
+						super.updateItem(item, empty);
+						
+						for(Process p : tvRoadmap.getSelectionModel().getSelectedItem().getLstProcessCalculated()){
+							if(p.getName().equals(item)){
+								if(p.getId() < Colorpalette.PROCESS.length){
+									this.setTextFill(Color.valueOf(Colorpalette.PROCESS[p.getId()]));
+								}
+							}
+						}
+						setText(item);
+					}
+					
+					
+					
+				};
+			}
+		});
+		
+	}
+	
+	private void updateTVProcesses(){
+		RoadMap selectedRM = tvRoadmap.getSelectionModel().getSelectedItem();
+		
+		if(selectedRM != null){
+			olProcesses.clear();
+			olProcesses.addAll(selectedRM.getLstProcessCalculated());
+		}
+		
+	}
+	
 	
 	private void bootGraphStream(){
 		System.setProperty("gs.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
@@ -299,7 +394,7 @@ public class TabScenarioCalculationController {
 				// listen for selection changes and update the charts
 				initLineCharts();
 				initGraphStream();
-
+				updateTVProcesses();
 			}
 		};
 	}
@@ -417,6 +512,7 @@ public class TabScenarioCalculationController {
 						initLineCharts();
 						initGraphStream();
 						initRoadmapContainer();
+						updateTVProcesses();
 					}
 
 				};
@@ -456,7 +552,7 @@ public class TabScenarioCalculationController {
 	 * Make sure that the GraphStream Thread is closed on exit
 	 * @param Tab
 	 */
-	public void setTab(Tab Tab) {
+	public void setTab(Tab tab) {
 		this.tab = tab;
 		tab.setOnClosed(new EventHandler<Event>() {
 			@Override

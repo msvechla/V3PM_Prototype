@@ -154,7 +154,7 @@ public class TabStartController {
 				Tab tabSC = new Tab(selectedScenario.getName());
 				tabSC.setContent(root);
 				tabSC.setClosable(true);
-				scController.setTab(tabSC);
+				
 				mainApp.getV3pmGUIController().getTpMain().getSelectionModel()
 						.select(tabSC);
 
@@ -162,6 +162,7 @@ public class TabStartController {
 				mainApp.getV3pmGUIController().getTpMain()
 						.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
 				scController.setScenario(selectedScenario);
+				scController.setTab(tabSC);
 
 			} catch (IOException e) {
 				e.printStackTrace();
