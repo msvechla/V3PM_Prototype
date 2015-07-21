@@ -29,6 +29,8 @@ public class Project {
 	private String absRelT;
 	private String absRelOop;
 	
+	//TODO IMPORTANT: A / M Parameter, FixedCOsts
+	
 	private double oInvEnd;
 	
 

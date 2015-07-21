@@ -15,7 +15,7 @@ import com.v3pm_prototype.rmgeneration.*;
 /**
  * This Class is used to calculate the NPV of each roadmap.
  */
-public class Calculator extends Task<List<RoadMap>>{
+public class Calculator{
 	
 	private List<RoadMap> collRM;
 	private RunConfiguration config;
@@ -26,12 +26,12 @@ public class Calculator extends Task<List<RoadMap>>{
 		this.config = config;
 	}
 	
-	@Override
-	protected List<RoadMap> call() throws Exception {
+	public List<RoadMap> start() throws NoValidThetaIDException{
 		calculateNPVs();
 		Collections.sort(collRM);
 		return collRM;
 	}
+
 
 	/**
 	 * calculates the NPV and set the NPV-value for each roadmap

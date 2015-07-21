@@ -48,6 +48,7 @@ import org.graphstream.ui.swingViewer.Viewer.ThreadingModel;
 import com.v3pm_prototype.calculation.Calculator;
 import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.calculation.Project;
+import com.v3pm_prototype.calculation.RobustnessAnalysis;
 import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBScenario;
@@ -534,7 +535,14 @@ public class TabScenarioCalculationController {
 		Service<List<RoadMap>> service = new Service<List<RoadMap>>() {
 			@Override
 			protected Task<List<RoadMap>> createTask() {
-				return new Calculator(generatedRoadmaps, config) {
+				
+				return new Task<List<RoadMap>>(){
+
+					@Override
+					protected List<RoadMap> call() throws Exception {
+						Calculator c = new Calculator(generatedRoadmaps, config);
+						return c.start();
+					}
 
 					@Override
 					protected void succeeded() {
@@ -565,9 +573,16 @@ public class TabScenarioCalculationController {
 						initGraphStream();
 						initRoadmapContainer();
 						updateTVProcesses();
-					}
-
+						
+						RobustnessAnalysis ra = new RobustnessAnalysis(rmList, config,RobustnessAnalysis.MODE_PLUS);
+						
+						Thread t = new Thread(ra);
+						t.setDaemon(false);
+						t.start();
+					}	
+					
 				};
+				
 			}
 		};
 		return service;

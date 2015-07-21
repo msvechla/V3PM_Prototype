@@ -1,5 +1,6 @@
 package com.v3pm_prototype.rmgeneration;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -41,6 +42,14 @@ public class RoadMap implements Comparable<RoadMap>{
 		return sb.toString();
 	}
 	
+//	public boolean equals(Object o){
+//		if(o instanceof RoadMap){
+//			return ((RoadMap) o).createIDRoadmap().equals(this.createIDRoadmap());
+//		}else{
+//			return false;
+//		}
+//	}
+	
 	public Project[][] getRMArray(){
 		return this.rmArray;
 	}
@@ -80,6 +89,23 @@ public class RoadMap implements Comparable<RoadMap>{
 			}
 		}
 		return collProjects;
+	}
+	
+public List<Integer> createIDRoadmap(){
+		
+		List<Integer> idRoadmap = new ArrayList<Integer>();
+		
+		for(int period = 0; period < rmArray.length; period++){
+			for(int slot = 0; slot < rmArray[period].length;slot++){
+				Project p = this.rmArray[period][slot];
+				if(p != null){
+					idRoadmap.add(p.getId());
+				}else{
+					idRoadmap.add(-1);
+				}
+			}
+		}
+		return idRoadmap;
 	}
 	
 	public String getNPVString(){
