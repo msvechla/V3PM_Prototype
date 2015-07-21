@@ -21,6 +21,8 @@ public class Process implements Comparable<Process>{
 	
 	private double[] qPerPeriod = null;
 	private double[] tPerPeriod = null;
+	private double[] fixedCostsPerPeriod = null;
+	private double[] OopPerPeriod = null;
 	
 	// variables for calculating the demand
 	private double roh;
@@ -80,6 +82,20 @@ public class Process implements Comparable<Process>{
 
 	public void setqPerPeriod(double[] qPerPeriod) {
 		this.qPerPeriod = qPerPeriod;
+	}
+	
+	public double[] getFixedCostsPerPeriod(RunConfiguration config) {
+		if(fixedCostsPerPeriod == null){
+			fixedCostsPerPeriod = new double[config.getPeriods()];
+		}
+		return fixedCostsPerPeriod;
+	}
+	
+	public double[] getOopPerPeriod(RunConfiguration config) {
+		if(OopPerPeriod == null){
+			OopPerPeriod = new double[config.getPeriods()];
+		}
+		return OopPerPeriod;
 	}
 
 	public String getName() {
@@ -235,6 +251,14 @@ public class Process implements Comparable<Process>{
 	
 	public double getTDelta(){
 		return t - this.tPerPeriod[0];
+	}
+	
+	public double getOopDelta(){
+		return oop - this.OopPerPeriod[0];
+	}
+	
+	public double getFixedCostsDelta(){
+		return fixedCosts - this.fixedCostsPerPeriod[0];
 	}
 
 }

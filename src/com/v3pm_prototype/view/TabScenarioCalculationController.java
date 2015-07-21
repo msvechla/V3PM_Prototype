@@ -64,12 +64,12 @@ public class TabScenarioCalculationController {
 	private TableView<RoadMap> tvRoadmap;
 	private ObservableList<RoadMap> olRoadmap = FXCollections
 			.observableArrayList();
-	private ListChangeListener<Integer> rmListChangeListener;
+	private ChangeListener rmListChangeListener;
 	private List<RoadMap> rmList;
-	
+
 	@FXML
 	private VBox roadmapContainer;
-	
+
 	@FXML
 	private TableColumn<RoadMap, String> clmRoadmap;
 	@FXML
@@ -79,7 +79,7 @@ public class TabScenarioCalculationController {
 	private ObservableList<Project> olProjects = FXCollections
 			.observableArrayList();
 
-	//TVProcesses
+	// TVProcesses
 	@FXML
 	private TableView<Process> tvProcesses;
 	private ObservableList<Process> olProcesses = FXCollections
@@ -102,7 +102,7 @@ public class TabScenarioCalculationController {
 	private TableColumn<Process, Double> clmProcessesFC;
 	@FXML
 	private TableColumn<Process, Double> clmProcessesFCDelta;
-	
+
 	// Charts
 	@FXML
 	private LineChart<String, Number> lcProcessQuality;
@@ -116,12 +116,11 @@ public class TabScenarioCalculationController {
 	private View view;
 	SpringBox graphstreamLayout;
 	private HashSet<Project> oldProjectList = new HashSet<Project>();
-	
+
 	private MainApp mainApp;
 	private DBScenario scenario;
 	private RunConfiguration config;
 	private Tab tab;
-	
 
 	public TabScenarioCalculationController() {
 
@@ -134,8 +133,8 @@ public class TabScenarioCalculationController {
 		initTVProcesses();
 		bootGraphStream();
 	}
-	
-	private void initRoadmapContainer(){
+
+	private void initRoadmapContainer() {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(MainApp.class
 				.getResource("/com/v3pm_prototype/view/RoadmapBox.fxml"));
@@ -150,86 +149,133 @@ public class TabScenarioCalculationController {
 			e.printStackTrace();
 		}
 	}
-	
-	private void initTVProcesses(){
+
+	private void initTVProcesses() {
 		tvProcesses.setItems(olProcesses);
 		clmProcessesName
-		.setCellValueFactory(new PropertyValueFactory<Process, String>(
-				"Name"));
+				.setCellValueFactory(new PropertyValueFactory<Process, String>(
+						"Name"));
 		clmProcessesOOp
-		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
-				"Oop"));
+				.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+						"Oop"));
 		clmProcessesOOpDelta
-		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
-				"OopDelta"));
+				.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+						"OopDelta"));
 		clmProcessesFC
-		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
-				"fixedCosts"));
+				.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+						"fixedCosts"));
 		clmProcessesFCDelta
-		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
-				"fixedCostsDelta"));
+				.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+						"fixedCostsDelta"));
 		clmProcessesQ
-		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
-				"q"));
+				.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+						"q"));
 		clmProcessesQDelta
-		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
-				"qDelta"));
+				.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+						"qDelta"));
 		clmProcessesT
-		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
-				"t"));
+				.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+						"t"));
 		clmProcessesTDelta
-		.setCellValueFactory(new PropertyValueFactory<Process, Double>(
-				"tDelta"));
-		
-		clmProcessesName.setCellFactory(new Callback<TableColumn<Process,String>, TableCell<Process,String>>() {
-			
-			@Override
-			public TableCell<Process, String> call(TableColumn<Process, String> param) {
-				return new TableCell<Process, String>(){
+				.setCellValueFactory(new PropertyValueFactory<Process, Double>(
+						"tDelta"));
+
+		//Setup Colors for Process names
+		clmProcessesName
+				.setCellFactory(new Callback<TableColumn<Process, String>, TableCell<Process, String>>() {
 
 					@Override
-					protected void updateItem(String item, boolean empty) {
+					public TableCell<Process, String> call(
+							TableColumn<Process, String> param) {
+						return new TableCell<Process, String>() {
+
+							@Override
+							protected void updateItem(String item, boolean empty) {
+								super.updateItem(item, empty);
+
+								for (Process p : tvRoadmap.getSelectionModel()
+										.getSelectedItem()
+										.getLstProcessCalculated()) {
+									if (p.getName().equals(item)) {
+										if (p.getId() < Colorpalette.PROCESS.length) {
+											this.setTextFill(Color
+													.valueOf(Colorpalette.PROCESS[p
+															.getId()]));
+										}
+									}
+								}
+								setText(item);
+							}
+
+						};
+					}
+				});
+		
+		Callback<TableColumn<Process, Double>, TableCell<Process, Double>> cellFactoryDelta = new Callback<TableColumn<Process, Double>, TableCell<Process, Double>>() {
+
+			@Override
+			public TableCell<Process, Double> call(
+					TableColumn<Process, Double> param) {
+				return new TableCell<Process, Double>() {
+
+					@Override
+					protected void updateItem(Double item, boolean empty) {
 						super.updateItem(item, empty);
 						
-						for(Process p : tvRoadmap.getSelectionModel().getSelectedItem().getLstProcessCalculated()){
-							if(p.getName().equals(item)){
-								if(p.getId() < Colorpalette.PROCESS.length){
-									this.setTextFill(Color.valueOf(Colorpalette.PROCESS[p.getId()]));
+						if(item != null){
+							if(this.getTableColumn().equals(clmProcessesQDelta)){
+								if(item >0){
+									this.setTextFill(Color.valueOf(Colorpalette.DELTA_GREEN));
+									setText("+"+String.valueOf(item));
+								}
+								if(item <0){
+									this.setTextFill(Color.valueOf(Colorpalette.DELTA_RED));
+									setText(String.valueOf(item));
 								}
 							}
+							
+							if(this.getTableColumn().equals(clmProcessesTDelta)){
+								if(item >0){
+									this.setTextFill(Color.valueOf(Colorpalette.DELTA_RED));
+									setText("+"+String.valueOf(item));
+								}
+								if(item <0){
+									this.setTextFill(Color.valueOf(Colorpalette.DELTA_GREEN));
+									setText(String.valueOf(item));
+								}
+							}	
 						}
-						setText(item);
+							
 					}
-					
-					
-					
+
 				};
 			}
-		});
+		};
 		
+		clmProcessesQDelta.setCellFactory(cellFactoryDelta);
+		clmProcessesTDelta.setCellFactory(cellFactoryDelta);
+
 	}
-	
-	private void updateTVProcesses(){
-		RoadMap selectedRM = tvRoadmap.getSelectionModel().getSelectedItem();
-		
-		if(selectedRM != null){
+
+	private void updateTVProcesses() {
+		if (tvRoadmap.getSelectionModel().getSelectedItem() != null) {
 			olProcesses.clear();
-			olProcesses.addAll(selectedRM.getLstProcessCalculated());
+			olProcesses.addAll(tvRoadmap.getSelectionModel().getSelectedItem()
+					.getLstProcessCalculated());
 		}
-		
+
 	}
-	
-	
-	private void bootGraphStream(){
-		System.setProperty("gs.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
+
+	private void bootGraphStream() {
+		System.setProperty("gs.ui.renderer",
+				"org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		graph = new SingleGraph("Scenario");
 		graph.addAttribute("ui.stylesheet", Colorpalette.graphStreamCSS);
 		graph.addAttribute("ui.quality");
 		graph.addAttribute("ui.antialias");
-		
-		
+
 		viewer = new Viewer(graph, ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-		
+
 		graphstreamLayout = new SpringBox(false);
 		viewer.enableAutoLayout(graphstreamLayout);
 		view = viewer.addDefaultView(false);
@@ -237,56 +283,60 @@ public class TabScenarioCalculationController {
 		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.EXIT);
 		swingNode.setContent(view);
 	}
-	
-	private void initGraphStream(){
+
+	private void initGraphStream() {
 		Task<Integer> task = new Task<Integer>() {
-		    @Override protected Integer call() throws Exception {
-		    	
-				RoadMap roadmap = tvRoadmap.getSelectionModel().getSelectedItem();
+			@Override
+			protected Integer call() throws Exception {
+
+				RoadMap roadmap = tvRoadmap.getSelectionModel()
+						.getSelectedItem();
 				HashSet<Project> proejctsInScenario = new HashSet<Project>();
-				
-				for(int id : roadmap.implementedProjectIDs){
-					for(Project p : config.getLstProjects()){
-						if(p.getId() == id){
+
+				for (int id : roadmap.implementedProjectIDs) {
+					for (Project p : config.getLstProjects()) {
+						if (p.getId() == id) {
 							proejctsInScenario.add(p);
 							break;
 						}
 					}
 				}
-				
-				if(!oldProjectList.equals(proejctsInScenario)){
-					
-					//Clear graph contents
-					while(graph.getEdgeIterator().hasNext()){
-			    		Edge e = graph.getEdgeIterator().next();
-			    		e.clearAttributes();
-			    		graph.removeEdge(e);
-			    	}
-			    	
-			    	while(graph.getNodeIterator().hasNext()){
-			    		Node n = graph.getNodeIterator().next();
-			    		n.clearAttributes();
-			    		graph.removeNode(n);
-			    	}
-					
-			    	//Add all nodes
-					for(Process process : config.getLstProcesses()){
+
+				if (!oldProjectList.equals(proejctsInScenario)) {
+
+					// Clear graph contents
+					while (graph.getEdgeIterator().hasNext()) {
+						Edge e = graph.getEdgeIterator().next();
+						e.clearAttributes();
+						graph.removeEdge(e);
+					}
+
+					while (graph.getNodeIterator().hasNext()) {
+						Node n = graph.getNodeIterator().next();
+						n.clearAttributes();
+						graph.removeNode(n);
+					}
+
+					// Add all nodes
+					for (Process process : config.getLstProcesses()) {
 						Node n = graph.addNode(process.getNodeID());
 						n.addAttribute("ui.label", process.getName());
-						n.addAttribute("ui.class", "pc"+String.valueOf(process.getId()));
-						//Thread.sleep(300);
+						n.addAttribute("ui.class",
+								"pc" + String.valueOf(process.getId()));
+						// Thread.sleep(300);
 					}
-					
+
 					for (Project project : proejctsInScenario) {
-						//Thread.sleep(600);
+						// Thread.sleep(600);
 						Node n = graph.addNode(project.getNodeID());
 						n.addAttribute("ui.label", project.getName());
-						n.addAttribute("ui.class", "pj"+project.getId());
-						
+						n.addAttribute("ui.class", "pj" + project.getId());
+
 						if (project.getI() == DBProcess.ID_ALLPROCESSES) {
 							n.addAttribute("layout.weight", "0.1");
 							for (Process p : config.getLstProcesses()) {
-								Edge e = graph.addEdge(project.getNodeID() + p.getNodeID(),
+								Edge e = graph.addEdge(
+										project.getNodeID() + p.getNodeID(),
 										project.getNodeID(), p.getNodeID());
 							}
 						} else {
@@ -294,31 +344,30 @@ public class TabScenarioCalculationController {
 							// get the affected Process
 							for (Process p : config.getLstProcesses()) {
 								if (p.getId() == project.getI()) {
-									Edge e = graph.addEdge(project.getNodeID() + p.getNodeID(),
+									Edge e = graph.addEdge(project.getNodeID()
+											+ p.getNodeID(),
 											project.getNodeID(), p.getNodeID());
 									break;
 								}
 							}
 						}
-				
-					}		
+
+					}
 
 					oldProjectList.clear();
 					oldProjectList.addAll(proejctsInScenario);
-				}else{
+				} else {
 					graphstreamLayout.shake();
 				}
-		        return 0;
-		    }
+				return 0;
+			}
 		};
-		
+
 		Thread th = new Thread(task);
 		th.setDaemon(true);
 		th.start();
-	
+
 	}
-	
-	
 
 	/**
 	 * Generates the initial Roadmaps and calculates their NPVs
@@ -386,21 +435,22 @@ public class TabScenarioCalculationController {
 		tvRoadmap.getSortOrder().add(clmNPV);
 		tvRoadmap.sort();
 
-		//Setup the change listener. Listener is set after RMCalculation
-		rmListChangeListener = new ListChangeListener<Integer>() {
+		// Setup the change listener. Listener is set after RMCalculation
+		rmListChangeListener = new ChangeListener<RoadMap>() {
+
 			@Override
-			public void onChanged(
-					javafx.collections.ListChangeListener.Change<? extends Integer> arg0) {
+			public void changed(ObservableValue<? extends RoadMap> observable,
+					RoadMap oldValue, RoadMap newValue) {
 				// listen for selection changes and update the charts
 				initLineCharts();
 				initGraphStream();
 				updateTVProcesses();
 			}
+
 		};
 	}
 
 	private void initLineCharts() {
-
 		lcProcessQuality.getData().clear();
 		lcProcessTime.getData().clear();
 
@@ -434,7 +484,7 @@ public class TabScenarioCalculationController {
 			}
 
 		}
-		
+
 	}
 
 	/**
@@ -492,23 +542,25 @@ public class TabScenarioCalculationController {
 						mainApp.getV3pmGUIController().setProgress(0);
 						mainApp.getV3pmGUIController().setStatus(
 								"NPVs calculated.");
-						//Display the NPV
-						scenario.setNpv(this.getValue().get(0)
-								.getNpv());
+						// Display the NPV
+						scenario.setNpv(this.getValue().get(0).getNpv());
 						lblNPV.setText(scenario.getNPVString());
-						
+
 						try {
 							writeDBNPV();
 						} catch (SQLException e) {
-							System.err.println("[SQL ERROR] writing NPV to Database");
+							System.err
+									.println("[SQL ERROR] writing NPV to Database");
 						}
-						
-						//Add items to the Roadmap table, select first item and update charts
+
+						// Add items to the Roadmap table, select first item and
+						// update charts
 						olRoadmap.clear();
 						rmList = getValue();
 						olRoadmap.addAll(rmList);
 						tvRoadmap.getSelectionModel().select(rmList.get(0));
-						tvRoadmap.getSelectionModel().getSelectedIndices().addListener(rmListChangeListener);
+						tvRoadmap.getSelectionModel().selectedItemProperty()
+								.addListener(rmListChangeListener);
 						initLineCharts();
 						initGraphStream();
 						initRoadmapContainer();
@@ -520,11 +572,12 @@ public class TabScenarioCalculationController {
 		};
 		return service;
 	}
-	
-	private synchronized void writeDBNPV() throws SQLException{
+
+	private synchronized void writeDBNPV() throws SQLException {
 		Connection conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
-		st.executeUpdate("UPDATE Scenario SET npv = "+scenario.getNpv()+" WHERE ID = "+this.scenario.getId());
+		st.executeUpdate("UPDATE Scenario SET npv = " + scenario.getNpv()
+				+ " WHERE ID = " + this.scenario.getId());
 	}
 
 	public void setScenario(DBScenario newScenario) {
@@ -536,20 +589,23 @@ public class TabScenarioCalculationController {
 
 	/**
 	 * Make sure that the GraphStream Thread is closed on exit
+	 * 
 	 * @param mainApp
 	 */
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
-		this.mainApp.getPrimaryStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
-			@Override
-			public void handle(WindowEvent event) {
-				viewer.close();
-			}
-		});
+		this.mainApp.getPrimaryStage().setOnCloseRequest(
+				new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent event) {
+						viewer.close();
+					}
+				});
 	}
 
 	/**
 	 * Make sure that the GraphStream Thread is closed on exit
+	 * 
 	 * @param Tab
 	 */
 	public void setTab(Tab tab) {
@@ -561,6 +617,5 @@ public class TabScenarioCalculationController {
 			}
 		});
 	}
-
 
 }

@@ -26,4 +26,7 @@ public final class Colorpalette {
 		    "node.pc7 {size: 30px, 30px; shape: diamond; fill-color: #C84164; stroke-mode: plain; stroke-color: white; stroke-width: 2px;}" +
 		    "node.pc8 {size: 30px, 30px; shape: diamond; fill-color: #888888; stroke-mode: plain; stroke-color: white; stroke-width: 2px;}"
 		    + "graph {fill-color: #F4F4F4;}";
+	
+	public static final String DELTA_GREEN = "#5CE62E";
+	public static final String DELTA_RED = "#E62E00";
 }

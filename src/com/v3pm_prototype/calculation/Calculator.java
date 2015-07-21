@@ -151,7 +151,6 @@ public class Calculator extends Task<List<RoadMap>>{
 		
 		//Sort processes by id so they have matching colors
 		Collections.sort(lstProcessesCaculated);
-		System.out.println("");
 		
 		List<Project> lstProjectsCalculated = new ArrayList<Project>();
 		lstProjectsCalculated.addAll(tempCollProj);

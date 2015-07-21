@@ -272,9 +272,12 @@ public class ProjectAndProcessModifier {
 		
 		}
 		
-		//Save quality and time per period
+		//Save values per period
 		tempProcess.getqPerPeriod(config)[tempProject.getPeriod()] = tempProcess.getQ();
 		tempProcess.gettPerPeriod(config)[tempProject.getPeriod()] = tempProcess.getT();
+		tempProcess.getFixedCostsPerPeriod(config)[tempProject.getPeriod()] = tempProcess.getFixedCosts();
+		tempProcess.getOopPerPeriod(config)[tempProject.getPeriod()] = tempProcess.getOop();
+		
 		
 		}
 		
