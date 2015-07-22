@@ -161,7 +161,7 @@ public class TabScenarioCalculationController {
 						"Oop"));
 		clmProcessesOOpDelta
 				.setCellValueFactory(new PropertyValueFactory<Process, Double>(
-						"OopDelta"));
+						"oopDelta"));
 		clmProcessesFC
 				.setCellValueFactory(new PropertyValueFactory<Process, Double>(
 						"fixedCosts"));

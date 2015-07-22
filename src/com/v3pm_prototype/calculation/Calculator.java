@@ -68,6 +68,10 @@ public class Calculator{
 
 				projectsInPeriod.add(tempProject);
 				
+				if(RM.toString().contains("[ Six Sigma null ][ null null ]")){
+					System.out.println("FOUND");
+				}
+				
 				// calculate inflows
 				if (tempProject.getPeriod() > prePeriod) {
 					// In case this is the first project of a new period. For further projects within the same period, no inflows will be added.
@@ -130,9 +134,7 @@ public class Calculator{
 				RM.setNpv(npv / 100);
 			}
 			
-			if(RM.toString().contains("[ 9 null ] [ null null ]")){
-				System.out.println("FOUND");
-			}
+			
 			
 			//Save the calculated quality and time per period
 			saveCalculatedValuesToRM(RM, tempCollProcess,tempCollPoj_sorted);

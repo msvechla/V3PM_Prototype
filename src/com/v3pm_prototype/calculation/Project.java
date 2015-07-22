@@ -24,12 +24,11 @@ public class Project {
 	private double b; // relative effect on the investment-Outflows of future projects (only for BPM-level projects)
 	private double e; // relative effect on time of a process
 	private double u; // relative effect on quality of a process
-	private double m; // relative effect on operating outflows of a process
+	private double m; // fixedCostEffect
 	private String absRelQ;
 	private String absRelT;
 	private String absRelOop;
 	
-	//TODO IMPORTANT: A / M Parameter, FixedCOsts
 	
 	private double oInvEnd;
 	

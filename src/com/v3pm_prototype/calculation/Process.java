@@ -254,6 +254,7 @@ public class Process implements Comparable<Process>{
 	}
 	
 	public double getOopDelta(){
+		System.out.println("OOPDELTA: "+(oop - this.OopPerPeriod[0]));
 		return oop - this.OopPerPeriod[0];
 	}
 	
