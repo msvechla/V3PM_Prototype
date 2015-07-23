@@ -6,7 +6,7 @@ import com.v3pm_prototype.rmgeneration.RunConfiguration;
  * class for value objects which holds all the information about a single process
  *
  */
-public class Process implements Comparable<Process>{
+public class Process implements Comparable<Process>, Cloneable{
 	private String name;
 	private int id;
 	private double q; // quality
@@ -260,6 +260,14 @@ public class Process implements Comparable<Process>{
 	
 	public double getFixedCostsDelta(){
 		return fixedCosts - this.fixedCostsPerPeriod[0];
+	}
+	
+	public Object clone(){  
+	    try{  
+	        return super.clone();  
+	    }catch(Exception e){ 
+	        return null; 
+	    }
 	}
 
 }

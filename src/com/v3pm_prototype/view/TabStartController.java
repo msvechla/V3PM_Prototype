@@ -344,7 +344,7 @@ public class TabStartController {
 				.setCellValueFactory(new PropertyValueFactory<DBProject, Float>(
 						"m"));
 
-		tvProjects.setItems(this.olProjects);
+		tvProjects.setItems(TabStartController.olProjects);
 		
 		//-------------------- DELETE CONTEXT MENU --------------------
 
@@ -408,7 +408,7 @@ public class TabStartController {
 		clmProcessesDFKT
 				.setCellValueFactory(new PropertyValueFactory<DBProcess, String>(
 						"demandFunction"));
-		tvProcesses.setItems(this.olProcesses);
+		tvProcesses.setItems(TabStartController.olProcesses);
 	}
 	
 	/**

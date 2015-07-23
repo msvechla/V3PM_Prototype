@@ -606,7 +606,7 @@ public class TabScenarioCalculationController {
 						updateTVProcesses();
 
 						RobustnessAnalysis ra = new RobustnessAnalysis(rmList,
-								config, RobustnessAnalysis.MODE_PLUS);
+								config, RobustnessAnalysis.MODE_PLUS,config.getProject(9),"a");
 
 						Thread t = new Thread(ra);
 						t.setDaemon(false);

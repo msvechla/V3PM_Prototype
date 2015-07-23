@@ -11,7 +11,7 @@ import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.main.Main;
 
-public class RoadMap implements Comparable<RoadMap>{
+public class RoadMap implements Comparable<RoadMap>, Cloneable{
 	private Project[][] rmArray;
 	public HashSet<Integer> implementedProjectIDs;
 	private double npv;
@@ -42,13 +42,13 @@ public class RoadMap implements Comparable<RoadMap>{
 		return sb.toString();
 	}
 	
-//	public boolean equals(Object o){
-//		if(o instanceof RoadMap){
-//			return ((RoadMap) o).createIDRoadmap().equals(this.createIDRoadmap());
-//		}else{
-//			return false;
-//		}
-//	}
+	public boolean equals(Object o){
+		if(o instanceof RoadMap){
+			return ((RoadMap) o).createIDRoadmap().equals(this.createIDRoadmap());
+		}else{
+			return false;
+		}
+	}
 	
 	public Project[][] getRMArray(){
 		return this.rmArray;
@@ -162,5 +162,14 @@ public List<Integer> createIDRoadmap(){
 	public int compareTo(RoadMap rm) {
 		return Double.compare(rm.getNpv(), this.npv);
 	}
+	
+	public Object clone(){  
+	    try{  
+	        return super.clone();  
+	    }catch(Exception e){ 
+	        return null; 
+	    }
+	}
+
 	
 }

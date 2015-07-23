@@ -9,7 +9,7 @@ import com.v3pm_prototype.database.DBProject;
  * class for value objects which holds all the information about a single project
  * 
  */
-public class Project {
+public class Project implements Cloneable{
 	
 	private int id; // id of the project, starts with 1
 	private String name; // name of the project
@@ -243,7 +243,12 @@ public class Project {
 		this.oInvEnd = oInvEnd;
 	}
 	
-	
-	
+	public Object clone(){  
+	    try{  
+	        return super.clone();  
+	    }catch(Exception e){ 
+	        return null; 
+	    }
+	}
 	
 }
