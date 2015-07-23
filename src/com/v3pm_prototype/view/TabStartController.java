@@ -24,6 +24,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -276,6 +277,17 @@ public class TabStartController {
 						"NPVString"));
 
 		tvScenarios.setItems(olScenarios);
+		
+		// -------------------- DOUBLECLICK: START CALCULATION --------------------
+		
+		tvScenarios.setOnMousePressed(new EventHandler<MouseEvent>() {
+		    @Override 
+		    public void handle(MouseEvent event) {
+		        if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+		           calculateScenario();               
+		        }
+		    }
+		});
 		
 		// -------------------- BLUEPRINT CONTEXT MENU --------------------
 
