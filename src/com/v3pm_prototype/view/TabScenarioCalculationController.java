@@ -181,7 +181,7 @@ public class TabScenarioCalculationController {
 				.setCellValueFactory(new PropertyValueFactory<Process, Double>(
 						"tDelta"));
 
-		//Setup Colors for Process names
+		// Setup Colors for Process names
 		clmProcessesName
 				.setCellFactory(new Callback<TableColumn<Process, String>, TableCell<Process, String>>() {
 
@@ -200,7 +200,8 @@ public class TabScenarioCalculationController {
 									if (p.getName().equals(item)) {
 										if (config.getColorID(p) < Colorpalette.PROCESS.length) {
 											this.setTextFill(Color
-													.valueOf(Colorpalette.PROCESS[config.getColorID(p)]));
+													.valueOf(Colorpalette.PROCESS[config
+															.getColorID(p)]));
 										}
 									}
 								}
@@ -210,7 +211,7 @@ public class TabScenarioCalculationController {
 						};
 					}
 				});
-		
+
 		Callback<TableColumn<Process, Double>, TableCell<Process, Double>> cellFactoryDelta = new Callback<TableColumn<Process, Double>, TableCell<Process, Double>>() {
 
 			@Override
@@ -221,11 +222,11 @@ public class TabScenarioCalculationController {
 					@Override
 					protected void updateItem(Double item, boolean empty) {
 						super.updateItem(item, empty);
-						
+
 						if (item != null) {
 							if (this.getTableColumn()
 									.equals(clmProcessesQDelta)) {
-								
+
 								if (item > 0) {
 									this.setTextFill(Color
 											.valueOf(Colorpalette.DELTA_GREEN));
@@ -233,7 +234,7 @@ public class TabScenarioCalculationController {
 											+ String.valueOf(Math
 													.round(item * 100) / 100.0));
 								}
-								
+
 								if (item < 0) {
 									this.setTextFill(Color
 											.valueOf(Colorpalette.DELTA_RED));
@@ -241,14 +242,14 @@ public class TabScenarioCalculationController {
 											.round(item * 100) / 100.0));
 								}
 							}
-							
+
 							if (this.getTableColumn()
 									.equals(clmProcessesTDelta)
 									|| this.getTableColumn().equals(
 											clmProcessesOOpDelta)
 									|| this.getTableColumn().equals(
 											clmProcessesFCDelta)) {
-								
+
 								if (item > 0) {
 									this.setTextFill(Color
 											.valueOf(Colorpalette.DELTA_RED));
@@ -256,27 +257,27 @@ public class TabScenarioCalculationController {
 											+ String.valueOf(Math
 													.round(item * 100) / 100.0));
 								}
-								
+
 								if (item < 0) {
 									this.setTextFill(Color
 											.valueOf(Colorpalette.DELTA_GREEN));
 									setText(String.valueOf(Math
 											.round(item * 100) / 100.0));
 								}
-								
-								if (item == 0){
+
+								if (item == 0) {
 									this.setTextFill(Color.BLACK);
 									setText(String.valueOf(item));
 								}
 							}
 						}
-							
+
 					}
 
 				};
 			}
 		};
-		
+
 		clmProcessesQDelta.setCellFactory(cellFactoryDelta);
 		clmProcessesTDelta.setCellFactory(cellFactoryDelta);
 		clmProcessesOOpDelta.setCellFactory(cellFactoryDelta);
@@ -348,8 +349,11 @@ public class TabScenarioCalculationController {
 					for (Process process : config.getLstProcesses()) {
 						Node n = graph.addNode(process.getNodeID());
 						n.addAttribute("ui.label", process.getName());
-						n.addAttribute("ui.class",
-								"pc" + String.valueOf(config.getColorID(process)));
+						n.addAttribute(
+								"ui.class",
+								"pc"
+										+ String.valueOf(config
+												.getColorID(process)));
 						// Thread.sleep(300);
 					}
 
@@ -357,7 +361,8 @@ public class TabScenarioCalculationController {
 						// Thread.sleep(600);
 						Node n = graph.addNode(project.getNodeID());
 						n.addAttribute("ui.label", project.getName());
-						n.addAttribute("ui.class", "pj" + config.getColorID(project));
+						n.addAttribute("ui.class",
+								"pj" + config.getColorID(project));
 
 						if (project.getI() == DBProcess.ID_ALLPROCESSES) {
 							n.addAttribute("layout.weight", "0.1");
@@ -561,8 +566,8 @@ public class TabScenarioCalculationController {
 		Service<List<RoadMap>> service = new Service<List<RoadMap>>() {
 			@Override
 			protected Task<List<RoadMap>> createTask() {
-				
-				return new Task<List<RoadMap>>(){
+
+				return new Task<List<RoadMap>>() {
 
 					@Override
 					protected List<RoadMap> call() throws Exception {
@@ -599,16 +604,17 @@ public class TabScenarioCalculationController {
 						initGraphStream();
 						initRoadmapContainer();
 						updateTVProcesses();
-						
-						RobustnessAnalysis ra = new RobustnessAnalysis(rmList, config,RobustnessAnalysis.MODE_PLUS);
-						
+
+						RobustnessAnalysis ra = new RobustnessAnalysis(rmList,
+								config, RobustnessAnalysis.MODE_PLUS);
+
 						Thread t = new Thread(ra);
 						t.setDaemon(false);
 						t.start();
-					}	
-					
+					}
+
 				};
-				
+
 			}
 		};
 		return service;
@@ -655,6 +661,7 @@ public class TabScenarioCalculationController {
 			@Override
 			public void handle(Event event) {
 				viewer.close();
+				mainApp.getPrimaryStage().setOnCloseRequest(null);
 			}
 		});
 	}

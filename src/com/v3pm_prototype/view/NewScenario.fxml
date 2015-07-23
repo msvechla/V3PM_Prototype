@@ -112,12 +112,12 @@
                <children>
                   <Accordion maxHeight="1.7976931348623157E308" prefHeight="432.0" prefWidth="366.0">
                     <panes>
-                      <TitledPane animated="false" text="Process Pool">
+                      <TitledPane text="Process Pool">
                            <content>
                               <ListView fx:id="lvProcessPool" prefHeight="200.0" prefWidth="200.0" />
                            </content>
                         </TitledPane>
-                      <TitledPane animated="false" expanded="false" text="Project Pool">
+                      <TitledPane expanded="false" text="Project Pool">
                            <content>
                               <ListView fx:id="lvProjectPool" prefHeight="200.0" prefWidth="200.0" />
                            </content>
@@ -128,22 +128,22 @@
                      <content>
                         <Accordion prefHeight="308.0" prefWidth="334.0">
                           <panes>
-                            <TitledPane animated="false" text="Interactions among projects">
+                            <TitledPane text="Interactions among projects">
                                  <content>
                                     <ListView fx:id="lvCAmongProjects" prefHeight="200.0" prefWidth="200.0" />
                                  </content>
                             </TitledPane>
-                            <TitledPane animated="false" text="Project-specific constraints">
+                            <TitledPane expanded="false" text="Project-specific constraints">
                                  <content>
                                     <ListView fx:id="lvCProjectSpecific" prefHeight="200.0" prefWidth="200.0" />
                                  </content>
                             </TitledPane>
-                            <TitledPane animated="false" text="Process-specific constraints">
+                            <TitledPane expanded="false" text="Process-specific constraints">
                                  <content>
                                     <ListView fx:id="lvCProcessSpecific" prefHeight="200.0" prefWidth="200.0" />
                                  </content>
                             </TitledPane>
-                              <TitledPane animated="false" text="Period-specific constraints">
+                              <TitledPane expanded="false" text="Period-specific constraints">
                                  <content>
                                     <ListView fx:id="lvCPeriodSpecific" prefHeight="200.0" prefWidth="200.0" />
                                  </content>

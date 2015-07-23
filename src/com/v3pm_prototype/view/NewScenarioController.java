@@ -177,7 +177,7 @@ public class NewScenarioController {
 
 		// Setup Pools
 		initPools();
-		initConstraints();
+		initLVConstraints();
 		
 		initGeneralSettings();
 	}
@@ -367,7 +367,7 @@ public class NewScenarioController {
 		t.start();
 	}
 
-	private void initConstraints() {
+	private void initLVConstraints() {
 		// Set listview content
 		lvCAmongProjects.setItems(olCAmongProjects);
 		lvCProjectSpecific.setItems(olCProjectSpecific);
@@ -441,7 +441,22 @@ public class NewScenarioController {
 		lvCProcessSpecific.setOnDragDetected(ConstraintDnDHandler);
 		lvCProjectSpecific.setOnDragDetected(ConstraintDnDHandler);
 		
-		
+		// -------------------- REMOVE CONTEXT MENU --------------------
+
+		final ContextMenu constraintsContextMenu = new ContextMenu();
+		MenuItem miRemove = new MenuItem("Remove");
+		constraintsContextMenu.getItems().add(miRemove);
+
+		lvConstraints.setContextMenu(constraintsContextMenu);
+		miRemove.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				DBConstraint selectedConstraint = lvConstraints.getSelectionModel()
+						.getSelectedItem();
+				olConstraints.remove(selectedConstraint);
+			}
+		});
 
 	}
 
@@ -634,6 +649,24 @@ public class NewScenarioController {
 				}
 				event.setDropCompleted(success);
 				event.consume();
+			}
+		});
+		
+		// -------------------- REMOVE CONTEXT MENU --------------------
+
+		final ContextMenu projectsContextMenu = new ContextMenu();
+		MenuItem miRemove = new MenuItem("Remove");
+		projectsContextMenu.getItems().add(miRemove);
+
+		tvProjects.setContextMenu(projectsContextMenu);
+		miRemove.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				DBProject selectedProject = tvProjects.getSelectionModel()
+						.getSelectedItem();
+				olProcesses.remove(selectedProject);
+				availableProjects.add(selectedProject);
 			}
 		});
 
