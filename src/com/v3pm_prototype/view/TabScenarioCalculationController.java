@@ -223,28 +223,53 @@ public class TabScenarioCalculationController {
 					protected void updateItem(Double item, boolean empty) {
 						super.updateItem(item, empty);
 						
-						if(item != null){
-							if(this.getTableColumn().equals(clmProcessesQDelta)){
-								if(item >0){
-									this.setTextFill(Color.valueOf(Colorpalette.DELTA_GREEN));
-									setText("+"+String.valueOf(item));
+						if (item != null) {
+							if (this.getTableColumn()
+									.equals(clmProcessesQDelta)) {
+								
+								if (item > 0) {
+									this.setTextFill(Color
+											.valueOf(Colorpalette.DELTA_GREEN));
+									setText("+"
+											+ String.valueOf(Math
+													.round(item * 100) / 100.0));
 								}
-								if(item <0){
-									this.setTextFill(Color.valueOf(Colorpalette.DELTA_RED));
-									setText(String.valueOf(item));
+								
+								if (item < 0) {
+									this.setTextFill(Color
+											.valueOf(Colorpalette.DELTA_RED));
+									setText(String.valueOf(Math
+											.round(item * 100) / 100.0));
 								}
 							}
 							
-							if(this.getTableColumn().equals(clmProcessesTDelta)){
-								if(item >0){
-									this.setTextFill(Color.valueOf(Colorpalette.DELTA_RED));
-									setText("+"+String.valueOf(item));
+							if (this.getTableColumn()
+									.equals(clmProcessesTDelta)
+									|| this.getTableColumn().equals(
+											clmProcessesOOpDelta)
+									|| this.getTableColumn().equals(
+											clmProcessesFCDelta)) {
+								
+								if (item > 0) {
+									this.setTextFill(Color
+											.valueOf(Colorpalette.DELTA_RED));
+									setText("+"
+											+ String.valueOf(Math
+													.round(item * 100) / 100.0));
 								}
-								if(item <0){
-									this.setTextFill(Color.valueOf(Colorpalette.DELTA_GREEN));
+								
+								if (item < 0) {
+									this.setTextFill(Color
+											.valueOf(Colorpalette.DELTA_GREEN));
+									setText(String.valueOf(Math
+											.round(item * 100) / 100.0));
+								}
+								
+								if (item == 0){
+									this.setTextFill(Color.BLACK);
 									setText(String.valueOf(item));
 								}
-							}	
+							}
 						}
 							
 					}
@@ -255,6 +280,8 @@ public class TabScenarioCalculationController {
 		
 		clmProcessesQDelta.setCellFactory(cellFactoryDelta);
 		clmProcessesTDelta.setCellFactory(cellFactoryDelta);
+		clmProcessesOOpDelta.setCellFactory(cellFactoryDelta);
+		clmProcessesFCDelta.setCellFactory(cellFactoryDelta);
 
 	}
 

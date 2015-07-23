@@ -53,7 +53,7 @@ public class ProjectAndProcessModifier {
 			}
 			
 			//Save initial values for history
-			if(tempProject.getPeriod() == 0){
+			if(tempProject.getPeriod() == 0 && projectNumberWithinPeriod == 1){
 				tempProcess.getqPerPeriod(config)[tempProject.getPeriod()] = tempProcess
 						.getQ();
 				tempProcess.gettPerPeriod(config)[tempProject.getPeriod()] = tempProcess
@@ -304,10 +304,11 @@ public class ProjectAndProcessModifier {
 						.getQ();
 				tempProcess.gettPerPeriod(config)[tempProject.getPeriod()+1] = tempProcess
 						.getT();
-				tempProcess.getFixedCostsPerPeriod(config)[tempProject.getPeriod()+1] = tempProcess
-						.getFixedCosts();
 				tempProcess.getOopPerPeriod(config)[tempProject.getPeriod()+1] = tempProcess
 						.getOop();
+				tempProcess.getFixedCostsPerPeriod(config)[tempProject.getPeriod()+1] = tempProcess
+						.getFixedCosts();
+				
 			}
 			
 
