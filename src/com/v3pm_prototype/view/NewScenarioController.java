@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
 
-import javax.crypto.spec.OAEPParameterSpec;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -14,6 +12,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
@@ -22,6 +21,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
@@ -31,6 +31,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.database.DBConstraint;
@@ -73,6 +74,11 @@ public class NewScenarioController {
 
 	// ListViews (Pools)
 	@FXML
+	private Accordion accordionP;
+	@FXML
+	private TitledPane tpProcessPool;
+	
+	@FXML
 	private ListView<DBProject> lvProjectPool;
 	@FXML
 	private ListView<DBProcess> lvProcessPool;
@@ -83,6 +89,11 @@ public class NewScenarioController {
 			.observableArrayList();
 
 	//ListViews (Constraint Pools)
+	@FXML
+	private Accordion accordionC;
+	@FXML
+	private TitledPane tpConstraintPool1;
+	
 	@FXML
 	private ListView<String> lvCAmongProjects;
 	private ObservableList<String> olCAmongProjects = FXCollections
@@ -164,8 +175,10 @@ public class NewScenarioController {
 	public ObservableList<DBProcess> olProcesses = FXCollections
 			.observableArrayList();
 	
+	private Stage stage = null;
 	private DBScenario blueprint = null; //contains a Scenario that is used to populate views with basic data
 
+	
 	public NewScenarioController() {
 	}
 
@@ -180,6 +193,7 @@ public class NewScenarioController {
 		initLVConstraints();
 		
 		initGeneralSettings();
+		
 	}
 
 	// /**
@@ -528,6 +542,7 @@ public class NewScenarioController {
 				.setCellValueFactory(new PropertyValueFactory<DBProcess, String>(
 						"demandFunction"));
 		tvProcesses.setItems(this.olProcesses);
+		
 
 		// -------------------- DRAG AND DROP --------------------
 
@@ -729,6 +744,26 @@ public class NewScenarioController {
 	
 	public int getPeriods(){
 		return cbPeriods.getValue();
+	}
+
+	public Stage getStage() {
+		return stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
+		
+		//Open the accordion when shown
+		stage.setOnShown(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent event) {
+				accordionP.expandedPaneProperty().set(tpProcessPool);
+				accordionC.expandedPaneProperty().set(tpConstraintPool1);
+				
+			}
+		});
+		
 	}
 
 }

@@ -245,6 +245,7 @@ public class TabStartController {
 			Stage stage = new Stage();
 			stage.setTitle("New Scenario");
 			stage.setScene(new Scene(root));
+			nsController.setStage(stage);
 			stage.show();
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -110,9 +110,9 @@
             </TabPane>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Accordion maxHeight="1.7976931348623157E308" prefHeight="432.0" prefWidth="366.0">
+                  <Accordion fx:id="accordionP" maxHeight="1.7976931348623157E308" prefHeight="432.0" prefWidth="366.0">
                     <panes>
-                      <TitledPane text="Process Pool">
+                      <TitledPane fx:id="tpProcessPool" text="Process Pool">
                            <content>
                               <ListView fx:id="lvProcessPool" prefHeight="200.0" prefWidth="200.0" />
                            </content>
@@ -126,9 +126,9 @@
                   </Accordion>
                   <TitledPane collapsible="false" text="Constraint Pool">
                      <content>
-                        <Accordion prefHeight="308.0" prefWidth="334.0">
+                        <Accordion fx:id="accordionC" prefHeight="308.0" prefWidth="334.0">
                           <panes>
-                            <TitledPane text="Interactions among projects">
+                            <TitledPane fx:id="tpConstraintPool1" text="Interactions among projects">
                                  <content>
                                     <ListView fx:id="lvCAmongProjects" prefHeight="200.0" prefWidth="200.0" />
                                  </content>
