@@ -12,27 +12,27 @@
          <children>
             <Label fx:id="lblType" text="LocMutEx( ">
                <font>
-                  <Font size="24.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
-            <ComboBox fx:id="cbS" prefWidth="150.0" promptText="Project s" />
-            <TextField fx:id="tfX" prefWidth="150.0" promptText="Critical boundary x" />
+            <ComboBox fx:id="cbS" promptText="Project s" />
+            <TextField fx:id="tfX" prefHeight="25.0" prefWidth="118.0" promptText="Critical boundary x" />
             <Label fx:id="lblComma1" text=" , ">
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
-            <ComboBox fx:id="cbSI" prefWidth="150.0" promptText="Project s'" />
-            <ComboBox fx:id="cbI" prefWidth="150.0" promptText="Process i" />
+            <ComboBox fx:id="cbSI" promptText="Project s'" />
+            <ComboBox fx:id="cbI" promptText="Process i" />
             <Label fx:id="lblComma2" text=" , ">
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
-            <ComboBox fx:id="cbY" prefWidth="150.0" promptText="Period y" />
+            <ComboBox fx:id="cbY" promptText="Period y" />
             <Label text=" )">
                <font>
-                  <Font size="24.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
          </children>
