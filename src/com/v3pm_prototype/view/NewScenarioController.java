@@ -2,10 +2,9 @@ package com.v3pm_prototype.view;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+
+import javax.crypto.spec.OAEPParameterSpec;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,34 +16,24 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableCell;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import javafx.util.converter.FloatStringConverter;
-import javafx.util.converter.IntegerStringConverter;
-import javafx.util.converter.NumberStringConverter;
 
 import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.database.DBConstraint;
-import com.v3pm_prototype.database.DBProcess;
-import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.database.DBScenario;
@@ -174,6 +163,8 @@ public class NewScenarioController {
 			.observableArrayList();
 	public ObservableList<DBProcess> olProcesses = FXCollections
 			.observableArrayList();
+	
+	private DBScenario blueprint = null; //contains a Scenario that is used to populate views with basic data
 
 	public NewScenarioController() {
 	}
@@ -552,6 +543,25 @@ public class NewScenarioController {
 				event.consume();
 			}
 		});
+		
+		// -------------------- REMOVE CONTEXT MENU --------------------
+
+		final ContextMenu processesContextMenu = new ContextMenu();
+		MenuItem miRemove = new MenuItem("Remove");
+		processesContextMenu.getItems().add(miRemove);
+
+		tvProcesses.setContextMenu(processesContextMenu);
+		miRemove.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				DBProcess selectedProcess = tvProcesses.getSelectionModel()
+						.getSelectedItem();
+				olProcesses.remove(selectedProcess);
+				availableProcesses.add(selectedProcess);
+			}
+		});
+			
 	}
 
 	public void initTVProjects() {
@@ -653,6 +663,27 @@ public class NewScenarioController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}    
+	}
+	
+	public void setBlueprint(DBScenario blueprint){
+		this.blueprint = blueprint;
+		
+		//Populate field based on scenario blueprint
+		cbPeriods.setValue(blueprint.getPeriods());
+		cbSlotsPerPeriod.setValue(blueprint.getSlotsPerPeriod());
+		tfDiscountRate.setText(String.valueOf(blueprint.getDiscountRate()));
+		tfOAFixedOutflows.setText(String.valueOf(blueprint.getOOAFixed()));
+		
+		olProcesses.addAll(blueprint.getLstProcesses());
+		availableProcesses.removeAll(blueprint.getLstProcesses());
+		
+		olProjects.addAll(blueprint.getLstProjects());
+		availableProjects.removeAll(blueprint.getLstProjects());
+		
+		olConstraints.addAll(blueprint.getLstConstraints());
+		tfName.setText(blueprint.getName()+" Copy");
+		
+		
 	}
 
 	public TabStartController getTsc() {

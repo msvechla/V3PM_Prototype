@@ -222,7 +222,11 @@ public class TabStartController {
 		}
 	}
 	
-	public void openNewScenarioWindow() {
+	public void openNewScenarioWindow(){
+		openNewScenarioWindow(null);
+	}
+	
+	public void openNewScenarioWindow(DBScenario blueprint) {
 		// Load root layout from fxml file.
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(MainApp.class
@@ -233,6 +237,10 @@ public class TabStartController {
 			NewScenarioController nsController = loader.getController();
 			nsController.setTsc(this);
 
+			if(blueprint != null){
+				nsController.setBlueprint(blueprint);
+			}
+			
 			// Show the scene containing the root layout.
 			Stage stage = new Stage();
 			stage.setTitle("New Scenario");
@@ -267,6 +275,22 @@ public class TabStartController {
 						"NPVString"));
 
 		tvScenarios.setItems(olScenarios);
+		
+		// -------------------- BLUEPRINT CONTEXT MENU --------------------
+
+		final ContextMenu scenariosContextMenu = new ContextMenu();
+		MenuItem miBlueprint = new MenuItem("Use as blueprint");
+		scenariosContextMenu.getItems().add(miBlueprint);
+
+		tvScenarios.setContextMenu(scenariosContextMenu);
+		miBlueprint.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				openNewScenarioWindow(tvScenarios.getSelectionModel()
+						.getSelectedItem());
+			}
+		});
 	}
 
 	/**
