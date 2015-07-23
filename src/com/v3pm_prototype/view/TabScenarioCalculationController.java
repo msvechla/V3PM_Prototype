@@ -198,10 +198,9 @@ public class TabScenarioCalculationController {
 										.getSelectedItem()
 										.getLstProcessCalculated()) {
 									if (p.getName().equals(item)) {
-										if (p.getId() < Colorpalette.PROCESS.length) {
+										if (config.getColorID(p) < Colorpalette.PROCESS.length) {
 											this.setTextFill(Color
-													.valueOf(Colorpalette.PROCESS[p
-															.getId()]));
+													.valueOf(Colorpalette.PROCESS[config.getColorID(p)]));
 										}
 									}
 								}
@@ -350,7 +349,7 @@ public class TabScenarioCalculationController {
 						Node n = graph.addNode(process.getNodeID());
 						n.addAttribute("ui.label", process.getName());
 						n.addAttribute("ui.class",
-								"pc" + String.valueOf(process.getId()));
+								"pc" + String.valueOf(config.getColorID(process)));
 						// Thread.sleep(300);
 					}
 
@@ -358,7 +357,7 @@ public class TabScenarioCalculationController {
 						// Thread.sleep(600);
 						Node n = graph.addNode(project.getNodeID());
 						n.addAttribute("ui.label", project.getName());
-						n.addAttribute("ui.class", "pj" + project.getId());
+						n.addAttribute("ui.class", "pj" + config.getColorID(project));
 
 						if (project.getI() == DBProcess.ID_ALLPROCESSES) {
 							n.addAttribute("layout.weight", "0.1");

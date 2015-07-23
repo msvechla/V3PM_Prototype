@@ -58,6 +58,16 @@ public class RunConfiguration {
 		return null;
 	}
 	
+	public int getColorID(Object o){
+		if(o instanceof Project){
+			return lstProjects.indexOf(o)+1;
+		}
+		if(o instanceof Process){
+			return lstProcesses.indexOf(o)+1;
+		}
+		return -1;
+	}
+	
 //	public List<Project> getMandatoryProjects(){
 //		List<Project> lstMandatory = new ArrayList<Project>();
 //		

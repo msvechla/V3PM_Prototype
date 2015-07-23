@@ -60,9 +60,9 @@ public class RoadmapBoxController {
 					projectBox.setPrefSize(48, 48);
 					projectBox.setPadding(new Insets(2));
 					
-					if (project.getId() < Colorpalette.PROJECT.length) {
+					if (config.getColorID(project) < Colorpalette.PROJECT.length) {
 						projectBox.setStyle("-fx-background-color: "
-								+ Colorpalette.PROJECT[project.getId()]
+								+ Colorpalette.PROJECT[config.getColorID(project)]
 								+ ";-fx-border-color: lightgray;\r\n"
 								+ "    -fx-border-width: 1px;");
 					} else {
