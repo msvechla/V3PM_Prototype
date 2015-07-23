@@ -1,4 +1,4 @@
-package com.v3pm_prototype.view;
+package com.v3pm_prototype.view.controller;
 
 import java.text.DecimalFormat;
 

@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import com.v3pm_prototype.excel.ExcelImporter;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
-import com.v3pm_prototype.view.V3PMGUIController;
+import com.v3pm_prototype.view.controller.V3PMGUIController;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

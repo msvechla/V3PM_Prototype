@@ -1,4 +1,4 @@
-package com.v3pm_prototype.view;
+package com.v3pm_prototype.view.controller;
 
 public final class Colorpalette {
 	public static final String[] PROJECT = {"black","#001f3f","#FF851B","#7FDBFF","#FFDC00","#3D9970","#AAAAAA","#01FF70","#3D9970","#85144b","#39CCCC"};

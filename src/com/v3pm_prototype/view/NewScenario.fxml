@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxWidth="-Infinity" minHeight="0" minWidth="0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.NewScenarioController">
+<AnchorPane maxWidth="-Infinity" minHeight="0" minWidth="0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.NewScenarioController">
    <children>
       <SplitPane dividerPositions="0.76" layoutY="48.0">
          <items>
