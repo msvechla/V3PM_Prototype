@@ -83,6 +83,7 @@ public class RoadmapBoxController {
 					Label lbl = new Label(project.getName());
 					lbl.setPadding(new Insets(6));
 					lbl.setWrapText(true);
+					lbl.setTextAlignment(TextAlignment.CENTER);
 					lbl.setFont(Font.font("System", FontWeight.BOLD, 14));
 					lbl.setTextFill(Color.WHITE);
 					projectBox.getChildren().add(lbl);
@@ -104,10 +105,10 @@ public class RoadmapBoxController {
 			// Add a label for each period
 			HBox periodLabel = new HBox(4);
 			periodLabels.getChildren().add(periodLabel);
-			periodLabel.setPrefSize(100, 16);
-			Label lbl = new Label(String.valueOf(period));
-			lbl.setPrefWidth(100);
-			lbl.setAlignment(Pos.TOP_CENTER);
+			Label lbl = new Label("Period "+String.valueOf(period));
+			lbl.setFont(Font.font("System", 14));
+			lbl.setPrefWidth(114);
+			lbl.setAlignment(Pos.CENTER);
 			periodLabel.getChildren().add(lbl);
 
 		}
@@ -155,18 +156,15 @@ public class RoadmapBoxController {
 			for(RobustnessAnalysis ra: cra.getLstResults()){
 				if(ra.getObject() instanceof Project){
 					if(((Project)ra.getObject()).equals(project)){
-						
 						//add info for every calculated parameter
 						sb.append(ra.getParameter() + ":\t"+(ra.getPercentage()*100)+" %\n");
-						
 					}
 				}
 			}
 		}
 		
-
 		toolTip.setText(sb.toString());
-
+		
 		return toolTip;
 	}
 
