@@ -25,6 +25,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -46,6 +47,7 @@ import org.graphstream.ui.swingViewer.Viewer;
 import org.graphstream.ui.swingViewer.Viewer.ThreadingModel;
 
 import com.v3pm_prototype.calculation.Calculator;
+import com.v3pm_prototype.calculation.CompleteRobustnessAnalysis;
 import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.calculation.RobustnessAnalysis;
@@ -60,6 +62,11 @@ import com.v3pm_prototype.rmgeneration.RunConfiguration;
 public class TabScenarioCalculationController {
 	@FXML
 	private Label lblNPV;
+	
+	@FXML
+	private Label lblRobustness;
+	@FXML
+	private ProgressIndicator piRobustness;
 
 	@FXML
 	private TableView<RoadMap> tvRoadmap;
@@ -130,12 +137,39 @@ public class TabScenarioCalculationController {
 	@FXML
 	public void initialize() {
 		lcProcessQuality.setPrefWidth(lcProcessTime.getWidth() / 2);
+		initRobustnessAnalysis();
 		initTVRoadmaps();
 		initTVProcesses();
 		bootGraphStream();
 	}
 
-	private void initRoadmapContainer() {
+	private void startCompleteRobustnessAnalysis(){
+		CompleteRobustnessAnalysis cra = new CompleteRobustnessAnalysis(config, rmList){
+
+			@Override
+			protected void succeeded() {
+				super.succeeded();
+				initRoadmapContainer(this);
+				lblRobustness.setText(this.getPercentage()*100 +" %");
+				lblRobustness.setVisible(true);
+				lblRobustness.setManaged(true);
+				piRobustness.setVisible(false);
+				piRobustness.setManaged(false);
+			}
+			
+		};
+
+		Thread t = new Thread(cra);
+		t.setDaemon(false);
+		t.start();
+	}
+	
+	private void initRobustnessAnalysis(){
+		lblRobustness.setVisible(false);
+		lblRobustness.setManaged(false);
+	}
+	
+	private void initRoadmapContainer(CompleteRobustnessAnalysis cra) {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(MainApp.class
 				.getResource("/com/v3pm_prototype/view/RoadmapBox.fxml"));
@@ -143,7 +177,7 @@ public class TabScenarioCalculationController {
 		try {
 			root = (VBox) loader.load();
 			RoadmapBoxController rmbController = loader.getController();
-			rmbController.generate(this.rmList.get(0), config);
+			rmbController.generate(this.rmList.get(0), config, cra);
 			roadmapContainer.getChildren().clear();
 			roadmapContainer.getChildren().add(root);
 		} catch (IOException e) {
@@ -602,15 +636,9 @@ public class TabScenarioCalculationController {
 								.addListener(rmListChangeListener);
 						initLineCharts();
 						initGraphStream();
-						initRoadmapContainer();
+						initRoadmapContainer(null);
 						updateTVProcesses();
-
-						RobustnessAnalysis ra = new RobustnessAnalysis(rmList,
-								config, RobustnessAnalysis.MODE_PLUS,config.getProject(9),"a");
-
-						Thread t = new Thread(ra);
-						t.setDaemon(false);
-						t.start();
+						startCompleteRobustnessAnalysis();
 					}
 
 				};

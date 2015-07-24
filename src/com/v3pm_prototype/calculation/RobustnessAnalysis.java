@@ -9,10 +9,11 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
+import com.v3pm_prototype.exceptions.NoValidThetaIDException;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
-public class RobustnessAnalysis extends Task {
+public class RobustnessAnalysis {
 
 	public static final String MODE_PLUS = "MODE_PLUS";
 	public static final String MODE_MINUS = "MODE_MINUS";
@@ -23,15 +24,23 @@ public class RobustnessAnalysis extends Task {
 	private List<RoadMap> lstResults = new ArrayList<RoadMap>();
 	private String mode;
 	private RoadMap rmOld;
+	private String parameter;
 	private Field selectedParameter;
 	private Object object;
+	private double radius = 0.01;
+	private double step = 0.001;
+	private double percentage;
 
-	public RobustnessAnalysis(List<RoadMap> lstRoadmap, RunConfiguration config, String mode, Object object, String parameter) {
+	public RobustnessAnalysis(List<RoadMap> lstRoadmap, RunConfiguration config, String mode, Object object, String parameter, double radius, double step) {
 		super();
 		this.lstRoadmap = new ArrayList<RoadMap>();
 		this.lstRoadmap.addAll(lstRoadmap);
 		this.rmOld = (RoadMap) lstRoadmap.get(0).clone();
 		this.config = new RunConfiguration(config.getPeriods(), config.getSlotsPerPeriod(), config.getDiscountRate(), config.getOOAFixed(), config.getConstraintSet());
+		this.radius = radius;
+		this.step = step;
+		this.parameter = parameter;
+		
 		
 		List<Project> lstProjects = new ArrayList<Project>();
 		lstProjects.addAll(config.getLstProjects());
@@ -73,11 +82,7 @@ public class RobustnessAnalysis extends Task {
 		}
 	}
 
-	@Override
-	protected Object call() throws Exception {
-		
-		double radius = 0.01;
-		double step = 0.001;
+	public void start() throws IllegalArgumentException, IllegalAccessException, NoValidThetaIDException{
 
 		double start = selectedParameter.getDouble(object);
 
@@ -109,8 +114,6 @@ public class RobustnessAnalysis extends Task {
 		}
 
 		evaluation();
-
-		return null;
 	}
 
 	private void evaluation() {
@@ -133,7 +136,96 @@ public class RobustnessAnalysis extends Task {
 		}else{
 			System.out.println("NEUE BESTE LÖSUNG GEFUNDEN MIT: "+rmNextBest);
 		}
-		System.out.println("Roadmap robustness level: "+(Double.valueOf(countRobust) / lstResults.size()));
+		
+		this.percentage = (Double.valueOf(countRobust) / lstResults.size());
+		
+		System.out.println("Roadmap robustness level: "+ this.percentage);
 	}
+
+	public List<RoadMap> getLstRoadmap() {
+		return lstRoadmap;
+	}
+
+	public void setLstRoadmap(List<RoadMap> lstRoadmap) {
+		this.lstRoadmap = lstRoadmap;
+	}
+
+	public RunConfiguration getConfig() {
+		return config;
+	}
+
+	public void setConfig(RunConfiguration config) {
+		this.config = config;
+	}
+
+	public List<RoadMap> getLstResults() {
+		return lstResults;
+	}
+
+	public void setLstResults(List<RoadMap> lstResults) {
+		this.lstResults = lstResults;
+	}
+
+	public String getMode() {
+		return mode;
+	}
+
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
+
+	public RoadMap getRmOld() {
+		return rmOld;
+	}
+
+	public void setRmOld(RoadMap rmOld) {
+		this.rmOld = rmOld;
+	}
+
+	public Field getSelectedParameter() {
+		return selectedParameter;
+	}
+
+	public void setSelectedParameter(Field selectedParameter) {
+		this.selectedParameter = selectedParameter;
+	}
+
+	public Object getObject() {
+		return object;
+	}
+
+	public void setObject(Object object) {
+		this.object = object;
+	}
+
+	public double getRadius() {
+		return radius;
+	}
+
+	public void setRadius(double radius) {
+		this.radius = radius;
+	}
+
+	public double getStep() {
+		return step;
+	}
+
+	public void setStep(double step) {
+		this.step = step;
+	}
+
+	public double getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(double percentage) {
+		this.percentage = percentage;
+	}
+
+	public String getParameter() {
+		return parameter;
+	}
+	
+	
 
 }

@@ -3,7 +3,9 @@ package com.v3pm_prototype.view.controller;
 import java.text.DecimalFormat;
 
 import com.sun.javafx.css.converters.PaintConverter;
+import com.v3pm_prototype.calculation.CompleteRobustnessAnalysis;
 import com.v3pm_prototype.calculation.Project;
+import com.v3pm_prototype.calculation.RobustnessAnalysis;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
@@ -47,9 +49,11 @@ public class RoadmapBoxController {
 	 * @param roadmap
 	 * @param config
 	 */
-	public void generate(RoadMap roadmap, RunConfiguration config) {
+	public void generate(RoadMap roadmap, RunConfiguration config, CompleteRobustnessAnalysis cra) {
 		this.roadmap = roadmap;
 
+		System.out.println("GENERATE");
+		
 		for (int period = 0; period < config.getPeriods(); period++) {
 			HBox periodBox = new HBox(4);
 			container.getChildren().add(periodBox);
@@ -81,7 +85,7 @@ public class RoadmapBoxController {
 					lbl.setFont(Font.font("System", FontWeight.BOLD, 14));
 					lbl.setTextFill(Color.WHITE);
 					projectBox.getChildren().add(lbl);
-					lbl.setTooltip(generateToolTip(project));
+					lbl.setTooltip(generateToolTip(project,cra));
 					periodBox.getChildren().add(projectBox);
 				} else {
 					StackPane projectBox = new StackPane();
@@ -107,8 +111,8 @@ public class RoadmapBoxController {
 
 		}
 	}
-
-	private Tooltip generateToolTip(Project project) {
+	
+	private Tooltip generateToolTip(Project project, CompleteRobustnessAnalysis cra) {
 		Tooltip toolTip = new Tooltip();
 		StringBuilder sb = new StringBuilder();
 		DecimalFormat df = new DecimalFormat("#,###.00 €");
@@ -135,7 +139,21 @@ public class RoadmapBoxController {
 		sb.append("Type: " + project.getType() + "\n");
 		sb.append("OInv new: " + df.format(projectEndVal.getOinv()) + "  ("
 				+ modifier + df.format(deltaOInv) + "€)\n");
-		sb.append("Fixed Costs: " + df.format(project.getFixedCosts()) + "\n");
+		
+		//Add info from the robustness Analysis
+		if(cra != null){
+			for(RobustnessAnalysis ra: cra.getLstResults()){
+				if(ra.getObject() instanceof Project){
+					if(((Project)ra.getObject()).equals(project)){
+						
+						//add info for every calculated parameter
+						sb.append(ra.getParameter() + ": "+ra.getPercentage()+"\n");
+						
+					}
+				}
+			}
+		}
+		
 
 		toolTip.setText(sb.toString());
 

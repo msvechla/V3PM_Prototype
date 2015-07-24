@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.embed.swing.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.text.*?>
@@ -12,14 +13,14 @@
    <children>
       <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1200.0" spacing="10.0" HBox.hgrow="ALWAYS">
          <children>
-            <HBox>
+            <HBox spacing="8.0">
                <children>
                   <TitledPane collapsible="false" text="Best Roadmap" HBox.hgrow="ALWAYS">
                      <content>
                         <VBox fx:id="roadmapContainer" prefHeight="112.0" />
                      </content>
                      <HBox.margin>
-                        <Insets right="4.0" />
+                        <Insets />
                      </HBox.margin>
                   </TitledPane>
                   <TitledPane collapsible="false" minWidth="360.0" text="NPV" HBox.hgrow="SOMETIMES">
@@ -29,6 +30,20 @@
                               <Label fx:id="lblNPV" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="calculating..." textFill="#33ccf5" VBox.vgrow="ALWAYS">
                                  <font>
                                     <Font name="System Bold" size="36.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
+                  <TitledPane collapsible="false" minWidth="153.0" prefHeight="152.0" prefWidth="153.0" text="Robustness">
+                     <content>
+                        <VBox fx:id="roadmapContainer11" prefHeight="112.0">
+                           <children>
+                              <ProgressIndicator fx:id="piRobustness" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                              <Label fx:id="lblRobustness" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" textFill="#33ccf5" VBox.vgrow="ALWAYS">
+                                 <font>
+                                    <Font size="36.0" />
                                  </font>
                               </Label>
                            </children>
