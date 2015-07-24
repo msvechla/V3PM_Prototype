@@ -91,7 +91,7 @@ public class Calculator{
 				// MLe Übergreifende Fixkosteneffekte durch Projekte müssen noch verbucht werden 
 				// Hier nun je Projekt. Wirkung in der nächsten Periode vorschüssig.
 				
-				if (tempProject.getType().equals("bpmLevel"))
+				if (tempProject.getType().equals(Project.TYPE_BPMLEVEL))
 				{
 					
 					fixedCostsOA = fixedCostsOA + tempProject.getM();

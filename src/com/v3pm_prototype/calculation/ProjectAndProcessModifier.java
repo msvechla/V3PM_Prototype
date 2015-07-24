@@ -284,7 +284,7 @@ public class ProjectAndProcessModifier {
 			// FixedCosts MLe
 			// ------------------------------------------------------
 
-			if (projectFinishes && tempProject.getType().equals("processLevel")
+			if (projectFinishes && tempProject.getType().equals(Project.TYPE_PROCESSLEVEL)
 					&& tempProject.getM() != 0) {
 
 				tempProcess.setFixedCosts(tempProcess.getFixedCosts()
@@ -325,7 +325,7 @@ public class ProjectAndProcessModifier {
 			for (Iterator<Project> itProjB = tempCollPoj_sorted.iterator(); itProjB
 					.hasNext();) {
 				Project tempProjectFutureB = itProjB.next();
-				if (tempProjectFutureB.getType().equals(Main.processLevel)
+				if (tempProjectFutureB.getType().equals(Project.TYPE_PROCESSLEVEL)
 						&& tempProject.getPeriod() < tempProjectFutureB
 								.getPeriod()) {
 					tempProjectFutureB.setOinv(tempProjectFutureB.getOinv()

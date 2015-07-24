@@ -136,7 +136,6 @@ public class TabScenarioCalculationController {
 
 	@FXML
 	public void initialize() {
-		lcProcessQuality.setPrefWidth(lcProcessTime.getWidth() / 2);
 		initRobustnessAnalysis();
 		initTVRoadmaps();
 		initTVProcesses();

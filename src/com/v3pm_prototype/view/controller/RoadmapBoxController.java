@@ -6,6 +6,7 @@ import com.sun.javafx.css.converters.PaintConverter;
 import com.v3pm_prototype.calculation.CompleteRobustnessAnalysis;
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.calculation.RobustnessAnalysis;
+import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
@@ -85,7 +86,7 @@ public class RoadmapBoxController {
 					lbl.setFont(Font.font("System", FontWeight.BOLD, 14));
 					lbl.setTextFill(Color.WHITE);
 					projectBox.getChildren().add(lbl);
-					lbl.setTooltip(generateToolTip(project,cra));
+					lbl.setTooltip(generateToolTip(project,cra,config));
 					periodBox.getChildren().add(projectBox);
 				} else {
 					StackPane projectBox = new StackPane();
@@ -112,7 +113,7 @@ public class RoadmapBoxController {
 		}
 	}
 	
-	private Tooltip generateToolTip(Project project, CompleteRobustnessAnalysis cra) {
+	private Tooltip generateToolTip(Project project, CompleteRobustnessAnalysis cra, RunConfiguration config) {
 		Tooltip toolTip = new Tooltip();
 		StringBuilder sb = new StringBuilder();
 		DecimalFormat df = new DecimalFormat("#,###.00 €");
@@ -135,11 +136,20 @@ public class RoadmapBoxController {
 			modifier = " +";
 		}
 
-		sb.append("Periods: " + project.getNumberOfPeriods() + "\n");
-		sb.append("Type: " + project.getType() + "\n");
-		sb.append("OInv new: " + df.format(projectEndVal.getOinv()) + "  ("
-				+ modifier + df.format(deltaOInv) + "€)\n");
+		sb.append("Periods:\t" + project.getNumberOfPeriods() + "\n");
+		sb.append("Type:\t" + project.getType() + "\n");
+		if(project.getType().equals(Project.TYPE_PROCESSLEVEL)){
+			sb.append("Process:\t" + config.getProject(project.getI()) + "\n");
+		}
+		sb.append("OInv:\t" + df.format(projectEndVal.getOinv()) + "  ("
+				+ modifier + df.format(deltaOInv) + ")\n");
+		sb.append("a:\t" + project.getA() + "\n");
+		sb.append("b:\t" + project.getB() + "\n");
+		sb.append("e:\t" + project.getE() + "\n");
+		sb.append("u:\t" + project.getU() + "\n");
+		sb.append("m:\t" + project.getM() + "\n\n");
 		
+		sb.append("Robustness Info: \n");
 		//Add info from the robustness Analysis
 		if(cra != null){
 			for(RobustnessAnalysis ra: cra.getLstResults()){
@@ -147,7 +157,7 @@ public class RoadmapBoxController {
 					if(((Project)ra.getObject()).equals(project)){
 						
 						//add info for every calculated parameter
-						sb.append(ra.getParameter() + ": "+ra.getPercentage()+"\n");
+						sb.append(ra.getParameter() + ":\t"+(ra.getPercentage()*100)+" %\n");
 						
 					}
 				}

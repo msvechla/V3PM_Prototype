@@ -11,6 +11,9 @@ import com.v3pm_prototype.database.DBProject;
  */
 public class Project implements Cloneable{
 	
+	public static final String TYPE_PROCESSLEVEL = "processLevel";
+	public static final String TYPE_BPMLEVEL = "";
+	
 	private int id; // id of the project, starts with 1
 	private String name; // name of the project
 	public int numberOfPeriods;
