@@ -38,7 +38,7 @@
                   </TitledPane>
                   <TitledPane collapsible="false" contentDisplay="RIGHT" minWidth="153.0" prefHeight="152.0" text="Robustness">
                      <graphic>
-                        <Button mnemonicParsing="false" text="More" />
+                        <Button mnemonicParsing="false" onAction="#openRobustnessAnalysisTab" text="More" />
                      </graphic>
                      <content>
                         <VBox fx:id="roadmapContainer11" prefHeight="112.0">

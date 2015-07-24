@@ -29,9 +29,11 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
@@ -140,6 +142,37 @@ public class TabScenarioCalculationController {
 		initTVRoadmaps();
 		initTVProcesses();
 		bootGraphStream();
+	}
+	
+	public void openRobustnessAnalysisTab() {
+		// Load root layout from fxml file.
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(MainApp.class
+				.getResource("/com/v3pm_prototype/view/RobustnessAnalysis.fxml"));
+		VBox root;
+		try {
+			root = (VBox) loader.load();
+			RobustnessAnalysisController raController = loader
+					.getController();
+			raController.setMainApp(this.mainApp);
+			raController.setTsc(this);
+
+			Tab tabRA = new Tab(mainApp.getV3pmGUIController().getTpMain().getSelectionModel().getSelectedItem().getText()+" Robustness Analysis");
+			tabRA.setContent(root);
+			tabRA.setClosable(true);
+			mainApp.getV3pmGUIController().getTpMain().getTabs().add(tabRA);
+			mainApp.getV3pmGUIController().getTpMain().getSelectionModel()
+			.select(tabRA);
+			
+			mainApp.getV3pmGUIController().getTpMain()
+					.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
+			
+			raController.setScenario(scenario);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private void startCompleteRobustnessAnalysis(){
@@ -692,5 +725,15 @@ public class TabScenarioCalculationController {
 			}
 		});
 	}
+
+	public List<RoadMap> getRmList() {
+		return rmList;
+	}
+
+	public RunConfiguration getConfig() {
+		return config;
+	}
+	
+	
 
 }

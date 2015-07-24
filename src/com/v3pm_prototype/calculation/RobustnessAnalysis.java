@@ -21,7 +21,13 @@ public class RobustnessAnalysis {
 	
 	private List<RoadMap> lstRoadmap;
 	private RunConfiguration config;
+	
 	private List<RoadMap> lstResults = new ArrayList<RoadMap>();
+	private List<Double> lstDouble = new ArrayList<Double>();
+	
+	private List<RoadMap> lstResultsOldRoadmap = new ArrayList<RoadMap>();
+	private List<Double> lstDoubleOldRoadmap = new ArrayList<Double>();
+	
 	private String mode;
 	private RoadMap rmOld;
 	private String parameter;
@@ -92,7 +98,29 @@ public class RobustnessAnalysis {
 			if(mode.equals(MODE_PLUS) || mode.equals(MODE_PLUSMINUS)){
 				selectedParameter.setDouble(object, start + i);
 				Calculator c = new Calculator(lstRoadmap, config);
-				lstResults.add((RoadMap) c.start().get(0).clone());
+				
+				List<RoadMap> calculatedRoadmaps =  c.start();
+				
+				RoadMap bestRM = (RoadMap) calculatedRoadmaps.get(0).clone();
+				lstResults.add(bestRM);
+				lstDouble.add(selectedParameter.getDouble(object));
+				
+				if(bestRM != this.rmOld){
+					//Find the values of the old Roadmap
+					for(RoadMap rm : calculatedRoadmaps){
+						if(rm.implementedProjectIDs.equals(rmOld)){
+							if(rm.equals(rmOld)){
+								lstResultsOldRoadmap.add((RoadMap) rm.clone());
+								lstDoubleOldRoadmap.add(selectedParameter.getDouble(object));
+								break;
+							}
+						}
+					}
+				}else{
+					lstResultsOldRoadmap.add(bestRM);
+					lstDoubleOldRoadmap.add(selectedParameter.getDouble(object));
+				}
+				
 				System.out.println("Value: " + selectedParameter.getDouble(object) + "\n" 
 						+ lstResults.get(lstResults.size() - 1) + " NPV: "
 						+ lstResults.get(lstResults.size() - 1).getNpv());
@@ -103,9 +131,29 @@ public class RobustnessAnalysis {
 			if(mode.equals(MODE_MINUS) || mode.equals(MODE_PLUSMINUS)){
 				selectedParameter.setDouble(object, start - i);
 				Calculator c = new Calculator(lstRoadmap, config);
-				List<RoadMap> r = new ArrayList<RoadMap>();
-				r.addAll(c.start());
-				lstResults.add((RoadMap) c.start().get(0).clone());
+				
+				List<RoadMap> calculatedRoadmaps =  c.start();
+				
+				RoadMap bestRM = (RoadMap) calculatedRoadmaps.get(0).clone();
+				lstResults.add(bestRM);
+				lstDouble.add(selectedParameter.getDouble(object));
+				
+				if(bestRM != this.rmOld){
+					//Find the values of the old Roadmap
+					for(RoadMap rm : calculatedRoadmaps){
+						if(rm.implementedProjectIDs.equals(rmOld)){
+							if(rm.equals(rmOld)){
+								lstResultsOldRoadmap.add((RoadMap) rm.clone());
+								lstDoubleOldRoadmap.add(selectedParameter.getDouble(object));
+								break;
+							}
+						}
+					}
+				}else{
+					lstResultsOldRoadmap.add(bestRM);
+					lstDoubleOldRoadmap.add(selectedParameter.getDouble(object));
+				}
+				
 				System.out.println("Value: " + selectedParameter.getDouble(object) + "\n"
 						+ lstResults.get(lstResults.size() - 1) + " NPV: "
 						+ lstResults.get(lstResults.size() - 1).getNpv());
@@ -224,6 +272,30 @@ public class RobustnessAnalysis {
 
 	public String getParameter() {
 		return parameter;
+	}
+
+	public List<RoadMap> getLstResultsOldRoadmap() {
+		return lstResultsOldRoadmap;
+	}
+
+	public void setLstResultsOldRoadmap(List<RoadMap> lstResultsOldRoadmap) {
+		this.lstResultsOldRoadmap = lstResultsOldRoadmap;
+	}
+
+	public List<Double> getLstDouble() {
+		return lstDouble;
+	}
+
+	public void setLstDouble(List<Double> lstDouble) {
+		this.lstDouble = lstDouble;
+	}
+
+	public List<Double> getLstDoubleOldRoadmap() {
+		return lstDoubleOldRoadmap;
+	}
+
+	public void setLstDoubleOldRoadmap(List<Double> lstDoubleOldRoadmap) {
+		this.lstDoubleOldRoadmap = lstDoubleOldRoadmap;
 	}
 	
 	

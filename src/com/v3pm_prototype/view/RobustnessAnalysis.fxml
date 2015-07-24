@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="912.0" spacing="8.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.RobustnessAnalysisController">
+   <children>
+      <Label text="Robustness Analysis" textFill="#33ccf5">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="8.0">
+         <children>
+            <ChoiceBox fx:id="cbType" prefWidth="150.0" />
+            <ChoiceBox fx:id="cbObject" prefWidth="150.0" />
+            <ChoiceBox fx:id="cbParameter" prefWidth="150.0" />
+            <TextField fx:id="tfRadius" prefWidth="100.0" promptText="Radius" />
+            <TextField fx:id="tfStep" prefWidth="100.0" promptText="Step" />
+         </children>
+      </HBox>
+      <HBox spacing="8.0">
+         <children>
+            <ChoiceBox fx:id="cbModus" prefWidth="150.0" />
+            <Button fx:id="btnStartAnalysis" mnemonicParsing="false" onAction="#startRobustnessAnalysis" text="Start Analysis" />
+         </children>
+      </HBox>
+      <LineChart fx:id="lineChart" legendSide="RIGHT">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </LineChart>
+   </children>
+   <padding>
+      <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+   </padding>
+</VBox>
