@@ -9,7 +9,7 @@ import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.database.DBConstraint;
 
-public class RunConfiguration{
+public class RunConfiguration implements Cloneable{
 	private int periods;
 	private int slotsPerPeriod;
 	private double discountRate;
@@ -147,4 +147,13 @@ public class RunConfiguration{
 	public void setConstraintSet(ConstraintSet constraintSet) {
 		this.constraintSet = constraintSet;
 	}
+	
+	public Object clone(){  
+	    try{  
+	        return super.clone();  
+	    }catch(Exception e){ 
+	        return null; 
+	    }
+	}
+
 }

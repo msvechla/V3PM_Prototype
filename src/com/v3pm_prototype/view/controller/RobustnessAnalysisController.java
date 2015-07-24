@@ -7,13 +7,13 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
-import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.calculation.RobustnessAnalysis;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
@@ -46,7 +46,11 @@ public class RobustnessAnalysisController {
 	private Button btnStartAnalysis;
 	
 	@FXML
-	private LineChart lineChart;
+	private LineChart<Number, Number> lineChart;
+	@FXML
+	private NumberAxis xAxis;
+	@FXML
+	private NumberAxis yAxis;
 	
 	
 	private MainApp mainApp;
@@ -66,7 +70,7 @@ public class RobustnessAnalysisController {
 	}
 	
 	public void startRobustnessAnalysis(){
-		Task raTask = new Task<RobustnessAnalysis>() {
+		Task<RobustnessAnalysis> raTask = new Task<RobustnessAnalysis>() {
 
 			@Override
 			protected RobustnessAnalysis call() throws Exception {
@@ -98,27 +102,29 @@ public class RobustnessAnalysisController {
 
 
 			// Create a series for the best Roadmap and for the old best Roadmap
-			Series<String, Number> seriesOld = new XYChart.Series<String, Number>();
+			Series<Number, Number> seriesOld = new XYChart.Series<Number, Number>();
 			seriesOld.setName(tsc.getRmList().get(0).toString());
 
-			Series<String, Number> seriesNew = new XYChart.Series<String, Number>();
+			Series<Number, Number> seriesNew = new XYChart.Series<Number, Number>();
 			seriesNew.setName("Best Roadmap");
 
 			// Add data to each series for each step of the parameter modification
 			for (int i = 0; i < robustnessAnalysis.getLstResults().size(); i++) {
 				if(i<robustnessAnalysis.getLstDoubleOldRoadmap().size()){
 					seriesOld.getData().add(
-							new XYChart.Data<String, Number>(robustnessAnalysis.getLstDoubleOldRoadmap().get(i).toString(),robustnessAnalysis.getLstResultsOldRoadmap().get(i).getNpv()));
+							new XYChart.Data<Number, Number>(robustnessAnalysis.getLstDoubleOldRoadmap().get(i),robustnessAnalysis.getLstResultsOldRoadmap().get(i).getNpv()));
 				}
 				
 				seriesNew.getData().add(
-						new XYChart.Data<String, Number>(robustnessAnalysis.getLstDouble().get(i).toString(),robustnessAnalysis.getLstResults().get(i).getNpv()));
+						new XYChart.Data<Number, Number>(robustnessAnalysis.getLstDouble().get(i),robustnessAnalysis.getLstResults().get(i).getNpv()));
 
 				
 			}
 
-			lineChart.getData().add(seriesOld);
 			lineChart.getData().add(seriesNew);
+			lineChart.getData().add(seriesOld);
+//			xAxis.setAutoRanging(true);
+//			yAxis.setAutoRanging(true);
 
 	}
 	

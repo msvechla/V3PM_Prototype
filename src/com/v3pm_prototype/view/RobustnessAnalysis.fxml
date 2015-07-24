@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="912.0" spacing="8.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.RobustnessAnalysisController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="912.0" spacing="8.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.RobustnessAnalysisController">
    <children>
       <Label text="Robustness Analysis" textFill="#33ccf5">
          <font>
@@ -30,12 +30,12 @@
             <Button fx:id="btnStartAnalysis" mnemonicParsing="false" onAction="#startRobustnessAnalysis" text="Start Analysis" />
          </children>
       </HBox>
-      <LineChart fx:id="lineChart" legendSide="RIGHT">
+      <LineChart fx:id="lineChart" legendSide="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
         <xAxis>
-          <CategoryAxis side="BOTTOM" />
+          <NumberAxis forceZeroInRange="false" side="BOTTOM" fx:id="xAxis" />
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" />
+          <NumberAxis fx:id="yAxis" forceZeroInRange="false" side="LEFT" />
         </yAxis>
       </LineChart>
    </children>

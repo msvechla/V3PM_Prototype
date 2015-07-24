@@ -42,19 +42,19 @@ public class RobustnessAnalysis {
 		this.lstRoadmap = new ArrayList<RoadMap>();
 		this.lstRoadmap.addAll(lstRoadmap);
 		this.rmOld = (RoadMap) lstRoadmap.get(0).clone();
-		this.config = new RunConfiguration(config.getPeriods(), config.getSlotsPerPeriod(), config.getDiscountRate(), config.getOOAFixed(), config.getConstraintSet());
+		this.config = (RunConfiguration) config.clone();
 		this.radius = radius;
 		this.step = step;
 		this.parameter = parameter;
 		
 		
-		List<Project> lstProjects = new ArrayList<Project>();
-		lstProjects.addAll(config.getLstProjects());
-		this.config.setLstProjects(lstProjects);
-		
-		List<Process> lstProcesses = new ArrayList<Process>();
-		lstProcesses.addAll(config.getLstProcesses());
-		this.config.setLstProcesses(lstProcesses);
+//		List<Project> lstProjects = new ArrayList<Project>();
+//		lstProjects.addAll(config.getLstProjects());
+//		this.config.setLstProjects(lstProjects);
+//		
+//		List<Process> lstProcesses = new ArrayList<Process>();
+//		lstProcesses.addAll(config.getLstProcesses());
+//		this.config.setLstProcesses(lstProcesses);
 		
 		this.mode = mode;
 
@@ -105,10 +105,10 @@ public class RobustnessAnalysis {
 				lstResults.add(bestRM);
 				lstDouble.add(selectedParameter.getDouble(object));
 				
-				if(bestRM != this.rmOld){
+				if(!bestRM.equals(this.rmOld)){
 					//Find the values of the old Roadmap
 					for(RoadMap rm : calculatedRoadmaps){
-						if(rm.implementedProjectIDs.equals(rmOld)){
+						if(rm.implementedProjectIDs.equals(rmOld.implementedProjectIDs)){
 							if(rm.equals(rmOld)){
 								lstResultsOldRoadmap.add((RoadMap) rm.clone());
 								lstDoubleOldRoadmap.add(selectedParameter.getDouble(object));
@@ -138,10 +138,10 @@ public class RobustnessAnalysis {
 				lstResults.add(bestRM);
 				lstDouble.add(selectedParameter.getDouble(object));
 				
-				if(bestRM != this.rmOld){
+				if(!bestRM.equals(this.rmOld)){
 					//Find the values of the old Roadmap
 					for(RoadMap rm : calculatedRoadmaps){
-						if(rm.implementedProjectIDs.equals(rmOld)){
+						if(rm.implementedProjectIDs.equals(rmOld.implementedProjectIDs)){
 							if(rm.equals(rmOld)){
 								lstResultsOldRoadmap.add((RoadMap) rm.clone());
 								lstDoubleOldRoadmap.add(selectedParameter.getDouble(object));
@@ -161,6 +161,8 @@ public class RobustnessAnalysis {
 			
 		}
 
+		selectedParameter.setDouble(object, start);
+		
 		evaluation();
 	}
 
