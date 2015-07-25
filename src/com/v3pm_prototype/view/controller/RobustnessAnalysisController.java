@@ -12,6 +12,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 
 import com.v3pm_prototype.calculation.RobustnessAnalysis;
@@ -39,11 +41,22 @@ public class RobustnessAnalysisController {
 	private TextField tfStep;
 	
 	@FXML
+	private ChoiceBox<String> cbAbsRel;
+	private ObservableList<String> olAbsRel = FXCollections.observableArrayList();
+	
+	@FXML
 	private ChoiceBox<String> cbModus;
 	private ObservableList<String> olModus = FXCollections.observableArrayList();
 	
 	@FXML
 	private Button btnStartAnalysis;
+	
+	@FXML
+	private ProgressIndicator piSolution;
+	
+	
+	@FXML
+	private Label lblSolution;
 	
 	@FXML
 	private LineChart<Number, Number> lineChart;
@@ -57,8 +70,6 @@ public class RobustnessAnalysisController {
 	private TabScenarioCalculationController tsc;
 	private DBScenario scenario;
 	
-	
-	
 	public RobustnessAnalysisController(){
 		
 	}
@@ -67,18 +78,29 @@ public class RobustnessAnalysisController {
 	public void initialize(){
 		initCBType();
 		initCBModus();
+		initCBAbsRel();
 	}
 	
 	public void startRobustnessAnalysis(){
+		lblSolution.setText("");
 		Task<RobustnessAnalysis> raTask = new Task<RobustnessAnalysis>() {
 
 			@Override
 			protected RobustnessAnalysis call() throws Exception {
+				
+				Object obj;
+				
+				if(cbType.getSelectionModel().getSelectedItem().equals("General")){
+					obj = null;
+				}else{
+					obj = cbObject.getValue();
+				}
+				
 				RobustnessAnalysis ra = new RobustnessAnalysis(tsc.getRmList(),
-						tsc.getConfig(), cbModus.getValue(),
-						cbObject.getValue(), cbParameter.getValue(),
+						tsc.getConfig(), cbModus.getValue(), obj
+						, cbParameter.getValue(),
 						Double.valueOf(tfRadius.getText()),
-						Double.valueOf(tfStep.getText()));
+						Double.valueOf(tfStep.getText()),cbAbsRel.getValue(), piSolution);
 				ra.start();
 				return ra;
 			}
@@ -100,7 +122,8 @@ public class RobustnessAnalysisController {
 	private void initLineChart(RobustnessAnalysis robustnessAnalysis){
 		lineChart.getData().clear();
 
-
+			xAxis.setLabel(robustnessAnalysis.getParameter());
+		
 			// Create a series for the best Roadmap and for the old best Roadmap
 			Series<Number, Number> seriesOld = new XYChart.Series<Number, Number>();
 			seriesOld.setName(tsc.getRmList().get(0).toString());
@@ -123,17 +146,23 @@ public class RobustnessAnalysisController {
 
 			lineChart.getData().add(seriesNew);
 			lineChart.getData().add(seriesOld);
-//			xAxis.setAutoRanging(true);
-//			yAxis.setAutoRanging(true);
+			lblSolution.setText(robustnessAnalysis.getSolutionText());
 
 	}
 	
 	private void initCBModus() {
 		cbModus.setItems(olModus);
-		olModus.add(RobustnessAnalysis.MODE_MINUS);
-		olModus.add(RobustnessAnalysis.MODE_PLUS);
 		olModus.add(RobustnessAnalysis.MODE_PLUSMINUS);
+		olModus.add(RobustnessAnalysis.MODE_PLUS);
+		olModus.add(RobustnessAnalysis.MODE_MINUS);	
 		cbModus.getSelectionModel().select(olModus.get(0));
+	}
+	
+	private void initCBAbsRel(){
+		cbAbsRel.setItems(olAbsRel);
+		olAbsRel.add(RobustnessAnalysis.ABSOLUT);
+		olAbsRel.add(RobustnessAnalysis.RELATIVE);
+		cbAbsRel.getSelectionModel().select(olAbsRel.get(0));
 	}
 
 	private void initCBParameter() {
@@ -157,7 +186,14 @@ public class RobustnessAnalysisController {
 			olParameter.add("fixedCosts");
 		}
 		
+		if(cbType.getSelectionModel().getSelectedItem().equals("General")){
+			olParameter.add("discountRate");
+			olParameter.add("oOAFixed");
+		}
+		
 		cbParameter.getSelectionModel().select(olParameter.get(0));
+
+		
 		
 	}
 	
@@ -172,25 +208,28 @@ public class RobustnessAnalysisController {
 		if(cbType.getSelectionModel().getSelectedItem().equals("Process")){
 			olObject.addAll(tsc.getConfig().getLstProcesses());
 		}
-		cbObject.getSelectionModel().select(olObject.get(0));
+		if(olObject.size() > 0){
+			cbObject.getSelectionModel().select(olObject.get(0));	
+		}
+	
 	}
 	
 	private void initCBType(){
 		cbType.setItems(olType);
 		olType.add("Project");
 		olType.add("Process");
+		olType.add("General");
 		cbType.getSelectionModel().select(olType.get(0));
 		
 		//Listen for changes
-		cbType.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+		cbType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 
 			@Override
-			public void changed(ObservableValue<? extends Number> observable,
-					Number oldValue, Number newValue) {
-				
+			public void changed(ObservableValue<? extends String> observable,
+					String oldValue, String newValue) {
 				//Update ChoiceBoxes accordingly
 				initCBObject();
-				initCBParameter();
+				initCBParameter();				
 			}
 		});
 	}

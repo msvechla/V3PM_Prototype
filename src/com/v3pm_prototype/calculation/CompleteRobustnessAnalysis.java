@@ -35,28 +35,43 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 				if(p.getId() == pID){
 					
 					//Start a robustness analysis for each Project parameter
-					if(p.getA() != 0){
-						RobustnessAnalysis ra = new RobustnessAnalysis(lstRoadmap, config, RobustnessAnalysis.MODE_PLUSMINUS, p, "a",0.02,0.005);
+					if (p.getA() != 0) {
+						RobustnessAnalysis ra = new RobustnessAnalysis(
+								lstRoadmap, config,
+								RobustnessAnalysis.MODE_PLUSMINUS, p, "a",
+								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
 						lstResults.add(ra);
-						
+
 					}
-					if(p.getB() != 0){
-						RobustnessAnalysis ra = new RobustnessAnalysis(lstRoadmap, config, RobustnessAnalysis.MODE_PLUSMINUS, p, "b",0.02,0.005);
-						lstResults.add(ra);
-					}
-					if(p.getE() != 0){
-						RobustnessAnalysis ra = new RobustnessAnalysis(lstRoadmap, config, RobustnessAnalysis.MODE_PLUSMINUS, p, "e",0.02,0.005);
-						lstResults.add(ra);
-					}
-					if(p.getU() != 0){
-						RobustnessAnalysis ra = new RobustnessAnalysis(lstRoadmap, config, RobustnessAnalysis.MODE_PLUSMINUS, p, "u",0.02,0.005);
+					if (p.getB() != 0) {
+						RobustnessAnalysis ra = new RobustnessAnalysis(
+								lstRoadmap, config,
+								RobustnessAnalysis.MODE_PLUSMINUS, p, "b",
+								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
 						lstResults.add(ra);
 					}
-					if(p.getM() != 0){
-						RobustnessAnalysis ra = new RobustnessAnalysis(lstRoadmap, config, RobustnessAnalysis.MODE_PLUSMINUS, p, "m",0.02,0.005);
+					if (p.getE() != 0) {
+						RobustnessAnalysis ra = new RobustnessAnalysis(
+								lstRoadmap, config,
+								RobustnessAnalysis.MODE_PLUSMINUS, p, "e",
+								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
 						lstResults.add(ra);
 					}
-					
+					if (p.getU() != 0) {
+						RobustnessAnalysis ra = new RobustnessAnalysis(
+								lstRoadmap, config,
+								RobustnessAnalysis.MODE_PLUSMINUS, p, "u",
+								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
+						lstResults.add(ra);
+					}
+					if (p.getM() != 0) {
+						RobustnessAnalysis ra = new RobustnessAnalysis(
+								lstRoadmap, config,
+								RobustnessAnalysis.MODE_PLUSMINUS, p, "m",
+								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
+						lstResults.add(ra);
+					}
+
 					break;
 				}
 			}

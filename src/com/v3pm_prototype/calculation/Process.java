@@ -54,6 +54,10 @@ public class Process implements Comparable<Process>, Cloneable{
 		this.thetaID_t = thetaID_t;
 	}
 
+	public String toString(){
+		return this.name;
+	}
+	
 	public boolean equals(Object obj){
 		if(obj instanceof Process){
 			Process p = (Process)obj;

@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.scene.control.ProgressIndicator;
 
 import com.v3pm_prototype.exceptions.NoValidThetaIDException;
 import com.v3pm_prototype.rmgeneration.RoadMap;
@@ -18,6 +19,10 @@ public class RobustnessAnalysis {
 	public static final String MODE_PLUS = "MODE_PLUS";
 	public static final String MODE_MINUS = "MODE_MINUS";
 	public static final String MODE_PLUSMINUS = "MODE_PLUSMINUS";
+	
+	public static final String ABSOLUT = "ABSOLUT";
+	public static final String RELATIVE = "RELATIVE";
+	
 	
 	private List<RoadMap> lstRoadmap;
 	private RunConfiguration config;
@@ -32,12 +37,15 @@ public class RobustnessAnalysis {
 	private RoadMap rmOld;
 	private String parameter;
 	private Field selectedParameter;
+	private String absRel;
 	private Object object;
 	private double radius = 0.01;
 	private double step = 0.001;
 	private double percentage;
+	private String solutionText;
+	private ProgressIndicator piSolution;
 
-	public RobustnessAnalysis(List<RoadMap> lstRoadmap, RunConfiguration config, String mode, Object object, String parameter, double radius, double step) {
+	public RobustnessAnalysis(List<RoadMap> lstRoadmap, RunConfiguration config, String mode, Object object, String parameter, double radius, double step, String absrel, ProgressIndicator piSolution) {
 		super();
 		this.lstRoadmap = new ArrayList<RoadMap>();
 		this.lstRoadmap.addAll(lstRoadmap);
@@ -46,46 +54,43 @@ public class RobustnessAnalysis {
 		this.radius = radius;
 		this.step = step;
 		this.parameter = parameter;
-		
-		
-//		List<Project> lstProjects = new ArrayList<Project>();
-//		lstProjects.addAll(config.getLstProjects());
-//		this.config.setLstProjects(lstProjects);
-//		
-//		List<Process> lstProcesses = new ArrayList<Process>();
-//		lstProcesses.addAll(config.getLstProcesses());
-//		this.config.setLstProcesses(lstProcesses);
+		this.piSolution = piSolution;
+		this.absRel = absrel;
 		
 		this.mode = mode;
 
 		// Get a copy of the object from the newly generated config, so the
 		// initial object stays the same
-		if(object instanceof Project){
-			for(Project p : config.getLstProjects()){
-				if(((Project)object).getId() == p.getId()){
-					this.object = p;
-					break;
+		if(object != null){
+			if(object instanceof Project){
+				for(Project p : config.getLstProjects()){
+					if(((Project)object).getId() == p.getId()){
+						this.object = p;
+						break;
+					}
+				}
+			}else if(object instanceof Process){
+				for(Process p : config.getLstProcesses()){
+					if(((Process)object).getId() == p.getId()){
+						this.object = p;
+						break;
+					}
 				}
 			}
+		}else{
+			this.object = this.config;
 		}
 		
-		if(object instanceof Process){
-			for(Process p : config.getLstProcesses()){
-				if(((Process)object).getId() == p.getId()){
-					this.object = p;
-					break;
-				}
-			}
-		}
 		
 		try {
-			this.selectedParameter = object.getClass().getDeclaredField(parameter);
+			this.selectedParameter = this.object.getClass().getDeclaredField(parameter);
 			this.selectedParameter.setAccessible(true);
 		} catch (NoSuchFieldException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	public void start() throws IllegalArgumentException, IllegalAccessException, NoValidThetaIDException{
@@ -96,7 +101,13 @@ public class RobustnessAnalysis {
 
 			// positive radius
 			if(mode.equals(MODE_PLUS) || mode.equals(MODE_PLUSMINUS)){
-				selectedParameter.setDouble(object, start + i);
+				
+				if(absRel == ABSOLUT){
+					selectedParameter.setDouble(object, start + i);
+				}else{
+					selectedParameter.setDouble(object, start * (1+i));
+				}
+				
 				Calculator c = new Calculator(lstRoadmap, config);
 				
 				List<RoadMap> calculatedRoadmaps =  c.start();
@@ -129,7 +140,13 @@ public class RobustnessAnalysis {
 
 			// negative radius
 			if(mode.equals(MODE_MINUS) || mode.equals(MODE_PLUSMINUS)){
-				selectedParameter.setDouble(object, start - i);
+				
+				if(absRel == ABSOLUT){
+					selectedParameter.setDouble(object, start - i);
+				}else{
+					selectedParameter.setDouble(object, start * (1-i));
+				}
+				
 				Calculator c = new Calculator(lstRoadmap, config);
 				
 				List<RoadMap> calculatedRoadmaps =  c.start();
@@ -159,6 +176,13 @@ public class RobustnessAnalysis {
 						+ lstResults.get(lstResults.size() - 1).getNpv());
 			}
 			
+			if(piSolution != null){
+				piSolution.setProgress(i/radius);
+			}
+			
+		}
+		if(piSolution != null){
+			piSolution.setProgress(1);
 		}
 
 		selectedParameter.setDouble(object, start);
@@ -181,14 +205,15 @@ public class RobustnessAnalysis {
 			}
 		}
 		
-		if(rmNextBest == null){
-			 System.out.println("ES WURDE KEINE BESSERE ROADMAP GEFUNDEN. ROADMAP ROBUST");
-		}else{
-			System.out.println("NEUE BESTE LÖSUNG GEFUNDEN MIT: "+rmNextBest);
-		}
-		
 		this.percentage = (Double.valueOf(countRobust) / lstResults.size());
 		
+		if(rmNextBest == null){
+			solutionText = "Parameter "+parameter+" is robust.\nNo new best solution has been found using the specified criteria.";
+		}else{
+			solutionText = "Parameter "+parameter+" robustness level: "+this.percentage*100+"%\nNew best Roadmap found using the specified criteria: "+rmNextBest;
+		}
+		
+		System.out.println(solutionText);
 		System.out.println("Roadmap robustness level: "+ this.percentage);
 	}
 
@@ -298,6 +323,10 @@ public class RobustnessAnalysis {
 
 	public void setLstDoubleOldRoadmap(List<Double> lstDoubleOldRoadmap) {
 		this.lstDoubleOldRoadmap = lstDoubleOldRoadmap;
+	}
+
+	public String getSolutionText() {
+		return solutionText;
 	}
 	
 	
