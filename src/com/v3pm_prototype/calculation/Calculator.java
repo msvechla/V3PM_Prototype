@@ -117,7 +117,7 @@ public class Calculator{
 				if (projectNumberWithinPeriod > config.getSlotsPerPeriod()) {
 					projectNumberWithinPeriod = 1;
 					
-					if(RMRestrictionHandler.rBudget(tempProject.getPeriod(), projectsInPeriod, config) == false){
+					if(RMRestrictionHandler.meetsPeriodicSpecificConstraints(tempProject.getPeriod(), projectsInPeriod, config) == false){
 						RM.setRestrictionBroken(true);
 					}
 					

@@ -42,6 +42,12 @@ public class ConstraintSet {
 	//Budget
 	private List<DBConstraint> lstBudget = new ArrayList<DBConstraint>();
 	
+	//BudBPM
+	private List<DBConstraint> lstBudBPM = new ArrayList<DBConstraint>();
+	
+	//BudPro
+	private List<DBConstraint> lstBudPro = new ArrayList<DBConstraint>();
+	
 	
 	public ConstraintSet(List<DBConstraint> lstConstraints) {
 		this.lstConstraints = lstConstraints;
@@ -95,6 +101,14 @@ public class ConstraintSet {
 				
 			case DBConstraint.TYPE_BUDGET:
 				lstBudget.add(constraint);
+				break;
+				
+			case DBConstraint.TYPE_BUDBPM:
+				lstBudBPM.add(constraint);
+				break;
+				
+			case DBConstraint.TYPE_BUDPRO:
+				lstBudPro.add(constraint);
 				break;
 			
 			}
@@ -170,6 +184,16 @@ public class ConstraintSet {
 
 	public List<DBConstraint> getLstBudget() {
 		return lstBudget;
+	}
+
+
+	public List<DBConstraint> getLstBudBPM() {
+		return lstBudBPM;
+	}
+
+
+	public List<DBConstraint> getLstBudPro() {
+		return lstBudPro;
 	}
 	
 		
