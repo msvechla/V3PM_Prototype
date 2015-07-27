@@ -3,9 +3,9 @@ package com.v3pm_prototype.view.controller;
 import java.text.DecimalFormat;
 
 import com.sun.javafx.css.converters.PaintConverter;
-import com.v3pm_prototype.calculation.CompleteRobustnessAnalysis;
+import com.v3pm_prototype.analysis.CompleteRobustnessAnalysis;
+import com.v3pm_prototype.analysis.RobustnessAnalysis;
 import com.v3pm_prototype.calculation.Project;
-import com.v3pm_prototype.calculation.RobustnessAnalysis;
 import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;

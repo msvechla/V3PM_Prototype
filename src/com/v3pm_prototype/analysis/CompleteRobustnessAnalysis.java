@@ -1,10 +1,11 @@
-package com.v3pm_prototype.calculation;
+package com.v3pm_prototype.analysis;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javafx.concurrent.Task;
 
+import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 

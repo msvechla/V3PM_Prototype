@@ -1,4 +1,4 @@
-package com.v3pm_prototype.calculation;
+package com.v3pm_prototype.analysis;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -10,43 +10,35 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.control.ProgressIndicator;
 
+import com.v3pm_prototype.calculation.Calculator;
+import com.v3pm_prototype.calculation.Process;
+import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.exceptions.NoValidThetaIDException;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
-public class RobustnessAnalysis {
+public class RobustnessAnalysis extends Analysis{
 
-	public static final String MODE_PLUS = "MODE_PLUS";
-	public static final String MODE_MINUS = "MODE_MINUS";
-	public static final String MODE_PLUSMINUS = "MODE_PLUSMINUS";
-	
-	public static final String ABSOLUT = "ABSOLUT";
-	public static final String RELATIVE = "RELATIVE";
-	
-	
 	private List<RoadMap> lstRoadmap;
-	private RunConfiguration config;
 	
 	private List<RoadMap> lstResults = new ArrayList<RoadMap>();
 	private List<Double> lstDouble = new ArrayList<Double>();
-	
+
 	private List<RoadMap> lstResultsOldRoadmap = new ArrayList<RoadMap>();
 	private List<Double> lstDoubleOldRoadmap = new ArrayList<Double>();
 	
-	private String mode;
 	private RoadMap rmOld;
 	private String parameter;
 	private Field selectedParameter;
-	private String absRel;
+	
 	private Object object;
-	private double radius = 0.01;
-	private double step = 0.001;
+	
 	private double percentage;
 	private String solutionText;
-	private ProgressIndicator piSolution;
+	
 
-	public RobustnessAnalysis(List<RoadMap> lstRoadmap, RunConfiguration config, String mode, Object object, String parameter, double radius, double step, String absrel, ProgressIndicator piSolution) {
-		super();
+	public RobustnessAnalysis(List<RoadMap> lstRoadmap, RunConfiguration config, String mode, Object object, String parameter, double radius, double step, String absRel, ProgressIndicator piSolution) {
+		super(config, mode, absRel, radius, step, piSolution);
 		this.lstRoadmap = new ArrayList<RoadMap>();
 		
 		for(RoadMap rm : lstRoadmap){
@@ -54,14 +46,6 @@ public class RobustnessAnalysis {
 		}
 		
 		this.rmOld = this.lstRoadmap.get(0);
-		this.config = (RunConfiguration) config.clone();
-		this.radius = radius;
-		this.step = step;
-		this.parameter = parameter;
-		this.piSolution = piSolution;
-		this.absRel = absrel;
-		
-		this.mode = mode;
 
 		// Get a copy of the object from the newly generated config, so the
 		// initial object stays the same
@@ -97,6 +81,7 @@ public class RobustnessAnalysis {
 		
 	}
 
+	@Override
 	public void start() throws IllegalArgumentException, IllegalAccessException, NoValidThetaIDException{
 
 		double start = selectedParameter.getDouble(object);

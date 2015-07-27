@@ -16,7 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 
-import com.v3pm_prototype.calculation.RobustnessAnalysis;
+import com.v3pm_prototype.analysis.RobustnessAnalysis;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
 
