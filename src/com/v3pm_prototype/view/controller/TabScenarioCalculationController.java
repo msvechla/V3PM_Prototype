@@ -120,6 +120,10 @@ public class TabScenarioCalculationController {
 	@FXML
 	private LineChart<String, Number> lcProcessTime;
 	@FXML
+	private LineChart<String, Number> lcProcessOOP;
+	@FXML
+	private LineChart<String, Number> lcProcessFC;
+	@FXML
 	private BarChart<String, Number> bcRBroken;
 
 	@FXML
@@ -141,12 +145,24 @@ public class TabScenarioCalculationController {
 
 	@FXML
 	public void initialize() {
+		chartBugfix();
 		initRobustnessAnalysis();
 		initTVRoadmaps();
 		initTVProcesses();
 		bootGraphStream();
 	}
 	
+	private void chartBugfix() {
+		// Add blank data and clear afterwards for bug workaraound
+		Series<String, Number> series1 = new XYChart.Series<String, Number>();
+	
+		for (int i = 0; i < 8; i++) {
+			series1.getData().add(new XYChart.Data<String, Number>("", 0));
+		}
+		
+		bcRBroken.getData().add(series1);
+	}
+
 	public void openRobustnessAnalysisTab() {
 		// Load root layout from fxml file.
 		FXMLLoader loader = new FXMLLoader();
@@ -546,7 +562,6 @@ public class TabScenarioCalculationController {
 				initLineCharts();
 				initGraphStream();
 				updateTVProcesses();
-				initBarChartRBroken();
 			}
 
 		};
@@ -555,17 +570,25 @@ public class TabScenarioCalculationController {
 	private void initLineCharts() {
 		lcProcessQuality.getData().clear();
 		lcProcessTime.getData().clear();
+		lcProcessOOP.getData().clear();
+		lcProcessFC.getData().clear();
 
 		// Add Data to the charts for each process
 		if (tvRoadmap.getSelectionModel().getSelectedItem() != null) {
 			for (Process p : tvRoadmap.getSelectionModel().getSelectedItem()
 					.getLstProcessCalculated()) {
 
-				// Create a series for each process and factor (q/t)
+				// Create a series for each process and factor (q/t/OOP/FC)
 				Series<String, Number> seriesQ = new XYChart.Series<String, Number>();
 				seriesQ.setName(p.getName());
 
 				Series<String, Number> seriesT = new XYChart.Series<String, Number>();
+				seriesT.setName(p.getName());
+				
+				Series<String, Number> seriesOOP = new XYChart.Series<String, Number>();
+				seriesT.setName(p.getName());
+				
+				Series<String, Number> seriesFC = new XYChart.Series<String, Number>();
 				seriesT.setName(p.getName());
 
 				// Add data to each series for each period
@@ -579,10 +602,22 @@ public class TabScenarioCalculationController {
 							new XYChart.Data<String, Number>("Period "
 									+ String.valueOf(period), p
 									.gettPerPeriod(config)[period]));
+					
+					seriesOOP.getData().add(
+							new XYChart.Data<String, Number>("Period "
+									+ String.valueOf(period), p
+									.getOopPerPeriod(config)[period]));
+					
+					seriesFC.getData().add(
+							new XYChart.Data<String, Number>("Period "
+									+ String.valueOf(period), p
+									.getFixedCostsPerPeriod(config)[period]));
 				}
 
 				lcProcessQuality.getData().add(seriesQ);
 				lcProcessTime.getData().add(seriesT);
+				lcProcessOOP.getData().add(seriesOOP);
+				lcProcessFC.getData().add(seriesFC);
 			}
 
 		}
@@ -595,6 +630,8 @@ public class TabScenarioCalculationController {
 		//Add data to the chart for each restriction type
 		ConstraintSet cs = config.getConstraintSet();
 		List<String> lstTypeAlreadyCounted = new ArrayList<String>();
+		
+		Series<String, Number> series = new XYChart.Series<String, Number>();
 		
 		for(DBConstraint dbConstraint : config.getConstraintSet().getLstConstraints()){
 			int countBrokenAll = 0;
@@ -611,12 +648,12 @@ public class TabScenarioCalculationController {
 				lstTypeAlreadyCounted.add(dbConstraint.getType());
 				System.out.println(dbConstraint.getType() + " countBroken: "+countBrokenAll);
 				// Add a Bar of the type to the chart
-				Series<String, Number> series = new XYChart.Series<String, Number>();
 				series.getData().add(new XYChart.Data<String, Number>(dbConstraint.getType(),countBrokenAll));
-				bcRBroken.getData().add(series);
-			
 			}	
 		}
+		
+		bcRBroken.getData().add(series);
+		
 	}
 
 	/**
@@ -701,12 +738,12 @@ public class TabScenarioCalculationController {
 						tvRoadmap.getSelectionModel().select(rmList.get(0));
 						tvRoadmap.getSelectionModel().selectedItemProperty()
 								.addListener(rmListChangeListener);
-						initBarChartRBroken();
 						initLineCharts();
 						initGraphStream();
 						initRoadmapContainer(null);
 						updateTVProcesses();
 						startCompleteRobustnessAnalysis();
+						initBarChartRBroken();
 					}
 
 				};

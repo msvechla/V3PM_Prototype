@@ -68,9 +68,9 @@ public class Calculator{
 
 				projectsInPeriod.add(tempProject);
 				
-				if(RM.toString().contains("[ Six Sigma null ][ null null ]")){
-					System.out.println("FOUND");
-				}
+//				if(RM.toString().contains("[ Six Sigma null ][ null null ]")){
+//					System.out.println("FOUND");
+//				}
 				
 				// calculate inflows
 				if (tempProject.getPeriod() > prePeriod) {
