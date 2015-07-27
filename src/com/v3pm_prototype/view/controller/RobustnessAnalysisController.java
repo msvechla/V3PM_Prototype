@@ -20,7 +20,7 @@ import com.v3pm_prototype.analysis.RobustnessAnalysis;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
 
-public class RobustnessAnalysisController {
+public class RobustnessAnalysisController extends AnalysisController{
 	@FXML
 	private ChoiceBox<String> cbType;
 	private ObservableList<String> olType = FXCollections.observableArrayList();
@@ -35,27 +35,6 @@ public class RobustnessAnalysisController {
 	private ObservableList<String> olParameter = FXCollections.observableArrayList();
 	
 	@FXML
-	private TextField tfRadius;
-	
-	@FXML
-	private TextField tfStep;
-	
-	@FXML
-	private ChoiceBox<String> cbAbsRel;
-	private ObservableList<String> olAbsRel = FXCollections.observableArrayList();
-	
-	@FXML
-	private ChoiceBox<String> cbModus;
-	private ObservableList<String> olModus = FXCollections.observableArrayList();
-	
-	@FXML
-	private Button btnStartAnalysis;
-	
-	@FXML
-	private ProgressIndicator piSolution;
-	
-	
-	@FXML
 	private Label lblSolution;
 	
 	@FXML
@@ -65,22 +44,20 @@ public class RobustnessAnalysisController {
 	@FXML
 	private NumberAxis yAxis;
 	
-	
-	private MainApp mainApp;
-	private TabScenarioCalculationController tsc;
 	private DBScenario scenario;
 	
 	public RobustnessAnalysisController(){
 		
 	}
 	
-	@FXML
-	public void initialize(){
+	@Override
+	public void initialize() {
 		initCBType();
-		initCBModus();
-		initCBAbsRel();
+		super.initialize();
 	}
-	
+
+
+
 	public void startRobustnessAnalysis(){
 		lblSolution.setText("");
 		Task<RobustnessAnalysis> raTask = new Task<RobustnessAnalysis>() {
@@ -148,21 +125,6 @@ public class RobustnessAnalysisController {
 			lineChart.getData().add(seriesOld);
 			lblSolution.setText(robustnessAnalysis.getSolutionText());
 
-	}
-	
-	private void initCBModus() {
-		cbModus.setItems(olModus);
-		olModus.add(RobustnessAnalysis.MODE_PLUSMINUS);
-		olModus.add(RobustnessAnalysis.MODE_PLUS);
-		olModus.add(RobustnessAnalysis.MODE_MINUS);	
-		cbModus.getSelectionModel().select(olModus.get(0));
-	}
-	
-	private void initCBAbsRel(){
-		cbAbsRel.setItems(olAbsRel);
-		olAbsRel.add(RobustnessAnalysis.ABSOLUT);
-		olAbsRel.add(RobustnessAnalysis.RELATIVE);
-		cbAbsRel.getSelectionModel().select(olAbsRel.get(0));
 	}
 
 	private void initCBParameter() {
@@ -234,30 +196,10 @@ public class RobustnessAnalysisController {
 		});
 	}
 
-	public MainApp getMainApp() {
-		return mainApp;
-	}
-
-	public void setMainApp(MainApp mainApp) {
-		this.mainApp = mainApp;
-	}
-
 	public void setScenario(DBScenario scenario) {
 		this.scenario = scenario;
 		initCBObject();
 		initCBParameter();
 	}
-
-	public TabScenarioCalculationController getTsc() {
-		return tsc;
-	}
-
-	public void setTsc(TabScenarioCalculationController tsc) {
-		this.tsc = tsc;
-	}
-	
-	
-	
-	
 	
 }
