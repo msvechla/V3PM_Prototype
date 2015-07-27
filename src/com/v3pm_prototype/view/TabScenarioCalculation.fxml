@@ -136,6 +136,7 @@
                       <TableColumn fx:id="clmNPV" minWidth="1.0" prefWidth="133.0" text="NPV" />
                     </columns>
                   </TableView>
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#openSAProjectSuccessTab" text="Project Sucess Analysis" />
                </children>
             </VBox>
          </content>

@@ -162,6 +162,36 @@ public class TabScenarioCalculationController {
 		
 		bcRBroken.getData().add(series1);
 	}
+	
+	public void openSAProjectSuccessTab() {
+		// Load root layout from fxml file.
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(MainApp.class
+				.getResource("/com/v3pm_prototype/view/SAProjectSuccess.fxml"));
+		VBox root;
+		try {
+			root = (VBox) loader.load();
+			SAProjectSuccessController saPSController = loader
+					.getController();
+			saPSController.setMainApp(this.mainApp);
+			saPSController.setTsc(this);
+			saPSController.setRoadmap(tvRoadmap.getSelectionModel().getSelectedItem());
+			
+			Tab tabSAPS = new Tab(mainApp.getV3pmGUIController().getTpMain().getSelectionModel().getSelectedItem().getText()+" Project Success Analysis");
+			tabSAPS.setContent(root);
+			tabSAPS.setClosable(true);
+			mainApp.getV3pmGUIController().getTpMain().getTabs().add(tabSAPS);
+			mainApp.getV3pmGUIController().getTpMain().getSelectionModel()
+			.select(tabSAPS);
+			
+			mainApp.getV3pmGUIController().getTpMain()
+					.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
 
 	public void openRobustnessAnalysisTab() {
 		// Load root layout from fxml file.
