@@ -144,7 +144,10 @@ public class RMGenerator extends Task<List<RoadMap>> {
 			projectsInPeriod.addAll(Arrays.asList(rmSingle2.getRMArray()[period]));
 			projectsInPeriod.remove(null);
 			
-			RMRestrictionHandler.meetsOnCombinedContainerGenerationCheck(projectsInPeriod, config);
+			List<Project> lstProjectsInPeriod = new ArrayList<Project>();
+			lstProjectsInPeriod.addAll(projectsInPeriod);
+			
+			RMRestrictionHandler.meetsOnCombinedContainerGenerationCheck(lstProjectsInPeriod, config);
 			
 			//save period if COUNT_PROJECTS_MAX_PER_PERIOD is not exceeded, otherwise stop combination
 			if(projectsInPeriod.size() <= config.getSlotsPerPeriod()){

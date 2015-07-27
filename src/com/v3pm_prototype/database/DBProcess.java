@@ -55,6 +55,20 @@ public class DBProcess implements Serializable{
 		generateDemandfunction();
 	}
 	
+	public boolean equals(Object obj){
+		if(obj instanceof DBProcess){
+			DBProcess p = (DBProcess)obj;
+			return (p.getId() == this.id);
+		}
+		
+		if(obj instanceof Process){
+			Process p = (Process)obj;
+			return (p.getId() == this.id);
+		}
+		
+		return false;
+	}
+	
 	public Process toProcess(){
 		Process process = new Process(name, id, q, 100, t, p, oop, degQ, degT, fixedCosts, 0, dmP, dmLambda, dmAlpha, getDMFktQInt(), dmBeta, getDMFktTInt());
 		return process;

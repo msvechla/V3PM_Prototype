@@ -1,5 +1,6 @@
 package com.v3pm_prototype.calculation;
 
+import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 /**
@@ -62,6 +63,10 @@ public class Process implements Comparable<Process>, Cloneable{
 		if(obj instanceof Process){
 			Process p = (Process)obj;
 			return (p.id == this.id);
+		}
+		if(obj instanceof DBProcess){
+			DBProcess p = (DBProcess)obj;
+			return (p.getId() == this.id);
 		}
 		return false;
 	}
@@ -258,11 +263,18 @@ public class Process implements Comparable<Process>, Cloneable{
 	}
 	
 	public double getOopDelta(){
-		return oop - this.OopPerPeriod[0];
+		if(this.OopPerPeriod != null){
+			return oop - this.OopPerPeriod[0];
+		}
+		return 0;
 	}
 	
 	public double getFixedCostsDelta(){
-		return fixedCosts - this.fixedCostsPerPeriod[0];
+		if(this.fixedCostsPerPeriod != null){
+			return fixedCosts - this.fixedCostsPerPeriod[0];
+		}
+		return 0;
+		
 	}
 	
 	public Object clone(){  

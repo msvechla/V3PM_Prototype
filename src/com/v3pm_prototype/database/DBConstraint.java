@@ -1,6 +1,6 @@
 package com.v3pm_prototype.database;
 
-public class DBConstraint {
+public class DBConstraint implements Cloneable{
 	public static final String TYPE_LOCMUTEX="LocMutEx";
 	public static final String TYPE_GLOMUTEX="GloMutEx";
 	public static final String TYPE_LOCMUTDEP="LocMutDep";
@@ -27,6 +27,7 @@ public class DBConstraint {
 	private String y;
 	private double x;
 	private String type;
+	private int countBroken = 0;
 	
 	public DBConstraint(String type, DBProject s, DBProject sI, DBProcess i, double d,String y) {
 		super();
@@ -115,7 +116,22 @@ public class DBConstraint {
 	public void setX(double x) {
 		this.x = x;
 	}
+
+	public int getCountBroken() {
+		return countBroken;
+	}
+
+	public void addCountBroken(){
+		this.countBroken++;
+	}
 	
+	public Object clone(){  
+	    try{  
+	        return super.clone();  
+	    }catch(Exception e){ 
+	        return null; 
+	    }
+	}
 	
 	
 	

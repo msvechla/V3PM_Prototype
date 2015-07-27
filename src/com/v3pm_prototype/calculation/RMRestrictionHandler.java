@@ -22,25 +22,6 @@ import com.v3pm_prototype.rmgeneration.RunConfiguration;
 public class RMRestrictionHandler {
 
 	/**
-	 * checks if a roadmap breaks any restrictions. This is the main method of
-	 * this class and sums up the other methods by calling them one after
-	 * another. This method should be called before adding a roadmap to the
-	 * RM-collection.
-	 * 
-	 * @return false if no restriction is violated
-	 */
-
-	public static int OverallAmount = 0; // MLe
-	public static int AmountisNoProjectInPeriodRestriction = 0; // MLe
-	public static int AmountisTogetherWithRestriction = 0; // MLe
-	public static int AmountisNotTogetherWithRestriction = 0; // MLe
-	public static int AmountisPredecessorRestriction = 0; // MLe
-	public static int AmountisSuccessorRestriction = 0; // MLe
-	public static int AmountisEarliestAndLatest = 0; // MLe
-	public static int AmountisMaxBudgetRestriction = 0; // MLe
-	public static int AdmissibleAmount = 0; // MLe
-
-	/**
 	 * Checks all restrictions that are periodic specific during NPV Calculation
 	 * 
 	 * @param currentPeriod
@@ -127,10 +108,10 @@ public class RMRestrictionHandler {
 	}
 
 	public static boolean meetsOnCombinedContainerGenerationCheck(
-			HashSet<Project> projectsInPeriod, RunConfiguration config) {
-		if (rLocMutDep(projectsInPeriod, config) == false)
+			List<Project> lstProjectsInPeriod, RunConfiguration config) {
+		if (rLocMutDep(lstProjectsInPeriod, config) == false)
 			return false;
-		if (rLocMutEx(projectsInPeriod, config) == false)
+		if (rLocMutEx(lstProjectsInPeriod, config) == false)
 			return false;
 
 		return true;
@@ -155,9 +136,11 @@ public class RMRestrictionHandler {
 							if (!alreadyImplemented.get(
 									alreadyImplemented.indexOf(cPreSuc.getS()))
 									.isFinished(period)) {
+								cPreSuc.addCountBroken();
 								return false;
 							}
 						} else {
+							cPreSuc.addCountBroken();
 							return false;
 						}
 
@@ -167,13 +150,14 @@ public class RMRestrictionHandler {
 		return true;
 	}
 
-	public static boolean rLocMutDep(HashSet<Project> projectsInPeriod,
+	public static boolean rLocMutDep(List<Project> lstProjectsInPeriod,
 			RunConfiguration config) {
 		if (config.getConstraintSet().getLstLocMutDep().size() > 0) {
 			for (DBConstraint cLocMutDep : config.getConstraintSet()
 					.getLstLocMutDep()) {
-				if (!(projectsInPeriod.contains(cLocMutDep.getS().getId()) && projectsInPeriod
-						.contains(cLocMutDep.getSi().getId()))) {
+				if (!(lstProjectsInPeriod.contains(cLocMutDep.getS()) && lstProjectsInPeriod
+						.contains(cLocMutDep.getSi()))) {
+					cLocMutDep.addCountBroken();
 					return false;
 				}
 			}
@@ -181,13 +165,15 @@ public class RMRestrictionHandler {
 		return true;
 	}
 
-	public static boolean rLocMutEx(HashSet<Project> projectsInPeriod,
+	public static boolean rLocMutEx(List<Project> lstProjectsInPeriod,
 			RunConfiguration config) {
 		if (config.getConstraintSet().getLstLocMutEx().size() > 0) {
 			for (DBConstraint cLocMutEx : config.getConstraintSet()
 					.getLstLocMutEx()) {
-				if (projectsInPeriod.contains(cLocMutEx.getS().getId())
-						&& projectsInPeriod.contains(cLocMutEx.getSi().getId())) {
+				if (lstProjectsInPeriod.contains(cLocMutEx.getS())
+						&& lstProjectsInPeriod.contains(cLocMutEx.getSi())) {
+					cLocMutEx.addCountBroken();
+					System.out.println("LocMutEx");
 					return false;
 				}
 			}
@@ -205,6 +191,7 @@ public class RMRestrictionHandler {
 					.getLstEarliest()) {
 				if (cEarliest.getS().equals(p)
 						&& (startPeriod < Integer.valueOf(cEarliest.getY()))) {
+					cEarliest.addCountBroken();
 					return false;
 				}
 			}
@@ -223,6 +210,7 @@ public class RMRestrictionHandler {
 				if (cLatest.getS().equals(p)
 						&& (startPeriod + p.getNumberOfPeriods() - 1 > Integer
 								.valueOf(cLatest.getY()))) {
+					cLatest.addCountBroken();
 					return false;
 				}
 			}
@@ -237,6 +225,7 @@ public class RMRestrictionHandler {
 			if (implementedProjectIDs.contains(cGloMutEx.getS().getId())
 					&& implementedProjectIDs
 							.contains(cGloMutEx.getSi().getId())) {
+				cGloMutEx.addCountBroken();
 				return false;
 			}
 		}
@@ -249,6 +238,7 @@ public class RMRestrictionHandler {
 				.getLstGloMutDep()) {
 			if (!(implementedProjectIDs.contains(cGloMutDep.getS().getId()) && implementedProjectIDs
 					.contains(cGloMutDep.getSi().getId()))) {
+				cGloMutDep.addCountBroken();
 				return false;
 			}
 		}
@@ -260,11 +250,14 @@ public class RMRestrictionHandler {
 		for (DBConstraint cTimeMax : config.getConstraintSet().getLstTimeMax()) {
 			if (cTimeMax.getI().equals(process)) {
 				if (cTimeMax.getY().equals(DBConstraint.PERIOD_ALL)) {
-					if (process.getT() > cTimeMax.getX())
+					if (process.getT() > cTimeMax.getX()){
+						cTimeMax.addCountBroken();
 						return false;
+					}
 				} else {
 					if (process.getT() > cTimeMax.getX()
 							&& period == Integer.valueOf(cTimeMax.getY())) {
+						cTimeMax.addCountBroken();
 						return false;
 					}
 				}
@@ -278,11 +271,14 @@ public class RMRestrictionHandler {
 		for (DBConstraint cQualMin : config.getConstraintSet().getLstQualMin()) {
 			if (cQualMin.getI().equals(process)) {
 				if (cQualMin.getY().equals(DBConstraint.PERIOD_ALL)) {
-					if (process.getQ() < cQualMin.getX())
+					if (process.getQ() < cQualMin.getX()){
+						cQualMin.addCountBroken();
 						return false;
+					}
 				} else {
 					if (process.getQ() < cQualMin.getX()
 							&& period == Integer.valueOf(cQualMin.getY())) {
+						cQualMin.addCountBroken();
 						return false;
 					}
 				}
@@ -302,6 +298,7 @@ public class RMRestrictionHandler {
 				}
 
 				if (oInvGes > cBudget.getX()) {
+					cBudget.addCountBroken();
 					return false;
 				}
 			}
@@ -322,6 +319,7 @@ public class RMRestrictionHandler {
 				}
 
 				if (oInvBPMGes > cBudBPM.getX()) {
+					cBudBPM.addCountBroken();
 					return false;
 				}
 			}
@@ -344,6 +342,7 @@ public class RMRestrictionHandler {
 				}
 
 				if (oInvProGes > cBudPro.getX()) {
+					cBudPro.addCountBroken();
 					return false;
 				}
 			}
@@ -360,15 +359,24 @@ public class RMRestrictionHandler {
 			HashSet<Integer> implementedProjectIDs, RunConfiguration config) {
 
 		List<Integer> mandatoryIDs = config.getConstraintSet()
-				.getLstMandatory();
+				.getLstMandatoryIDs();
 
 		// When more projects are implemented than there are mandatory projects
 		// -> all mandatory projects have to be implemented
 		if (implementedProjectIDs.size() >= mandatoryIDs.size()) {
-			return implementedProjectIDs.containsAll(mandatoryIDs);
+			boolean containsAll =  implementedProjectIDs.containsAll(mandatoryIDs);
+			if(containsAll == false){
+				config.getConstraintSet().getLstMandatory().get(0).addCountBroken();
+				return false;
+			}
 		} else {
 			// Else only mandatory projects have to be implemented
-			return mandatoryIDs.containsAll(implementedProjectIDs);
+			boolean containsAll = mandatoryIDs.containsAll(implementedProjectIDs);
+			if(containsAll == false){
+				config.getConstraintSet().getLstMandatory().get(0).addCountBroken();
+				return false;
+			}
 		}
+		return true;
 	}
 }

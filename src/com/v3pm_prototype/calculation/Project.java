@@ -81,7 +81,7 @@ public class Project implements Cloneable{
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Adjusts the oInv to the number of periods Only call this method once per object!
 	 * Not called at constructor because Project copys would be adjusted multiple times!

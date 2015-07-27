@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -20,6 +20,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
@@ -27,13 +28,12 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
@@ -50,10 +50,11 @@ import org.graphstream.ui.swingViewer.Viewer.ThreadingModel;
 
 import com.v3pm_prototype.calculation.Calculator;
 import com.v3pm_prototype.calculation.CompleteRobustnessAnalysis;
+import com.v3pm_prototype.calculation.ConstraintSet;
 import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.calculation.Project;
-import com.v3pm_prototype.calculation.RobustnessAnalysis;
 import com.v3pm_prototype.database.DBConnection;
+import com.v3pm_prototype.database.DBConstraint;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
@@ -118,6 +119,8 @@ public class TabScenarioCalculationController {
 	private LineChart<String, Number> lcProcessQuality;
 	@FXML
 	private LineChart<String, Number> lcProcessTime;
+	@FXML
+	private BarChart<String, Number> bcRBroken;
 
 	@FXML
 	private SwingNode swingNode;
@@ -543,6 +546,7 @@ public class TabScenarioCalculationController {
 				initLineCharts();
 				initGraphStream();
 				updateTVProcesses();
+				initBarChartRBroken();
 			}
 
 		};
@@ -584,6 +588,36 @@ public class TabScenarioCalculationController {
 		}
 
 	}
+	
+	private void initBarChartRBroken(){
+		bcRBroken.getData().clear();
+		
+		//Add data to the chart for each restriction type
+		ConstraintSet cs = config.getConstraintSet();
+		List<String> lstTypeAlreadyCounted = new ArrayList<String>();
+		
+		for(DBConstraint dbConstraint : config.getConstraintSet().getLstConstraints()){
+			int countBrokenAll = 0;
+			
+			// Get all constraints of the same type
+			if(!lstTypeAlreadyCounted.contains(dbConstraint.getType())){
+				for(DBConstraint dbc : config.getConstraintSet().getLstConstraints()){
+					if(dbConstraint.getType().equals(dbc.getType())){
+						countBrokenAll = countBrokenAll + dbc.getCountBroken();
+					}
+				}
+			
+				// Dont count constraints of this type again
+				lstTypeAlreadyCounted.add(dbConstraint.getType());
+				System.out.println(dbConstraint.getType() + " countBroken: "+countBrokenAll);
+				// Add a Bar of the type to the chart
+				Series<String, Number> series = new XYChart.Series<String, Number>();
+				series.getData().add(new XYChart.Data<String, Number>(dbConstraint.getType(),countBrokenAll));
+				bcRBroken.getData().add(series);
+			
+			}	
+		}
+	}
 
 	/**
 	 * Generates the initial Roadmaps and updates the UI
@@ -608,6 +642,7 @@ public class TabScenarioCalculationController {
 								"Roadmaps generated.");
 						rmList = (List<RoadMap>) getValue();
 						olRoadmap.addAll(rmList);
+						System.out.println(config);
 						super.succeeded();
 					}
 
@@ -666,6 +701,7 @@ public class TabScenarioCalculationController {
 						tvRoadmap.getSelectionModel().select(rmList.get(0));
 						tvRoadmap.getSelectionModel().selectedItemProperty()
 								.addListener(rmListChangeListener);
+						initBarChartRBroken();
 						initLineCharts();
 						initGraphStream();
 						initRoadmapContainer(null);

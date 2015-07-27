@@ -80,7 +80,7 @@
                   </LineChart>
                </children>
             </HBox>
-            <TableView fx:id="tvProcesses" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="tvProcesses" maxHeight="160.0" prefHeight="300.0" prefWidth="200.0" VBox.vgrow="NEVER">
               <columns>
                 <TableColumn fx:id="clmProcessesName" prefWidth="311.0" text="Process" />
                 <TableColumn fx:id="clmProcessesQ" prefWidth="95.0" text="Quality" />
@@ -93,6 +93,14 @@
                   <TableColumn fx:id="clmProcessesFCDelta" prefWidth="102.0" text="FCDelta" />
               </columns>
             </TableView>
+            <BarChart fx:id="bcRBroken" barGap="0.0" categoryGap="0.0" maxHeight="1.7976931348623157E308" prefHeight="400.0" title="Amount of Broken Restrictions">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis forceZeroInRange="false" label="Amount Broken" side="LEFT" />
+              </yAxis>
+            </BarChart>
          </children>
          <padding>
             <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />

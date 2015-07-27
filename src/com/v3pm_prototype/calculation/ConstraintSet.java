@@ -9,8 +9,8 @@ public class ConstraintSet {
 	private List<DBConstraint> lstConstraints;
 	
 	//Mandatory
-	private int amountMandatory;
-	private List<Integer> lstMandatory = new ArrayList<Integer>();
+	private List<DBConstraint> lstMandatory = new ArrayList<DBConstraint>();
+	private List<Integer> lstMandatoryIDs = new ArrayList<Integer>();
 	
 	//LocMutDep
 	private List<DBConstraint> lstLocMutDep = new ArrayList<DBConstraint>();
@@ -50,17 +50,20 @@ public class ConstraintSet {
 	
 	
 	public ConstraintSet(List<DBConstraint> lstConstraints) {
-		this.lstConstraints = lstConstraints;
-		this.amountMandatory = 0;
+		this.lstConstraints = new ArrayList<DBConstraint>();
+		
+		for(DBConstraint dbConstraint : lstConstraints){
+			this.lstConstraints.add((DBConstraint) dbConstraint.clone());
+		}
 		
 		//Pre-Process Mandatory
-		for(DBConstraint constraint : lstConstraints){
+		for(DBConstraint constraint : this.lstConstraints){
 			
 			switch (constraint.getType()) {
 
 			case DBConstraint.TYPE_MANDATORY:
-				amountMandatory++;
-				lstMandatory.add(constraint.getS().getId());
+				lstMandatory.add(constraint);
+				lstMandatoryIDs.add(constraint.getS().getId());
 				break;
 			
 			case DBConstraint.TYPE_LOCMUTDEP:
@@ -128,20 +131,20 @@ public class ConstraintSet {
 		this.lstConstraints = lstConstraints;
 	}
 
-	public int getAmountMandatory() {
-		return amountMandatory;
-	}
-
-	public void setAmountMandatory(int amountMandatory) {
-		this.amountMandatory = amountMandatory;
-	}
-
-	public List<Integer> getLstMandatory() {
+	public List<DBConstraint> getLstMandatory() {
 		return lstMandatory;
 	}
 
-	public void setLstMandatory(List<Integer> lstMandatory) {
+	public void setLstMandatory(List<DBConstraint> lstMandatory) {
 		this.lstMandatory = lstMandatory;
+	}
+
+	public List<Integer> getLstMandatoryIDs() {
+		return lstMandatoryIDs;
+	}
+
+	public void setLstMandatoryIDs(List<Integer> lstMandatoryIDs) {
+		this.lstMandatoryIDs = lstMandatoryIDs;
 	}
 
 	public List<DBConstraint> getLstLocMutDep() {
@@ -149,7 +152,7 @@ public class ConstraintSet {
 	}
 	
 	public List<DBConstraint> getLstLocMutEx() {
-		return lstLocMutDep;
+		return lstLocMutEx;
 	}
 
 	public List<DBConstraint> getLstGloMutDep() {

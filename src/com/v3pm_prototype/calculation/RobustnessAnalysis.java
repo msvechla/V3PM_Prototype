@@ -48,8 +48,12 @@ public class RobustnessAnalysis {
 	public RobustnessAnalysis(List<RoadMap> lstRoadmap, RunConfiguration config, String mode, Object object, String parameter, double radius, double step, String absrel, ProgressIndicator piSolution) {
 		super();
 		this.lstRoadmap = new ArrayList<RoadMap>();
-		this.lstRoadmap.addAll(lstRoadmap);
-		this.rmOld = (RoadMap) lstRoadmap.get(0).clone();
+		
+		for(RoadMap rm : lstRoadmap){
+			this.lstRoadmap.add((RoadMap) rm.clone());
+		}
+		
+		this.rmOld = this.lstRoadmap.get(0);
 		this.config = (RunConfiguration) config.clone();
 		this.radius = radius;
 		this.step = step;
@@ -63,14 +67,14 @@ public class RobustnessAnalysis {
 		// initial object stays the same
 		if(object != null){
 			if(object instanceof Project){
-				for(Project p : config.getLstProjects()){
+				for(Project p : this.config.getLstProjects()){
 					if(((Project)object).getId() == p.getId()){
 						this.object = p;
 						break;
 					}
 				}
 			}else if(object instanceof Process){
-				for(Process p : config.getLstProcesses()){
+				for(Process p : this.config.getLstProcesses()){
 					if(((Process)object).getId() == p.getId()){
 						this.object = p;
 						break;
