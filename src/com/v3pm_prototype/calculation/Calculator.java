@@ -148,10 +148,24 @@ public class Calculator{
 		}
 		
 		//Remove roadmaps with broken restrictions
-		//TODO SLOW
-		collRM.removeAll(brokenRoadmaps);
+		removeBrokenRoadmaps();
 	}
 	
+	/**
+	 * Removes all Roadmaps with broken restrictions from the List
+	 */
+	private void removeBrokenRoadmaps() {
+		List<RoadMap> finalRMList = new ArrayList<RoadMap>();
+		
+		for(RoadMap rm: collRM){
+			if(!rm.isRestrictionBroken()){
+				finalRMList.add(rm);
+			}
+		}
+		
+		collRM = finalRMList;
+	}
+
 	/**
 	 * Stores the temporarily calculated q and t values per period
 	 * @param rm

@@ -161,7 +161,7 @@ public class TabStartController {
 
 				mainApp.getV3pmGUIController().getTpMain().getTabs().add(tabSC);
 				mainApp.getV3pmGUIController().getTpMain()
-						.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
+						.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
 				scController.setScenario(selectedScenario);
 				scController.setTab(tabSC);
 

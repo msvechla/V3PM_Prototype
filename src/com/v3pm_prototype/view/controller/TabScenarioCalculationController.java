@@ -185,7 +185,7 @@ public class TabScenarioCalculationController {
 			.select(tabSAPS);
 			
 			mainApp.getV3pmGUIController().getTpMain()
-					.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
+					.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -214,7 +214,7 @@ public class TabScenarioCalculationController {
 			.select(tabRA);
 			
 			mainApp.getV3pmGUIController().getTpMain()
-					.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
+					.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
 			
 			raController.setScenario(scenario);
 
