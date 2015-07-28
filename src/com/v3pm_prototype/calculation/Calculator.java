@@ -39,6 +39,8 @@ public class Calculator{
 	 */
 	public void calculateNPVs() throws NoValidThetaIDException {
 
+		List<RoadMap> brokenRoadmaps = new ArrayList<RoadMap>();
+		
 		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		// for each roadmap
 		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -71,6 +73,9 @@ public class Calculator{
 //				if(RM.toString().contains("[ Six Sigma null ][ null null ]")){
 //					System.out.println("FOUND");
 //				}
+				if(RM.toString().contains("[ Einführung SEPA Standardisierung ][ Automatisierung null ]")){
+					System.out.println("FOUND");
+				}
 				
 				// calculate inflows
 				if (tempProject.getPeriod() > prePeriod) {
@@ -129,6 +134,7 @@ public class Calculator{
 			// NPV of a roadmap = sum of all inflows - sum of all outflows
 			if(RM.isRestrictionBroken()){
 				RM.setNpv(0);
+				brokenRoadmaps.add(RM);
 			}else{
 				double npv = Math.round((inflows - outflows - fixedCostsOAGes) * 100);
 				RM.setNpv(npv / 100);
@@ -140,6 +146,10 @@ public class Calculator{
 			saveCalculatedValuesToRM(RM, tempCollProcess,tempCollPoj_sorted);
 
 		}
+		
+		//Remove roadmaps with broken restrictions
+		//TODO SLOW
+		collRM.removeAll(brokenRoadmaps);
 	}
 	
 	/**

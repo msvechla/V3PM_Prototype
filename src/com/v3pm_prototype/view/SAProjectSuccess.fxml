@@ -7,55 +7,82 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="912.0" spacing="8.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.SAProjectSuccessController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="786.0" prefWidth="1227.0" spacing="8.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.SAProjectSuccessController">
    <children>
       <Label text="Sensitivity to Project Success" textFill="#33ccf5" VBox.vgrow="NEVER">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <HBox spacing="8.0" VBox.vgrow="NEVER">
-         <children>
-            <ChoiceBox fx:id="cbProject" prefWidth="150.0" />
-            <TextField fx:id="tfRadius" prefWidth="100.0" promptText="Radius" />
-            <TextField fx:id="tfStep" prefWidth="100.0" promptText="Step" />
-            <ChoiceBox fx:id="cbAbsRel" prefHeight="39.0" />
-         </children>
-      </HBox>
-      <HBox spacing="8.0" VBox.vgrow="NEVER">
-         <children>
-            <ChoiceBox fx:id="cbModus" prefWidth="150.0" />
-            <Button fx:id="btnStartAnalysis" mnemonicParsing="false" text="Start Analysis" />
-         </children>
-      </HBox>
-      <Label maxWidth="1.7976931348623157E308" text="Solution:" textFill="#33ccf5">
+      <Label maxWidth="1.7976931348623157E308" text="Setup:" textFill="#33ccf5">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
       <HBox>
          <children>
-            <ProgressIndicator fx:id="piSolution" maxHeight="1.7976931348623157E308" prefWidth="96.0" progress="0.0">
+            <VBox spacing="8.0">
+               <children>
+                  <HBox spacing="8.0" VBox.vgrow="NEVER">
+                     <children>
+                        <ChoiceBox fx:id="cbProject" prefWidth="150.0" />
+                        <TextField fx:id="tfRadius" prefWidth="100.0" promptText="Radius" />
+                        <TextField fx:id="tfStep" prefWidth="100.0" promptText="Step" />
+                        <ChoiceBox fx:id="cbAbsRel" prefHeight="39.0" />
+                     </children>
+                  </HBox>
+                  <HBox spacing="8.0" VBox.vgrow="NEVER">
+                     <children>
+                        <ChoiceBox fx:id="cbModus" prefWidth="150.0" />
+                        <Button fx:id="btnStartAnalysis" mnemonicParsing="false" onAction="#startSAProjectSuccess" text="Start Analysis" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <ProgressIndicator fx:id="piSolution" maxHeight="1.7976931348623157E308" progress="0.0">
                <HBox.margin>
-                  <Insets right="8.0" />
+                  <Insets left="24.0" />
                </HBox.margin>
             </ProgressIndicator>
-            <TableView prefHeight="300.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-              <columns>
-                <TableColumn prefWidth="253.0" text="Parameter" />
-                <TableColumn prefWidth="352.0" text="Standard Deviation" />
-              </columns>
-            </TableView>
          </children>
       </HBox>
-      <LineChart fx:id="lineChart" legendSide="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
-         <xAxis>
-            <NumberAxis forceZeroInRange="false" side="BOTTOM" fx:id="xAxis" />
-         </xAxis>
-         <yAxis>
-            <NumberAxis fx:id="yAxis" forceZeroInRange="false" label="NPV" side="LEFT" />
-         </yAxis>
-      </LineChart>
+      <HBox VBox.vgrow="ALWAYS">
+         <children>
+            <LineChart fx:id="lineChart" legendSide="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Project Parameter Sensitivity" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+               <xAxis>
+                  <NumberAxis forceZeroInRange="false" label="Step" side="BOTTOM" fx:id="xAxis" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis fx:id="yAxis" forceZeroInRange="false" label="NPV" side="LEFT" />
+               </yAxis>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </LineChart>
+            <VBox spacing="8.0">
+               <children>
+                  <Label maxWidth="1.7976931348623157E308" text="Test results:" textFill="#33ccf5">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <HBox>
+                     <children>
+                        <TableView fx:id="tvResults" prefHeight="193.0" prefWidth="420.0" HBox.hgrow="NEVER">
+                          <columns>
+                            <TableColumn fx:id="clmParameter" prefWidth="133.0" text="Parameter" />
+                            <TableColumn fx:id="clmSD" prefWidth="286.0" text="Standard Deviation" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+         <VBox.margin>
+            <Insets top="24.0" />
+         </VBox.margin>
+      </HBox>
    </children>
    <padding>
       <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />

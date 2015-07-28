@@ -173,7 +173,6 @@ public class RMRestrictionHandler {
 				if (lstProjectsInPeriod.contains(cLocMutEx.getS())
 						&& lstProjectsInPeriod.contains(cLocMutEx.getSi())) {
 					cLocMutEx.addCountBroken();
-					System.out.println("LocMutEx");
 					return false;
 				}
 			}

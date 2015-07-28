@@ -120,7 +120,7 @@ public class RobustnessAnalysisController extends AnalysisController{
 
 				
 			}
-
+			
 			lineChart.getData().add(seriesNew);
 			lineChart.getData().add(seriesOld);
 			lblSolution.setText(robustnessAnalysis.getSolutionText());

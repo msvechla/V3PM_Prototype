@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -35,6 +36,7 @@ public class RobustnessAnalysis extends Analysis{
 	
 	private double percentage;
 	private String solutionText;
+	private double workProgress;
 	
 
 	public RobustnessAnalysis(List<RoadMap> lstRoadmap, RunConfiguration config, String mode, Object object, String parameter, double radius, double step, String absRel, ProgressIndicator piSolution) {
@@ -83,7 +85,7 @@ public class RobustnessAnalysis extends Analysis{
 
 	@Override
 	public void start() throws IllegalArgumentException, IllegalAccessException, NoValidThetaIDException{
-
+		
 		double start = selectedParameter.getDouble(object);
 
 		for (double i = step; i <= radius; i += step) {
@@ -165,14 +167,20 @@ public class RobustnessAnalysis extends Analysis{
 						+ lstResults.get(lstResults.size() - 1).getNpv());
 			}
 			
-			if(piSolution != null){
-				piSolution.setProgress(i/radius);
-			}
+			workProgress = i / radius;
+			
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					if(piSolution != null){
+						piSolution.setProgress(workProgress);
+					}
+				}
+			});
 			
 		}
-		if(piSolution != null){
-			piSolution.setProgress(1);
-		}
+		
+		workProgress = 1;
 
 		selectedParameter.setDouble(object, start);
 		
