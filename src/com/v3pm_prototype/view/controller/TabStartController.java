@@ -232,9 +232,9 @@ public class TabStartController {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(MainApp.class
 				.getResource("/com/v3pm_prototype/view/NewScenario.fxml"));
-		AnchorPane root;
+		VBox root;
 		try {
-			root = (AnchorPane) loader.load();
+			root = (VBox) loader.load();
 			NewScenarioController nsController = loader.getController();
 			nsController.setTsc(this);
 

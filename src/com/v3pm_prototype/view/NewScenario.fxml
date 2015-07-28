@@ -6,40 +6,70 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxWidth="-Infinity" minHeight="0" minWidth="0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.NewScenarioController">
+
+<VBox stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.NewScenarioController">
    <children>
-      <SplitPane dividerPositions="0.76" layoutY="48.0">
+      <ToolBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="55.0" VBox.vgrow="ALWAYS">
+         <items>
+            <HBox spacing="10.0">
+               <children>
+                  <Label styleClass="Titel1" text="Scenario Design Tool" />
+                  <TextField fx:id="tfName" nodeOrientation="LEFT_TO_RIGHT" promptText="Enter Scenario Name" />
+                <Button fx:id="btnCreateScenario" mnemonicParsing="false" onAction="#createScenario" text="Create Scenario" />
+               </children>
+            </HBox>
+         </items>
+      </ToolBar>
+      <SplitPane dividerPositions="0.76">
          <items>
             <TabPane>
                <tabs>
                   <Tab closable="false" text="General Settings">
                      <content>
-                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="26.0">
+                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="42.0">
                            <children>
-                              <HBox prefWidth="200.0" spacing="10.0">
+                              <VBox spacing="14.0">
                                  <children>
-                                    <Label alignment="TOP_LEFT" text="Number of periods:" />
-                                    <ComboBox fx:id="cbPeriods" prefWidth="150.0" />
+                                    <Label styleClass="Titel2" text="Period specific settings">
+                                       <VBox.margin>
+                                          <Insets bottom="-4.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <HBox prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <Label alignment="TOP_LEFT" text="Number of periods:" />
+                                          <ComboBox fx:id="cbPeriods" prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <Label alignment="TOP_LEFT" text="Slots per period:" />
+                                          <ComboBox fx:id="cbSlotsPerPeriod" prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
-                              <HBox prefWidth="200.0" spacing="10.0">
+                              </VBox>
+                              <VBox spacing="14.0">
                                  <children>
-                                    <Label alignment="TOP_LEFT" text="Slots per period:" />
-                                    <ComboBox fx:id="cbSlotsPerPeriod" prefWidth="150.0" />
+                                    <Label styleClass="Titel2" text="Finance specific settings">
+                                       <VBox.margin>
+                                          <Insets bottom="-4.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <HBox prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <Label alignment="TOP_LEFT" text="Discount rate:" />
+                                          <TextField fx:id="tfDiscountRate" prefHeight="39.0" prefWidth="120.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <Label alignment="TOP_LEFT" text="Overarching fixed outflows:" />
+                                          <TextField fx:id="tfOAFixedOutflows" prefHeight="39.0" prefWidth="120.0" />
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
-                              <HBox prefWidth="200.0" spacing="10.0">
-                                 <children>
-                                    <Label alignment="TOP_LEFT" text="Discount rate:" />
-                                    <TextField fx:id="tfDiscountRate" prefHeight="39.0" prefWidth="120.0" />
-                                 </children>
-                              </HBox>
-                              <HBox prefWidth="200.0" spacing="10.0">
-                                 <children>
-                                    <Label alignment="TOP_LEFT" text="Overarching fixed outflows:" />
-                                    <TextField fx:id="tfOAFixedOutflows" prefHeight="39.0" prefWidth="120.0" />
-                                 </children>
-                              </HBox>
+                              </VBox>
                            </children>
                            <padding>
                               <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
@@ -51,7 +81,7 @@
                      <content>
                         <VBox layoutX="12.0" layoutY="108.0" prefHeight="662.0" prefWidth="1170.0" spacing="10.0">
                            <children>
-                              <Label layoutX="12.0" layoutY="108.0" text="Process list" />
+                              <Label layoutX="12.0" layoutY="108.0" styleClass="Titel2" text="Process list" />
                               <TableView fx:id="tvProcesses" editable="true" layoutX="14.0" layoutY="141.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
                                  <columns>
                                     <TableColumn fx:id="clmProcessesProcess" editable="false" prefWidth="258.0" text="Process" />
@@ -65,7 +95,7 @@
                                     <TableColumn fx:id="clmProcessesDFKT" prefWidth="181.0" text="NachfrageFunktion" />
                                  </columns>
                               </TableView>
-                              <Label layoutX="15.0" layoutY="463.0" text="Project list" />
+                              <Label layoutX="15.0" layoutY="463.0" styleClass="Titel2" text="Project list" />
                               <TableView fx:id="tvProjects" editable="true" layoutX="14.0" layoutY="496.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
                                 <columns>
                                   <TableColumn fx:id="clmProjectsProject" editable="false" prefWidth="258.0" text="Project" />
@@ -83,7 +113,7 @@
                               </TableView>
                            </children>
                            <padding>
-                              <Insets left="14.0" right="14.0" top="10.0" />
+                              <Insets left="14.0" right="14.0" top="14.0" />
                            </padding>
                         </VBox>
                      </content>
@@ -95,13 +125,20 @@
                               <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
                            </padding>
                            <children>
-                              <Label text="Constraint List" />
-                              <ListView fx:id="lvConstraints" prefHeight="200.0" prefWidth="200.0" />
-                              <Label alignment="CENTER" disable="true" prefHeight="27.0" prefWidth="1150.0" text="Drag and drop constraints from the pool onto this list to add constraints" textAlignment="CENTER">
-                                 <font>
-                                    <Font name="System Italic" size="18.0" />
-                                 </font>
-                              </Label>
+                              <Label styleClass="Titel2" text="Constraint List" />
+                              <VBox>
+                                 <children>
+                                    <ListView fx:id="lvConstraints" prefHeight="200.0" prefWidth="200.0" />
+                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="1150.0" styleClass="InfoText" text="Drag and drop constraints from the pool onto this list to add constraints" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="System Italic" size="18.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="4.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
                            </children>
                         </VBox>
                      </content>
@@ -156,15 +193,5 @@
             </VBox>
          </items>
       </SplitPane>
-      <VBox layoutY="-7.0" prefHeight="55.0" prefWidth="1518.0">
-         <children>
-            <ToolBar layoutY="-7.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="55.0">
-              <items>
-                <Button fx:id="btnCreateScenario" mnemonicParsing="false" onAction="#createScenario" text="Create Scenario" />
-                  <TextField fx:id="tfName" nodeOrientation="LEFT_TO_RIGHT" promptText="Enter Scenario Name" />
-              </items>
-            </ToolBar>
-         </children>
-      </VBox>
    </children>
-</AnchorPane>
+</VBox>
