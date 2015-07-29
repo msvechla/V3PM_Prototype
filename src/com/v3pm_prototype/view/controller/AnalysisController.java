@@ -55,8 +55,8 @@ public abstract class AnalysisController {
 	
 	private void initCBAbsRel(){
 		cbAbsRel.setItems(olAbsRel);
-		olAbsRel.add(RobustnessAnalysis.ABSOLUT);
 		olAbsRel.add(RobustnessAnalysis.RELATIVE);
+		olAbsRel.add(RobustnessAnalysis.ABSOLUT);
 		cbAbsRel.getSelectionModel().select(olAbsRel.get(0));
 	}
 	

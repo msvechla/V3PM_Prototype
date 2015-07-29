@@ -7,14 +7,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="786.0" prefWidth="1227.0" spacing="8.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.SAProjectSuccessController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="786.0" prefWidth="1441.0" spacing="8.0" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.SAProjectSuccessController">
    <children>
-      <Label text="Sensitivity to Project Success" textFill="#33ccf5" VBox.vgrow="NEVER">
+      <Label styleClass="Titel1" text="Sensitivity to Project Success" textFill="#33ccf5" VBox.vgrow="NEVER">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label maxWidth="1.7976931348623157E308" text="Setup:" textFill="#33ccf5">
+      <Label maxWidth="1.7976931348623157E308" styleClass="Titel2" text="Setup:" textFill="#33ccf5">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -25,15 +25,15 @@
                <children>
                   <HBox spacing="8.0" VBox.vgrow="NEVER">
                      <children>
-                        <ChoiceBox fx:id="cbProject" prefWidth="150.0" />
+                        <ChoiceBox fx:id="cbProject" prefWidth="160.0" />
                         <TextField fx:id="tfRadius" prefWidth="100.0" promptText="Radius" />
                         <TextField fx:id="tfStep" prefWidth="100.0" promptText="Step" />
-                        <ChoiceBox fx:id="cbAbsRel" prefHeight="39.0" />
+                        <ChoiceBox fx:id="cbAbsRel" maxWidth="160.0" prefHeight="39.0" />
                      </children>
                   </HBox>
                   <HBox spacing="8.0" VBox.vgrow="NEVER">
                      <children>
-                        <ChoiceBox fx:id="cbModus" prefWidth="150.0" />
+                        <ChoiceBox fx:id="cbModus" prefWidth="160.0" />
                         <Button fx:id="btnStartAnalysis" mnemonicParsing="false" onAction="#startSAProjectSuccess" text="Start Analysis" />
                      </children>
                   </HBox>
@@ -61,7 +61,7 @@
             </LineChart>
             <VBox spacing="8.0">
                <children>
-                  <Label maxWidth="1.7976931348623157E308" text="Test results:" textFill="#33ccf5">
+                  <Label maxWidth="1.7976931348623157E308" styleClass="Titel2" text="Test results:" textFill="#33ccf5">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>

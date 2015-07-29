@@ -34,7 +34,11 @@ public class RoadMap implements Comparable<RoadMap>, Cloneable{
 		for(int period=0; period < rmArray.length;period++){
 			sb.append("[ ");
 			for(int slot=0; slot< rmArray[period].length;slot++){
-				sb.append(rmArray[period][slot]+" ");
+				if(rmArray[period][slot] != null){
+					sb.append(rmArray[period][slot]+" ");
+				}else{
+					sb.append(" ");
+				}
 			}
 			sb.append("]");
 		}

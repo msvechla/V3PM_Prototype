@@ -8,55 +8,75 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="912.0" spacing="8.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.RobustnessAnalysisController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="726.0" prefWidth="1117.0" spacing="8.0" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.RobustnessAnalysisController">
    <children>
-      <Label text="Robustness Analysis" textFill="#33ccf5" VBox.vgrow="NEVER">
+      <Label styleClass="Titel1" text="Robustness Analysis" textFill="#33ccf5" VBox.vgrow="NEVER">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <HBox spacing="8.0" VBox.vgrow="NEVER">
-         <children>
-            <ChoiceBox fx:id="cbType" prefWidth="150.0" />
-            <ChoiceBox fx:id="cbObject" prefWidth="150.0" />
-            <ChoiceBox fx:id="cbParameter" prefWidth="150.0" />
-            <TextField fx:id="tfRadius" prefWidth="100.0" promptText="Radius" />
-            <TextField fx:id="tfStep" prefWidth="100.0" promptText="Step" />
-            <ChoiceBox fx:id="cbAbsRel" prefWidth="100.0" />
-         </children>
-      </HBox>
-      <HBox spacing="8.0" VBox.vgrow="NEVER">
-         <children>
-            <ChoiceBox fx:id="cbModus" prefWidth="150.0" />
-            <Button fx:id="btnStartAnalysis" mnemonicParsing="false" onAction="#startRobustnessAnalysis" text="Start Analysis" />
-         </children>
-      </HBox>
-      <Label maxWidth="1.7976931348623157E308" text="Solution:" textFill="#33ccf5">
+      <Label maxWidth="1.7976931348623157E308" styleClass="Titel2" text="Input parameters:" textFill="#33ccf5">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <HBox>
+      <HBox spacing="8.0" VBox.vgrow="NEVER">
          <children>
-            <ProgressIndicator fx:id="piSolution" progress="0.0">
+            <ChoiceBox fx:id="cbType" prefWidth="160.0" />
+            <ChoiceBox fx:id="cbObject" prefWidth="160.0" />
+            <ChoiceBox fx:id="cbParameter" prefWidth="160.0" />
+            <TextField fx:id="tfRadius" prefWidth="100.0" promptText="Radius" />
+            <TextField fx:id="tfStep" prefWidth="100.0" promptText="Step" />
+            <ChoiceBox fx:id="cbAbsRel" prefWidth="160.0" />
+         </children>
+      </HBox>
+      <HBox spacing="8.0" VBox.vgrow="NEVER">
+         <children>
+            <ChoiceBox fx:id="cbModus" prefWidth="160.0" />
+            <Button fx:id="btnStartAnalysis" mnemonicParsing="false" onAction="#startRobustnessAnalysis" text="Start Analysis" />
+         </children>
+      </HBox>
+      <Label maxWidth="1.7976931348623157E308" styleClass="Titel2" text="Solution:" textFill="#33ccf5">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Label>
+      <HBox maxHeight="-Infinity" prefHeight="120.0" prefWidth="888.0">
+         <children>
+            <VBox>
+               <children>
+                  <HBox VBox.vgrow="ALWAYS" />
+                  <ProgressIndicator fx:id="piSolution" progress="0.0" VBox.vgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets right="8.0" />
+                     </HBox.margin>
+                  </ProgressIndicator>
+                  <HBox VBox.vgrow="ALWAYS" />
+               </children>
                <HBox.margin>
-                  <Insets right="8.0" />
+                  <Insets right="20.0" />
                </HBox.margin>
-            </ProgressIndicator>
-            <Label fx:id="lblSolution" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" minHeight="50.0" prefHeight="50.0" style="-fx-background-color: #EDEDED;" HBox.hgrow="ALWAYS">
+            </VBox>
+            <Label fx:id="lblSolution" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="50.0" style="-fx-background-color: #EDEDED;" HBox.hgrow="ALWAYS">
                <padding>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </padding>
             </Label>
          </children>
       </HBox>
-      <LineChart fx:id="lineChart" legendSide="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+      <LineChart fx:id="lineChart" legendSide="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="NPV per Parameter Step" VBox.vgrow="ALWAYS">
         <xAxis>
           <NumberAxis forceZeroInRange="false" side="BOTTOM" fx:id="xAxis" />
         </xAxis>
         <yAxis>
           <NumberAxis fx:id="yAxis" forceZeroInRange="false" label="NPV" side="LEFT" />
         </yAxis>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
       </LineChart>
    </children>
    <padding>

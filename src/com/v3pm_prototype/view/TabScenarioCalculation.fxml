@@ -89,43 +89,16 @@
                   </TitledPane>
                </children>
             </HBox>
-            <HBox prefHeight="180.0">
+            <VBox>
                <children>
-                  <VBox HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="Titel2" text="Project &amp; Process Dependencies" />
-                        <VBox VBox.vgrow="ALWAYS">
-                           <children>
-                              <SwingNode fx:id="swingNode" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-                                 <HBox.margin>
-                                    <Insets left="8.0" />
-                                 </HBox.margin>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </SwingNode>
-                           </children>
-                        </VBox>
-                     </children>
-                  </VBox>
-                  <BarChart fx:id="bcRBroken" legendVisible="false" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="600.0" title="Amount of Broken Restrictions">
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis forceZeroInRange="false" label="#Broken" side="LEFT" />
-                    </yAxis>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </BarChart>
+                  <Label styleClass="Titel1" text="Process Information:">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label styleClass="Titel2" text="Process Development:" />
                </children>
-            </HBox>
-            <Label styleClass="Titel2" text="Process Development">
-               <VBox.margin>
-                  <Insets bottom="10.0" top="20.0" />
-               </VBox.margin>
-            </Label>
+            </VBox>
             <HBox spacing="10.0">
                <children>
                   <LineChart fx:id="lcProcessQuality" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Quality" HBox.hgrow="ALWAYS">
@@ -165,6 +138,11 @@
                   <Insets />
                </VBox.margin>
             </HBox>
+            <Label styleClass="Titel2" text="Process Details">
+               <VBox.margin>
+                  <Insets bottom="4.0" />
+               </VBox.margin>
+            </Label>
             <TableView fx:id="tvProcesses" maxHeight="250.0" prefWidth="200.0" VBox.vgrow="NEVER">
               <columns>
                 <TableColumn fx:id="clmProcessesName" prefWidth="311.0" text="Process" />
@@ -178,15 +156,39 @@
                   <TableColumn fx:id="clmProcessesFCDelta" prefWidth="102.0" text="FCDelta" />
               </columns>
             </TableView>
+            <Label styleClass="Titel1" text="Scenario Restrictions:" />
+            <BarChart fx:id="bcRBroken" legendVisible="false" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="600.0" title="Amount of Broken Restrictions">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis forceZeroInRange="false" label="#Broken" side="LEFT" />
+              </yAxis>
+            </BarChart>
          </children>
          <padding>
             <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
          </padding>
       </VBox>
-      <TitledPane collapsible="false" contentDisplay="RIGHT" graphicTextGap="8.0" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="590.0" prefWidth="177.0" text="Roadmap Explorer">
+      <TitledPane collapsible="false" contentDisplay="RIGHT" graphicTextGap="8.0" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="590.0" text="Roadmap Explorer" HBox.hgrow="NEVER">
          <content>
-            <VBox prefHeight="538.0" prefWidth="428.0">
+            <VBox prefHeight="538.0" prefWidth="450.0">
                <children>
+                  <VBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <SwingNode fx:id="swingNode" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="8.0" />
+                           </HBox.margin>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </SwingNode>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </VBox>
                   <TableView fx:id="tvRoadmap" maxHeight="1.7976931348623157E308" minHeight="-Infinity" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="clmRoadmap" prefWidth="265.0" text="Roadmap" />
