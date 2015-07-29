@@ -1,13 +1,25 @@
 package com.v3pm_prototype.view.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.graphstream.util.set.Array;
+
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
 
+import com.v3pm_prototype.calculation.Calculator;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
+import com.v3pm_prototype.rmgeneration.RMGenerator;
+import com.v3pm_prototype.rmgeneration.RoadMap;
+import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 public class ScenarioComparisonController {
 	@FXML
@@ -42,6 +54,10 @@ public class ScenarioComparisonController {
 	private Tab tab;
 	private DBScenario scenario1;
 	private DBScenario scenario2;
+	private RunConfiguration config1;
+	private RunConfiguration config2;
+	private List<RoadMap> rmList1 = new ArrayList<RoadMap>();
+	private List<RoadMap> rmList2 = new ArrayList<RoadMap>();
 	
 	public ScenarioComparisonController(){
 		
@@ -49,6 +65,69 @@ public class ScenarioComparisonController {
 	
 	@FXML
 	public void initialize(){
+		
+	}
+	
+	private void initialRMCalculation(){
+		Task calcTask = new Task<Object>() {
+
+			@Override
+			protected Object call() throws Exception {
+				Calculator calc1 = new Calculator(rmList1, config1);
+				Calculator calc2 = new Calculator(rmList2, config2);
+				
+				rmList1 = calc1.start();
+				rmList2 = calc2.start();
+				return null;
+			}
+
+			@Override
+			protected void succeeded() {
+				System.out.println("SUCCEEDED");
+				lblNPV1.setText("NPV: "+rmList1.get(0).getNPVString());
+				lblNPV2.setText("NPV: "+rmList2.get(0).getNPVString());
+				
+				super.succeeded();
+			}
+			
+			
+		};
+		
+		Thread t = new Thread(calcTask);
+		t.setDaemon(false);
+		t.start();
+	}
+	
+	private void initialRMGeneration(){
+		RMGenerator rmGen1 = new RMGenerator(config1);
+		RMGenerator rmGen2 = new RMGenerator(config2);
+		
+		Thread t1 = new Thread(rmGen1);
+		t1.setDaemon(false);
+		
+		Thread t2 = new Thread(rmGen2);
+		t2.setDaemon(false);
+		
+		rmGen1.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+
+			@Override
+			public void handle(WorkerStateEvent event) {
+				rmList1 = rmGen1.getValue();
+				t2.start();
+			}
+		});
+		
+		rmGen2.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+
+			@Override
+			public void handle(WorkerStateEvent event) {
+				rmList2 = rmGen2.getValue();
+				initialRMCalculation();
+			}
+		});
+		
+		t1.start();
+		
 		
 	}
 	
@@ -160,8 +239,9 @@ public class ScenarioComparisonController {
 	public void setScenarios(DBScenario scenario1, DBScenario scenario2) {
 		this.scenario1 = scenario1;
 		this.scenario2 = scenario2;
-		
-		
+		this.config1 = scenario1.generateRunConfiguration();
+		this.config2 = scenario2.generateRunConfiguration();
+		initialRMGeneration();
 	}
 	
 	

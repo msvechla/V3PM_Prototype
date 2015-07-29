@@ -813,6 +813,8 @@ public class TabScenarioCalculationController {
 	 * @param mainApp
 	 */
 	public void setMainApp(MainApp mainApp) {
+		//TODO Cycle through tabs and closs all viewers
+		
 		this.mainApp = mainApp;
 		this.mainApp.getPrimaryStage().setOnCloseRequest(
 				new EventHandler<WindowEvent>() {

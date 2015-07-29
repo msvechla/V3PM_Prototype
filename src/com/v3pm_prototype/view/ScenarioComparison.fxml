@@ -21,14 +21,14 @@
                <children>
                   <VBox prefHeight="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox fx:id="roadmapBox1" prefHeight="200.0" prefWidth="100.0" />
-                        <Label text="NPV: 1234123" />
+                        <VBox fx:id="roadmapBox1" prefHeight="112.0" prefWidth="100.0" />
+                        <Label fx:id="lblNPV1" text="NPV: 1234123" />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" HBox.hgrow="ALWAYS">
                      <children>
                         <VBox fx:id="roadmapBox2" prefHeight="200.0" prefWidth="100.0" />
-                        <Label text="NPV: 1231231" />
+                        <Label fx:id="lblNPV2" text="NPV: 1231231" />
                      </children>
                   </VBox>
                </children>
