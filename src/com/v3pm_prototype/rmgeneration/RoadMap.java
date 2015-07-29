@@ -67,8 +67,10 @@ public class RoadMap implements Comparable<RoadMap>, Cloneable{
 			for(int slot = 0; slot < config.getSlotsPerPeriod();slot++){
 				Project p = this.rmArray[period][slot];
 				if(p != null){
-					Project copy = new Project(p.getId(), p.getName(), p.getNumberOfPeriods(), p.getType(), p.getFixedCosts(), p.getOinv(),p.getI(), p.getA(), p.getB(), p.getE(), p.getU(),
-							p.getM(), p.getAbsRelQ(), p.getAbsRelT(), p.getAbsRelOop());
+					//Lookup Project from config to take into account changed values from Robustness Analysis
+					Project cp = config.getProject(p.getId());
+					Project copy = new Project(cp.getId(), cp.getName(), cp.getNumberOfPeriods(), cp.getType(), cp.getFixedCosts(), cp.getOinv(),cp.getI(), cp.getA(), cp.getB(), cp.getE(), cp.getU(),
+							cp.getM(), cp.getAbsRelQ(), cp.getAbsRelT(), cp.getAbsRelOop());
 					copy.setPeriod(period);
 					
 					//Set the starting period

@@ -157,7 +157,7 @@ public class RoadmapBoxController {
 				if(ra.getObject() instanceof Project){
 					if(((Project)ra.getObject()).equals(project)){
 						//add info for every calculated parameter
-						sb.append(ra.getParameter() + ":\t"+(ra.getPercentage()*100)+" %\n");
+						sb.append(ra.getSelectedParameter().getName() + ":\t"+(ra.getPercentage()*100)+" %\n");
 					}
 				}
 			}

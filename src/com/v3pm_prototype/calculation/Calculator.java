@@ -73,7 +73,7 @@ public class Calculator{
 //				if(RM.toString().contains("[ Six Sigma null ][ null null ]")){
 //					System.out.println("FOUND");
 //				}
-				if(RM.toString().contains("[ Einführung SEPA Standardisierung ][ Automatisierung null ]")){
+				if(RM.toString().contains("[ Einführung SEPA Standardisierung ][ Automatisierung    ]")){
 					System.out.println("FOUND");
 				}
 				
