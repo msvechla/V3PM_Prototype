@@ -7,7 +7,6 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-
 <HBox maxWidth="1.7976931348623157E308" spacing="8.0" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.TabStartController">
    <children>
       <VBox maxWidth="1.7976931348623157E308" prefHeight="398.0" spacing="40.0" HBox.hgrow="ALWAYS">
@@ -18,6 +17,9 @@
                      <font>
                         <Font size="16.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
                   </Label>
                   <TableView fx:id="tvProcesses" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0" prefHeight="280.0">
                      <VBox.margin>
@@ -53,6 +55,9 @@
                      <font>
                         <Font size="16.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
                   </Label>
                   <TableView fx:id="tvProjects" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0" prefHeight="280.0">
                      <VBox.margin>

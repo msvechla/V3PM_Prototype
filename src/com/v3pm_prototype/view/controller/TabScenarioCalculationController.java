@@ -26,6 +26,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane.TabClosingPolicy;
@@ -126,6 +127,9 @@ public class TabScenarioCalculationController {
 	@FXML
 	private BarChart<String, Number> bcRBroken;
 
+	@FXML
+	private ListView lvRestrictions;
+	
 	@FXML
 	private SwingNode swingNode;
 	private Graph graph;
@@ -567,6 +571,12 @@ public class TabScenarioCalculationController {
 					}
 				});
 	}
+	
+	private void initLVRestrictions(){
+		ObservableList olRestrictions = FXCollections.observableArrayList();
+		olRestrictions.addAll(config.getConstraintSet().getLstConstraints());
+		lvRestrictions.setItems(olRestrictions);
+	}
 
 	private void initTVRoadmaps() {
 		// Set the Data for the Roadmap Table
@@ -793,8 +803,8 @@ public class TabScenarioCalculationController {
 	public void setScenario(DBScenario newScenario) {
 		this.scenario = newScenario;
 		this.config = newScenario.generateRunConfiguration();
+		initLVRestrictions();
 		startInitialCalculations();
-
 	}
 
 	/**
@@ -808,7 +818,9 @@ public class TabScenarioCalculationController {
 				new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent event) {
-						viewer.close();
+						if(viewer != null){
+							viewer.close();
+						}
 					}
 				});
 	}
