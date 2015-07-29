@@ -32,14 +32,30 @@ public class DBScenario {
 		this.slotsPerPeriod = slotsPerPeriod;
 		this.discountRate = discountRate;
 		this.oOAFixed = oOAFixed;
-		this.lstProjects = lstProjects;
-		this.lstProcesses = lstProcesses;
-		this.lstConstraints = lstConstraints;
+		
+		if(lstProjects != null){
+			this.lstProjects = lstProjects;
+		}else{
+			this.lstProjects = new ArrayList<DBProject>();
+		}
+		
+		if(lstProcesses != null){
+			this.lstProcesses = lstProcesses;
+		}else{
+			this.lstProcesses = new ArrayList<DBProcess>();
+		}
+		
+		if(lstConstraints != null){
+			this.lstConstraints = lstConstraints;
+		}else{
+			this.lstConstraints = new ArrayList<DBConstraint>();
+		}
+		
 	}
 	
 	public DBScenario(int id, String name, double npv, int periods,
 			int slotsPerPeriod, double discountRate, double oOAFixed){
-		new DBScenario(id, name, npv, periods, slotsPerPeriod, discountRate, oOAFixed, new ArrayList<DBProject>(), new ArrayList<DBProcess>(), new ArrayList<DBConstraint>());
+		this(id, name, npv, periods, slotsPerPeriod, discountRate, oOAFixed, null, null,null);
 	}
 
 	public RunConfiguration generateRunConfiguration(){

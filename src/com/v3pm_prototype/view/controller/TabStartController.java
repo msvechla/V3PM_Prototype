@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -171,6 +172,44 @@ public class TabStartController {
 
 		}
 	}
+	
+	public void compareScenarios(){
+		if(tvScenarios.getSelectionModel().getSelectedItems().size() == 2){
+			DBScenario scenario1 = tvScenarios.getSelectionModel().getSelectedItems().get(0);
+			DBScenario scenario2 = tvScenarios.getSelectionModel().getSelectedItems().get(1);
+			
+			// Load root layout from fxml file.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class
+					.getResource("/com/v3pm_prototype/view/ScenarioComparison.fxml"));
+			VBox root;
+			try {
+				root = (VBox) loader.load();
+				ScenarioComparisonController scController = loader
+						.getController();
+				scController.setMainApp(this.mainApp);
+
+				Tab tabSC = new Tab("Compare: "+scenario1.getName()+" - "+scenario2.getName());
+				tabSC.setContent(root);
+				tabSC.setClosable(true);
+				
+				mainApp.getV3pmGUIController().getTpMain().getSelectionModel()
+						.select(tabSC);
+
+				mainApp.getV3pmGUIController().getTpMain().getTabs().add(tabSC);
+				mainApp.getV3pmGUIController().getTpMain()
+						.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
+				scController.setTab(tabSC);
+				scController.setScenarios(scenario1,scenario2);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
+	}
 
 	/**
 	 * Opens the window for creation of a new project
@@ -277,6 +316,7 @@ public class TabStartController {
 						"NPVString"));
 
 		tvScenarios.setItems(olScenarios);
+		tvScenarios.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		
 		// -------------------- DOUBLECLICK: START CALCULATION --------------------
 		
