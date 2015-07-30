@@ -6,8 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1421.0" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.ScenarioComparisonController">
+<VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.ScenarioComparisonController">
    <children>
       <Label styleClass="Titel1" text="Solution Comparison" />
       <Label styleClass="Titel2" text="Roadmap &amp; NPV:">
@@ -21,12 +20,14 @@
                <children>
                   <VBox prefHeight="200.0" HBox.hgrow="ALWAYS">
                      <children>
+                        <Label fx:id="lblScenarioName1" styleClass="Titel2" text="Scenario Name 1" />
                         <VBox fx:id="roadmapBox1" prefHeight="112.0" prefWidth="100.0" />
                         <Label fx:id="lblNPV1" text="NPV: 1234123" />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" HBox.hgrow="ALWAYS">
                      <children>
+                        <Label fx:id="lblScenarioName2" styleClass="Titel2" text="Scenario Name 2" />
                         <VBox fx:id="roadmapBox2" prefHeight="200.0" prefWidth="100.0" />
                         <Label fx:id="lblNPV2" text="NPV: 1231231" />
                      </children>
@@ -35,7 +36,7 @@
             </HBox>
          </children>
       </VBox>
-      <Label alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="71.0" prefWidth="1187.0" text="Sample TextTwo lines" wrapText="true" VBox.vgrow="ALWAYS">
+      <Label fx:id="lblSolution" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="71.0" prefWidth="1187.0" text="Sample TextTwo lines" wrapText="true" VBox.vgrow="ALWAYS">
          <VBox.margin>
             <Insets top="4.0" />
          </VBox.margin>
@@ -50,9 +51,9 @@
             <Insets bottom="10.0" />
          </VBox.margin>
       </Label>
-      <HBox VBox.vgrow="ALWAYS">
+      <HBox minHeight="300.0" VBox.vgrow="ALWAYS">
          <children>
-            <BarChart fx:id="bcQuality" title="Quality">
+            <BarChart fx:id="bcQuality" animated="false" prefHeight="300.0" title="Quality" HBox.hgrow="ALWAYS">
               <xAxis>
                 <CategoryAxis label="Process" side="BOTTOM" />
               </xAxis>
@@ -60,7 +61,7 @@
                 <NumberAxis label="Delta" side="LEFT" />
               </yAxis>
             </BarChart>
-            <BarChart fx:id="bcTime" title="Time">
+            <BarChart fx:id="bcTime" animated="false" prefHeight="300.0" title="Time" HBox.hgrow="ALWAYS">
                <xAxis>
                   <CategoryAxis label="Process" side="BOTTOM" />
                </xAxis>
@@ -68,7 +69,7 @@
                   <NumberAxis label="Delta" side="LEFT" />
                </yAxis>
             </BarChart>
-            <BarChart fx:id="bcOOP" title="Operating Outflows">
+            <BarChart fx:id="bcOOP" animated="false" prefHeight="300.0" title="Operating Outflows" HBox.hgrow="ALWAYS">
                <xAxis>
                   <CategoryAxis label="Process" side="BOTTOM" />
                </xAxis>
@@ -76,7 +77,7 @@
                   <NumberAxis label="Delta" side="LEFT" />
                </yAxis>
             </BarChart>
-            <BarChart fx:id="bcFixedCosts" title="Fixed Costs">
+            <BarChart fx:id="bcFixedCosts" animated="false" prefHeight="300.0" title="Fixed Costs" HBox.hgrow="ALWAYS">
                <xAxis>
                   <CategoryAxis label="Process" side="BOTTOM" />
                </xAxis>
@@ -96,7 +97,7 @@
             <Insets bottom="10.0" />
          </padding>
       </Label>
-      <BarChart fx:id="bcBrokenRestrictions" VBox.vgrow="ALWAYS">
+      <BarChart fx:id="bcBrokenRestrictions" animated="false" VBox.vgrow="ALWAYS">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>

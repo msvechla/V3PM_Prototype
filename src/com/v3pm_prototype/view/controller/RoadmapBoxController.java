@@ -150,9 +150,10 @@ public class RoadmapBoxController {
 		sb.append("u:\t" + project.getU() + "\n");
 		sb.append("m:\t" + project.getM() + "\n\n");
 		
-		sb.append("Robustness Info: \n");
+		
 		//Add info from the robustness Analysis
 		if(cra != null){
+			sb.append("Robustness Info: \n");
 			for(RobustnessAnalysis ra: cra.getLstResults()){
 				if(ra.getObject() instanceof Project){
 					if(((Project)ra.getObject()).equals(project)){

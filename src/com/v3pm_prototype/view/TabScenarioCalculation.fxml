@@ -99,7 +99,7 @@
                   <Label styleClass="Titel2" text="Process Development:" />
                </children>
             </VBox>
-            <HBox spacing="10.0">
+            <HBox prefHeight="250.0" spacing="10.0">
                <children>
                   <LineChart fx:id="lcProcessQuality" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Quality" HBox.hgrow="ALWAYS">
                     <xAxis>
