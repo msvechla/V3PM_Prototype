@@ -9,7 +9,7 @@
 
 <HBox maxWidth="1.7976931348623157E308" spacing="8.0" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.TabStartController">
    <children>
-      <VBox maxWidth="1.7976931348623157E308" prefHeight="398.0" spacing="40.0" HBox.hgrow="ALWAYS">
+      <VBox maxWidth="1.7976931348623157E308" prefHeight="398.0" spacing="12.0" HBox.hgrow="ALWAYS">
          <children>
             <VBox>
                <children>
@@ -18,15 +18,15 @@
                         <Font size="16.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="10.0" />
+                        <Insets bottom="8.0" />
                      </VBox.margin>
                   </Label>
-                  <TableView fx:id="tvProcesses" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0" prefHeight="280.0">
+                  <TableView fx:id="tvProcesses" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0">
                      <VBox.margin>
                         <Insets bottom="4.0" />
                      </VBox.margin>
                      <columns>
-                        <TableColumn fx:id="clmProcessesProcess" editable="false" prefWidth="260.0" text="Process" />
+                        <TableColumn fx:id="clmProcessesProcess" editable="false" prefWidth="230.0" text="Process" />
                         <TableColumn fx:id="clmProcessesFixCosts" prefWidth="118.0" text="Fixed Costs" />
                         <TableColumn fx:id="clmProcessesQ" editable="false" minWidth="0.0" prefWidth="74.0" text="Quality" />
                         <TableColumn fx:id="clmProcessesT" prefWidth="74.0" text="Time" />
@@ -34,7 +34,7 @@
                         <TableColumn fx:id="clmProcessesOop" prefWidth="120.0" text="Op. Outflows" />
                         <TableColumn fx:id="clmProcessesDGQ" prefWidth="74.0" text="Q. Deg." />
                         <TableColumn fx:id="clmProcessesDGT" prefWidth="74.0" text="T. Deg" />
-                        <TableColumn fx:id="clmProcessesDFKT" maxWidth="1.7976931348623157E308" prefWidth="400.0" text="Demand" />
+                        <TableColumn fx:id="clmProcessesDFKT" maxWidth="1.7976931348623157E308" prefWidth="300.0" text="Demand" />
                      </columns>
                   </TableView>
                   <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Contains all available processes. Processes can be modified by specific process-level Projects or general bpm-level Projects." VBox.vgrow="ALWAYS">
@@ -56,25 +56,25 @@
                         <Font size="16.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="10.0" />
+                        <Insets bottom="8.0" />
                      </VBox.margin>
                   </Label>
-                  <TableView fx:id="tvProjects" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0" prefHeight="280.0">
+                  <TableView fx:id="tvProjects" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="240.0">
                      <VBox.margin>
                         <Insets bottom="4.0" />
                      </VBox.margin>
                      <columns>
-                        <TableColumn fx:id="clmProjectsProject" editable="false" prefWidth="260.0" text="Project" />
+                        <TableColumn fx:id="clmProjectsProject" editable="false" prefWidth="210.0" text="Project" />
                         <TableColumn fx:id="clmProjectsPeriods" editable="false" minWidth="0.0" prefWidth="74.0" text="Periods" />
-                        <TableColumn fx:id="clmProjectsType" editable="false" prefWidth="120.0" text="Type" />
+                        <TableColumn fx:id="clmProjectsType" editable="false" prefWidth="95.0" text="Type" />
                         <TableColumn fx:id="clmProjectsProcess" prefWidth="120.0" text="Process" />
-                        <TableColumn fx:id="clmProjectsFixCosts" prefWidth="120.0" text="Fixed Costs" />
-                        <TableColumn fx:id="clmProjectsOInv" prefWidth="120.0" text="Inv. Outflows" />
-                        <TableColumn fx:id="clmProjectsA" prefWidth="120.0" text="Ef. OOp" />
-                        <TableColumn fx:id="clmProjectsB" prefWidth="120.0" text="Ef. OInv" />
-                        <TableColumn fx:id="clmProjectsE" minWidth="0.0" prefWidth="120.0" text="Ef. on Time" />
-                        <TableColumn fx:id="clmProjectsU" prefWidth="120.0" text="Ef. on Qual" />
-                        <TableColumn fx:id="clmProjectsM" prefWidth="120.0" text="Ef. on FCosts" />
+                        <TableColumn fx:id="clmProjectsFixCosts" prefWidth="95.0" text="Fixed Costs" />
+                        <TableColumn fx:id="clmProjectsOInv" prefWidth="95.0" text="Inv. Outflows" />
+                        <TableColumn fx:id="clmProjectsA" prefWidth="95.0" text="Ef. OOp" />
+                        <TableColumn fx:id="clmProjectsB" prefWidth="95.0" text="Ef. OInv" />
+                        <TableColumn fx:id="clmProjectsE" minWidth="0.0" prefWidth="95.0" text="Ef. on Time" />
+                        <TableColumn fx:id="clmProjectsU" prefWidth="95.0" text="Ef. on Qual" />
+                        <TableColumn fx:id="clmProjectsM" prefWidth="95.0" text="Ef. on FCosts" />
                      </columns>
                   </TableView>
                   <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Contains all available projects. Projects can be classified as process- or bpm-level.">
@@ -102,7 +102,7 @@
                      <children>
                         <TableView fx:id="tvScenarios" layoutY="45.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="280.0">
                           <columns>
-                            <TableColumn fx:id="clmScenariosName" prefWidth="258.0" text="Name" />
+                            <TableColumn fx:id="clmScenariosName" prefWidth="210.0" text="Name" />
                               <TableColumn fx:id="clmScenariosPeriods" minWidth="0.0" prefWidth="83.0" text="Periods" />
                               <TableColumn fx:id="clmScenariosSlots" prefWidth="49.0" text="Slots" />
                               <TableColumn fx:id="clmScenarioDR" minWidth="0.0" prefWidth="125.0" text="Discount Rate" />

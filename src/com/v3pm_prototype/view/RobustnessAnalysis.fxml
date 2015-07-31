@@ -44,7 +44,7 @@
             <Insets top="10.0" />
          </VBox.margin>
       </Label>
-      <HBox maxHeight="-Infinity" prefHeight="120.0" prefWidth="888.0">
+      <HBox maxHeight="-Infinity" prefHeight="60.0" prefWidth="888.0" VBox.vgrow="NEVER">
          <children>
             <VBox>
                <children>
@@ -60,7 +60,7 @@
                   <Insets right="20.0" />
                </HBox.margin>
             </VBox>
-            <Label fx:id="lblSolution" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="50.0" style="-fx-background-color: #EDEDED;" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblSolution" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="50.0" styleClass="IBoxText" text="asd" HBox.hgrow="ALWAYS">
                <padding>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </padding>

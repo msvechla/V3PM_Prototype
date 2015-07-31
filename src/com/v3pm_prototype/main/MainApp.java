@@ -1,17 +1,12 @@
 package com.v3pm_prototype.main;
 
 
-import java.io.File;
 import java.io.IOException;
-
-import com.v3pm_prototype.excel.ExcelImporter;
-import com.v3pm_prototype.rmgeneration.RunConfiguration;
 import com.v3pm_prototype.view.controller.V3PMGUIController;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -61,24 +56,5 @@ public class MainApp extends Application {
 	public V3PMGUIController getV3pmGUIController() {
 		return v3pmGUIController;
 	}
-	
-
-//	/**
-//	 * Creates the standard configuration from an Excel file
-//	 * @param excelFile
-//	 */
-//	public static void loadConfiguration(File excelFile) {
-//		try {
-//			
-//			RunConfiguration.standardConfig = new RunConfiguration();
-//			ExcelImporter.importAllExcelData(excelFile, RunConfiguration.standardConfig);
-//		
-//		} catch (Exception e) {
-//			System.err.println("Fehler beim Excel-Import");
-//			System.err.println(e.getMessage());
-//			e.printStackTrace();
-//		}
-//	}
-	
 	
 }

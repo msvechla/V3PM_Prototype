@@ -28,7 +28,7 @@
                         <ChoiceBox fx:id="cbProject" prefWidth="160.0" />
                         <TextField fx:id="tfRadius" prefWidth="100.0" promptText="Radius" />
                         <TextField fx:id="tfStep" prefWidth="100.0" promptText="Step" />
-                        <ChoiceBox fx:id="cbAbsRel" maxWidth="160.0" prefHeight="39.0" />
+                        <ChoiceBox fx:id="cbAbsRel" maxWidth="160.0" />
                      </children>
                   </HBox>
                   <HBox spacing="8.0" VBox.vgrow="NEVER">

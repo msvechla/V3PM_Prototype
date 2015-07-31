@@ -9,7 +9,6 @@ import java.util.List;
 import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.database.DBProject;
-import com.v3pm_prototype.main.Main;
 
 public class RoadMap implements Comparable<RoadMap>, Cloneable{
 	private Project[][] rmArray;

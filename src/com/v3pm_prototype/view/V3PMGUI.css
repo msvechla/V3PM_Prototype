@@ -1,14 +1,19 @@
 .Titel1 {
 	-fx-text-fill: #B10034;
-	-fx-font: 20pt "System";
+	-fx-font: 14pt "System";
 }
 
 .Titel2 {
 	-fx-text-fill: #B10034;
-	-fx-font: 16pt "System";
+	-fx-font: 12pt "System";
 }
 
 .InfoText {
+	-fx-text-fill: #D6D6D6;
+	-fx-font: 4pt "System";
+}
+
+.IBoxText {
 	-fx-text-fill: #D6D6D6;
 	-fx-font: 8pt "System";
 }

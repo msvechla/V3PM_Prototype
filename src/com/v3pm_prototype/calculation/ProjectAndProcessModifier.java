@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.v3pm_prototype.database.DBProcess;
-import com.v3pm_prototype.main.Main;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 /**

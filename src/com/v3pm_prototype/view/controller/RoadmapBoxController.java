@@ -64,8 +64,8 @@ public class RoadmapBoxController {
 
 				if (project != null) {
 					StackPane projectBox = new StackPane();
-					projectBox.setPrefSize(50, 50);
-					Circle projectCircle = new Circle(28);
+					projectBox.setPrefSize(35, 35);
+					Circle projectCircle = new Circle(22);
 					projectBox.getChildren().add(projectCircle);
 
 					if (config.getColorID(project) < Colorpalette.PROJECT.length) {
@@ -84,15 +84,15 @@ public class RoadmapBoxController {
 					lbl.setPadding(new Insets(6));
 					lbl.setWrapText(true);
 					lbl.setTextAlignment(TextAlignment.CENTER);
-					lbl.setFont(Font.font("System", FontWeight.BOLD, 14));
+					lbl.setFont(Font.font("System", FontWeight.BOLD, 10));
 					lbl.setTextFill(Color.WHITE);
 					projectBox.getChildren().add(lbl);
 					lbl.setTooltip(generateToolTip(project,cra,config));
 					periodBox.getChildren().add(projectBox);
 				} else {
 					StackPane projectBox = new StackPane();
-					projectBox.setPrefSize(50, 50);
-					Circle projectCircle = new Circle(28);
+					projectBox.setPrefSize(35, 35);
+					Circle projectCircle = new Circle(22);
 					projectCircle.setStroke(Color.LIGHTGRAY);
 					projectCircle.setFill(Color.TRANSPARENT);
 					projectCircle.setStrokeWidth(1);
@@ -103,11 +103,11 @@ public class RoadmapBoxController {
 			}
 
 			// Add a label for each period
-			HBox periodLabel = new HBox(4);
+			HBox periodLabel = new HBox(8);
 			periodLabels.getChildren().add(periodLabel);
 			Label lbl = new Label("Period "+String.valueOf(period));
-			lbl.setFont(Font.font("System", 14));
-			lbl.setPrefWidth(114);
+			lbl.setFont(Font.font("System", 10));
+			lbl.setPrefWidth(94);
 			lbl.setAlignment(Pos.CENTER);
 			periodLabel.getChildren().add(lbl);
 
