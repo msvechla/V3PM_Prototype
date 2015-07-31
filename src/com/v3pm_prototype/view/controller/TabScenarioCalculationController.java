@@ -422,13 +422,12 @@ public class TabScenarioCalculationController {
 		graph.addAttribute("ui.antialias");
 
 		viewer = new Viewer(graph, ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-
 		graphstreamLayout = new SpringBox(false);
 		viewer.enableAutoLayout(graphstreamLayout);
 		view = viewer.addDefaultView(false);
-		viewer.enableAutoLayout();
-		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.EXIT);
 		swingNode.setContent(view);
+		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.EXIT);
+		
 	}
 
 	private void initGraphStream() {

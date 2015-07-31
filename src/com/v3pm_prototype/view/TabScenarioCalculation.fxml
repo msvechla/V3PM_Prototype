@@ -9,15 +9,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1894.0" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.TabScenarioCalculationController">
+<HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="910.0" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.TabScenarioCalculationController">
    <children>
-      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1200.0" spacing="8.0" HBox.hgrow="ALWAYS">
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="600.0" prefHeight="910.0" prefWidth="1357.0" spacing="8.0" HBox.hgrow="ALWAYS">
          <children>
             <HBox spacing="8.0">
                <children>
                   <TitledPane collapsible="false" text="Scenario Solution" textFill="#b10034" HBox.hgrow="ALWAYS">
                      <content>
-                        <HBox prefHeight="105.0" prefWidth="1398.0" spacing="10.0">
+                        <HBox prefHeight="105.0" spacing="10.0">
                            <children>
                               <VBox HBox.hgrow="ALWAYS">
                                  <children>
@@ -71,7 +71,7 @@
                                                       </Label>
                                                    </children>
                                                 </VBox>
-                                                <Label alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="598.0" text="The general robustness is calculated by varying every set project modifier in the range from -5% to +5%. The value represents the percentage of calculations where the solution managed to stay on top" textOverrun="CLIP" wrapText="true" HBox.hgrow="ALWAYS">
+                                                <Label alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" prefWidth="400.0" text="The general robustness is calculated by varying every set project modifier in the range from -5% to +5%. The value represents the percentage of calculations where the solution managed to stay on top" textOverrun="CLIP" wrapText="true" HBox.hgrow="ALWAYS">
                                                    <HBox.margin>
                                                       <Insets left="10.0" />
                                                    </HBox.margin>
@@ -115,7 +115,7 @@
                <children>
                   <LineChart fx:id="lcProcessQuality" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Quality" HBox.hgrow="ALWAYS">
                     <xAxis>
-                      <CategoryAxis endMargin="10.0" gapStartAndEnd="false" label="Periods" side="BOTTOM" startMargin="10.0" />
+                      <CategoryAxis endMargin="10.0" gapStartAndEnd="false" side="BOTTOM" startMargin="10.0" />
                     </xAxis>
                     <yAxis>
                       <NumberAxis forceZeroInRange="false" label="Quality" side="LEFT" />
@@ -123,7 +123,7 @@
                   </LineChart>
                   <LineChart fx:id="lcProcessTime" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Time" HBox.hgrow="ALWAYS">
                      <xAxis>
-                        <CategoryAxis endMargin="10.0" gapStartAndEnd="false" label="Periods" side="BOTTOM" startMargin="10.0" />
+                        <CategoryAxis endMargin="10.0" gapStartAndEnd="false" startMargin="10.0" />
                      </xAxis>
                      <yAxis>
                         <NumberAxis forceZeroInRange="false" label="Time" side="LEFT" />
@@ -131,7 +131,7 @@
                   </LineChart>
                   <LineChart fx:id="lcProcessOOP" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Operating Outflows">
                      <xAxis>
-                        <CategoryAxis endMargin="10.0" gapStartAndEnd="false" label="Periods" side="BOTTOM" startMargin="10.0" />
+                        <CategoryAxis endMargin="10.0" gapStartAndEnd="false" side="BOTTOM" startMargin="10.0" />
                      </xAxis>
                      <yAxis>
                         <NumberAxis forceZeroInRange="false" label="Time" side="LEFT" />
@@ -139,7 +139,7 @@
                   </LineChart>
                   <LineChart fx:id="lcProcessFC" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Fixed Costs">
                      <xAxis>
-                        <CategoryAxis endMargin="10.0" gapStartAndEnd="false" label="Periods" side="BOTTOM" startMargin="10.0" />
+                        <CategoryAxis endMargin="10.0" gapStartAndEnd="false" side="BOTTOM" startMargin="10.0" />
                      </xAxis>
                      <yAxis>
                         <NumberAxis forceZeroInRange="false" label="Time" side="LEFT" />
@@ -155,7 +155,7 @@
                   <Insets />
                </VBox.margin>
             </Label>
-            <TableView fx:id="tvProcesses" maxHeight="250.0" prefHeight="140.0" prefWidth="1400.0" VBox.vgrow="NEVER">
+            <TableView fx:id="tvProcesses" maxHeight="250.0" minHeight="140.0" prefHeight="200.0" VBox.vgrow="NEVER">
               <columns>
                 <TableColumn fx:id="clmProcessesName" prefWidth="311.0" text="Process" />
                 <TableColumn fx:id="clmProcessesQ" prefWidth="95.0" text="Quality" />
@@ -168,7 +168,7 @@
                   <TableColumn fx:id="clmProcessesFCDelta" prefWidth="102.0" text="FCDelta" />
               </columns>
             </TableView>
-            <VBox maxHeight="1.7976931348623157E308">
+            <VBox maxHeight="1.7976931348623157E308" minHeight="80.0">
                <children>
                   <Label styleClass="Titel1" text="Scenario Restrictions:">
                      <VBox.margin>
@@ -180,11 +180,11 @@
                         <Insets bottom="8.0" />
                      </VBox.margin>
                   </Label>
-                  <HBox maxHeight="1.7976931348623157E308" prefHeight="180.0" prefWidth="1400.0" VBox.vgrow="ALWAYS">
+                  <HBox maxHeight="1.7976931348623157E308" minHeight="50.0" prefHeight="180.0" VBox.vgrow="ALWAYS">
                      <children>
                         <VBox maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                            <children>
-                              <ListView fx:id="lvRestrictions" prefHeight="200.0" prefWidth="340.0">
+                              <ListView fx:id="lvRestrictions" minHeight="80.0" prefHeight="200.0" prefWidth="340.0">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -194,14 +194,21 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </VBox>
-                        <BarChart fx:id="bcRBroken" legendVisible="false" maxHeight="1.7976931348623157E308" prefWidth="775.0" title="Amount of Broken Restrictions" HBox.hgrow="ALWAYS">
-                          <xAxis>
-                            <CategoryAxis side="BOTTOM" />
-                          </xAxis>
-                          <yAxis>
-                            <NumberAxis forceZeroInRange="false" label="#Broken" side="LEFT" />
-                          </yAxis>
-                        </BarChart>
+                        <VBox>
+                           <children>
+                              <BarChart fx:id="bcRBroken" legendVisible="false" maxHeight="1.7976931348623157E308" minHeight="80.0" prefHeight="200.0" title="Amount of Broken Restrictions" HBox.hgrow="ALWAYS">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis forceZeroInRange="false" label="#Broken" side="LEFT" />
+                                </yAxis>
+                                 <VBox.margin>
+                                    <Insets bottom="-20.0" />
+                                 </VBox.margin>
+                              </BarChart>
+                           </children>
+                        </VBox>
                      </children>
                      <padding>
                         <Insets bottom="8.0" />
@@ -214,11 +221,11 @@
             <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
          </padding>
       </VBox>
-      <TitledPane collapsible="false" contentDisplay="RIGHT" graphicTextGap="8.0" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" text="Roadmap Explorer" HBox.hgrow="NEVER">
+      <TitledPane collapsible="false" contentDisplay="RIGHT" graphicTextGap="8.0" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="400.0" text="Roadmap Explorer" HBox.hgrow="NEVER">
          <content>
-            <VBox maxHeight="1.7976931348623157E308" prefWidth="450.0">
+            <VBox maxHeight="1.7976931348623157E308" minHeight="400.0" prefWidth="350.0">
                <children>
-                  <VBox VBox.vgrow="ALWAYS">
+                  <VBox minHeight="100.0" VBox.vgrow="ALWAYS">
                      <children>
                         <SwingNode fx:id="swingNode" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                            <HBox.margin>
@@ -233,10 +240,10 @@
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </VBox>
-                  <TableView fx:id="tvRoadmap" maxHeight="1.7976931348623157E308" minHeight="-Infinity" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tvRoadmap" maxHeight="1.7976931348623157E308" minHeight="100.0" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="clmRoadmap" prefWidth="265.0" text="Roadmap" />
-                      <TableColumn fx:id="clmNPV" minWidth="1.0" prefWidth="133.0" text="NPV" />
+                      <TableColumn fx:id="clmNPV" minWidth="50.0" text="NPV" />
                     </columns>
                   </TableView>
                   <Button alignment="CENTER" mnemonicParsing="false" onAction="#openSAProjectSuccessTab" text="Project Sucess Analysis" />
@@ -244,7 +251,7 @@
             </VBox>
          </content>
          <graphic>
-            <ChoiceBox fx:id="cbProject" nodeOrientation="LEFT_TO_RIGHT" prefHeight="39.0" prefWidth="246.0" />
+            <ChoiceBox fx:id="cbProject" nodeOrientation="LEFT_TO_RIGHT" prefHeight="39.0" prefWidth="200.0" />
          </graphic>
          <HBox.margin>
             <Insets bottom="14.0" right="14.0" top="14.0" />
