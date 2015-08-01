@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="546.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.AddProjectController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.AddProjectController">
    <children>
       <Label fx:id="lblProjectName" text="Definition of a new Project" textFill="#2e8ce4">
          <font>
@@ -16,12 +16,12 @@
       <FlowPane hgap="10.0" prefWidth="200.0">
          <children>
             <Label text="Name: " />
-            <TextField fx:id="tfName" />
+            <TextField fx:id="tfName" promptText="Project Name" />
          </children>
       </FlowPane>
-      <TitledPane animated="false" collapsible="false" prefHeight="112.0" prefWidth="940.0" text="General Infos">
+      <TitledPane animated="false" collapsible="false" prefHeight="112.0" text="General Infos">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0">
                <children>
                   <Label layoutX="24.0" layoutY="17.0" text="Number of Periods" />
                   <Label layoutX="237.0" layoutY="17.0" text="Type" />
@@ -35,51 +35,51 @@
       </TitledPane>
       <TitledPane animated="false" collapsible="false" prefHeight="112.0" text="General Settings">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0">
                <children>
                   <Label layoutX="29.0" layoutY="14.0" text="Investment Outflows" />
                   <Label layoutX="222.0" layoutY="14.0" text="Fixed Costs" />
-                  <TextField fx:id="tfOInv" layoutX="23.0" layoutY="34.0" prefWidth="120.0" text="0" />
-                  <TextField fx:id="tfFixedCosts" layoutX="192.0" layoutY="34.0" prefWidth="120.0" text="0" />
+                  <TextField fx:id="tfOInv" layoutX="23.0" layoutY="34.0" prefWidth="120.0" promptText="e.g. 30000" />
+                  <TextField fx:id="tfFixedCosts" layoutX="192.0" layoutY="34.0" prefWidth="120.0" promptText="e.g.  20000" />
                </children>
             </AnchorPane>
         </content>
       </TitledPane>
-      <TitledPane animated="false" collapsible="false" prefWidth="820.0" text="Effect Settings">
+      <TitledPane animated="false" collapsible="false" text="Effect Settings">
          <content>
             <VBox>
                <children>
                   <AnchorPane fx:id="apA" minHeight="0.0" minWidth="0.0" prefHeight="70.0" prefWidth="504.0">
                      <children>
                         <Label layoutX="14.0" layoutY="4.0" prefHeight="17.0" prefWidth="224.0" text="Effect on process spec. Operating Otflows" />
-                        <TextField fx:id="tfA" layoutX="14.0" layoutY="31.0" prefWidth="120.0" text="0" />
+                        <TextField fx:id="tfA" layoutX="14.0" layoutY="31.0" prefWidth="120.0" promptText="e.g. 0.95" />
                         <ToggleButton fx:id="tbA" layoutX="140.0" layoutY="31.0" mnemonicParsing="false" text="is relative" />
                      </children>
                   </AnchorPane>
                   <AnchorPane fx:id="apB" maxHeight="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="70.0" prefWidth="504.0">
                      <children>
                         <Label layoutX="14.0" layoutY="4.0" prefHeight="17.0" prefWidth="315.0" text="Relative Effect on Investment Outflows of future projects" />
-                        <TextField fx:id="tfB" layoutX="14.0" layoutY="31.0" prefWidth="120.0" text="0" />
+                        <TextField fx:id="tfB" layoutX="14.0" layoutY="31.0" prefWidth="120.0" promptText="e.g. 0.98" />
                      </children>
                   </AnchorPane>
                   <AnchorPane fx:id="apE" maxHeight="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="70.0" prefWidth="504.0">
                      <children>
                         <Label layoutX="14.0" layoutY="4.0" prefHeight="17.0" prefWidth="277.0" text="Effect on process spec. time" />
-                        <TextField fx:id="tfE" layoutX="14.0" layoutY="31.0" prefWidth="120.0" text="0" />
+                        <TextField fx:id="tfE" layoutX="14.0" layoutY="31.0" prefWidth="120.0" promptText="e.g. 0.87" />
                         <ToggleButton fx:id="tbE" layoutX="140.0" layoutY="31.0" mnemonicParsing="false" text="is relative" />
                      </children>
                   </AnchorPane>
                   <AnchorPane fx:id="apU" maxHeight="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="70.0" prefWidth="504.0">
                      <children>
                         <Label layoutX="14.0" layoutY="4.0" prefHeight="17.0" prefWidth="277.0" text="Effect on process spec. quality" />
-                        <TextField fx:id="tfU" layoutX="14.0" layoutY="31.0" prefWidth="120.0" text="0" />
+                        <TextField fx:id="tfU" layoutX="14.0" layoutY="31.0" prefWidth="120.0" promptText="e.g. 1.05" />
                         <ToggleButton fx:id="tbU" layoutX="140.0" layoutY="31.0" mnemonicParsing="false" text="is relative" />
                      </children>
                   </AnchorPane>
                   <AnchorPane fx:id="apM" maxHeight="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="70.0" prefWidth="504.0">
                      <children>
                         <Label layoutX="14.0" layoutY="4.0" prefHeight="17.0" prefWidth="277.0" text="Absolute Effect on process spec. Fixed Outflows" />
-                        <TextField fx:id="tfM" layoutX="14.0" layoutY="31.0" prefWidth="120.0" text="0" />
+                        <TextField fx:id="tfM" layoutX="14.0" layoutY="31.0" prefWidth="120.0" promptText="e.g. -10000" />
                      </children>
                   </AnchorPane>
                </children>

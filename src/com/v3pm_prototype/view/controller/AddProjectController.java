@@ -6,6 +6,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.controlsfx.control.Notifications;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -177,56 +179,97 @@ public class AddProjectController {
 	 */
 	public void createProject(){
 		
-		Connection conn = DBConnection.getInstance().getConnection();
-		
-		try {
+		if(mandatoryFilled()){
+			Connection conn = DBConnection.getInstance().getConnection();
 			
-			Statement st = conn.createStatement();
-			st.executeUpdate("INSERT INTO Project(name, type, periods, processID, oInv, fixedCosts, a, b, e, u, m, absrelQ, absrelT, absrelOop) VALUES ('"
-					+ tfName.getText()
-					+ "', '"
-					+ cbType.getValue()
-					+ "',"
-					+ tfPeriods.getText()
-					+ ","
-					+ cbAffectedProcess.getValue().getId()
-					+ ","
-					+ Float.valueOf(tfOInv.getText())
-					+ ","
-					+ Float.valueOf(tfFixedCosts.getText())
-					+ ","
-					+ Float.valueOf(tfA.getText())
-					+ ","
-					+ Float.valueOf(tfB.getText())
-					+ ","
-					+ Float.valueOf(tfE.getText())
-					+ ","
-					+ Float.valueOf(tfU.getText())
-					+ ","
-					+ Float.valueOf(tfM.getText())
-					+ ",'"
-					+ getAbsRel(tbU)
-					+ "','" + getAbsRel(tbE) + "','" + getAbsRel(tbA) + "');");
-			int insertedID = st.getGeneratedKeys().getInt(1);
+			try {
+				
+				float fixedCosts = 0;
+				if(tfFixedCosts.getText().length() != 0){
+					fixedCosts = Float.valueOf(tfFixedCosts.getText());
+				}
+				float a = 0;
+				if(tfA.getText().length() != 0){
+					a = Float.valueOf(tfA.getText());
+				}
+				float b = 0;
+				if(tfB.getText().length() != 0){
+					b = Float.valueOf(tfB.getText());
+				}
+				float e = 0;
+				if(tfE.getText().length() != 0){
+					e = Float.valueOf(tfE.getText());
+				}
+				float u = 0;
+				if(tfU.getText().length() != 0){
+					u = Float.valueOf(tfU.getText());
+				}
+				float m = 0;
+				if(tfM.getText().length() != 0){
+					m = Float.valueOf(tfM.getText());
+				}
+				
+				Statement st = conn.createStatement();
+				st.executeUpdate("INSERT INTO Project(name, type, periods, processID, oInv, fixedCosts, a, b, e, u, m, absrelQ, absrelT, absrelOop) VALUES ('"
+						+ tfName.getText()
+						+ "', '"
+						+ cbType.getValue()
+						+ "',"
+						+ tfPeriods.getText()
+						+ ","
+						+ cbAffectedProcess.getValue().getId()
+						+ ","
+						+ Float.valueOf(tfOInv.getText())
+						+ ","
+						+ fixedCosts
+						+ ","
+						+ a
+						+ ","
+						+ b
+						+ ","
+						+ e
+						+ ","
+						+ u
+						+ ","
+						+ m
+						+ ",'"
+						+ getAbsRel(tbU)
+						+ "','" + getAbsRel(tbE) + "','" + getAbsRel(tbA) + "');");
+				int insertedID = st.getGeneratedKeys().getInt(1);
 
-			TabStartController.olProjects.add(new DBProject(insertedID, tfName
-					.getText(), cbType.getValue().toString(), Integer
-					.parseInt(tfPeriods.getText()), Float.valueOf(tfFixedCosts
-					.getText()), Float.valueOf(tfOInv.getText()),
-					cbAffectedProcess.getValue(), Float.valueOf(tfA.getText()),
-					Float.valueOf(tfB.getText()), Float.valueOf(tfE.getText()),
-					Float.valueOf(tfU.getText()), Float.valueOf(tfM.getText()),
-					getAbsRel(tbU), getAbsRel(tbE), getAbsRel(tbA)));
+				TabStartController.olProjects.add(new DBProject(insertedID, tfName
+						.getText(), cbType.getValue().toString(), Integer
+						.parseInt(tfPeriods.getText()), fixedCosts, Float.valueOf(tfOInv.getText()),
+						cbAffectedProcess.getValue(), a,
+						b,e,
+						u, m,
+						getAbsRel(tbU), getAbsRel(tbE), getAbsRel(tbA)));
 
-			//Close the window
-			Stage stage = (Stage) btnAddProject.getScene().getWindow();
-			stage.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+				//Close the window
+				Stage stage = (Stage) btnAddProject.getScene().getWindow();
+				stage.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}else{
+			Notifications.create()
+            .title("Mandatory exception!")
+            .text("Not all mandatory fields have been filled out.")
+            .showInformation();
 		}
+		
 		
 	}
 	
+	private boolean mandatoryFilled() {
+		if(tfName.getText().length() == 0) return false;
+		if(tfPeriods.getText().length() == 0) return false;
+		if(tfOInv.getText().length() == 0) return false;
+		
+		return true;
+	}
+
 	private String getAbsRel(ToggleButton tb){
 		if(tb.isSelected()){
 			return "relativ";
