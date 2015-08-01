@@ -1,6 +1,7 @@
 package com.v3pm_prototype.view.controller;
 
 import java.io.IOException;
+import java.io.WriteAbortedException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,17 +17,21 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.embed.swing.SwingNode;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane.TabClosingPolicy;
@@ -35,11 +40,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 
+import org.controlsfx.control.Notifications;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -142,6 +153,8 @@ public class TabScenarioCalculationController {
 	private DBScenario scenario;
 	private RunConfiguration config;
 	private Tab tab;
+	
+	private javafx.scene.Node snapshotNode;
 
 	public TabScenarioCalculationController() {
 
@@ -154,8 +167,53 @@ public class TabScenarioCalculationController {
 		initTVRoadmaps();
 		initTVProcesses();
 		bootGraphStream();
+		setupSnapshots();
 	}
-	
+			
+	/**
+	 * Adds a snapshot feature to the charts
+	 */
+	private void setupSnapshots() {
+		final ContextMenu snapshotCM = new ContextMenu();
+		MenuItem miSnapshot = new MenuItem("Take Snapshot");
+		snapshotCM.getItems().add(miSnapshot);
+
+		miSnapshot.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				WritableImage snapshot = new WritableImage((int)lcProcessQuality.getWidth(), (int)lcProcessQuality.getHeight());
+				snapshotNode.snapshot(new SnapshotParameters(), snapshot);
+				Clipboard clipboard = Clipboard.getSystemClipboard();
+				ClipboardContent content = new ClipboardContent();
+				content.putImage(snapshot); 
+				clipboard.clear();
+				clipboard.setContent(content);
+				
+				Notifications.create()
+	              .title("Snapshot Taken")
+	              .text("A snapshot of the component has been taken and is available in your clipboard.")
+	              .showInformation();
+				
+			}
+		});
+		
+		EventHandler<MouseEvent> eventHandlerSnapshot = (new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				 if (MouseButton.SECONDARY.equals(event.getButton())) {
+					 snapshotNode = (javafx.scene.Node) event.getSource();
+				      snapshotCM.show(mainApp.getPrimaryStage(), event.getScreenX(), event.getScreenY());
+				    }  
+			}
+		});
+		
+		lcProcessQuality.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		lcProcessTime.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		lcProcessFC.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		lcProcessOOP.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		
+	}
+
 	private void chartBugfix() {
 		// Add blank data and clear afterwards for bug workaraound
 		Series<String, Number> series1 = new XYChart.Series<String, Number>();
