@@ -85,6 +85,8 @@ public class TabScenarioCalculationController {
 	@FXML
 	private Label lblRobustness;
 	@FXML
+	private Label lblRobustnessText;
+	@FXML
 	private ProgressIndicator piRobustness;
 
 	@FXML
@@ -308,7 +310,11 @@ public class TabScenarioCalculationController {
 			protected void succeeded() {
 				super.succeeded();
 				initRoadmapContainer(this);
-				lblRobustness.setText(this.getPercentage()*100 +" %");
+				DecimalFormat df = new DecimalFormat("#.#%");
+				lblRobustness.setText(df.format(this.getPercentage()));
+				lblRobustnessText.setText("All set parameters have been tested in a 2% radius. "
+						+ "Projects scored a robustness of "+df.format(this.getpProjectsAll())+". Discount rate scored a robustness of "+df.format(this.getpGeneral())+".");
+				System.out.println(df.format(this.getPercentage()));
 				lblRobustness.setVisible(true);
 				lblRobustness.setManaged(true);
 				piRobustness.setVisible(false);

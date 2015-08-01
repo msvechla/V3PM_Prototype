@@ -16,6 +16,8 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 	private List<RoadMap> lstRoadmap;
 	private List<RobustnessAnalysis> lstResults = new ArrayList<RobustnessAnalysis>();
 	private double percentage;
+	double pProjectsAll = 0;
+	double pGeneral;
 	
 	
 	public CompleteRobustnessAnalysis(RunConfiguration config,
@@ -30,11 +32,16 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 	protected List<RobustnessAnalysis> call() throws Exception {
 		
 		this.roadmap = lstRoadmap.get(0);
+		int countProjects = 0;
+		
 		
 		for(Integer pID : roadmap.implementedProjectIDs){
 			for(Project p : config.getLstProjects()){
 				if(p.getId() == pID){
 					
+					double pPerProject = 0;
+					
+					int countParameters = 0;
 					//Start a robustness analysis for each Project parameter
 					if (p.getA() != 0) {
 						RobustnessAnalysis ra = new RobustnessAnalysis(
@@ -42,6 +49,9 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 								RobustnessAnalysis.MODE_PLUSMINUS, p, "a",
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
 						lstResults.add(ra);
+						ra.start();
+						pPerProject = pPerProject + ra.getPercentage();
+						countParameters++;
 
 					}
 					if (p.getB() != 0) {
@@ -50,6 +60,9 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 								RobustnessAnalysis.MODE_PLUSMINUS, p, "b",
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
 						lstResults.add(ra);
+						ra.start();
+						pPerProject = pPerProject + ra.getPercentage();
+						countParameters++;
 					}
 					if (p.getE() != 0) {
 						RobustnessAnalysis ra = new RobustnessAnalysis(
@@ -57,6 +70,9 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 								RobustnessAnalysis.MODE_PLUSMINUS, p, "e",
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
 						lstResults.add(ra);
+						ra.start();
+						pPerProject = pPerProject + ra.getPercentage();
+						countParameters++;
 					}
 					if (p.getU() != 0) {
 						RobustnessAnalysis ra = new RobustnessAnalysis(
@@ -64,6 +80,9 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 								RobustnessAnalysis.MODE_PLUSMINUS, p, "u",
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
 						lstResults.add(ra);
+						ra.start();
+						pPerProject = pPerProject + ra.getPercentage();
+						countParameters++;
 					}
 					if (p.getM() != 0) {
 						RobustnessAnalysis ra = new RobustnessAnalysis(
@@ -71,34 +90,69 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 								RobustnessAnalysis.MODE_PLUSMINUS, p, "m",
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
 						lstResults.add(ra);
+						ra.start();
+						pPerProject = pPerProject + ra.getPercentage();
+						countParameters++;
 					}
 
+					if(countParameters == 0){
+						pPerProject = pPerProject +1;
+						countParameters++;
+					}
+					
+					pPerProject = pPerProject / countParameters;
+					
+					pProjectsAll = pProjectsAll + pPerProject;
+					countProjects++;
 					break;
 				}
 			}
 		}
 		
-		for(RobustnessAnalysis ra : lstResults){
-			ra.start();
-		}
+		pProjectsAll =  pProjectsAll / countProjects;
 		
-		calculatePercentage();
+		//General Parameters
+		//DiscountRate
+		RobustnessAnalysis ra = new RobustnessAnalysis(
+				lstRoadmap, config,
+				RobustnessAnalysis.MODE_PLUSMINUS, null, "discountRate",
+				0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
+		ra.start();
+		pGeneral = pGeneral + ra.getPercentage();
+		
+//		//OOAFixed
+//		ra = new RobustnessAnalysis(
+//				lstRoadmap, config,
+//				RobustnessAnalysis.MODE_PLUSMINUS, config, "oOAFixed",
+//				0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
+//		ra.start();
+//		pGeneral = pGeneral + ra.getPercentage();
+//		pGeneral = pGeneral / 2;
+		
+		percentage = 0.85*pProjectsAll + 0.15*pGeneral;
 		
 		
 		return lstResults;
 	}
 	
 	
-	private void calculatePercentage(){
-		
-		double percentage = 0;
-		
-		for(RobustnessAnalysis ra : lstResults){
-			percentage += ra.getPercentage();
-		}
-		
-		percentage = percentage / lstResults.size();
-		this.percentage = percentage;
+	public double getpProjectsAll() {
+		return pProjectsAll;
+	}
+
+
+	public void setpProjectsAll(double pProjectsAll) {
+		this.pProjectsAll = pProjectsAll;
+	}
+
+
+	public double getpGeneral() {
+		return pGeneral;
+	}
+
+
+	public void setpGeneral(double pGeneral) {
+		this.pGeneral = pGeneral;
 	}
 
 
