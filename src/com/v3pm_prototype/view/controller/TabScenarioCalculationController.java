@@ -5,8 +5,10 @@ import java.io.WriteAbortedException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import javafx.beans.value.ChangeListener;
@@ -34,6 +36,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -73,6 +76,7 @@ import com.v3pm_prototype.main.MainApp;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
+import com.v3pm_prototype.tools.TableViewSnapshot;
 
 public class TabScenarioCalculationController {
 	@FXML
@@ -90,6 +94,9 @@ public class TabScenarioCalculationController {
 	private ChangeListener rmListChangeListener;
 	private List<RoadMap> rmList;
 
+	@FXML
+	VBox boxRMSolution;
+	
 	@FXML
 	private VBox roadmapContainer;
 	
@@ -175,13 +182,13 @@ public class TabScenarioCalculationController {
 	 */
 	private void setupSnapshots() {
 		final ContextMenu snapshotCM = new ContextMenu();
-		MenuItem miSnapshot = new MenuItem("Take Snapshot");
+		MenuItem miSnapshot = new MenuItem("Copy to Clipboard");
 		snapshotCM.getItems().add(miSnapshot);
 
 		miSnapshot.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				WritableImage snapshot = new WritableImage((int)lcProcessQuality.getWidth(), (int)lcProcessQuality.getHeight());
+				WritableImage snapshot = new WritableImage((int)snapshotNode.getBoundsInLocal().getWidth(), (int)snapshotNode.getBoundsInLocal().getHeight());
 				snapshotNode.snapshot(new SnapshotParameters(), snapshot);
 				Clipboard clipboard = Clipboard.getSystemClipboard();
 				ClipboardContent content = new ClipboardContent();
@@ -211,6 +218,14 @@ public class TabScenarioCalculationController {
 		lcProcessTime.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
 		lcProcessFC.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
 		lcProcessOOP.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		bcRBroken.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		swingNode.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		boxRMSolution.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		
+		MenuItem item = new MenuItem("Copy to Clipboard");
+		item.setOnAction(new TableViewSnapshot(tvProcesses));
+		ContextMenu menu = new ContextMenu(item);
+		tvProcesses.setContextMenu(menu);
 		
 	}
 

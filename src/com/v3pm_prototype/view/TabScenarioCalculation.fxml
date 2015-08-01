@@ -19,7 +19,7 @@
                      <content>
                         <HBox prefHeight="105.0" spacing="10.0">
                            <children>
-                              <VBox HBox.hgrow="ALWAYS">
+                              <VBox fx:id="boxRMSolution">
                                  <children>
                                     <Label text="Optimized Roadmap:">
                                        <VBox.margin>
@@ -47,6 +47,7 @@
                                     </HBox>
                                  </children>
                               </VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
                               <VBox fx:id="roadmapContainer11" prefHeight="112.0">
                                  <children>
                                     <Label text="Solution Robustness:">
