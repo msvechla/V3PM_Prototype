@@ -166,6 +166,9 @@ public class RoadMap implements Comparable<RoadMap>, Cloneable{
 	public double[] getCashflowsPerPeriod(RunConfiguration config){
 		if(cashflowPerPeriod == null){
 			cashflowPerPeriod = new double[config.getPeriods()];
+			for(int i=0; i<cashflowPerPeriod.length;i++){
+				cashflowPerPeriod[i] = 0;
+			}
 		}
 		return cashflowPerPeriod;
 	}

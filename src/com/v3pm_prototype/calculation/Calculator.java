@@ -86,14 +86,11 @@ public class Calculator{
 					double currentFixedCosts = (fixedCostsOA / (Math.pow((1 + config.getDiscountRate()), tempProject.getPeriod())));
 					fixedCostsOAGes = fixedCostsOAGes + currentFixedCosts;
 					
-					//Save cashflows per period
-					RM.getCashflowsPerPeriod(config)[tempProject.getPeriod()] += (inflows-outflows-currentFixedCosts);
-					
 					// Create a deep copy of the tempProcess collection to be able to compare t and q for degeneration handling in multiproject scenarios.
 					bufferedTempCollProcess = CollectionCopier.createTemporaryProcessCollection(tempCollProcess);
 				}
+				
 				// calculate outflows
-		
 				outflows = outflows + (tempProject.getOinv() / (Math.pow((1 + config.getDiscountRate()), tempProject.getPeriod())));
 
 				// MLe Übergreifende Fixkosteneffekte durch Projekte müssen noch verbucht werden 
@@ -128,6 +125,9 @@ public class Calculator{
 					if(RMRestrictionHandler.meetsPeriodicSpecificConstraints(tempProject.getPeriod(), projectsInPeriod, config) == false){
 						RM.setRestrictionBroken(true);
 					}
+					
+					//Save cashflows per period
+					RM.getCashflowsPerPeriod(config)[tempProject.getPeriod()] = (inflows-outflows-fixedCostsOAGes);
 					
 					projectsInPeriod.clear();
 				}

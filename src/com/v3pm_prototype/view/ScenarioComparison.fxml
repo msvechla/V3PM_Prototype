@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.geometry.*?>
@@ -19,20 +20,102 @@
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox prefHeight="200.0" HBox.hgrow="ALWAYS">
+                  <HBox HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="lblScenarioName1" styleClass="Scenario1" text="Scenario Name 1" textFill="#f3612d" />
-                        <VBox fx:id="roadmapBox1" prefHeight="112.0" prefWidth="100.0" />
-                        <Label fx:id="lblNPV1" text="NPV: 1234123" />
+                        <VBox prefHeight="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label fx:id="lblScenarioName1" styleClass="Scenario1" text="Scenario Name 1" textFill="#f3612d" />
+                              <HBox>
+                                 <children>
+                                    <VBox>
+                                       <children>
+                                          <VBox fx:id="roadmapBox1" prefHeight="112.0" prefWidth="100.0" />
+                                          <HBox>
+                                             <children>
+                                                <Label text="NPV: " />
+                                                <Label fx:id="lblNPV1" />
+                                             </children>
+                                          </HBox>
+                                          <HBox>
+                                             <children>
+                                                <Label text="NPV Risk-adjusted: ">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="lblNPVRA1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox>
+                                       <children>
+                                          <ProgressIndicator fx:id="piRobustness1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                                          <Label fx:id="lblRobustness1" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="60.0" textAlignment="CENTER" textFill="#b10034" VBox.vgrow="ALWAYS">
+                                             <font>
+                                                <Font name="System Bold" size="16.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
-                  </VBox>
-                  <VBox prefHeight="200.0" HBox.hgrow="ALWAYS">
+                  </HBox>
+                  <HBox HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="lblScenarioName2" styleClass="Scenario2" text="Scenario Name 2" />
-                        <VBox fx:id="roadmapBox2" prefHeight="200.0" prefWidth="100.0" />
-                        <Label fx:id="lblNPV2" text="NPV: 1231231" />
+                        <VBox prefHeight="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label fx:id="lblScenarioName2" styleClass="Scenario2" text="Scenario Name 2" textFill="#f3612d" />
+                              <HBox>
+                                 <children>
+                                    <VBox>
+                                       <children>
+                                          <VBox fx:id="roadmapBox2" prefHeight="112.0" prefWidth="100.0" />
+                                          <HBox>
+                                             <children>
+                                                <Label text="NPV: " />
+                                                <Label fx:id="lblNPV2" />
+                                             </children>
+                                          </HBox>
+                                          <HBox>
+                                             <children>
+                                                <Label text="NPV Risk-adjusted: ">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="lblNPVRA2">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox>
+                                       <children>
+                                          <ProgressIndicator fx:id="piRobustness2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                                          <Label fx:id="lblRobustness2" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="60.0" textAlignment="CENTER" textFill="#b10034" VBox.vgrow="ALWAYS">
+                                             <font>
+                                                <Font name="System Bold" size="16.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
-                  </VBox>
+                  </HBox>
                </children>
             </HBox>
          </children>
@@ -112,7 +195,7 @@
                   </BarChart>
                </children>
             </VBox>
-            <AreaChart fx:id="sacCashflows" HBox.hgrow="ALWAYS">
+            <AreaChart fx:id="sacCashflows" legendVisible="false" HBox.hgrow="ALWAYS">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
               </xAxis>

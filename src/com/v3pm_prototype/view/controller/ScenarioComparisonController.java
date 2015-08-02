@@ -20,6 +20,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
 
@@ -48,9 +49,23 @@ public class ScenarioComparisonController {
 	
 	@FXML
 	private Label lblNPV1;
-	
 	@FXML
 	private Label lblNPV2;
+	
+	@FXML
+	private Label lblNPVRA1;
+	@FXML
+	private Label lblNPVRA2;
+	
+	@FXML
+	private Label lblRobustness1;
+	@FXML
+	private Label lblRobustness2;
+	
+	@FXML
+	private ProgressIndicator piRobustness1;
+	@FXML
+	private ProgressIndicator piRobustness2;
 	
 	@FXML
 	private Label lblSolution;
@@ -86,7 +101,55 @@ public class ScenarioComparisonController {
 	
 	@FXML
 	public void initialize(){
+	
+	}
+	
+	private void startCompleteRobustnessAnalysis(){
+		CompleteRobustnessAnalysis cra1 = new CompleteRobustnessAnalysis(config1, rmList1){
+
+			@Override
+			protected void succeeded() {
+				super.succeeded();
+				initRoadmapContainer(roadmapBox1, rmList1,config1,this);
+				DecimalFormat df = new DecimalFormat("#.#%");
+				lblRobustness1.setText(df.format(this.getPercentage()));
+				lblRobustness1.setVisible(true);
+				lblRobustness1.setManaged(true);
+				piRobustness1.setVisible(false);
+				piRobustness1.setManaged(false);
+				
+				df = new DecimalFormat("#,###.00 €");
+				lblNPVRA1.setText(df.format(rmList1.get(0).getNpv()*this.getPercentage()));
+			}
+			
+		};
 		
+		CompleteRobustnessAnalysis cra2 = new CompleteRobustnessAnalysis(config2, rmList2){
+
+			@Override
+			protected void succeeded() {
+				super.succeeded();
+				initRoadmapContainer(roadmapBox2, rmList2,config2,this);
+				DecimalFormat df = new DecimalFormat("#.#%");
+				lblRobustness2.setText(df.format(this.getPercentage()));
+				lblRobustness2.setVisible(true);
+				lblRobustness2.setManaged(true);
+				piRobustness2.setVisible(false);
+				piRobustness2.setManaged(false);
+				
+				df = new DecimalFormat("#,###.00 €");
+				lblNPVRA2.setText(df.format(rmList2.get(0).getNpv()*this.getPercentage()));
+			}
+			
+		};
+
+		Thread t1 = new Thread(cra1);
+		t1.setDaemon(false);
+		t1.start();
+		
+		Thread t2 = new Thread(cra2);
+		t2.setDaemon(false);
+		t2.start();
 	}
 	
 	private void generateSolutionText(){
@@ -139,14 +202,15 @@ public class ScenarioComparisonController {
 			@Override
 			protected void succeeded() {
 				System.out.println("SUCCEEDED");
-				lblNPV1.setText("NPV: "+rmList1.get(0).getNPVString());
-				lblNPV2.setText("NPV: "+rmList2.get(0).getNPVString());
+				lblNPV1.setText(rmList1.get(0).getNPVString());
+				lblNPV2.setText(rmList2.get(0).getNPVString());
 				initBarChartsProcess();
 				initBarChartRBroken();
-				initRoadmapContainer(roadmapBox1, rmList1, config1);
-				initRoadmapContainer(roadmapBox2, rmList2, config2);
+				initRoadmapContainer(roadmapBox1, rmList1, config1, null);
+				initRoadmapContainer(roadmapBox2, rmList2, config2, null);
 				generateSolutionText();
 				initSACCashflows();
+				startCompleteRobustnessAnalysis();
 				super.succeeded();
 			}
 			
@@ -290,21 +354,25 @@ public class ScenarioComparisonController {
 		XYChart.Series<String,Double> series1= new Series<String, Double>();
         series1.setName(scenario1.getName());
         
-        for(int period = 0; period < config1.getPeriods(); period++){
-        	series1.getData().add(new Data<String, Double>("Period "+(period+1), rmList1.get(0).getCashflowsPerPeriod(config1)[period]));
-        }
-        
         XYChart.Series<String,Double> series2= new Series<String, Double>();
         series2.setName(scenario2.getName());
         
-        for(int period = 0; period < config2.getPeriods(); period++){
-        	series2.getData().add(new Data<String, Double>("Period "+(period+1), rmList2.get(0).getCashflowsPerPeriod(config2)[period]));
+        
+        for(int period = 0; period < config1.getPeriods(); period++){
+        	series1.getData().add(new Data<String, Double>("Period "+(period+1), rmList1.get(0).getCashflowsPerPeriod(config1)[period]));
+        	System.out.println("Series1: "+rmList1.get(0).getCashflowsPerPeriod(config1)[period]);
         }
         
-        sacCashflows.getData().addAll(series1,series2);
+        
+        for(int period = 0; period < config2.getPeriods(); period++){
+        	series2.getData().add(new Data<String, Double>("Period "+(period+1), rmList2.get(0).getCashflowsPerPeriod(config2)[period]));
+        	System.out.println("Series2: "+rmList2.get(0).getCashflowsPerPeriod(config2)[period]);
+        }
+        
+        sacCashflows.getData().addAll(series1,series2);   
 	}
 	
-	private void initRoadmapContainer(VBox rmc, List<RoadMap>rmList, RunConfiguration config) {
+	private void initRoadmapContainer(VBox rmc, List<RoadMap>rmList, RunConfiguration config, CompleteRobustnessAnalysis cra) {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(MainApp.class
 				.getResource("/com/v3pm_prototype/view/RoadmapBox.fxml"));
@@ -312,7 +380,7 @@ public class ScenarioComparisonController {
 		try {
 			root = (VBox) loader.load();
 			RoadmapBoxController rmbController = loader.getController();
-			rmbController.generate(rmList.get(0), config, null);
+			rmbController.generate(rmList.get(0), config, cra);
 			rmc.getChildren().clear();
 			rmc.getChildren().add(root);
 		} catch (IOException e) {
