@@ -29,23 +29,38 @@
                                  <children>
                                     <VBox>
                                        <children>
-                                          <VBox fx:id="roadmapBox1" prefHeight="112.0" prefWidth="100.0" />
+                                          <VBox fx:id="roadmapBox1" prefHeight="112.0" prefWidth="100.0">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </VBox>
                                           <HBox>
                                              <children>
-                                                <Label text="NPV: " />
-                                                <Label fx:id="lblNPV1" />
+                                                <Label text="NPV: ">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="lblNPV1">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
                                              </children>
+                                             <VBox.margin>
+                                                <Insets bottom="4.0" />
+                                             </VBox.margin>
                                           </HBox>
                                           <HBox>
                                              <children>
                                                 <Label text="NPV Risk-adjusted: ">
                                                    <font>
-                                                      <Font name="System Bold" size="12.0" />
+                                                      <Font name="System Bold" size="13.0" />
                                                    </font>
                                                 </Label>
                                                 <Label fx:id="lblNPVRA1">
                                                    <font>
-                                                      <Font name="System Bold" size="12.0" />
+                                                      <Font name="System Bold" size="13.0" />
                                                    </font>
                                                 </Label>
                                              </children>
@@ -77,23 +92,38 @@
                                  <children>
                                     <VBox>
                                        <children>
-                                          <VBox fx:id="roadmapBox2" prefHeight="112.0" prefWidth="100.0" />
+                                          <VBox fx:id="roadmapBox2" prefHeight="112.0" prefWidth="100.0">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </VBox>
                                           <HBox>
                                              <children>
-                                                <Label text="NPV: " />
-                                                <Label fx:id="lblNPV2" />
+                                                <Label text="NPV: ">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="lblNPV2">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
                                              </children>
+                                             <VBox.margin>
+                                                <Insets bottom="4.0" />
+                                             </VBox.margin>
                                           </HBox>
                                           <HBox>
                                              <children>
                                                 <Label text="NPV Risk-adjusted: ">
                                                    <font>
-                                                      <Font name="System Bold" size="12.0" />
+                                                      <Font name="System Bold" size="13.0" />
                                                    </font>
                                                 </Label>
                                                 <Label fx:id="lblNPVRA2">
                                                    <font>
-                                                      <Font name="System Bold" size="12.0" />
+                                                      <Font name="System Bold" size="13.0" />
                                                    </font>
                                                 </Label>
                                              </children>
