@@ -8,6 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.omg.CORBA.TCKind;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -50,6 +54,8 @@ public class TabStartController {
 	private Button btnNewProcess;
 	@FXML
 	private Button btnCalculateScenario;
+	@FXML
+	private Button btnCompareScenarios;
 
 	@FXML
 	private TableView<DBScenario> tvScenarios;
@@ -348,6 +354,27 @@ public class TabStartController {
 						.getSelectedItem());
 			}
 		});
+		
+		// -------------------- DISABLE COMPARE BUTTON --------------------
+		tvScenarios.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable,
+					Number oldValue, Number newValue) {
+				if(tvScenarios.getSelectionModel().getSelectedIndices().size() != 2){
+					btnCompareScenarios.setDisable(true);
+				}else{
+					btnCompareScenarios.setDisable(false);
+				}
+			}
+		});
+		
+		// -------------------- DISABLE COMPARE BUTTON --------------------
+		if(tvScenarios.getSelectionModel().getSelectedIndices().size() != 2){
+			btnCompareScenarios.setDisable(true);
+		}else{
+			btnCompareScenarios.setDisable(false);
+		}
+		
 	}
 
 	/**

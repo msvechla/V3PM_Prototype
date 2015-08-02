@@ -114,7 +114,7 @@
                            <children>
                               <Button fx:id="btnNewScenario" layoutX="17.0" layoutY="254.0" mnemonicParsing="false" onAction="#openNewScenarioWindow" text="Create New Scenario" />
                               <Button fx:id="btnCalculateScenario" layoutX="161.0" layoutY="254.0" mnemonicParsing="false" onAction="#calculateScenario" text="Calculate Scenario" />
-                              <Button fx:id="btnCalculateScenario1" mnemonicParsing="false" onAction="#compareScenarios" text="Compare Scenarios" />
+                              <Button fx:id="btnCompareScenarios" disable="true" mnemonicParsing="false" onAction="#compareScenarios" text="Compare Scenarios" />
                            </children>
                         </HBox>
                      </children>

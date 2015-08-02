@@ -76,6 +76,7 @@ import com.v3pm_prototype.main.MainApp;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
+import com.v3pm_prototype.tools.Colorpalette;
 import com.v3pm_prototype.tools.TableViewSnapshot;
 
 public class TabScenarioCalculationController {

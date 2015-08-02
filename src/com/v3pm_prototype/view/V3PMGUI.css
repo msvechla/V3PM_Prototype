@@ -8,6 +8,16 @@
 	-fx-font: 12pt "System";
 }
 
+.Scenario1 {
+	-fx-text-fill: #F3612D;
+	-fx-font: 12pt "System";
+}
+
+.Scenario2 {
+	-fx-text-fill: #FBA51B;
+	-fx-font: 12pt "System";
+}
+
 .InfoText {
 	-fx-text-fill: #D6D6D6;
 	-fx-font: 4pt "System";
