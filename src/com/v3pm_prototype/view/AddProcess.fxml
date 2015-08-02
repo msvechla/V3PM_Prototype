@@ -16,7 +16,7 @@
       <FlowPane hgap="10.0">
          <children>
             <Label text="Name: " />
-            <TextField fx:id="tfName" />
+            <TextField fx:id="tfName" promptText="Process Name" />
          </children>
       </FlowPane>
       <TitledPane animated="false" collapsible="false" text="Price Settings">
@@ -37,11 +37,11 @@
                   <HBox alignment="CENTER">
                      <children>
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="tfFixedCosts" alignment="CENTER" layoutX="377.0" layoutY="44.0" prefWidth="120.0" text="0" />
+                        <TextField fx:id="tfFixedCosts" alignment="CENTER" layoutX="377.0" layoutY="44.0" prefWidth="120.0" promptText="e.g. 5.1" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="tfP" alignment="CENTER" layoutX="14.0" layoutY="44.0" prefWidth="120.0" text="0" />
+                        <TextField fx:id="tfP" alignment="CENTER" layoutX="14.0" layoutY="44.0" prefWidth="120.0" promptText="e.g. 2.1" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="tfOop" alignment="CENTER" layoutX="190.0" layoutY="44.0" prefWidth="120.0" text="0" />
+                        <TextField fx:id="tfOop" alignment="CENTER" layoutX="190.0" layoutY="44.0" prefWidth="120.0" promptText="e.g. 20000" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
@@ -69,7 +69,7 @@
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
                         <Slider fx:id="slQ" blockIncrement="1.0" layoutX="14.0" layoutY="35.0" minorTickCount="24" prefWidth="120.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="tfDegQ" alignment="CENTER" layoutX="549.0" layoutY="31.0" prefWidth="120.0" text="0" />
+                        <TextField fx:id="tfDegQ" alignment="CENTER" layoutX="549.0" layoutY="31.0" prefWidth="120.0" promptText="e.g. 0.05" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
                         <VBox prefWidth="120.0" />
                         <VBox prefWidth="40.0" />
@@ -97,9 +97,9 @@
                   <HBox>
                      <children>
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="tfT" alignment="CENTER" layoutX="14.0" layoutY="44.0" prefWidth="120.0" text="0" />
+                        <TextField fx:id="tfT" alignment="CENTER" layoutX="14.0" layoutY="44.0" prefWidth="120.0" promptText="e.g. 25" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="tfDegT" alignment="CENTER" layoutX="403.0" layoutY="44.0" prefWidth="120.0" text="0" />
+                        <TextField fx:id="tfDegT" alignment="CENTER" layoutX="403.0" layoutY="44.0" prefWidth="120.0" promptText="e.g. 0.1" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
                         <VBox prefWidth="120.0" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
@@ -116,13 +116,13 @@
                   <HBox>
                      <children>
                         <VBox HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="tfDMP" layoutX="14.0" layoutY="27.0" prefWidth="64.0" text="0" />
+                        <TextField fx:id="tfDMP" layoutX="14.0" layoutY="27.0" prefWidth="64.0" promptText="e.g. 10000" />
                         <Label alignment="CENTER" layoutX="142.0" layoutY="20.0" prefWidth="30.0" text="+">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="tfDMLambda" layoutX="175.0" layoutY="27.0" prefWidth="64.0" text="0" />
+                        <TextField fx:id="tfDMLambda" layoutX="175.0" layoutY="27.0" prefWidth="64.0" promptText="e.g. 400" />
                         <Label alignment="CENTER" layoutX="303.0" layoutY="27.0" prefWidth="30.0" text="*">
                            <font>
                               <Font size="18.0" />
@@ -133,7 +133,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="tfDMAlpha" layoutX="338.0" layoutY="27.0" prefWidth="64.0" text="0" />
+                        <TextField fx:id="tfDMAlpha" layoutX="338.0" layoutY="27.0" prefWidth="64.0" promptText="e.g. 1" />
                         <Label alignment="CENTER" layoutX="395.0" layoutY="27.0" prefWidth="30.0" text="*">
                            <font>
                               <Font size="18.0" />
@@ -145,7 +145,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="tfDMBeta" layoutX="556.0" layoutY="27.0" prefWidth="64.0" text="0" />
+                        <TextField fx:id="tfDMBeta" layoutX="556.0" layoutY="27.0" prefWidth="64.0" promptText="e.g. 1" />
                         <Label alignment="CENTER" layoutX="613.0" layoutY="27.0" prefWidth="30.0" text="*">
                            <font>
                               <Font size="18.0" />

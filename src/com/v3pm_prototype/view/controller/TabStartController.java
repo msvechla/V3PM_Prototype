@@ -453,6 +453,37 @@ public class TabStartController {
 				.setCellValueFactory(new PropertyValueFactory<DBProcess, String>(
 						"demandFunction"));
 		tvProcesses.setItems(TabStartController.olProcesses);
+		
+		
+		// -------------------- DELETE CONTEXT MENU --------------------
+
+				final ContextMenu processesContextMenu = new ContextMenu();
+				MenuItem delete = new MenuItem("Delete");
+				processesContextMenu.getItems().add(delete);
+
+				tvProcesses.setContextMenu(processesContextMenu);
+
+				delete.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent event) {
+						DBProcess process = tvProcesses.getSelectionModel()
+								.getSelectedItem();
+						olProcesses.remove(process);
+
+						// Delete from database
+						try {
+							Connection conn = DBConnection.getInstance()
+									.getConnection();
+							Statement st = conn.createStatement();
+							st.executeUpdate("DELETE FROM Process WHERE id = "
+									+ process.getId() + ";");
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+		
 	}
 
 	/**
