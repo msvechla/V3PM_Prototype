@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="877.0" prefWidth="1751.0" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.ScenarioComparisonController">
+<VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="807.0" prefWidth="2020.0" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.ScenarioComparisonController">
    <children>
       <Label styleClass="Titel1" text="Solution Comparison" />
       <Label styleClass="Titel2" text="Roadmap &amp; NPV:">
@@ -29,11 +29,34 @@
                                  <children>
                                     <VBox>
                                        <children>
-                                          <VBox fx:id="roadmapBox1" prefHeight="112.0" prefWidth="100.0">
+                                          <HBox>
+                                             <children>
+                                                <VBox fx:id="roadmapBox1" prefHeight="112.0" prefWidth="100.0">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </VBox>
+                                                <VBox>
+                                                   <children>
+                                                      <ProgressIndicator fx:id="piRobustness1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                                                      <Label fx:id="lblRobustness1" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="60.0" textAlignment="CENTER" textFill="#b10034" VBox.vgrow="ALWAYS">
+                                                         <font>
+                                                            <Font name="System Bold" size="16.0" />
+                                                         </font>
+                                                         <VBox.margin>
+                                                            <Insets bottom="6.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets left="8.0" />
+                                                   </HBox.margin>
+                                                </VBox>
+                                             </children>
                                              <VBox.margin>
-                                                <Insets bottom="10.0" />
+                                                <Insets bottom="8.0" />
                                              </VBox.margin>
-                                          </VBox>
+                                          </HBox>
                                           <HBox>
                                              <children>
                                                 <Label text="NPV: ">
@@ -48,33 +71,23 @@
                                                 </Label>
                                              </children>
                                              <VBox.margin>
-                                                <Insets bottom="4.0" />
+                                                <Insets />
                                              </VBox.margin>
                                           </HBox>
                                           <HBox>
                                              <children>
-                                                <Label text="NPV Risk-adjusted: ">
+                                                <Label styleClass="Titel3" text="NPV Robustness-adjusted: ">
                                                    <font>
                                                       <Font name="System Bold" size="13.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="lblNPVRA1">
+                                                <Label fx:id="lblNPVRA1" styleClass="Titel3">
                                                    <font>
                                                       <Font name="System Bold" size="13.0" />
                                                    </font>
                                                 </Label>
                                              </children>
                                           </HBox>
-                                       </children>
-                                    </VBox>
-                                    <VBox>
-                                       <children>
-                                          <ProgressIndicator fx:id="piRobustness1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
-                                          <Label fx:id="lblRobustness1" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="60.0" textAlignment="CENTER" textFill="#b10034" VBox.vgrow="ALWAYS">
-                                             <font>
-                                                <Font name="System Bold" size="16.0" />
-                                             </font>
-                                          </Label>
                                        </children>
                                     </VBox>
                                  </children>
@@ -92,11 +105,34 @@
                                  <children>
                                     <VBox>
                                        <children>
-                                          <VBox fx:id="roadmapBox2" prefHeight="112.0" prefWidth="100.0">
+                                          <HBox>
+                                             <children>
+                                                <VBox fx:id="roadmapBox2" prefHeight="112.0" prefWidth="100.0">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </VBox>
+                                                <VBox>
+                                                   <children>
+                                                      <ProgressIndicator fx:id="piRobustness2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                                                      <Label fx:id="lblRobustness2" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="60.0" textAlignment="CENTER" textFill="#b10034" VBox.vgrow="ALWAYS">
+                                                         <font>
+                                                            <Font name="System Bold" size="16.0" />
+                                                         </font>
+                                                         <VBox.margin>
+                                                            <Insets bottom="6.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets left="8.0" />
+                                                   </HBox.margin>
+                                                </VBox>
+                                             </children>
                                              <VBox.margin>
-                                                <Insets bottom="10.0" />
+                                                <Insets bottom="8.0" />
                                              </VBox.margin>
-                                          </VBox>
+                                          </HBox>
                                           <HBox>
                                              <children>
                                                 <Label text="NPV: ">
@@ -111,33 +147,23 @@
                                                 </Label>
                                              </children>
                                              <VBox.margin>
-                                                <Insets bottom="4.0" />
+                                                <Insets />
                                              </VBox.margin>
                                           </HBox>
                                           <HBox>
                                              <children>
-                                                <Label text="NPV Risk-adjusted: ">
+                                                <Label styleClass="Titel3" text="NPV Robustness-adjusted: ">
                                                    <font>
                                                       <Font name="System Bold" size="13.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="lblNPVRA2">
+                                                <Label fx:id="lblNPVRA2" styleClass="Titel3">
                                                    <font>
                                                       <Font name="System Bold" size="13.0" />
                                                    </font>
                                                 </Label>
                                              </children>
                                           </HBox>
-                                       </children>
-                                    </VBox>
-                                    <VBox>
-                                       <children>
-                                          <ProgressIndicator fx:id="piRobustness2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
-                                          <Label fx:id="lblRobustness2" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="60.0" textAlignment="CENTER" textFill="#b10034" VBox.vgrow="ALWAYS">
-                                             <font>
-                                                <Font name="System Bold" size="16.0" />
-                                             </font>
-                                          </Label>
                                        </children>
                                     </VBox>
                                  </children>
@@ -150,11 +176,24 @@
             </HBox>
          </children>
       </VBox>
-      <Label fx:id="lblSolution" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="71.0" text="Sample TextTwo lines" wrapText="true" VBox.vgrow="ALWAYS">
+      <HBox maxHeight="1.7976931348623157E308" prefHeight="188.0" prefWidth="1731.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label fx:id="lblSolution" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="60.0" style="-fx-background-color: #D8D8D8;" styleClass="SolutionText" text="&#10;" textOverrun="CLIP" wrapText="true" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets top="8.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
+         </children>
          <VBox.margin>
-            <Insets top="4.0" />
+            <Insets top="8.0" />
          </VBox.margin>
-      </Label>
+      </HBox>
       <Label styleClass="Titel1" text="Process Comparison">
          <VBox.margin>
             <Insets top="20.0" />
@@ -201,9 +240,9 @@
             </BarChart>
          </children>
       </HBox>
-      <HBox>
+      <HBox minHeight="200.0">
          <children>
-            <VBox>
+            <VBox HBox.hgrow="ALWAYS">
                <children>
                   <Label styleClass="Titel1" text="Restriction Comparison">
                      <VBox.margin>
@@ -215,7 +254,7 @@
                         <Insets bottom="10.0" />
                      </padding>
                   </Label>
-                  <BarChart fx:id="bcBrokenRestrictions" animated="false">
+                  <BarChart fx:id="bcBrokenRestrictions" animated="false" legendVisible="false" minHeight="200.0">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -225,14 +264,31 @@
                   </BarChart>
                </children>
             </VBox>
-            <AreaChart fx:id="sacCashflows" legendVisible="false" HBox.hgrow="ALWAYS">
-              <xAxis>
-                <CategoryAxis side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis side="LEFT" />
-              </yAxis>
-            </AreaChart>
+            <VBox HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="Titel1" text="Cashflows">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label styleClass="Titel2" text="Cashflows per Period and Scenario">
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <AreaChart fx:id="sacCashflows" legendVisible="false" minHeight="200.0" HBox.hgrow="ALWAYS">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </AreaChart>
+               </children>
+            </VBox>
          </children>
       </HBox>
    </children>

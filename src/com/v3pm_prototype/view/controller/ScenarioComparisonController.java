@@ -5,24 +5,37 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.controlsfx.control.Notifications;
 import org.graphstream.util.set.Array;
 
 import javafx.collections.ListChangeListener;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.StackedAreaChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import com.v3pm_prototype.analysis.CompleteRobustnessAnalysis;
 import com.v3pm_prototype.calculation.Calculator;
@@ -33,6 +46,8 @@ import com.v3pm_prototype.main.MainApp;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
+import com.v3pm_prototype.tools.Colorpalette;
+import com.v3pm_prototype.tools.TableViewSnapshot;
 import com.v3pm_prototype.calculation.Process;
 
 public class ScenarioComparisonController {
@@ -95,16 +110,21 @@ public class ScenarioComparisonController {
 	private List<RoadMap> rmList1 = new ArrayList<RoadMap>();
 	private List<RoadMap> rmList2 = new ArrayList<RoadMap>();
 	
+	private javafx.scene.Node snapshotNode;
+	
 	public ScenarioComparisonController(){
 		
 	}
 	
 	@FXML
 	public void initialize(){
-	
+		setupSnapshots();
 	}
 	
 	private void startCompleteRobustnessAnalysis(){
+		lblRobustness1.setManaged(false);
+		lblRobustness2.setManaged(false);
+		
 		CompleteRobustnessAnalysis cra1 = new CompleteRobustnessAnalysis(config1, rmList1){
 
 			@Override
@@ -112,11 +132,12 @@ public class ScenarioComparisonController {
 				super.succeeded();
 				initRoadmapContainer(roadmapBox1, rmList1,config1,this);
 				DecimalFormat df = new DecimalFormat("#.#%");
-				lblRobustness1.setText(df.format(this.getPercentage()));
-				lblRobustness1.setVisible(true);
-				lblRobustness1.setManaged(true);
 				piRobustness1.setVisible(false);
 				piRobustness1.setManaged(false);
+				lblRobustness1.setText(df.format(this.getPercentage())+"\nRobustness");
+				lblRobustness1.setVisible(true);
+				lblRobustness1.setManaged(true);
+				
 				
 				df = new DecimalFormat("#,###.00 €");
 				lblNPVRA1.setText(df.format(rmList1.get(0).getNpv()*this.getPercentage()));
@@ -131,11 +152,12 @@ public class ScenarioComparisonController {
 				super.succeeded();
 				initRoadmapContainer(roadmapBox2, rmList2,config2,this);
 				DecimalFormat df = new DecimalFormat("#.#%");
-				lblRobustness2.setText(df.format(this.getPercentage()));
-				lblRobustness2.setVisible(true);
-				lblRobustness2.setManaged(true);
 				piRobustness2.setVisible(false);
 				piRobustness2.setManaged(false);
+				lblRobustness2.setText(df.format(this.getPercentage())+"\nRobustness");
+				lblRobustness2.setVisible(true);
+				lblRobustness2.setManaged(true);
+				
 				
 				df = new DecimalFormat("#,###.00 €");
 				lblNPVRA2.setText(df.format(rmList2.get(0).getNpv()*this.getPercentage()));
@@ -163,10 +185,12 @@ public class ScenarioComparisonController {
 		if(rmList1.get(0).getNpv() > rmList2.get(0).getNpv()){
 			winScenarioName = scenario1.getName();
 			winRM = rmList1.get(0);
+			roadmapBox1.setStyle(Colorpalette.COMPARE_SCENARIO_WINNER);
 			loseScenarioName = scenario2.getName();
 			loseRM = rmList2.get(0);
 		}else if (rmList1.get(0).getNpv() < rmList2.get(0).getNpv()){
 			winScenarioName = scenario2.getName();
+			roadmapBox2.setStyle(Colorpalette.COMPARE_SCENARIO_WINNER);
 			winRM = rmList2.get(0);
 			loseScenarioName = scenario1.getName();
 			loseRM = rmList1.get(0);
@@ -178,12 +202,19 @@ public class ScenarioComparisonController {
 			NPVDiff = winRM.getNpv()-loseRM.getNpv();
 		}
 		
-		if(winRM != null){
-			solution = "Scenario: \"" +winScenarioName+"\" dominates Scenario: \""+loseScenarioName+"\" by "+df.format(NPVDiff);
+		if (winRM != null) {
+			solution = winScenarioName
+					+ " dominates "
+					+ loseScenarioName
+					+ " by "
+					+ df.format(NPVDiff)
+					+ ". \nScenario Robustness has been taken into account when making this suggestion.";
 		}else{
 			solution = "Both Scenarios are equally good. ";
 		}
 		lblSolution.setText(solution);
+		lblSolution.autosize();
+		
 	}
 	
 	private void initialRMCalculation(){
@@ -208,9 +239,9 @@ public class ScenarioComparisonController {
 				initBarChartRBroken();
 				initRoadmapContainer(roadmapBox1, rmList1, config1, null);
 				initRoadmapContainer(roadmapBox2, rmList2, config2, null);
-				generateSolutionText();
 				initSACCashflows();
 				startCompleteRobustnessAnalysis();
+				generateSolutionText();
 				super.succeeded();
 			}
 			
@@ -284,18 +315,66 @@ public class ScenarioComparisonController {
 		bcFixedCosts.getData().addAll(series1FC,series2FC);
 		
 		for(Process p : rmList1.get(0).getLstProcessCalculated()){
-			series1Q.getData().add(new XYChart.Data<String, Number>(p.getName().substring(0, 5),p.getQDelta()));
-			series1T.getData().add(new XYChart.Data<String, Number>(p.getName().substring(0, 5),p.getTDelta()));
-			series1OOP.getData().add(new XYChart.Data<String, Number>(p.getName().substring(0, 5),p.getOopDelta()));
-			series1FC.getData().add(new XYChart.Data<String, Number>(p.getName().substring(0, 5),p.getFixedCostsDelta()));
+			series1Q.getData().add(new XYChart.Data<String, Number>(p.getShortName(),p.getQDelta()));
+			series1T.getData().add(new XYChart.Data<String, Number>(p.getShortName(),p.getTDelta()));
+			series1OOP.getData().add(new XYChart.Data<String, Number>(p.getShortName(),p.getOopDelta()));
+			series1FC.getData().add(new XYChart.Data<String, Number>(p.getShortName(),p.getFixedCostsDelta()));
 		}
 		
 		for(Process p : rmList2.get(0).getLstProcessCalculated()){
-			series2Q.getData().add(new XYChart.Data<String, Number>(p.getName().substring(0, 5),p.getQDelta()));
-			series2T.getData().add(new XYChart.Data<String, Number>(p.getName().substring(0, 5),p.getTDelta()));
-			series2OOP.getData().add(new XYChart.Data<String, Number>(p.getName().substring(0, 5),p.getOopDelta()));
-			series2FC.getData().add(new XYChart.Data<String, Number>(p.getName().substring(0, 5),p.getFixedCostsDelta()));
+			series2Q.getData().add(new XYChart.Data<String, Number>(p.getShortName(),p.getQDelta()));
+			series2T.getData().add(new XYChart.Data<String, Number>(p.getShortName(),p.getTDelta()));
+			series2OOP.getData().add(new XYChart.Data<String, Number>(p.getShortName(),p.getOopDelta()));
+			series2FC.getData().add(new XYChart.Data<String, Number>(p.getShortName(),p.getFixedCostsDelta()));
 		}
+		
+	}
+	
+	/**
+	 * Adds a snapshot feature to the charts
+	 */
+	private void setupSnapshots() {
+		final ContextMenu snapshotCM = new ContextMenu();
+		MenuItem miSnapshot = new MenuItem("Copy to Clipboard");
+		snapshotCM.getItems().add(miSnapshot);
+
+		miSnapshot.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				WritableImage snapshot = new WritableImage((int)snapshotNode.getBoundsInLocal().getWidth(), (int)snapshotNode.getBoundsInLocal().getHeight());
+				snapshotNode.snapshot(new SnapshotParameters(), snapshot);
+				Clipboard clipboard = Clipboard.getSystemClipboard();
+				ClipboardContent content = new ClipboardContent();
+				content.putImage(snapshot); 
+				clipboard.clear();
+				clipboard.setContent(content);
+				
+				Notifications.create()
+	              .title("Snapshot Taken")
+	              .text("A snapshot of the component has been taken and is available in your clipboard.")
+	              .showInformation();
+				
+			}
+		});
+		
+		EventHandler<MouseEvent> eventHandlerSnapshot = (new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				 if (MouseButton.SECONDARY.equals(event.getButton())) {
+					 snapshotNode = (javafx.scene.Node) event.getSource();
+				      snapshotCM.show(mainApp.getPrimaryStage(), event.getScreenX(), event.getScreenY());
+				    }  
+			}
+		});
+		
+		bcBrokenRestrictions.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		bcFixedCosts.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		bcOOP.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		bcQuality.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		bcTime.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		sacCashflows.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		roadmapBox1.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		roadmapBox2.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
 		
 	}
 	

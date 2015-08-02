@@ -8,6 +8,16 @@
 	-fx-font: 12pt "System";
 }
 
+.Titel3 {
+	-fx-text-fill: #B10034;
+	-fx-font: 10pt "System";
+	-fx-font-weight: Bold;
+}
+
+.SolutionText {
+	-fx-font: 12pt "System";
+}
+
 .Scenario1 {
 	-fx-text-fill: #F3612D;
 	-fx-font: 12pt "System";

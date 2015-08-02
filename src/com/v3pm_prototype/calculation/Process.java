@@ -269,6 +269,14 @@ public class Process implements Comparable<Process>, Cloneable{
 		return 0;
 	}
 	
+	public String getShortName(){
+		if(this.name.length()>10){
+			return this.name.substring(0, 10)+"..";
+		}else{
+			return this.name;
+		}
+	}
+	
 	public double getFixedCostsDelta(){
 		if(this.fixedCostsPerPeriod != null){
 			return fixedCosts - this.fixedCostsPerPeriod[0];
