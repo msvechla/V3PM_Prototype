@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
 
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -178,12 +181,18 @@ public class NewScenarioController {
 	private Stage stage = null;
 	private DBScenario blueprint = null; //contains a Scenario that is used to populate views with basic data
 
+	private ValidationSupport validationSupport;
+	@FXML
+	private VBox mainContainer;
 	
 	public NewScenarioController() {
+		validationSupport = new ValidationSupport();
 	}
 
 	@FXML
 	public void initialize() {
+//		initValidation();
+		
 		// Setup the Projects & Process TableView
 		initTVProjects();
 		initTVProcesses();
@@ -216,6 +225,14 @@ public class NewScenarioController {
 	// }
 	//
 	// }
+	private void initValidation(){		
+		validationSupport.registerValidator(tfName, Validator.createEmptyValidator("Scenario Name is required"));
+		validationSupport.registerValidator(tfDiscountRate, Validator.createEmptyValidator("Discount Rate is required"));
+		validationSupport.registerValidator(tfOAFixedOutflows, Validator.createEmptyValidator("Overarching Fixed Outflows are required"));
+		validationSupport.registerValidator(cbPeriods, Validator.createEmptyValidator("Number of Periods must be set"));
+		validationSupport.registerValidator(cbSlotsPerPeriod, Validator.createEmptyValidator("Number of Slots per Period must be set"));
+		validationSupport.initInitialDecoration();
+	}
 	
 	private void initGeneralSettings() {
 		cbPeriods.setItems(availablePeriods);

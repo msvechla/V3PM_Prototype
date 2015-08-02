@@ -6,10 +6,9 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<VBox stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.NewScenarioController">
+<VBox fx:id="mainContainer" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.NewScenarioController">
    <children>
-      <ToolBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="55.0" VBox.vgrow="ALWAYS">
+      <ToolBar nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
          <items>
             <HBox spacing="10.0">
                <children>
@@ -59,13 +58,13 @@
                                     <HBox prefWidth="200.0" spacing="10.0">
                                        <children>
                                           <Label alignment="TOP_LEFT" text="Discount rate:" />
-                                          <TextField fx:id="tfDiscountRate" prefHeight="39.0" prefWidth="120.0" />
+                                          <TextField fx:id="tfDiscountRate" prefWidth="120.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefWidth="200.0" spacing="10.0">
                                        <children>
                                           <Label alignment="TOP_LEFT" text="Overarching fixed outflows:" />
-                                          <TextField fx:id="tfOAFixedOutflows" prefHeight="39.0" prefWidth="120.0" />
+                                          <TextField fx:id="tfOAFixedOutflows" prefWidth="120.0" />
                                        </children>
                                     </HBox>
                                  </children>

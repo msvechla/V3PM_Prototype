@@ -5,7 +5,7 @@
 	<classpathentry kind="lib" path="libs/sqlite-jdbc-3.8.10.1.jar"/>
 	<classpathentry kind="lib" path="libs/gs-ui-1.1.jar"/>
 	<classpathentry kind="lib" path="libs/gs-algo-1.1.jar"/>
-	<classpathentry kind="lib" path="libs/controlsfx-8.40.9.jar"/>
+	<classpathentry kind="lib" path="libs/controlsfx-8.40.10-20150802.020652-245.jar"/>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="libs/gs-core-1.1.jar"/>

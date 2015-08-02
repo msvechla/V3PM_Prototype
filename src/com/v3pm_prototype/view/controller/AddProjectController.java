@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.controlsfx.control.Notifications;
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -89,7 +91,10 @@ public class AddProjectController {
 	private ObservableList<DBProcess> availableProcesses = FXCollections.observableArrayList();
 	private ObservableList<String> projectTypes = FXCollections.observableArrayList("processLevel","bpmLevel");
 	
+	private ValidationSupport validationSupport;
+	
 	public AddProjectController(){
+		validationSupport = new ValidationSupport();
 	}
 	
 	@FXML
@@ -106,6 +111,8 @@ public class AddProjectController {
 				updateType();
 			}
 		});
+		
+		initValidation();
 	}
 
 
@@ -179,7 +186,7 @@ public class AddProjectController {
 	 */
 	public void createProject(){
 		
-		if(mandatoryFilled()){
+		if(!validationSupport.isInvalid()){
 			Connection conn = DBConnection.getInstance().getConnection();
 			
 			try {
@@ -262,12 +269,11 @@ public class AddProjectController {
 		
 	}
 	
-	private boolean mandatoryFilled() {
-		if(tfName.getText().length() == 0) return false;
-		if(tfPeriods.getText().length() == 0) return false;
-		if(tfOInv.getText().length() == 0) return false;
-		
-		return true;
+	private void initValidation(){
+		validationSupport.registerValidator(tfName, Validator.createEmptyValidator("Name is required"));
+		validationSupport.registerValidator(tfPeriods, Validator.createEmptyValidator("Number of Periods are required"));
+		validationSupport.registerValidator(tfOInv, Validator.createEmptyValidator("Investment Outflows are required"));
+		validationSupport.initInitialDecoration();
 	}
 
 	private String getAbsRel(ToggleButton tb){

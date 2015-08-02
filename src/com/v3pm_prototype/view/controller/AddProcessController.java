@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.controlsfx.control.Notifications;
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -72,8 +74,11 @@ public class AddProcessController {
 			.observableArrayList("0t", "t", "ln t", "e^(1/t)");
 
 	private TabStartController tsc;
+	
+	private ValidationSupport validationSupport;
 
 	public AddProcessController() {
+		validationSupport = new ValidationSupport();
 	}
 
 	@FXML
@@ -84,7 +89,9 @@ public class AddProcessController {
 
 		cbDMFktT.setItems(dmFktTList);
 		cbDMFktT.setValue(dmFktTList.get(0));
-
+		
+		initValidation();
+		
 		// Setup quality slider hint
 		slQ.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
@@ -105,7 +112,7 @@ public class AddProcessController {
 	public void createProcess() {
 
 		Connection conn = DBConnection.getInstance().getConnection();
-		if (mandatoryFilled()) {
+		if (!validationSupport.isInvalid()) {
 
 			float fixedCosts = 0;
 			if (tfFixedCosts.getText().length() != 0) {
@@ -194,16 +201,12 @@ public class AddProcessController {
 		}
 
 	}
-
-	private boolean mandatoryFilled() {
-		if (tfName.getText().length() == 0)
-			return false;
-		if (tfP.getText().length() == 0)
-			return false;
-		if (tfOop.getText().length() == 0)
-			return false;
-
-		return true;
+	
+	private void initValidation(){
+		validationSupport.registerValidator(tfName, Validator.createEmptyValidator("Name is required"));
+		validationSupport.registerValidator(tfP, Validator.createEmptyValidator("Price is required"));
+		validationSupport.registerValidator(tfOop, Validator.createEmptyValidator("Operating Outflows are required"));
+		validationSupport.initInitialDecoration();
 	}
 
 	public void updateQualityHint() {

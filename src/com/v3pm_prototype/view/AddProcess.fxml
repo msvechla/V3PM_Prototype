@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="588.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.AddProcessController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="588.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.AddProcessController">
    <children>
       <Label text="Definition of a new Process" textFill="#2e8ce4">
          <font>
@@ -37,11 +37,11 @@
                   <HBox alignment="CENTER">
                      <children>
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="tfFixedCosts" alignment="CENTER" layoutX="377.0" layoutY="44.0" prefWidth="120.0" promptText="e.g. 5.1" />
+                        <TextField fx:id="tfP" alignment="CENTER" layoutX="377.0" layoutY="44.0" prefWidth="120.0" promptText="e.g. 5.1" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="tfP" alignment="CENTER" layoutX="14.0" layoutY="44.0" prefWidth="120.0" promptText="e.g. 2.1" />
+                        <TextField fx:id="tfOop" alignment="CENTER" layoutX="14.0" layoutY="44.0" prefWidth="120.0" promptText="e.g. 2.1" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="tfOop" alignment="CENTER" layoutX="190.0" layoutY="44.0" prefWidth="120.0" promptText="e.g. 20000" />
+                        <TextField fx:id="tfFixedCosts" alignment="CENTER" layoutX="190.0" layoutY="44.0" prefWidth="120.0" promptText="e.g. 20000" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
