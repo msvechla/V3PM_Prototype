@@ -17,6 +17,7 @@ public class RoadMap implements Comparable<RoadMap>, Cloneable{
 	private boolean restrictionBroken = false;
 	private List<Process> lstProcessCalculated;
 	private List<Project> lstProjectCalculated;
+	private double[] cashflowPerPeriod = null;
 	
 	public static int equalsCalls = 0;
 	
@@ -96,16 +97,16 @@ public class RoadMap implements Comparable<RoadMap>, Cloneable{
 		return collProjects;
 	}
 	
-public List<Integer> createIDRoadmap(){
-		
+	public List<Integer> createIDRoadmap() {
+
 		List<Integer> idRoadmap = new ArrayList<Integer>();
-		
-		for(int period = 0; period < rmArray.length; period++){
-			for(int slot = 0; slot < rmArray[period].length;slot++){
+
+		for (int period = 0; period < rmArray.length; period++) {
+			for (int slot = 0; slot < rmArray[period].length; slot++) {
 				Project p = this.rmArray[period][slot];
-				if(p != null){
+				if (p != null) {
 					idRoadmap.add(p.getId());
-				}else{
+				} else {
 					idRoadmap.add(-1);
 				}
 			}
@@ -160,6 +161,13 @@ public List<Integer> createIDRoadmap(){
 
 	public void setRestrictionBroken(boolean restrictionBroken) {
 		this.restrictionBroken = restrictionBroken;
+	}
+	
+	public double[] getCashflowsPerPeriod(RunConfiguration config){
+		if(cashflowPerPeriod == null){
+			cashflowPerPeriod = new double[config.getPeriods()];
+		}
+		return cashflowPerPeriod;
 	}
 
 

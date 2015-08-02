@@ -13,8 +13,11 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.StackedAreaChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -64,6 +67,9 @@ public class ScenarioComparisonController {
 	
 	@FXML
 	private BarChart bcBrokenRestrictions;
+	
+	@FXML
+	private AreaChart<String, Double> sacCashflows;
 	
 	private MainApp mainApp;
 	private Tab tab;
@@ -140,6 +146,7 @@ public class ScenarioComparisonController {
 				initRoadmapContainer(roadmapBox1, rmList1, config1);
 				initRoadmapContainer(roadmapBox2, rmList2, config2);
 				generateSolutionText();
+				initSACCashflows();
 				super.succeeded();
 			}
 			
@@ -277,6 +284,24 @@ public class ScenarioComparisonController {
 		
 		bcBrokenRestrictions.getData().addAll(series1,series2);
 		
+	}
+	
+	private void initSACCashflows(){
+		XYChart.Series<String,Double> series1= new Series<String, Double>();
+        series1.setName(scenario1.getName());
+        
+        for(int period = 0; period < config1.getPeriods(); period++){
+        	series1.getData().add(new Data<String, Double>("Period "+(period+1), rmList1.get(0).getCashflowsPerPeriod(config1)[period]));
+        }
+        
+        XYChart.Series<String,Double> series2= new Series<String, Double>();
+        series2.setName(scenario2.getName());
+        
+        for(int period = 0; period < config2.getPeriods(); period++){
+        	series2.getData().add(new Data<String, Double>("Period "+(period+1), rmList2.get(0).getCashflowsPerPeriod(config2)[period]));
+        }
+        
+        sacCashflows.getData().addAll(series1,series2);
 	}
 	
 	private void initRoadmapContainer(VBox rmc, List<RoadMap>rmList, RunConfiguration config) {

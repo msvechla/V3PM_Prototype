@@ -83,9 +83,12 @@ public class Calculator{
 					inflows = inflows + calculateInflowsPerPeriode(tempCollProcess, tempProject, config);
 					
 					//MLe  korrekt und getestet!
+					double currentFixedCosts = (fixedCostsOA / (Math.pow((1 + config.getDiscountRate()), tempProject.getPeriod())));
+					fixedCostsOAGes = fixedCostsOAGes + currentFixedCosts;
 					
-					fixedCostsOAGes = fixedCostsOAGes + (fixedCostsOA / (Math.pow((1 + config.getDiscountRate()), tempProject.getPeriod())));
-														
+					//Save cashflows per period
+					RM.getCashflowsPerPeriod(config)[tempProject.getPeriod()] += (inflows-outflows-currentFixedCosts);
+					
 					// Create a deep copy of the tempProcess collection to be able to compare t and q for degeneration handling in multiproject scenarios.
 					bufferedTempCollProcess = CollectionCopier.createTemporaryProcessCollection(tempCollProcess);
 				}
