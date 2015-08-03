@@ -118,15 +118,22 @@
                               <Button fx:id="btnCompareScenarios" disable="true" mnemonicParsing="false" onAction="#compareScenarios" text="Compare Scenarios" />
                            </children>
                         </HBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
+                        <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                 <center>
+                                    <ImageView fitHeight="180.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                       <image>
+                                          <Image url="@../tools/v3pmLogo.png" />
+                                       </image>
+                                    </ImageView>
+                                 </center>
+                              </BorderPane>
+                           </children>
+                        </VBox>
                         <HBox>
                            <children>
                               <VBox prefWidth="100.0" HBox.hgrow="ALWAYS" />
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../tools/v3pmLogo.png" />
-                                 </image>
-                              </ImageView>
                            </children>
                         </HBox>
                      </children>
