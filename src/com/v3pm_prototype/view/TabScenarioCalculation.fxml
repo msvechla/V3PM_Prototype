@@ -160,15 +160,16 @@
               <columns>
                 <TableColumn fx:id="clmProcessesName" prefWidth="311.0" text="Process" />
                 <TableColumn fx:id="clmProcessesQ" prefWidth="95.0" text="Quality" />
-                  <TableColumn fx:id="clmProcessesQDelta" prefWidth="79.0" text="QDelta" />
+                  <TableColumn fx:id="clmProcessesQDelta" prefWidth="130.0" text="Δ Quality" />
                   <TableColumn fx:id="clmProcessesT" prefWidth="73.0" text="Time" />
-                  <TableColumn fx:id="clmProcessesTDelta" prefWidth="96.0" text="TDelta" />
-                  <TableColumn fx:id="clmProcessesOOp" prefWidth="103.0" text="OOp" />
-                  <TableColumn fx:id="clmProcessesOOpDelta" prefWidth="121.0" text="OOpDelta" />
-                  <TableColumn fx:id="clmProcessesFC" prefWidth="121.0" text="Fixed Costs" />
-                  <TableColumn fx:id="clmProcessesFCDelta" prefWidth="102.0" text="FCDelta" />
+                  <TableColumn fx:id="clmProcessesTDelta" prefWidth="130.0" text="Δ Time" />
+                  <TableColumn fx:id="clmProcessesOOp" prefWidth="130.0" text="Op. Outflows" />
+                  <TableColumn fx:id="clmProcessesOOpDelta" prefWidth="130.0" text="Δ Op. Outflows" />
+                  <TableColumn fx:id="clmProcessesFC" prefWidth="130.0" text="Fixed Costs" />
+                  <TableColumn fx:id="clmProcessesFCDelta" prefWidth="130.0" text="Δ Fixed Costs" />
               </columns>
             </TableView>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="InfoText" text="Parameter columns show the value of the last period. Delta Columns show the deviation from the first period." />
             <VBox maxHeight="1.7976931348623157E308" minHeight="80.0">
                <children>
                   <Label styleClass="Titel1" text="Scenario Restrictions:">

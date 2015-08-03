@@ -32,10 +32,10 @@
                         <TableColumn fx:id="clmProcessesQ" editable="false" minWidth="0.0" prefWidth="74.0" text="Quality" />
                         <TableColumn fx:id="clmProcessesT" prefWidth="74.0" text="Time" />
                         <TableColumn fx:id="clmProcessesP" prefWidth="74.0" text="Price" />
-                        <TableColumn fx:id="clmProcessesOop" prefWidth="120.0" text="Op. Outflows" />
-                        <TableColumn fx:id="clmProcessesDGQ" prefWidth="74.0" text="Q. Deg." />
-                        <TableColumn fx:id="clmProcessesDGT" prefWidth="74.0" text="T. Deg" />
-                        <TableColumn fx:id="clmProcessesDFKT" maxWidth="1.7976931348623157E308" prefWidth="300.0" text="Demand" />
+                        <TableColumn fx:id="clmProcessesOop" prefWidth="170.0" text="Op. Outflows" />
+                        <TableColumn fx:id="clmProcessesDGQ" prefWidth="170.0" text="Quality Degeneration" />
+                        <TableColumn fx:id="clmProcessesDGT" prefWidth="170.0" text="Time Degeneration" />
+                        <TableColumn fx:id="clmProcessesDFKT" maxWidth="1.7976931348623157E308" prefWidth="400.0" text="Demand" />
                      </columns>
                   </TableView>
                   <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="InfoText" text="Contains all available processes. Processes can be modified by specific process-level Projects or general bpm-level Projects." VBox.vgrow="ALWAYS">
@@ -69,13 +69,13 @@
                         <TableColumn fx:id="clmProjectsPeriods" editable="false" minWidth="0.0" prefWidth="74.0" text="Periods" />
                         <TableColumn fx:id="clmProjectsType" editable="false" prefWidth="95.0" text="Type" />
                         <TableColumn fx:id="clmProjectsProcess" prefWidth="120.0" text="Process" />
-                        <TableColumn fx:id="clmProjectsFixCosts" prefWidth="95.0" text="Fixed Costs" />
-                        <TableColumn fx:id="clmProjectsOInv" prefWidth="95.0" text="Inv. Outflows" />
-                        <TableColumn fx:id="clmProjectsA" prefWidth="95.0" text="Ef. OOp" />
-                        <TableColumn fx:id="clmProjectsB" prefWidth="95.0" text="Ef. OInv" />
-                        <TableColumn fx:id="clmProjectsE" minWidth="0.0" prefWidth="95.0" text="Ef. on Time" />
-                        <TableColumn fx:id="clmProjectsU" prefWidth="95.0" text="Ef. on Qual" />
-                        <TableColumn fx:id="clmProjectsM" prefWidth="95.0" text="Ef. on FCosts" />
+                        <TableColumn fx:id="clmProjectsFixCosts" prefWidth="140.0" text="Fixed Costs" />
+                        <TableColumn fx:id="clmProjectsOInv" prefWidth="155.0" text="Inv. Outflows" />
+                        <TableColumn fx:id="clmProjectsA" prefWidth="155.0" text="Effect on Op. Outflows" />
+                        <TableColumn fx:id="clmProjectsB" prefWidth="155.0" text="Effect on Inv. Outflows" />
+                        <TableColumn fx:id="clmProjectsE" minWidth="0.0" prefWidth="155.0" text="Effect on Time" />
+                        <TableColumn fx:id="clmProjectsU" prefWidth="155.0" text="Effect on Quality" />
+                        <TableColumn fx:id="clmProjectsM" prefWidth="155.0" text="Effect on Fixed Costs" />
                      </columns>
                   </TableView>
                   <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="InfoText" text="Contains all available projects. Projects can be classified as process- or bpm-level.">
@@ -95,7 +95,7 @@
             <Insets left="14.0" right="14.0" top="14.0" />
          </padding>
       </VBox>
-      <VBox maxHeight="1.7976931348623157E308" spacing="8.0" HBox.hgrow="NEVER">
+      <VBox maxHeight="1.7976931348623157E308" minWidth="550.0" spacing="8.0" HBox.hgrow="ALWAYS">
          <children>
             <TitledPane collapsible="false" maxHeight="1.7976931348623157E308" text="Scenarios" VBox.vgrow="ALWAYS">
                <content>
@@ -107,7 +107,7 @@
                               <TableColumn fx:id="clmScenariosPeriods" minWidth="0.0" prefWidth="83.0" text="Periods" />
                               <TableColumn fx:id="clmScenariosSlots" prefWidth="49.0" text="Slots" />
                               <TableColumn fx:id="clmScenarioDR" minWidth="0.0" prefWidth="125.0" text="Discount Rate" />
-                              <TableColumn fx:id="clmScenarioOAF" minWidth="0.0" prefWidth="93.0" text="OA FCosts" />
+                              <TableColumn fx:id="clmScenarioOAF" minWidth="0.0" prefWidth="130.0" text="Overarching Fixed Costs" />
                               <TableColumn fx:id="clmScenarioNPV" minWidth="0.0" prefWidth="145.0" text="NPV" />
                           </columns>
                         </TableView>
@@ -122,7 +122,7 @@
                            <children>
                               <BorderPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                  <center>
-                                    <ImageView fitHeight="180.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                    <ImageView fitHeight="180.0" fitWidth="180.0" opacity="0.3" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                                        <image>
                                           <Image url="@../tools/v3pmLogo.png" />
                                        </image>
