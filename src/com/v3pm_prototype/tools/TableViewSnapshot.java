@@ -2,6 +2,8 @@ package com.v3pm_prototype.tools;
 
 import java.text.DecimalFormat;
 
+import org.controlsfx.control.Notifications;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
@@ -37,8 +39,13 @@ public class TableViewSnapshot implements EventHandler<ActionEvent> {
 					if (column == 0) {
 						clipboardString.append(cell + "\t");
 					} else {
-						DecimalFormat formatter = new DecimalFormat("#0.00");
-						clipboardString.append(formatter.format(cell) + "\t");
+						if(cell instanceof String){
+							clipboardString.append(cell + "\t");
+						}else{
+							DecimalFormat formatter = new DecimalFormat("#0.00");
+							clipboardString.append(formatter.format(cell) + "\t");
+						}
+						
 					}
 				}
 			}
@@ -48,5 +55,10 @@ public class TableViewSnapshot implements EventHandler<ActionEvent> {
 		final ClipboardContent content = new ClipboardContent();
 		content.putString(clipboardString.toString());
 		Clipboard.getSystemClipboard().setContent(content);
+		
+		Notifications.create()
+        .title("Snapshot Taken")
+        .text("A snapshot of the component has been taken and is available in your clipboard.")
+        .showInformation();
 	}
 }

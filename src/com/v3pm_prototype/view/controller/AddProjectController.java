@@ -3,12 +3,6 @@ package com.v3pm_prototype.view.controller;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.controlsfx.control.Notifications;
-import org.controlsfx.validation.ValidationSupport;
-import org.controlsfx.validation.Validator;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,22 +10,25 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import org.controlsfx.control.Notifications;
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
 
 import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
-import com.v3pm_prototype.database.DBProcess;
 
 public class AddProjectController {
+	
+	@FXML
+	private VBox mainBox;
 	
 	//General Infos
 	@FXML
@@ -169,8 +166,8 @@ public class AddProjectController {
 			availableProcesses.add(allProcess);
 			cbAffectedProcess.setValue(availableProcesses.get(0));
 			
-			
 		}
+		mainBox.autosize();
 	}
 
 	public void setTSC(TabStartController tsc){

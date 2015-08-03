@@ -13,7 +13,7 @@
       <Label styleClass="Titel1" text="Solution Comparison" />
       <Label styleClass="Titel2" text="Roadmap &amp; NPV:">
          <VBox.margin>
-            <Insets bottom="10.0" />
+            <Insets bottom="6.0" />
          </VBox.margin>
       </Label>
       <VBox>
@@ -178,7 +178,7 @@
       </VBox>
       <HBox maxHeight="1.7976931348623157E308" prefHeight="188.0" prefWidth="1731.0" VBox.vgrow="ALWAYS">
          <children>
-            <Label fx:id="lblSolution" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="60.0" style="-fx-background-color: #D8D8D8;" styleClass="SolutionText" text="&#10;" textOverrun="CLIP" wrapText="true" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+            <Label fx:id="lblSolution" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="50.0" style="-fx-background-color: #D8D8D8;" styleClass="SolutionText" text="&#10;" textOverrun="CLIP" wrapText="true" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets top="8.0" />
                </VBox.margin>
@@ -196,7 +196,7 @@
       </HBox>
       <Label styleClass="Titel1" text="Process Comparison">
          <VBox.margin>
-            <Insets top="20.0" />
+            <Insets top="6.0" />
          </VBox.margin>
       </Label>
       <Label styleClass="Titel2" text="Process Development Delta:">
@@ -208,7 +208,7 @@
          <children>
             <BarChart fx:id="bcQuality" animated="false" legendVisible="false" minHeight="220.0" prefHeight="300.0" title="Quality" HBox.hgrow="ALWAYS">
               <xAxis>
-                <CategoryAxis label="Process" side="BOTTOM" />
+                <CategoryAxis side="BOTTOM" />
               </xAxis>
               <yAxis>
                 <NumberAxis label="Delta" side="LEFT" />
@@ -216,7 +216,7 @@
             </BarChart>
             <BarChart fx:id="bcTime" animated="false" legendVisible="false" minHeight="220.0" prefHeight="300.0" title="Time" HBox.hgrow="ALWAYS">
                <xAxis>
-                  <CategoryAxis label="Process" side="BOTTOM" />
+                  <CategoryAxis side="BOTTOM" />
                </xAxis>
                <yAxis>
                   <NumberAxis label="Delta" side="LEFT" />
@@ -224,7 +224,7 @@
             </BarChart>
             <BarChart fx:id="bcOOP" animated="false" legendVisible="false" minHeight="220.0" prefHeight="300.0" title="Operating Outflows" HBox.hgrow="ALWAYS">
                <xAxis>
-                  <CategoryAxis label="Process" side="BOTTOM" />
+                  <CategoryAxis side="BOTTOM" />
                </xAxis>
                <yAxis>
                   <NumberAxis label="Delta" side="LEFT" />
@@ -232,7 +232,7 @@
             </BarChart>
             <BarChart fx:id="bcFixedCosts" animated="false" legendVisible="false" minHeight="220.0" prefHeight="300.0" title="Fixed Costs" HBox.hgrow="ALWAYS">
                <xAxis>
-                  <CategoryAxis label="Process" side="BOTTOM" />
+                  <CategoryAxis side="BOTTOM" />
                </xAxis>
                <yAxis>
                   <NumberAxis label="Delta" side="LEFT" />
@@ -242,7 +242,7 @@
       </HBox>
       <HBox minHeight="200.0">
          <children>
-            <VBox HBox.hgrow="ALWAYS">
+            <VBox minHeight="100.0" HBox.hgrow="ALWAYS">
                <children>
                   <Label styleClass="Titel1" text="Restriction Comparison">
                      <VBox.margin>
@@ -254,7 +254,7 @@
                         <Insets bottom="10.0" />
                      </padding>
                   </Label>
-                  <BarChart fx:id="bcBrokenRestrictions" animated="false" legendVisible="false" minHeight="200.0">
+                  <BarChart fx:id="bcBrokenRestrictions" animated="false" legendVisible="false">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -279,7 +279,7 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <AreaChart fx:id="sacCashflows" legendVisible="false" minHeight="200.0" HBox.hgrow="ALWAYS">
+                  <AreaChart fx:id="sacCashflows" legendVisible="false" HBox.hgrow="ALWAYS">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>

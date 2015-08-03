@@ -240,6 +240,7 @@ public class TabStartController {
 			stage.setScene(new Scene(root));
 			stage.show();
 			controller.updateType();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

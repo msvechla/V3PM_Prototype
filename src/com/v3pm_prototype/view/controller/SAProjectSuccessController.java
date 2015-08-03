@@ -1,29 +1,38 @@
 package com.v3pm_prototype.view.controller;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableCell;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.MapValueFactory;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.Callback;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+
+import org.controlsfx.control.Notifications;
 
 import com.v3pm_prototype.analysis.SAProjectSuccess;
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.main.MainApp;
 import com.v3pm_prototype.rmgeneration.RoadMap;
+import com.v3pm_prototype.tools.TableViewSnapshot;
 
 public class SAProjectSuccessController extends AnalysisController{
 	
@@ -46,6 +55,7 @@ public class SAProjectSuccessController extends AnalysisController{
 	@FXML
 	private TableColumn<Map,String> clmSD;
 	
+	private Node snapshotNode;
 	
 	private RoadMap selectedRoadmap;
 	
@@ -56,6 +66,7 @@ public class SAProjectSuccessController extends AnalysisController{
 	@Override
 	public void initialize() {
 		super.initialize();
+		setupSnapshots();
 	}
 	
 	public void startSAProjectSuccess(){
@@ -80,6 +91,52 @@ public class SAProjectSuccessController extends AnalysisController{
 		Thread t = new Thread(sapsTask);
 		t.setDaemon(false);
 		t.start();
+		
+	}
+	
+	/**
+	 * Adds a snapshot feature to the charts
+	 */
+	private void setupSnapshots() {
+		final ContextMenu snapshotCM = new ContextMenu();
+		MenuItem miSnapshot = new MenuItem("Copy to Clipboard");
+		snapshotCM.getItems().add(miSnapshot);
+
+		miSnapshot.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				WritableImage snapshot = new WritableImage((int)snapshotNode.getBoundsInLocal().getWidth(), (int)snapshotNode.getBoundsInLocal().getHeight());
+				snapshotNode.snapshot(new SnapshotParameters(), snapshot);
+				Clipboard clipboard = Clipboard.getSystemClipboard();
+				ClipboardContent content = new ClipboardContent();
+				content.putImage(snapshot); 
+				clipboard.clear();
+				clipboard.setContent(content);
+				
+				Notifications.create()
+	              .title("Snapshot Taken")
+	              .text("A snapshot of the component has been taken and is available in your clipboard.")
+	              .showInformation();
+				
+			}
+		});
+		
+		EventHandler<MouseEvent> eventHandlerSnapshot = (new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				 if (MouseButton.SECONDARY.equals(event.getButton())) {
+					 snapshotNode = (javafx.scene.Node) event.getSource();
+				      snapshotCM.show(mainApp.getPrimaryStage(), event.getScreenX(), event.getScreenY());
+				    }  
+			}
+		});
+		
+		lineChart.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		
+		MenuItem item = new MenuItem("Copy to Clipboard");
+		item.setOnAction(new TableViewSnapshot(tvResults));
+		ContextMenu menu = new ContextMenu(item);
+		tvResults.setContextMenu(menu);
 		
 	}
 	

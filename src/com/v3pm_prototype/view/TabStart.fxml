@@ -37,7 +37,7 @@
                         <TableColumn fx:id="clmProcessesDFKT" maxWidth="1.7976931348623157E308" prefWidth="300.0" text="Demand" />
                      </columns>
                   </TableView>
-                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Contains all available processes. Processes can be modified by specific process-level Projects or general bpm-level Projects." VBox.vgrow="ALWAYS">
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="InfoText" text="Contains all available processes. Processes can be modified by specific process-level Projects or general bpm-level Projects." VBox.vgrow="ALWAYS">
                      <font>
                         <Font name="System Italic" size="14.0" />
                      </font>
@@ -77,7 +77,7 @@
                         <TableColumn fx:id="clmProjectsM" prefWidth="95.0" text="Ef. on FCosts" />
                      </columns>
                   </TableView>
-                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Contains all available projects. Projects can be classified as process- or bpm-level.">
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="InfoText" text="Contains all available projects. Projects can be classified as process- or bpm-level.">
                      <font>
                         <Font name="System Italic" size="14.0" />
                      </font>

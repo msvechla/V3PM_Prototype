@@ -5,20 +5,30 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TextField;
+import javafx.scene.control.MenuItem;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+
+import org.controlsfx.control.Notifications;
 
 import com.v3pm_prototype.analysis.RobustnessAnalysis;
 import com.v3pm_prototype.database.DBScenario;
-import com.v3pm_prototype.main.MainApp;
+import com.v3pm_prototype.tools.TableViewSnapshot;
 
 public class RobustnessAnalysisController extends AnalysisController{
 	@FXML
@@ -45,6 +55,7 @@ public class RobustnessAnalysisController extends AnalysisController{
 	private NumberAxis yAxis;
 	
 	private DBScenario scenario;
+	private Node snapshotNode;
 	
 	public RobustnessAnalysisController(){
 		
@@ -53,6 +64,7 @@ public class RobustnessAnalysisController extends AnalysisController{
 	@Override
 	public void initialize() {
 		initCBType();
+		setupSnapshots();
 		super.initialize();
 	}
 
@@ -94,6 +106,47 @@ public class RobustnessAnalysisController extends AnalysisController{
 		Thread t = new Thread(raTask);
 		t.setDaemon(false);
 		t.start();
+	}
+	
+	/**
+	 * Adds a snapshot feature to the charts
+	 */
+	private void setupSnapshots() {
+		final ContextMenu snapshotCM = new ContextMenu();
+		MenuItem miSnapshot = new MenuItem("Copy to Clipboard");
+		snapshotCM.getItems().add(miSnapshot);
+
+		miSnapshot.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				WritableImage snapshot = new WritableImage((int)snapshotNode.getBoundsInLocal().getWidth(), (int)snapshotNode.getBoundsInLocal().getHeight());
+				snapshotNode.snapshot(new SnapshotParameters(), snapshot);
+				Clipboard clipboard = Clipboard.getSystemClipboard();
+				ClipboardContent content = new ClipboardContent();
+				content.putImage(snapshot); 
+				clipboard.clear();
+				clipboard.setContent(content);
+				
+				Notifications.create()
+	              .title("Snapshot Taken")
+	              .text("A snapshot of the component has been taken and is available in your clipboard.")
+	              .showInformation();
+				
+			}
+		});
+		
+		EventHandler<MouseEvent> eventHandlerSnapshot = (new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				 if (MouseButton.SECONDARY.equals(event.getButton())) {
+					 snapshotNode = (javafx.scene.Node) event.getSource();
+				      snapshotCM.show(mainApp.getPrimaryStage(), event.getScreenX(), event.getScreenY());
+				    }  
+			}
+		});
+		
+		lineChart.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
+		
 	}
 	
 	private void initLineChart(RobustnessAnalysis robustnessAnalysis){
