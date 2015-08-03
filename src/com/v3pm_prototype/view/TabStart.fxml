@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -115,6 +116,17 @@
                               <Button fx:id="btnNewScenario" layoutX="17.0" layoutY="254.0" mnemonicParsing="false" onAction="#openNewScenarioWindow" text="Create New Scenario" />
                               <Button fx:id="btnCalculateScenario" layoutX="161.0" layoutY="254.0" mnemonicParsing="false" onAction="#calculateScenario" text="Calculate Scenario" />
                               <Button fx:id="btnCompareScenarios" disable="true" mnemonicParsing="false" onAction="#compareScenarios" text="Compare Scenarios" />
+                           </children>
+                        </HBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
+                        <HBox>
+                           <children>
+                              <VBox prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../tools/v3pmLogo.png" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </HBox>
                      </children>

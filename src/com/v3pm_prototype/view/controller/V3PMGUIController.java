@@ -11,16 +11,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
-public class V3PMGUIController implements EventHandler<ActionEvent>{
+public class V3PMGUIController {
 	
 	public static final String STATUS_LOADING_START = "Loading configuration file...";
 	public static final String STATUS_LOADING_FINISH = "Configuration file loaded.";
-	
-	@FXML
-	private MenuItem menuOpen;
 	
 	@FXML
 	private MenuItem menuQuit;
@@ -45,29 +43,6 @@ public class V3PMGUIController implements EventHandler<ActionEvent>{
 	
 	@FXML
 	private void initialize(){
-		menuOpen.setOnAction(this);
-	}
-	
-	
-
-	@Override
-	public void handle(ActionEvent event) {
-//		MenuItem mItem = (MenuItem) event.getSource();
-//		if(mItem == menuOpen){
-//			FileChooser fileChooser = new FileChooser();
-//			fileChooser.setTitle("Open Resource File");
-//			fileChooser.getExtensionFilters().add(new ExtensionFilter("Excel Files", "*.xls"));
-//			
-//			File selectedFile = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
-//			if(selectedFile != null){
-//				this.setProgress(-1);
-//				this.setStatus(STATUS_LOADING_START);
-//				MainApp.loadConfiguration(selectedFile);
-//				this.setProgress(0);
-//				this.setStatus(STATUS_LOADING_FINISH);
-//			}
-//		}
-		
 	}
 	
 	public void setMainApp(MainApp mainApp){

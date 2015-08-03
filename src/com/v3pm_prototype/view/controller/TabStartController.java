@@ -29,6 +29,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -779,8 +780,15 @@ public class TabStartController {
 		t.start();
 	}
 
+	private void setAppIcon(){
+		this.mainApp.getPrimaryStage().getIcons().add(
+				   new Image(
+				      MainApp.class.getResourceAsStream( "/com/v3pm_prototype/tools/v3pmLogo_small.png" ))); 
+	}
+	
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
+		setAppIcon();
 	}
 
 	public MainApp getMainApp() {

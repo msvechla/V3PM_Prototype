@@ -43,6 +43,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -893,7 +894,6 @@ public class TabScenarioCalculationController {
 	 */
 	public void setMainApp(MainApp mainApp) {
 		//TODO Cycle through tabs and closs all viewers
-		
 		this.mainApp = mainApp;
 		this.mainApp.getPrimaryStage().setOnCloseRequest(
 				new EventHandler<WindowEvent>() {
