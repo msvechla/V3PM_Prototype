@@ -204,10 +204,20 @@ public class RobustnessAnalysis extends Analysis{
 		
 		this.percentage = (Double.valueOf(countRobust) / lstResults.size());
 		
-		if(rmNextBest == null){
-			solutionText = "Parameter "+parameter+" is robust.\nNo new best solution has been found using the specified criteria.";
+		String parameterString = "";
+		
+		if(object instanceof RunConfiguration){
+			parameterString = "discountRate";
 		}else{
-			solutionText = "Parameter "+parameter+" robustness level: "+this.percentage*100+"%\nNew best Roadmap found using the specified criteria: "+rmNextBest;
+			parameterString = parameter;
+		}
+		
+		
+		
+		if(rmNextBest == null){
+			solutionText = "Parameter "+parameterString+" is robust.\nNo new best solution has been found using the specified criteria.";
+		}else{
+			solutionText = "Parameter "+parameterString+" robustness level: "+this.percentage*100+"%\nNew best Roadmap found using the specified criteria: "+rmNextBest;
 		}
 		
 		System.out.println(solutionText);
