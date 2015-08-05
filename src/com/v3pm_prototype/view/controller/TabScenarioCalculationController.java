@@ -92,6 +92,9 @@ public class TabScenarioCalculationController {
 	private ProgressIndicator piRobustness;
 
 	@FXML
+	private Label lblAmountRoadmaps;
+	
+	@FXML
 	private TableView<RoadMap> tvRoadmap;
 	private ObservableList<RoadMap> olRoadmap = FXCollections
 			.observableArrayList();
@@ -799,6 +802,7 @@ public class TabScenarioCalculationController {
 								"Roadmaps generated.");
 						rmList = (List<RoadMap>) getValue();
 						olRoadmap.addAll(rmList);
+						lblAmountRoadmaps.setText(rmList.size() +" Roadmaps have been generated.");
 						System.out.println(config);
 						super.succeeded();
 					}

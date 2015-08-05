@@ -31,7 +31,7 @@
          <center>
             <TabPane fx:id="tpMain" maxHeight="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
-                <Tab text="Universe Overview">
+                <Tab text="Dataset Overview">
                   <content>
                   	<fx:include fx:id="tabStart" source="TabStart.fxml" />
                   </content>
