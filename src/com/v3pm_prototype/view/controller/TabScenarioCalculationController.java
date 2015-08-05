@@ -35,6 +35,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TabPane.TabClosingPolicy;
@@ -306,6 +307,36 @@ public class TabScenarioCalculationController {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void openRoadmapComparisonTab() {
+		if( tvRoadmap.getSelectionModel().getSelectedItems().size() == 2){
+			// Load root layout from fxml file.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class
+					.getResource("/com/v3pm_prototype/view/RoadmapComparison.fxml"));
+			VBox root;
+			try {
+				root = (VBox) loader.load();
+				RoadmapComparisonController rcController = loader
+						.getController();
+				rcController.setMainApp(this.mainApp);
+				rcController.setRoadmaps(config, tvRoadmap.getSelectionModel().getSelectedItems().get(0), tvRoadmap.getSelectionModel().getSelectedItems().get(1));
+				
+				Tab tabSAPS = new Tab("Roadmap Comparison");
+				tabSAPS.setContent(root);
+				tabSAPS.setClosable(true);
+				mainApp.getV3pmGUIController().getTpMain().getTabs().add(tabSAPS);
+				mainApp.getV3pmGUIController().getTpMain().getSelectionModel()
+				.select(tabSAPS);
+				
+				mainApp.getV3pmGUIController().getTpMain()
+						.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void startCompleteRobustnessAnalysis(){
@@ -662,6 +693,9 @@ public class TabScenarioCalculationController {
 	}
 
 	private void initTVRoadmaps() {
+		
+		tvRoadmap.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		
 		// Set the Data for the Roadmap Table
 		this.tvRoadmap.setItems(olRoadmap);
 		clmRoadmap
@@ -688,6 +722,19 @@ public class TabScenarioCalculationController {
 			}
 
 		};
+		
+		// -------------------- DOUBLECLICK: START SAProjectSuccess
+		// -------------------
+
+		tvRoadmap.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+					openSAProjectSuccessTab();
+				}
+			}
+		});
+
 	}
 
 	private void initLineCharts() {

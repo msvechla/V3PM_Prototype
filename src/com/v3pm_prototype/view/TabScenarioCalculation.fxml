@@ -258,10 +258,17 @@
                     </columns>
                   </TableView>
                   <Label fx:id="lblAmountRoadmaps" alignment="CENTER" maxWidth="1.7976931348623157E308" text="0 Roadmaps have been generated." />
-                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#openSAProjectSuccessTab" text="Project Sucess Analysis">
-                     <VBox.margin>
-                        <Insets top="4.0" />
-                     </VBox.margin></Button>
+                  <HBox>
+                     <children>
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#openSAProjectSuccessTab" text="Project Sucess Analysis">
+                           <VBox.margin>
+                              <Insets top="4.0" />
+                           </VBox.margin>
+                        </Button>
+                        <VBox HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#openRoadmapComparisonTab" text="Roadmap Comparison" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </content>
