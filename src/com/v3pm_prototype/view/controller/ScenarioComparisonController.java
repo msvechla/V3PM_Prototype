@@ -99,7 +99,7 @@ public class ScenarioComparisonController {
 	private BarChart bcBrokenRestrictions;
 	
 	@FXML
-	private AreaChart<String, Double> sacCashflows;
+	private AreaChart<String, Number> sacCashflows;
 	
 	private MainApp mainApp;
 	private Tab tab;
@@ -430,25 +430,43 @@ public class ScenarioComparisonController {
 	}
 	
 	private void initSACCashflows(){
-		XYChart.Series<String,Double> series1= new Series<String, Double>();
-        series1.setName(scenario1.getName());
-        
-        XYChart.Series<String,Double> series2= new Series<String, Double>();
-        series2.setName(scenario2.getName());
-        
-        
-        for(int period = 0; period < config1.getPeriods(); period++){
-        	series1.getData().add(new Data<String, Double>("Period "+(period+1), rmList1.get(0).getCashflowsPerPeriod(config1)[period]));
-        	System.out.println("Series1: "+rmList1.get(0).getCashflowsPerPeriod(config1)[period]);
-        }
-        
-        
-        for(int period = 0; period < config2.getPeriods(); period++){
-        	series2.getData().add(new Data<String, Double>("Period "+(period+1), rmList2.get(0).getCashflowsPerPeriod(config2)[period]));
-        	System.out.println("Series2: "+rmList2.get(0).getCashflowsPerPeriod(config2)[period]);
-        }
-        
-        sacCashflows.getData().addAll(series1,series2);   
+//		XYChart.Series<String,Double> series1= new Series<String, Double>();
+//        series1.setName(scenario1.getName());
+//        
+//        XYChart.Series<String,Double> series2= new Series<String, Double>();
+//        series2.setName(scenario2.getName());
+//        
+//        
+//        for(int period = 0; period < config1.getPeriods(); period++){
+//        	series1.getData().add(new Data<String, Double>("Period "+(period+1), rmList1.get(0).getCashflowsPerPeriod(config1)[period]));
+//        	System.out.println("Series1: "+rmList1.get(0).getCashflowsPerPeriod(config1)[period]);
+//        }
+//        
+//        
+//        for(int period = 0; period < config2.getPeriods(); period++){
+//        	series2.getData().add(new Data<String, Double>("Period "+(period+1), rmList2.get(0).getCashflowsPerPeriod(config2)[period]));
+//        	System.out.println("Series2: "+rmList2.get(0).getCashflowsPerPeriod(config2)[period]);
+//        }
+//        
+//        sacCashflows.getData().addAll(series1,series2);   
+		
+		 XYChart.Series<String, Number> series1 = new XYChart.Series<>();
+         series1.setName( "series1" );
+
+         XYChart.Series<String, Number> series2 = new XYChart.Series<>();
+         series2.setName( "series2" );
+
+         for ( int period = 0; period < 10; period++ )
+         {
+             series1.getData().add( new XYChart.Data<>( "Period " + (period + 1), 5.0 * period ) );
+         }
+
+         for ( int period = 0; period < 5; period++ )
+         {
+             series2.getData().add( new XYChart.Data<>( "Period " + (period + 1), 10.0 * period ) );
+         }
+
+         sacCashflows.getData().addAll( series1, series2 );
 	}
 	
 	private void initRoadmapContainer(VBox rmc, List<RoadMap>rmList, RunConfiguration config, CompleteRobustnessAnalysis cra) {

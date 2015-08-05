@@ -29,6 +29,7 @@ public class RMGenerator extends Task<List<RoadMap>> {
 	 */
 	
 	private List<RoadMap> generateRoadmaps() {
+		double start = System.currentTimeMillis();
 		System.out.println("--- START: generateRoadmaps()");
 		
 		//STEP1 Generate SingleContainers
@@ -121,6 +122,7 @@ public class RMGenerator extends Task<List<RoadMap>> {
 		
 		System.out.println("--- FINISH: generateRoadmaps()");
 		System.out.println(rmListPostRMGenCheck.size() + " Roadmaps generated.");
+		System.out.println((System.currentTimeMillis()-start)/1000);
 		return rmListPostRMGenCheck;
 		
 	}

@@ -73,9 +73,9 @@ public class Calculator{
 //				if(RM.toString().contains("[ Six Sigma null ][ null null ]")){
 //					System.out.println("FOUND");
 //				}
-				if(RM.toString().contains("[ Einführung SEPA Standardisierung ][ Automatisierung    ]")){
-					System.out.println("FOUND");
-				}
+//				if(RM.toString().contains("[ Einführung SEPA Standardisierung ][ Automatisierung    ]")){
+//					System.out.println("FOUND");
+//				}
 				
 				// calculate inflows
 				if (tempProject.getPeriod() > prePeriod) {
@@ -146,7 +146,9 @@ public class Calculator{
 			
 			
 			//Save the calculated quality and time per period
-			saveCalculatedValuesToRM(RM, tempCollProcess,tempCollPoj_sorted);
+			if(RM.getNpv()>0){
+				saveCalculatedValuesToRM(RM, tempCollProcess,tempCollPoj_sorted);
+			}
 
 		}
 		
@@ -161,7 +163,7 @@ public class Calculator{
 		List<RoadMap> finalRMList = new ArrayList<RoadMap>();
 		
 		for(RoadMap rm: collRM){
-			if(!rm.isRestrictionBroken()){
+			if(!(rm.isRestrictionBroken() && rm.getNpv()<0) ){
 				finalRMList.add(rm);
 			}
 		}

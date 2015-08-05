@@ -9,6 +9,8 @@ public final class Colorpalette {
 	
 	public static final String COMPARE_SCENARIO_WINNER = "-fx-border-width: 2px;-fx-border-color: rgba(176, 0, 51, .6);-fx-border-style: solid;-fx-border-radius: 8px;";
 	
+	public static final String PERIOD_BOX = "-fx-border-color: rgba(20, 20, 20, .2);-fx-border-style: solid;-fx-border-radius: 8px;";
+	
 	public static final String graphStreamCSS =  "node {" +
 		    "       text-alignment: above; size: 16px;" +
 		    "}" +

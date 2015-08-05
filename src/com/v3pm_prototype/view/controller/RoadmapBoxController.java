@@ -58,6 +58,7 @@ public class RoadmapBoxController {
 		
 		for (int period = 0; period < config.getPeriods(); period++) {
 			HBox periodBox = new HBox(4);
+			periodBox.setStyle(Colorpalette.PERIOD_BOX);
 			container.getChildren().add(periodBox);
 
 			for (int slot = 0; slot < config.getSlotsPerPeriod(); slot++) {
