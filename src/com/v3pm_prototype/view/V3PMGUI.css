@@ -10,7 +10,7 @@
 
 .Titel3 {
 	-fx-text-fill: #B10034;
-	-fx-font: 11px "System";
+	-fx-font: 13px "System";
 	-fx-font-weight: Bold;
 }
 
@@ -19,13 +19,21 @@
 }
 
 .Scenario1 {
-	-fx-text-fill: #F3612D;
-	-fx-font: 13px "System";
+	-fx-text-fill: #C84164;
+	-fx-font: 14px "System";
 }
 
 .Scenario2 {
-	-fx-text-fill: #FBA51B;
-	-fx-font: 13px "System";
+	-fx-text-fill: #FBA71B;
+	-fx-font: 14px "System";
+}
+
+.Scenario1Box {
+	-fx-background-color: #C84164;
+}
+
+.Scenario2Box {
+	-fx-background-color: #FBA71B;
 }
 
 .InfoText {
@@ -46,6 +54,19 @@
 .menu-bar .menu .label {
     -fx-text-fill: #2d3e4c;
 }
+
+.default-color0.chart-bar { -fx-bar-fill: #C84164; }
+.default-color1.chart-bar { -fx-bar-fill: #FBA71B; }
+
+.default-color0.chart-area-symbol { -fx-background-color: #C84164, #C84164; }
+.default-color1.chart-area-symbol { -fx-background-color: #FBA71B, #FBA71B; }
+ 
+.default-color0.chart-series-area-line { -fx-stroke: #C84164; }
+.default-color1.chart-series-area-line { -fx-stroke: #FBA71B; }
+ 
+.default-color0.chart-series-area-fill { -fx-fill: #C84164AA}
+.default-color1.chart-series-area-fill { -fx-fill: #FBA71B77; }
+
 
 .default-color0.chart-series-line { -fx-stroke: #F3622D; }
 .default-color1.chart-series-line { -fx-stroke: #66BD66; }

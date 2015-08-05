@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.chart.*?>
@@ -24,7 +25,19 @@
                      <children>
                         <VBox prefHeight="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label fx:id="lblScenarioName1" styleClass="Scenario1" text="Scenario Name 1" textFill="#f3612d" />
+                              <HBox>
+                                 <children>
+                                    <VBox prefHeight="20.0" prefWidth="20.0" styleClass="Scenario1Box">
+                                       <HBox.margin>
+                                          <Insets right="4.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <Label fx:id="lblScenarioName1" styleClass="Scenario1" text="Scenario Name 1" textFill="#f3612d" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="4.0" />
+                                 </VBox.margin>
+                              </HBox>
                               <HBox>
                                  <children>
                                     <VBox>
@@ -59,12 +72,12 @@
                                           </HBox>
                                           <HBox>
                                              <children>
-                                                <Label text="NPV: ">
+                                                <Label styleClass="Titel3" text="NPV: ">
                                                    <font>
                                                       <Font size="13.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="lblNPV1">
+                                                <Label fx:id="lblNPV1" styleClass="Titel3">
                                                    <font>
                                                       <Font size="13.0" />
                                                    </font>
@@ -73,20 +86,6 @@
                                              <VBox.margin>
                                                 <Insets />
                                              </VBox.margin>
-                                          </HBox>
-                                          <HBox>
-                                             <children>
-                                                <Label styleClass="Titel3" text="NPV Robustness-adjusted: ">
-                                                   <font>
-                                                      <Font name="System Bold" size="13.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="lblNPVRA1" styleClass="Titel3">
-                                                   <font>
-                                                      <Font name="System Bold" size="13.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
                                           </HBox>
                                        </children>
                                     </VBox>
@@ -100,7 +99,19 @@
                      <children>
                         <VBox prefHeight="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label fx:id="lblScenarioName2" styleClass="Scenario2" text="Scenario Name 2" textFill="#f3612d" />
+                              <HBox>
+                                 <children>
+                                    <VBox prefHeight="20.0" prefWidth="20.0" styleClass="Scenario2Box">
+                                       <HBox.margin>
+                                          <Insets right="4.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <Label fx:id="lblScenarioName2" styleClass="Scenario2" text="Scenario Name 2" textFill="#f3612d" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="4.0" />
+                                 </VBox.margin>
+                              </HBox>
                               <HBox>
                                  <children>
                                     <VBox>
@@ -135,12 +146,12 @@
                                           </HBox>
                                           <HBox>
                                              <children>
-                                                <Label text="NPV: ">
+                                                <Label styleClass="Titel3" text="NPV: ">
                                                    <font>
                                                       <Font size="13.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="lblNPV2">
+                                                <Label fx:id="lblNPV2" styleClass="Titel3">
                                                    <font>
                                                       <Font size="13.0" />
                                                    </font>
@@ -149,20 +160,6 @@
                                              <VBox.margin>
                                                 <Insets />
                                              </VBox.margin>
-                                          </HBox>
-                                          <HBox>
-                                             <children>
-                                                <Label styleClass="Titel3" text="NPV Robustness-adjusted: ">
-                                                   <font>
-                                                      <Font name="System Bold" size="13.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="lblNPVRA2" styleClass="Titel3">
-                                                   <font>
-                                                      <Font name="System Bold" size="13.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
                                           </HBox>
                                        </children>
                                     </VBox>
@@ -254,7 +251,7 @@
                         <Insets bottom="10.0" />
                      </padding>
                   </Label>
-                  <BarChart fx:id="bcBrokenRestrictions" animated="false" legendVisible="false">
+                  <BarChart fx:id="bcBrokenRestrictions" animated="false" legendVisible="false" stylesheets="@ScenarioComparison.css">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
