@@ -29,6 +29,8 @@ public class MainApp extends Application {
             loader.setLocation(MainApp.class.getResource("/com/v3pm_prototype/view/v3pmGUI.fxml"));
             rootLayout = (VBox) loader.load();
             
+            System.out.println("javafx.runtime.version: " + System.getProperties().get("javafx.runtime.version"));
+            
             v3pmGUIController = loader.getController();
             v3pmGUIController.setMainApp(this);
             v3pmGUIController.getTabStartController().setMainApp(this);

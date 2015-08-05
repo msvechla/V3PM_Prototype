@@ -42,6 +42,7 @@ import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.MainApp;
+import com.v3pm_prototype.tools.TableViewSnapshot;
 
 public class TabStartController {
 
@@ -448,6 +449,11 @@ public class TabStartController {
 			}
 		});
 
+		MenuItem item = new MenuItem("Copy to Clipboard");
+		item.setOnAction(new TableViewSnapshot(tvProjects));
+		ContextMenu menu = new ContextMenu(item);
+		tvProjects.setContextMenu(menu);
+
 	}
 
 	/**
@@ -512,7 +518,12 @@ public class TabStartController {
 						}
 					}
 				});
-		
+
+		MenuItem item = new MenuItem("Copy to Clipboard");
+		item.setOnAction(new TableViewSnapshot(tvProcesses));
+		ContextMenu menu = new ContextMenu(item);
+		tvProcesses.setContextMenu(menu);
+
 	}
 
 	/**

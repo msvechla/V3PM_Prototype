@@ -12,6 +12,7 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 
 import com.v3pm_prototype.calculation.Process;
+import com.v3pm_prototype.database.DBProcess;
 
 public class TableViewSnapshot implements EventHandler<ActionEvent> {
 
@@ -39,7 +40,7 @@ public class TableViewSnapshot implements EventHandler<ActionEvent> {
 					if (column == 0) {
 						clipboardString.append(cell + "\t");
 					} else {
-						if(cell instanceof String){
+						if(cell instanceof String || cell instanceof DBProcess){
 							clipboardString.append(cell + "\t");
 						}else{
 							DecimalFormat formatter = new DecimalFormat("#0.00");
