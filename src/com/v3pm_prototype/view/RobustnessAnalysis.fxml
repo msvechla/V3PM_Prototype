@@ -10,11 +10,17 @@
 
 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="726.0" prefWidth="1117.0" spacing="8.0" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.RobustnessAnalysisController">
    <children>
-      <Label styleClass="Titel1" text="Robustness Analysis" textFill="#33ccf5" VBox.vgrow="NEVER">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
+      <HBox>
+         <children>
+            <Label styleClass="Titel1" text="Robustness Analysis: " textFill="#33ccf5" VBox.vgrow="NEVER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblScenarioName" styleClass="Scenario2Titel" text="Name" />
+         </children>
+      </HBox>
+      <Label prefHeight="76.0" prefWidth="1093.0" text="Scenario Robustness Analysis is a tool to test how good the current best roadmap performs against other roadmaps in the scenario.&#10;This is tested by varying different parameters. Below you can specify the parameter, its change radius and its step.&#10;&#10;Example: A radius of 0.05 and step 0.01 will calculate robustness from -5% to +5% in 1% steps." wrapText="true" />
       <Label maxWidth="1.7976931348623157E308" styleClass="Titel2" text="Input parameters:" textFill="#33ccf5">
          <font>
             <Font name="System Bold" size="12.0" />

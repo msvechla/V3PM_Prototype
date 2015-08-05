@@ -9,10 +9,20 @@
 
 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="786.0" prefWidth="1441.0" spacing="8.0" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.SAProjectSuccessController">
    <children>
-      <Label styleClass="Titel1" text="Sensitivity to Project Success" textFill="#33ccf5" VBox.vgrow="NEVER">
-         <font>
-            <Font size="24.0" />
-         </font>
+      <HBox>
+         <children>
+            <Label styleClass="Titel1" text="Sensitivity to Project Success: " textFill="#33ccf5" VBox.vgrow="NEVER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblRoadmap" styleClass="Scenario2Titel" text="[    ]" />
+         </children>
+      </HBox>
+      <Label prefHeight="76.0" prefWidth="1093.0" text="Sensitivity to Project Sucess Analysis is a tool to identify the crucial parameters of your projects in a given roadmap.&#10;The tool modifies all set project parameters in the given radius and step.&#10;&#10;Example: A radius of 0.05 and step 0.01 will calculate the roadmap NPV for every set parameter, while varying it from -5% to +5% in 1% steps." wrapText="true">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
       </Label>
       <Label maxWidth="1.7976931348623157E308" styleClass="Titel2" text="Setup:" textFill="#33ccf5">
          <font>

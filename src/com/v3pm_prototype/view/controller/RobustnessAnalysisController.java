@@ -35,7 +35,6 @@ public class RobustnessAnalysisController extends AnalysisController{
 	private ChoiceBox<String> cbType;
 	private ObservableList<String> olType = FXCollections.observableArrayList();
 	
-	
 	@FXML
 	private ChoiceBox<Object> cbObject;
 	private ObservableList<Object> olObject = FXCollections.observableArrayList();
@@ -46,6 +45,9 @@ public class RobustnessAnalysisController extends AnalysisController{
 	
 	@FXML
 	private Label lblSolution;
+	
+	@FXML
+	private Label lblScenarioName;
 	
 	@FXML
 	private LineChart<Number, Number> lineChart;
@@ -251,6 +253,7 @@ public class RobustnessAnalysisController extends AnalysisController{
 
 	public void setScenario(DBScenario scenario) {
 		this.scenario = scenario;
+		lblScenarioName.setText(this.scenario.getName());
 		initCBObject();
 		initCBParameter();
 	}

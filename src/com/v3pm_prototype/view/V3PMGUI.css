@@ -22,10 +22,18 @@
 	-fx-text-fill: #C84164;
 	-fx-font: 14px "System";
 }
+.Scenario1Titel {
+	-fx-text-fill: #C84164;
+	-fx-font: 15px "System";
+}
 
 .Scenario2 {
 	-fx-text-fill: #FBA71B;
 	-fx-font: 14px "System";
+}
+.Scenario2Titel {
+	-fx-text-fill: #FBA71B;
+	-fx-font: 15px "System";
 }
 
 .Scenario1Box {

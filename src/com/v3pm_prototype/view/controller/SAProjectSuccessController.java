@@ -16,6 +16,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -38,6 +39,9 @@ public class SAProjectSuccessController extends AnalysisController{
 	
 	public static final String CLM_PARAMETER = "Parameter";
 	public static final String CLM_SD = "StandardDeviation";
+	
+	@FXML
+	private Label lblRoadmap;
 	
 	@FXML
 	private ChoiceBox<Project> cbProject;
@@ -210,6 +214,7 @@ public class SAProjectSuccessController extends AnalysisController{
 	
 	public void setRoadmap(RoadMap roadmap){
 		this.selectedRoadmap = roadmap;
+		this.lblRoadmap.setText(selectedRoadmap.getDisplayText());
 		initCBProject();
 	}
 	
