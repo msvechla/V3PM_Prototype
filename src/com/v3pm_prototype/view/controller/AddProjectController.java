@@ -162,7 +162,7 @@ public class AddProjectController {
 			
 			//Update available processes
 			availableProcesses.clear();
-			DBProcess allProcess = new DBProcess(DBProcess.ID_ALLPROCESSES, DBProcess.NAME_ALLPROCESSES, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
+			DBProcess allProcess = new DBProcess(DBProcess.ID_ALLPROCESSES, DBProcess.NAME_ALLPROCESSES, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
 			availableProcesses.add(allProcess);
 			cbAffectedProcess.setValue(availableProcesses.get(0));
 			

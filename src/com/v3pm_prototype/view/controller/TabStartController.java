@@ -564,11 +564,11 @@ public class TabStartController {
 					olProcesses.add(new DBProcess(rs.getInt("id"), rs
 							.getString("name"), rs.getDouble("p"), rs
 							.getDouble("oop"), rs.getDouble("fixedCosts"), rs
-							.getDouble("q"), rs.getDouble("degQ"), rs
-							.getDouble("t"), rs.getDouble("degT"), rs
-							.getDouble("dmP"), rs.getDouble("dmLambda"), rs
-							.getDouble("dmAlpha"), rs.getDouble("dmBeta"),
-							dmFktQ, dmFktT));
+							.getDouble("q"), rs.getDouble("qMax"), rs
+							.getDouble("degQ"), rs.getDouble("t"), rs
+							.getDouble("degT"), rs.getDouble("dmP"), rs
+							.getDouble("dmLambda"), rs.getDouble("dmAlpha"), rs
+							.getDouble("dmBeta"), dmFktQ, dmFktT));
 				}
 				return null;
 			}
@@ -609,7 +609,7 @@ public class TabStartController {
 								rs.getDouble("oInv"), new DBProcess(
 										DBProcess.ID_ALLPROCESSES,
 										DBProcess.NAME_ALLPROCESSES, 0, 0, 0,
-										0, 0, 0, 0, 0, 0, 0, 0, "", ""), rs
+										0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""), rs
 										.getDouble("a"), rs.getDouble("b"), rs
 										.getDouble("e"), rs.getDouble("u"), rs
 										.getDouble("m"), rs

@@ -16,6 +16,7 @@ public class DBProcess implements Serializable{
 	private double oop;
 	private double fixedCosts;
 	private double q;
+	private double qMax;
 	private double degQ;
 	private double t;
 	private double degT;
@@ -32,7 +33,7 @@ public class DBProcess implements Serializable{
 	
 	
 	public DBProcess(int id, String name, double p,
-			double oop, double fixedCosts, double q,
+			double oop, double fixedCosts, double q, double qMax,
 			double degQ, double t, double degT, double dmP,
 			double dmLambda, double dmAlpha, double dmBeta, String dmFktQ,
 			String dmFktT) {
@@ -43,6 +44,7 @@ public class DBProcess implements Serializable{
 		this.oop = oop;
 		this.fixedCosts = fixedCosts;
 		this.q = q;
+		this.qMax = qMax;
 		this.degQ = degQ;
 		this.t = t;
 		this.degT = degT;
@@ -70,7 +72,7 @@ public class DBProcess implements Serializable{
 	}
 	
 	public Process toProcess(){
-		Process process = new Process(name, id, q, 100, t, p, oop, degQ, degT, fixedCosts, 0, dmP, dmLambda, dmAlpha, getDMFktQInt(), dmBeta, getDMFktTInt());
+		Process process = new Process(name, id, q, qMax, t, p, oop, degQ, degT, fixedCosts, 0, dmP, dmLambda, dmAlpha, getDMFktQInt(), dmBeta, getDMFktTInt());
 		return process;
 	}
 	
@@ -236,6 +238,14 @@ public class DBProcess implements Serializable{
 
 	public void setDmFktT(String dmFktT) {
 		this.dmFktT = dmFktT;
+	}
+
+	public double getqMax() {
+		return qMax;
+	}
+
+	public void setqMax(double qMax) {
+		this.qMax = qMax;
 	}
 	
 	

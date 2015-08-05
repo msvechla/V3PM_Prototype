@@ -55,24 +55,24 @@
                <children>
                   <HBox>
                      <children>
+                        <VBox prefWidth="40.0" />
+                        <Label fx:id="lblQ1" alignment="CENTER" prefWidth="120.0" text="Maximum Quality" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
                         <Label fx:id="lblQ" alignment="CENTER" layoutX="174.0" layoutY="14.0" prefWidth="120.0" text="50%" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
                         <Label alignment="CENTER" layoutX="534.0" layoutY="9.0" prefWidth="120.0" text="Degeneration Factor" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
-                        <VBox prefWidth="120.0" />
-                        <VBox prefWidth="40.0" />
                      </children>
                   </HBox>
                   <HBox>
                      <children>
+                        <VBox prefWidth="40.0" />
+                        <TextField fx:id="tfQMax" alignment="CENTER" prefWidth="120.0" promptText="e.g. 100" text="100" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
                         <Slider fx:id="slQ" blockIncrement="1.0" layoutX="14.0" layoutY="35.0" minorTickCount="24" prefWidth="120.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
                         <TextField fx:id="tfDegQ" alignment="CENTER" layoutX="549.0" layoutY="31.0" prefWidth="120.0" promptText="e.g. 0.05" />
                         <VBox prefWidth="40.0" HBox.hgrow="ALWAYS" />
-                        <VBox prefWidth="120.0" />
-                        <VBox prefWidth="40.0" />
                      </children>
                   </HBox>
                </children>

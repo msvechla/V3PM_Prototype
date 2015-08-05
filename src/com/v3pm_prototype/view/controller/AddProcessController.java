@@ -12,6 +12,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -38,6 +40,8 @@ public class AddProcessController {
 	@FXML
 	private TextField tfFixedCosts;
 	// Quality Settings
+	@FXML
+	private TextField tfQMax;
 	@FXML
 	private Slider slQ;
 	@FXML
@@ -100,6 +104,15 @@ public class AddProcessController {
 				updateQualityHint();
 			}
 		});
+		
+		tfQMax.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				updateQualityHint();
+			}
+		});
+		
+		updateQualityHint();
 	}
 
 	public void setTSC(TabStartController tsc) {
@@ -149,7 +162,7 @@ public class AddProcessController {
 
 			try {
 				Statement st = conn.createStatement();
-				st.executeUpdate("INSERT INTO Process(name, p, oop, fixedCosts, q, t, degQ, degT, dmP, dmLambda, dmAlpha, dmBeta, dmFktQ, dmFktT) VALUES ('"
+				st.executeUpdate("INSERT INTO Process(name, p, oop, fixedCosts, q, qMax, t, degQ, degT, dmP, dmLambda, dmAlpha, dmBeta, dmFktQ, dmFktT) VALUES ('"
 						+ tfName.getText()
 						+ "',"
 						+ Float.valueOf(tfP.getText())
@@ -158,7 +171,9 @@ public class AddProcessController {
 						+ ","
 						+ fixedCosts
 						+ ","
-						+ (float) slQ.getValue()
+						+ (this.slQ.getValue() / 100) * Double.valueOf(this.tfQMax.getText())
+						+ ","
+						+ Float.valueOf(tfQMax.getText())
 						+ ","
 						+ t
 						+ ","
@@ -182,7 +197,7 @@ public class AddProcessController {
 				DBProcess process = new DBProcess(insertedID, tfName.getText(),
 						Float.valueOf(tfP.getText()), Float.valueOf(tfOop
 								.getText()), fixedCosts,
-						(float) slQ.getValue(), degQ, t, degT, dmP, dmLambda,
+						(this.slQ.getValue() / 100) * Double.valueOf(this.tfQMax.getText()), Float.valueOf(tfQMax.getText()), degQ, t, degT, dmP, dmLambda,
 						dmAlpha, dmBeta, cbDMFktQ.getValue(),
 						cbDMFktT.getValue());
 
@@ -206,11 +221,12 @@ public class AddProcessController {
 		validationSupport.registerValidator(tfName, Validator.createEmptyValidator("Name is required"));
 		validationSupport.registerValidator(tfP, Validator.createEmptyValidator("Price is required"));
 		validationSupport.registerValidator(tfOop, Validator.createEmptyValidator("Operating Outflows are required"));
+		validationSupport.registerValidator(tfQMax, Validator.createEmptyValidator("Maximum Quality is required"));
 		validationSupport.initInitialDecoration();
 	}
 
 	public void updateQualityHint() {
-		this.lblQ.setText(String.valueOf(this.slQ.getValue() + "%"));
+		this.lblQ.setText(String.valueOf("Current Quality: "+(this.slQ.getValue() / 100) * Double.valueOf(this.tfQMax.getText())));
 	}
 
 	private int getDMFkt(ComboBox<String> cb) {
