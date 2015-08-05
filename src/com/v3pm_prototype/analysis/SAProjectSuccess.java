@@ -117,7 +117,7 @@ public class SAProjectSuccess extends Analysis {
 		calculateSD();
 	}
 	
-	private void calculateSD(){
+	private void calculateSD() throws IllegalArgumentException, IllegalAccessException{
 		for(Field field : lstFields){
 			List<RoadMap> lstNPVs = hmResults.get(field.getName());
 			
@@ -137,6 +137,8 @@ public class SAProjectSuccess extends Analysis {
 			
 			Map<String, String> dataRow = new HashMap<>();
 			dataRow.put(SAProjectSuccessController.CLM_PARAMETER, field.getName());
+			
+			dataRow.put(SAProjectSuccessController.CLM_INITIALVALUE, String.valueOf(field.getDouble(project)));
 			
 			DecimalFormat df = new DecimalFormat("#,###.00 €");
 			dataRow.put(SAProjectSuccessController.CLM_SD, df.format(Math.sqrt(variance)));

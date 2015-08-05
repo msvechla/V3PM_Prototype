@@ -38,6 +38,7 @@ import com.v3pm_prototype.tools.TableViewSnapshot;
 public class SAProjectSuccessController extends AnalysisController{
 	
 	public static final String CLM_PARAMETER = "Parameter";
+	public static final String CLM_INITIALVALUE = "InitialValue";
 	public static final String CLM_SD = "StandardDeviation";
 	
 	@FXML
@@ -56,6 +57,8 @@ public class SAProjectSuccessController extends AnalysisController{
 	
 	@FXML
 	private TableColumn<Map,String> clmParameter;
+	@FXML
+	private TableColumn<Map,String> clmInitialValue;
 	@FXML
 	private TableColumn<Map,String> clmSD;
 	
@@ -147,7 +150,10 @@ public class SAProjectSuccessController extends AnalysisController{
 	private void initTVResults(SAProjectSuccess saps){
 		olResults = saps.getMapStandardDeviation();
 		clmParameter.setCellValueFactory(new MapValueFactory(CLM_PARAMETER));
+		clmInitialValue.setCellValueFactory(new MapValueFactory(CLM_INITIALVALUE));
 		clmSD.setCellValueFactory(new MapValueFactory(CLM_SD));
+		
+		
 		
 		tvResults.setItems(olResults);	
 		
