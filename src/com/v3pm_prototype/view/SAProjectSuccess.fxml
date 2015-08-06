@@ -19,7 +19,7 @@
             <Label fx:id="lblRoadmap" styleClass="Scenario2Titel" text="[    ]" />
          </children>
       </HBox>
-      <Label prefHeight="76.0" prefWidth="1093.0" text="Sensitivity to Project Sucess Analysis is a tool to identify the crucial parameters of your projects in a given roadmap.&#10;The tool modifies all set project parameters in the given radius and step.&#10;&#10;Example: A radius of 0.05 and step 0.01 will calculate the roadmap NPV for every set parameter, while varying it from -5% to +5% in 1% steps." wrapText="true">
+      <Label prefHeight="76.0" prefWidth="1093.0" text="Sensitivity to Project Sucess Analysis is a tool to identify the crucial parameters of your projects in a given roadmap.&#10;The tool modifies all set project parameters in the given range &#10;and step.&#10;&#10;Example: A range of 0.05 and step 0.01 will calculate the roadmap NPV for every set parameter, while varying it from -5% to +5% in 1% steps." wrapText="true">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -36,7 +36,7 @@
                   <HBox spacing="8.0" VBox.vgrow="NEVER">
                      <children>
                         <ChoiceBox fx:id="cbProject" prefWidth="160.0" />
-                        <TextField fx:id="tfRadius" prefWidth="100.0" promptText="Radius" />
+                        <TextField fx:id="tfRadius" prefWidth="100.0" promptText="Range" />
                         <TextField fx:id="tfStep" prefWidth="100.0" promptText="Step" />
                         <ChoiceBox fx:id="cbAbsRel" maxWidth="160.0" />
                      </children>

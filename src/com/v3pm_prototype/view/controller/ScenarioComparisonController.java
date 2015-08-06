@@ -425,13 +425,13 @@ public class ScenarioComparisonController {
         
         
         for(int period = 0; period < config1.getPeriods(); period++){
-        	series1.getData().add(new Data<String, Double>("Period "+(period+1), rmList1.get(0).getCashflowsPerPeriod(config1)[period]));
+        	series1.getData().add(new Data<String, Double>("Period "+(period), rmList1.get(0).getCashflowsPerPeriod(config1)[period]));
         	System.out.println("Series1: "+rmList1.get(0).getCashflowsPerPeriod(config1)[period]);
         }
         
         
         for(int period = 0; period < config2.getPeriods(); period++){
-        	series2.getData().add(new Data<String, Double>("Period "+(period+1), rmList2.get(0).getCashflowsPerPeriod(config2)[period]));
+        	series2.getData().add(new Data<String, Double>("Period "+(period), rmList2.get(0).getCashflowsPerPeriod(config2)[period]));
         	System.out.println("Series2: "+rmList2.get(0).getCashflowsPerPeriod(config2)[period]);
         }
         

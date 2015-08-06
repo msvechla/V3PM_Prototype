@@ -20,7 +20,7 @@
             <Label fx:id="lblScenarioName" styleClass="Scenario2Titel" text="Name" />
          </children>
       </HBox>
-      <Label prefHeight="76.0" prefWidth="1093.0" text="Scenario Robustness Analysis is a tool to test how good the current best roadmap performs against other roadmaps in the scenario.&#10;This is tested by varying different parameters. Below you can specify the parameter, its change radius and its step.&#10;&#10;Example: A radius of 0.05 and step 0.01 will calculate robustness from -5% to +5% in 1% steps." wrapText="true" />
+      <Label prefHeight="76.0" prefWidth="1093.0" text="Scenario Robustness Analysis is a tool to test how good the current best roadmap performs against other roadmaps in the scenario.&#10;This is tested by varying different parameters. Below you can specify the parameter, its change radius and its step.&#10;&#10;Example: A range of 0.05 and step 0.01 will calculate robustness from -5% to +5% in 1% steps." wrapText="true" />
       <Label maxWidth="1.7976931348623157E308" styleClass="Titel2" text="Input parameters:" textFill="#33ccf5">
          <font>
             <Font name="System Bold" size="12.0" />
@@ -31,7 +31,7 @@
             <ChoiceBox fx:id="cbType" prefWidth="160.0" />
             <ChoiceBox fx:id="cbObject" prefWidth="160.0" />
             <ChoiceBox fx:id="cbParameter" prefWidth="160.0" />
-            <TextField fx:id="tfRadius" prefWidth="100.0" promptText="Radius" />
+            <TextField fx:id="tfRadius" prefWidth="100.0" promptText="Range" />
             <TextField fx:id="tfStep" prefWidth="100.0" promptText="Step" />
             <ChoiceBox fx:id="cbAbsRel" prefWidth="160.0" />
          </children>

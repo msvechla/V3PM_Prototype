@@ -104,7 +104,7 @@
             </HBox>
             <VBox>
                <children>
-                  <Label styleClass="Titel1" text="Process Information:">
+                  <Label styleClass="Titel1" text="Process Performance Information">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -135,7 +135,7 @@
                         <CategoryAxis endMargin="10.0" gapStartAndEnd="false" side="BOTTOM" startMargin="10.0" />
                      </xAxis>
                      <yAxis>
-                        <NumberAxis forceZeroInRange="false" label="Time" side="LEFT" />
+                        <NumberAxis forceZeroInRange="false" label="Op. Outflows" side="LEFT" />
                      </yAxis>
                   </LineChart>
                   <LineChart fx:id="lcProcessFC" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Fixed Costs">
@@ -143,7 +143,7 @@
                         <CategoryAxis endMargin="10.0" gapStartAndEnd="false" side="BOTTOM" startMargin="10.0" />
                      </xAxis>
                      <yAxis>
-                        <NumberAxis forceZeroInRange="false" label="Time" side="LEFT" />
+                        <NumberAxis forceZeroInRange="false" label="Fixed Costs" side="LEFT" />
                      </yAxis>
                   </LineChart>
                </children>
@@ -172,7 +172,7 @@
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="InfoText" text="Parameter columns show the value of the last period. Delta Columns show the deviation from the first period." />
             <VBox maxHeight="1.7976931348623157E308" minHeight="80.0">
                <children>
-                  <Label styleClass="Titel1" text="Scenario Restrictions:">
+                  <Label styleClass="Titel1" text="Scenario Restrictions">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -198,7 +198,7 @@
                         </VBox>
                         <VBox>
                            <children>
-                              <BarChart fx:id="bcRBroken" legendVisible="false" maxHeight="1.7976931348623157E308" minHeight="80.0" prefHeight="200.0" title="Amount of Broken Restrictions" HBox.hgrow="ALWAYS">
+                              <BarChart fx:id="bcRBroken" legendVisible="false" maxHeight="1.7976931348623157E308" minHeight="80.0" prefHeight="200.0" title="Amount of Violated Restrictions" HBox.hgrow="ALWAYS">
                                 <xAxis>
                                   <CategoryAxis side="BOTTOM" />
                                 </xAxis>

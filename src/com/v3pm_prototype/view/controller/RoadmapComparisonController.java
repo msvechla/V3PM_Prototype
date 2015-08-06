@@ -237,8 +237,8 @@ public class RoadmapComparisonController {
         
         
         for(int period = 0; period < config.getPeriods(); period++){
-        	series1.getData().add(new Data<String, Double>("Period "+(period+1), roadmap1.getCashflowsPerPeriod(config)[period]));
-        	series2.getData().add(new Data<String, Double>("Period "+(period+1), roadmap2.getCashflowsPerPeriod(config)[period]));
+        	series1.getData().add(new Data<String, Double>("Period "+(period), roadmap1.getCashflowsPerPeriod(config)[period]));
+        	series2.getData().add(new Data<String, Double>("Period "+(period), roadmap2.getCashflowsPerPeriod(config)[period]));
         }
         
         sacCashflows.getData().addAll(series1,series2);   

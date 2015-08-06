@@ -56,6 +56,7 @@ public class RMContainer {
 				if(countMandatory == 1 && countGloMutDep == 0){
 					if(rmc.implementedProjects.contains(config.getConstraintSet().getLstMandatory().get(0).getS().getId())){
 						rmList.addAll(rmc.getLstRM());
+						break;
 					}
 				}
 				

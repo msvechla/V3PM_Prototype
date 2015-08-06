@@ -745,50 +745,56 @@ public class TabScenarioCalculationController {
 
 		// Add Data to the charts for each process
 		if (tvRoadmap.getSelectionModel().getSelectedItem() != null) {
-			for (Process p : tvRoadmap.getSelectionModel().getSelectedItem()
-					.getLstProcessCalculated()) {
-
-				// Create a series for each process and factor (q/t/OOP/FC)
-				Series<String, Number> seriesQ = new XYChart.Series<String, Number>();
-				seriesQ.setName(p.getName());
-
-				Series<String, Number> seriesT = new XYChart.Series<String, Number>();
-				seriesT.setName(p.getName());
+			if(tvRoadmap.getSelectionModel().getSelectedItem()
+					.getLstProcessCalculated() != null){
 				
-				Series<String, Number> seriesOOP = new XYChart.Series<String, Number>();
-				seriesT.setName(p.getName());
-				
-				Series<String, Number> seriesFC = new XYChart.Series<String, Number>();
-				seriesT.setName(p.getName());
+				for (Process p : tvRoadmap.getSelectionModel().getSelectedItem()
+						.getLstProcessCalculated()) {
 
-				// Add data to each series for each period
-				for (int period = 0; period < config.getPeriods(); period++) {
-					seriesQ.getData().add(
-							new XYChart.Data<String, Number>("Period "
-									+ String.valueOf(period), p
-									.getqPerPeriod(config)[period]));
+					// Create a series for each process and factor (q/t/OOP/FC)
+					Series<String, Number> seriesQ = new XYChart.Series<String, Number>();
+					seriesQ.setName(p.getName());
 
-					seriesT.getData().add(
-							new XYChart.Data<String, Number>("Period "
-									+ String.valueOf(period), p
-									.gettPerPeriod(config)[period]));
+					Series<String, Number> seriesT = new XYChart.Series<String, Number>();
+					seriesT.setName(p.getName());
 					
-					seriesOOP.getData().add(
-							new XYChart.Data<String, Number>("Period "
-									+ String.valueOf(period), p
-									.getOopPerPeriod(config)[period]));
+					Series<String, Number> seriesOOP = new XYChart.Series<String, Number>();
+					seriesT.setName(p.getName());
 					
-					seriesFC.getData().add(
-							new XYChart.Data<String, Number>("Period "
-									+ String.valueOf(period), p
-									.getFixedCostsPerPeriod(config)[period]));
+					Series<String, Number> seriesFC = new XYChart.Series<String, Number>();
+					seriesT.setName(p.getName());
+
+					// Add data to each series for each period
+					for (int period = 0; period < config.getPeriods(); period++) {
+						seriesQ.getData().add(
+								new XYChart.Data<String, Number>("Period "
+										+ String.valueOf(period), p
+										.getqPerPeriod(config)[period]));
+
+						seriesT.getData().add(
+								new XYChart.Data<String, Number>("Period "
+										+ String.valueOf(period), p
+										.gettPerPeriod(config)[period]));
+						
+						seriesOOP.getData().add(
+								new XYChart.Data<String, Number>("Period "
+										+ String.valueOf(period), p
+										.getOopPerPeriod(config)[period]));
+						
+						seriesFC.getData().add(
+								new XYChart.Data<String, Number>("Period "
+										+ String.valueOf(period), p
+										.getFixedCostsPerPeriod(config)[period]));
+					}
+
+					lcProcessQuality.getData().add(seriesQ);
+					lcProcessTime.getData().add(seriesT);
+					lcProcessOOP.getData().add(seriesOOP);
+					lcProcessFC.getData().add(seriesFC);
 				}
-
-				lcProcessQuality.getData().add(seriesQ);
-				lcProcessTime.getData().add(seriesT);
-				lcProcessOOP.getData().add(seriesOOP);
-				lcProcessFC.getData().add(seriesFC);
+				
 			}
+			
 
 		}
 
