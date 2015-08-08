@@ -14,6 +14,12 @@ public class Project implements Cloneable{
 	public static final String TYPE_PROCESSLEVEL = "processLevel";
 	public static final String TYPE_BPMLEVEL = "";
 	
+	public static final String FX_READABLE_A = "Effect on Operating Outflows";
+	public static final String FX_READABLE_B = "Effect on Investment Outflows";
+	public static final String FX_READABLE_E = "Effect on Time";
+	public static final String FX_READABLE_U = "Effect on Quality";
+	public static final String FX_READABLE_M = "Effect on Fixed Costs";
+	
 	private int id; // id of the project, starts with 1
 	private String name; // name of the project
 	public int numberOfPeriods;

@@ -3,6 +3,7 @@ package com.v3pm_prototype.view.controller;
 import java.text.DecimalFormat;
 
 import com.sun.javafx.css.converters.PaintConverter;
+import com.v3pm_prototype.analysis.Analysis;
 import com.v3pm_prototype.analysis.CompleteRobustnessAnalysis;
 import com.v3pm_prototype.analysis.RobustnessAnalysis;
 import com.v3pm_prototype.calculation.Project;
@@ -145,12 +146,12 @@ public class RoadmapBoxController {
 			sb.append("Process:\t" + config.getProject(project.getI()) + "\n");
 		}
 		sb.append("OInv:\t" + df.format(projectEndVal.getOinv()) + "  ("
-				+ modifier + df.format(deltaOInv) + ")\n");
-		sb.append("a:\t" + project.getA() + "\n");
-		sb.append("b:\t" + project.getB() + "\n");
-		sb.append("e:\t" + project.getE() + "\n");
-		sb.append("u:\t" + project.getU() + "\n");
-		sb.append("m:\t" + project.getM() + "\n\n");
+				+ modifier + df.format(deltaOInv) + ")\n\n");
+		sb.append(Project.FX_READABLE_A+": " + project.getA() + "\n");
+		sb.append(Project.FX_READABLE_B+": " + project.getB() + "\n");
+		sb.append(Project.FX_READABLE_E+": " + project.getE() + "\n");
+		sb.append(Project.FX_READABLE_U+": " + project.getU() + "\n");
+		sb.append(Project.FX_READABLE_M+": " + project.getM() + "\n\n");
 		
 		
 		//Add info from the robustness Analysis
@@ -160,7 +161,7 @@ public class RoadmapBoxController {
 				if(ra.getObject() instanceof Project){
 					if(((Project)ra.getObject()).equals(project)){
 						//add info for every calculated parameter
-						sb.append(ra.getSelectedParameter().getName() + ":\t"+(ra.getPercentage()*100)+" %\n");
+						sb.append(Analysis.mapToReadableParameter(ra.getSelectedParameter().getName()) + ": "+(ra.getPercentage()*100)+" %\n");
 					}
 				}
 			}

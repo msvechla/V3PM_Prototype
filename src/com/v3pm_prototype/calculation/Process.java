@@ -8,6 +8,13 @@ import com.v3pm_prototype.rmgeneration.RunConfiguration;
  *
  */
 public class Process implements Comparable<Process>, Cloneable{
+	
+	public static final String FX_READABLE_P = "Price";
+	public static final String FX_READABLE_OOP = "Operating Outflows";
+	public static final String FX_READABLE_Q = "Quality";
+	public static final String FX_READABLE_T = "Time";
+	public static final String FX_READABLE_FIXEDCOSTS = "Fixed Costs";
+	
 	private String name;
 	private int id;
 	private double q; // quality

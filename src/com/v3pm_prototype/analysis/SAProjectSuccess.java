@@ -136,7 +136,7 @@ public class SAProjectSuccess extends Analysis {
 			variance = variance / lstNPVs.size();
 			
 			Map<String, String> dataRow = new HashMap<>();
-			dataRow.put(SAProjectSuccessController.CLM_PARAMETER, field.getName());
+			dataRow.put(SAProjectSuccessController.CLM_PARAMETER, Analysis.mapToReadableParameter(field.getName()));
 			
 			dataRow.put(SAProjectSuccessController.CLM_INITIALVALUE, String.valueOf(field.getDouble(project)));
 			

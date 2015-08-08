@@ -19,7 +19,7 @@
             <Label fx:id="lblRoadmap" styleClass="Scenario2Titel" text="[    ]" />
          </children>
       </HBox>
-      <Label prefHeight="76.0" prefWidth="1093.0" text="Sensitivity to Project Sucess Analysis is a tool to identify the crucial parameters of your projects in a given roadmap.&#10;The tool modifies all set project parameters in the given range &#10;and step.&#10;&#10;Example: A range of 0.05 and step 0.01 will calculate the roadmap NPV for every set parameter, while varying it from -5% to +5% in 1% steps." wrapText="true">
+      <Label prefHeight="76.0" prefWidth="1093.0" text="Sensitivity to Project Sucess Analysis is a tool to identify the crucial parameters of your projects in a given roadmap.&#10;The tool modifies all set project parameters in the given range and step.&#10;&#10;Example: A range of 0.05 and step 0.01 will calculate the roadmap NPV for every set parameter, while varying it from -5% to +5% in 1% steps." wrapText="true">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>

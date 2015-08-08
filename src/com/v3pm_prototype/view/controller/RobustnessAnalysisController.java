@@ -27,7 +27,10 @@ import javafx.scene.input.MouseEvent;
 import org.controlsfx.control.Notifications;
 
 import com.v3pm_prototype.analysis.RobustnessAnalysis;
+import com.v3pm_prototype.calculation.Project;
+import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.database.DBScenario;
+import com.v3pm_prototype.rmgeneration.RunConfiguration;
 import com.v3pm_prototype.tools.TableViewSnapshot;
 
 public class RobustnessAnalysisController extends AnalysisController{
@@ -188,24 +191,24 @@ public class RobustnessAnalysisController extends AnalysisController{
 		
 		
 		if(cbType.getSelectionModel().getSelectedItem().equals("Project")){
-			olParameter.add("a");
-			olParameter.add("b");
-			olParameter.add("e");
-			olParameter.add("u");
-			olParameter.add("m");
+			olParameter.add(Project.FX_READABLE_A);
+			olParameter.add(Project.FX_READABLE_B);
+			olParameter.add(Project.FX_READABLE_E);
+			olParameter.add(Project.FX_READABLE_U);
+			olParameter.add(Project.FX_READABLE_M);
 		}
 		
 		if(cbType.getSelectionModel().getSelectedItem().equals("Process")){
-			olParameter.add("q");
-			olParameter.add("t");
-			olParameter.add("p");
-			olParameter.add("oop");
-			olParameter.add("fixedCosts");
+			olParameter.add(Process.FX_READABLE_Q);
+			olParameter.add(Process.FX_READABLE_T);
+			olParameter.add(Process.FX_READABLE_P);
+			olParameter.add(Process.FX_READABLE_OOP);
+			olParameter.add(Process.FX_READABLE_FIXEDCOSTS);
 		}
 		
 		if(cbType.getSelectionModel().getSelectedItem().equals("General")){
-			olParameter.add("discountRate");
-			olParameter.add("oOAFixed");
+			olParameter.add(RunConfiguration.FX_READABLE_DISCOUNTRATE);
+			olParameter.add(RunConfiguration.FX_READABLE_OOAFIXED);
 		}
 		
 		cbParameter.getSelectionModel().select(olParameter.get(0));

@@ -46,7 +46,7 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 					if (p.getA() != 0) {
 						RobustnessAnalysis ra = new RobustnessAnalysis(
 								lstRoadmap, config,
-								RobustnessAnalysis.MODE_PLUSMINUS, p, "a",
+								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_A,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
 						lstResults.add(ra);
 						ra.start();
@@ -57,7 +57,7 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 					if (p.getB() != 0) {
 						RobustnessAnalysis ra = new RobustnessAnalysis(
 								lstRoadmap, config,
-								RobustnessAnalysis.MODE_PLUSMINUS, p, "b",
+								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_B,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
 						lstResults.add(ra);
 						ra.start();
@@ -67,7 +67,7 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 					if (p.getE() != 0) {
 						RobustnessAnalysis ra = new RobustnessAnalysis(
 								lstRoadmap, config,
-								RobustnessAnalysis.MODE_PLUSMINUS, p, "e",
+								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_E,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
 						lstResults.add(ra);
 						ra.start();
@@ -77,7 +77,7 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 					if (p.getU() != 0) {
 						RobustnessAnalysis ra = new RobustnessAnalysis(
 								lstRoadmap, config,
-								RobustnessAnalysis.MODE_PLUSMINUS, p, "u",
+								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_U,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
 						lstResults.add(ra);
 						ra.start();
@@ -87,7 +87,7 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 					if (p.getM() != 0) {
 						RobustnessAnalysis ra = new RobustnessAnalysis(
 								lstRoadmap, config,
-								RobustnessAnalysis.MODE_PLUSMINUS, p, "m",
+								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_M,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
 						lstResults.add(ra);
 						ra.start();
@@ -115,7 +115,7 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 		//DiscountRate
 		RobustnessAnalysis ra = new RobustnessAnalysis(
 				lstRoadmap, config,
-				RobustnessAnalysis.MODE_PLUSMINUS, null, "discountRate",
+				RobustnessAnalysis.MODE_PLUSMINUS, null, RunConfiguration.FX_READABLE_DISCOUNTRATE,
 				0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
 		ra.start();
 		pGeneral = pGeneral + ra.getPercentage();

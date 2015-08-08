@@ -10,6 +10,10 @@ import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.database.DBConstraint;
 
 public class RunConfiguration implements Cloneable{
+	
+	public static final String FX_READABLE_DISCOUNTRATE = "Discount Rate";
+	public static final String FX_READABLE_OOAFIXED = "Overarching Fixed Outflows";
+	
 	private int periods;
 	private int slotsPerPeriod;
 	private double discountRate;

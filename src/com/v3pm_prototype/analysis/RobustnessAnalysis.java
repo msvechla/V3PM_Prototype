@@ -29,7 +29,8 @@ public class RobustnessAnalysis extends Analysis{
 	private List<Double> lstDoubleOldRoadmap = new ArrayList<Double>();
 	
 	private RoadMap rmOld;
-	private String parameter;
+	private String parameterReadable;
+	private String parameterCode;
 	private Field selectedParameter;
 	
 	private Object object;
@@ -39,7 +40,7 @@ public class RobustnessAnalysis extends Analysis{
 	private double workProgress;
 	
 
-	public RobustnessAnalysis(List<RoadMap> lstRoadmap, RunConfiguration config, String mode, Object object, String parameter, double radius, double step, String absRel, ProgressIndicator piSolution) {
+	public RobustnessAnalysis(List<RoadMap> lstRoadmap, RunConfiguration config, String mode, Object object, String parameterReadable, double radius, double step, String absRel, ProgressIndicator piSolution) {
 		super(config, mode, absRel, radius, step, piSolution);
 		this.lstRoadmap = new ArrayList<RoadMap>();
 		
@@ -71,9 +72,11 @@ public class RobustnessAnalysis extends Analysis{
 			this.object = this.config;
 		}
 		
+		this.parameterReadable = parameterReadable;
+		this.parameterCode = Analysis.mapToCodeParameter(parameterReadable);
 		
 		try {
-			this.selectedParameter = this.object.getClass().getDeclaredField(parameter);
+			this.selectedParameter = this.object.getClass().getDeclaredField(parameterCode);
 			this.selectedParameter.setAccessible(true);
 		} catch (NoSuchFieldException e) {
 			e.printStackTrace();
@@ -203,21 +206,11 @@ public class RobustnessAnalysis extends Analysis{
 		}
 		
 		this.percentage = (Double.valueOf(countRobust) / lstResults.size());
-		
-		String parameterString = "";
-		
-		if(object instanceof RunConfiguration){
-			parameterString = "discountRate";
-		}else{
-			parameterString = parameter;
-		}
-		
-		
-		
+
 		if(rmNextBest == null){
-			solutionText = "Parameter "+parameterString+" is robust.\nNo new best solution has been found using the specified criteria.";
+			solutionText = "Parameter \""+parameterReadable+"\" is robust.\nNo new best solution has been found using the specified criteria.";
 		}else{
-			solutionText = "Parameter "+parameterString+" robustness level: "+this.percentage*100+"%\nNew best Roadmap found using the specified criteria: "+rmNextBest;
+			solutionText = "Parameter \""+parameterReadable+"\" robustness level: "+this.percentage*100+"%\nNew best Roadmap found using the specified criteria: "+rmNextBest;
 		}
 		
 		System.out.println(solutionText);
@@ -305,7 +298,7 @@ public class RobustnessAnalysis extends Analysis{
 	}
 
 	public String getParameter() {
-		return parameter;
+		return parameterReadable;
 	}
 
 	public List<RoadMap> getLstResultsOldRoadmap() {
@@ -335,7 +328,5 @@ public class RobustnessAnalysis extends Analysis{
 	public String getSolutionText() {
 		return solutionText;
 	}
-	
-	
 
 }
