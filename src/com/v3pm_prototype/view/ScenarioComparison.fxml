@@ -9,7 +9,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="807.0" prefWidth="2020.0" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.ScenarioComparisonController">
+<VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="1000.0" prefWidth="2020.0" stylesheets="@V3PMGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.ScenarioComparisonController">
    <children>
       <Label styleClass="Titel1" text="Solution Comparison" />
       <Label styleClass="Titel2" text="Roadmap &amp; NPV:">
@@ -173,7 +173,7 @@
             </HBox>
          </children>
       </VBox>
-      <HBox maxHeight="1.7976931348623157E308" prefHeight="188.0" prefWidth="1731.0" VBox.vgrow="ALWAYS">
+      <HBox maxHeight="1.7976931348623157E308" prefWidth="1731.0" VBox.vgrow="NEVER">
          <children>
             <Label fx:id="lblSolution" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="50.0" style="-fx-background-color: #D8D8D8;" styleClass="SolutionText" text="&#10;" textOverrun="CLIP" wrapText="true" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                <VBox.margin>
@@ -191,103 +191,114 @@
             <Insets top="8.0" />
          </VBox.margin>
       </HBox>
-      <Label styleClass="Titel1" text="Process Comparison">
-         <VBox.margin>
-            <Insets top="6.0" />
-         </VBox.margin>
-      </Label>
-      <Label styleClass="Titel2" text="Process Performance Delta:">
-         <VBox.margin>
-            <Insets bottom="10.0" />
-         </VBox.margin>
-      </Label>
-      <HBox VBox.vgrow="ALWAYS">
-         <children>
-            <BarChart fx:id="bcQuality" animated="false" legendVisible="false" minHeight="220.0" prefHeight="300.0" title="Quality" HBox.hgrow="ALWAYS">
-              <xAxis>
-                <CategoryAxis side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis label="Delta" side="LEFT" />
-              </yAxis>
-            </BarChart>
-            <BarChart fx:id="bcTime" animated="false" legendVisible="false" minHeight="220.0" prefHeight="300.0" title="Time" HBox.hgrow="ALWAYS">
-               <xAxis>
-                  <CategoryAxis side="BOTTOM" />
-               </xAxis>
-               <yAxis>
-                  <NumberAxis label="Delta" side="LEFT" />
-               </yAxis>
-            </BarChart>
-            <BarChart fx:id="bcOOP" animated="false" legendVisible="false" minHeight="220.0" prefHeight="300.0" title="Operating Outflows" HBox.hgrow="ALWAYS">
-               <xAxis>
-                  <CategoryAxis side="BOTTOM" />
-               </xAxis>
-               <yAxis>
-                  <NumberAxis label="Delta" side="LEFT" />
-               </yAxis>
-            </BarChart>
-            <BarChart fx:id="bcFixedCosts" animated="false" legendVisible="false" minHeight="220.0" prefHeight="300.0" title="Fixed Costs" HBox.hgrow="ALWAYS">
-               <xAxis>
-                  <CategoryAxis side="BOTTOM" />
-               </xAxis>
-               <yAxis>
-                  <NumberAxis label="Delta" side="LEFT" />
-               </yAxis>
-            </BarChart>
-         </children>
-      </HBox>
-      <HBox minHeight="200.0">
-         <children>
-            <VBox minHeight="100.0" HBox.hgrow="ALWAYS">
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" prefViewportWidth="2000.0" VBox.vgrow="ALWAYS">
+         <content>
+            <VBox prefWidth="1998.0">
                <children>
-                  <Label styleClass="Titel1" text="Restriction Comparison">
-                     <VBox.margin>
-                        <Insets top="20.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label styleClass="Titel2" text="Violated Restrictions per Scenario:">
-                     <padding>
-                        <Insets bottom="10.0" />
-                     </padding>
-                  </Label>
-                  <BarChart fx:id="bcBrokenRestrictions" animated="false" legendVisible="false" stylesheets="@ScenarioComparison.css">
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis label="#Broken Restrictions" side="LEFT" />
-                    </yAxis>
-                  </BarChart>
-               </children>
-            </VBox>
-            <VBox HBox.hgrow="ALWAYS">
-               <children>
-                  <Label styleClass="Titel1" text="Cashflows">
-                     <VBox.margin>
-                        <Insets top="20.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label styleClass="Titel2" text="Cashflows per Period and Scenario">
-                     <padding>
-                        <Insets bottom="10.0" />
-                     </padding>
+                  <Label styleClass="Titel1" text="Process Comparison">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <AreaChart fx:id="sacCashflows" legendVisible="false" HBox.hgrow="ALWAYS">
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="LEFT" />
-                    </yAxis>
-                  </AreaChart>
+                  <Label styleClass="Titel2" text="Process Performance Delta:">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <BarChart fx:id="bcQuality" animated="false" legendVisible="false" minHeight="220.0" prefHeight="300.0" title="Quality" HBox.hgrow="ALWAYS">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis label="Delta" side="LEFT" />
+                          </yAxis>
+                        </BarChart>
+                        <BarChart fx:id="bcTime" animated="false" legendVisible="false" minHeight="220.0" prefHeight="300.0" title="Time" HBox.hgrow="ALWAYS">
+                           <xAxis>
+                              <CategoryAxis side="BOTTOM" />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis label="Delta" side="LEFT" />
+                           </yAxis>
+                        </BarChart>
+                        <BarChart fx:id="bcOOP" animated="false" legendVisible="false" minHeight="220.0" prefHeight="300.0" title="Operating Outflows" HBox.hgrow="ALWAYS">
+                           <xAxis>
+                              <CategoryAxis side="BOTTOM" />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis label="Delta" side="LEFT" />
+                           </yAxis>
+                        </BarChart>
+                        <BarChart fx:id="bcFixedCosts" animated="false" legendVisible="false" minHeight="220.0" prefHeight="300.0" title="Fixed Costs" HBox.hgrow="ALWAYS">
+                           <xAxis>
+                              <CategoryAxis side="BOTTOM" />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis label="Delta" side="LEFT" />
+                           </yAxis>
+                        </BarChart>
+                     </children>
+                  </HBox>
+                  <HBox minHeight="200.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="Titel1" text="Restriction Comparison">
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="Titel2" text="Violated Restrictions per Scenario:">
+                                 <padding>
+                                    <Insets bottom="10.0" />
+                                 </padding>
+                              </Label>
+                              <BarChart fx:id="bcBrokenRestrictions" animated="false" legendVisible="false" stylesheets="@ScenarioComparison.css">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis label="#Broken Restrictions" side="LEFT" />
+                                </yAxis>
+                              </BarChart>
+                           </children>
+                        </VBox>
+                        <VBox HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="Titel1" text="Cashflows">
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="Titel2" text="Cashflows per Period and Scenario">
+                                 <padding>
+                                    <Insets bottom="10.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <AreaChart fx:id="sacCashflows" legendVisible="false" HBox.hgrow="ALWAYS">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </AreaChart>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
-         </children>
-      </HBox>
+         </content>
+         <VBox.margin>
+            <Insets top="6.0" />
+         </VBox.margin>
+      </ScrollPane>
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
