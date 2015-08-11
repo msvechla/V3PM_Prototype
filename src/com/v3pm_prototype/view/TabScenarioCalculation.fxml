@@ -102,122 +102,130 @@
                   </TitledPane>
                </children>
             </HBox>
-            <VBox>
-               <children>
-                  <Label styleClass="Titel1" text="Process Performance Information">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Label>
-                  <Label styleClass="Titel2" text="Process Development:" />
-               </children>
-            </VBox>
-            <HBox prefHeight="240.0" spacing="10.0">
-               <children>
-                  <LineChart fx:id="lcProcessQuality" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Quality" HBox.hgrow="ALWAYS">
-                    <xAxis>
-                      <CategoryAxis endMargin="10.0" gapStartAndEnd="false" side="BOTTOM" startMargin="10.0" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis forceZeroInRange="false" label="Quality" side="LEFT" />
-                    </yAxis>
-                  </LineChart>
-                  <LineChart fx:id="lcProcessTime" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Time" HBox.hgrow="ALWAYS">
-                     <xAxis>
-                        <CategoryAxis endMargin="10.0" gapStartAndEnd="false" startMargin="10.0" />
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis forceZeroInRange="false" label="Time" side="LEFT" />
-                     </yAxis>
-                  </LineChart>
-                  <LineChart fx:id="lcProcessOOP" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Operating Outflows">
-                     <xAxis>
-                        <CategoryAxis endMargin="10.0" gapStartAndEnd="false" side="BOTTOM" startMargin="10.0" />
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis forceZeroInRange="false" label="Op. Outflows" side="LEFT" />
-                     </yAxis>
-                  </LineChart>
-                  <LineChart fx:id="lcProcessFC" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Fixed Costs">
-                     <xAxis>
-                        <CategoryAxis endMargin="10.0" gapStartAndEnd="false" side="BOTTOM" startMargin="10.0" />
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis forceZeroInRange="false" label="Fixed Costs" side="LEFT" />
-                     </yAxis>
-                  </LineChart>
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </HBox>
-            <Label styleClass="Titel2" text="Process Details">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Label>
-            <TableView fx:id="tvProcesses" maxHeight="250.0" minHeight="140.0" prefHeight="200.0" VBox.vgrow="NEVER">
-              <columns>
-                <TableColumn fx:id="clmProcessesName" prefWidth="311.0" text="Process" />
-                <TableColumn fx:id="clmProcessesQ" prefWidth="95.0" text="Quality" />
-                  <TableColumn fx:id="clmProcessesQDelta" prefWidth="130.0" text="Δ Quality" />
-                  <TableColumn fx:id="clmProcessesT" prefWidth="73.0" text="Time" />
-                  <TableColumn fx:id="clmProcessesTDelta" prefWidth="130.0" text="Δ Time" />
-                  <TableColumn fx:id="clmProcessesOOp" prefWidth="130.0" text="Op. Outflows" />
-                  <TableColumn fx:id="clmProcessesOOpDelta" prefWidth="130.0" text="Δ Op. Outflows" />
-                  <TableColumn fx:id="clmProcessesFC" prefWidth="130.0" text="Fixed Costs" />
-                  <TableColumn fx:id="clmProcessesFCDelta" prefWidth="130.0" text="Δ Fixed Costs" />
-              </columns>
-            </TableView>
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="InfoText" text="Parameter columns show the value of the last period. Delta Columns show the deviation from the first period." />
-            <VBox maxHeight="1.7976931348623157E308" minHeight="80.0">
-               <children>
-                  <Label styleClass="Titel1" text="Scenario Restrictions">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Label>
-                  <Label styleClass="Titel2" text="Used Restriction Set:">
-                     <VBox.margin>
-                        <Insets bottom="8.0" />
-                     </VBox.margin>
-                  </Label>
-                  <HBox maxHeight="1.7976931348623157E308" minHeight="50.0" prefHeight="180.0" VBox.vgrow="ALWAYS">
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefViewportHeight="754.0" prefViewportWidth="1330.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+               <content>
+                  <VBox>
                      <children>
-                        <VBox maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                        <VBox>
                            <children>
-                              <ListView fx:id="lvRestrictions" minHeight="80.0" prefHeight="200.0" prefWidth="340.0">
+                              <Label styleClass="Titel1" text="Process Performance Information">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                              </ListView>
+                              </Label>
+                              <Label styleClass="Titel2" text="Process Development:" />
                            </children>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
                         </VBox>
-                        <VBox>
+                        <HBox prefHeight="240.0" spacing="10.0">
                            <children>
-                              <BarChart fx:id="bcRBroken" legendVisible="false" maxHeight="1.7976931348623157E308" minHeight="80.0" prefHeight="200.0" title="Amount of Violated Restrictions" HBox.hgrow="ALWAYS">
+                              <LineChart fx:id="lcProcessQuality" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Quality" HBox.hgrow="ALWAYS">
                                 <xAxis>
-                                  <CategoryAxis side="BOTTOM" />
+                                  <CategoryAxis endMargin="10.0" gapStartAndEnd="false" side="BOTTOM" startMargin="10.0" />
                                 </xAxis>
                                 <yAxis>
-                                  <NumberAxis forceZeroInRange="false" label="#Broken" side="LEFT" />
+                                  <NumberAxis forceZeroInRange="false" label="Quality" side="LEFT" />
                                 </yAxis>
+                              </LineChart>
+                              <LineChart fx:id="lcProcessTime" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Time" HBox.hgrow="ALWAYS">
+                                 <xAxis>
+                                    <CategoryAxis endMargin="10.0" gapStartAndEnd="false" startMargin="10.0" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis forceZeroInRange="false" label="Time" side="LEFT" />
+                                 </yAxis>
+                              </LineChart>
+                              <LineChart fx:id="lcProcessOOP" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Operating Outflows">
+                                 <xAxis>
+                                    <CategoryAxis endMargin="10.0" gapStartAndEnd="false" side="BOTTOM" startMargin="10.0" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis forceZeroInRange="false" label="Op. Outflows" side="LEFT" />
+                                 </yAxis>
+                              </LineChart>
+                              <LineChart fx:id="lcProcessFC" legendSide="RIGHT" legendVisible="false" prefHeight="400.0" stylesheets="@V3PMGUI.css" title="Process Fixed Costs">
+                                 <xAxis>
+                                    <CategoryAxis endMargin="10.0" gapStartAndEnd="false" side="BOTTOM" startMargin="10.0" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis forceZeroInRange="false" label="Fixed Costs" side="LEFT" />
+                                 </yAxis>
+                              </LineChart>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <Label styleClass="Titel2" text="Process Details">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Label>
+                        <TableView fx:id="tvProcesses" maxHeight="250.0" minHeight="140.0" prefHeight="200.0" VBox.vgrow="NEVER">
+                          <columns>
+                            <TableColumn fx:id="clmProcessesName" prefWidth="311.0" text="Process" />
+                            <TableColumn fx:id="clmProcessesQ" prefWidth="95.0" text="Quality" />
+                              <TableColumn fx:id="clmProcessesQDelta" prefWidth="130.0" text="Δ Quality" />
+                              <TableColumn fx:id="clmProcessesT" prefWidth="73.0" text="Time" />
+                              <TableColumn fx:id="clmProcessesTDelta" prefWidth="130.0" text="Δ Time" />
+                              <TableColumn fx:id="clmProcessesOOp" prefWidth="130.0" text="Op. Outflows" />
+                              <TableColumn fx:id="clmProcessesOOpDelta" prefWidth="130.0" text="Δ Op. Outflows" />
+                              <TableColumn fx:id="clmProcessesFC" prefWidth="130.0" text="Fixed Costs" />
+                              <TableColumn fx:id="clmProcessesFCDelta" prefWidth="130.0" text="Δ Fixed Costs" />
+                          </columns>
+                        </TableView>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="InfoText" text="Parameter columns show the value of the last period. Delta Columns show the deviation from the first period." />
+                        <VBox maxHeight="1.7976931348623157E308" minHeight="80.0">
+                           <children>
+                              <Label styleClass="Titel1" text="Scenario Restrictions">
                                  <VBox.margin>
-                                    <Insets bottom="-20.0" />
+                                    <Insets />
                                  </VBox.margin>
-                              </BarChart>
+                              </Label>
+                              <Label styleClass="Titel2" text="Used Restriction Set:">
+                                 <VBox.margin>
+                                    <Insets bottom="8.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox maxHeight="1.7976931348623157E308" minHeight="50.0" prefHeight="180.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <VBox maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <ListView fx:id="lvRestrictions" minHeight="80.0" prefHeight="200.0" prefWidth="340.0">
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </ListView>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <VBox>
+                                       <children>
+                                          <BarChart fx:id="bcRBroken" legendVisible="false" maxHeight="1.7976931348623157E308" minHeight="80.0" prefHeight="200.0" title="Amount of Violated Restrictions" HBox.hgrow="ALWAYS">
+                                            <xAxis>
+                                              <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis forceZeroInRange="false" label="#Broken" side="LEFT" />
+                                            </yAxis>
+                                             <VBox.margin>
+                                                <Insets bottom="-20.0" />
+                                             </VBox.margin>
+                                          </BarChart>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="8.0" />
+                                 </padding>
+                              </HBox>
                            </children>
                         </VBox>
                      </children>
-                     <padding>
-                        <Insets bottom="8.0" />
-                     </padding>
-                  </HBox>
-               </children>
-            </VBox>
+                  </VBox>
+               </content>
+            </ScrollPane>
          </children>
          <padding>
             <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
