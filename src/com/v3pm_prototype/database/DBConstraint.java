@@ -60,7 +60,7 @@ public class DBConstraint implements Cloneable{
 			sb.append(i.getName());
 			sb.append(", ");
 		}
-		if(y != "-1"){
+		if(!y.equals("-1")){
 			sb.append(y);
 		}
 		

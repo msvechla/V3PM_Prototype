@@ -28,6 +28,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ContextMenu;
@@ -808,6 +809,7 @@ public class TabScenarioCalculationController {
 		List<String> lstTypeAlreadyCounted = new ArrayList<String>();
 		
 		Series<String, Number> series = new XYChart.Series<String, Number>();
+		int amountBrokenOverall = 0;
 		
 		for(DBConstraint dbConstraint : config.getConstraintSet().getLstConstraints()){
 			int countBrokenAll = 0;
@@ -823,9 +825,15 @@ public class TabScenarioCalculationController {
 				// Dont count constraints of this type again
 				lstTypeAlreadyCounted.add(dbConstraint.getType());
 				System.out.println(dbConstraint.getType() + " countBroken: "+countBrokenAll);
+				amountBrokenOverall += countBrokenAll;
 				// Add a Bar of the type to the chart
 				series.getData().add(new XYChart.Data<String, Number>(dbConstraint.getType(),countBrokenAll));
 			}	
+		}
+		
+		//Display as percentage of all broken Restrictions
+		for(Data<String,Number> d: series.getData()){
+			d.setYValue(d.getYValue().doubleValue() / amountBrokenOverall);
 		}
 		
 		bcRBroken.getData().add(series);
