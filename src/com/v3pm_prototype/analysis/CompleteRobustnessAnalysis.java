@@ -23,7 +23,7 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 	public CompleteRobustnessAnalysis(RunConfiguration config,
 			List<RoadMap> lstRoadmap) {
 		super();
-		this.config = config;
+		this.config = (RunConfiguration) config.clone();
 		this.lstRoadmap = lstRoadmap;
 	}
 
@@ -31,7 +31,7 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 	@Override
 	protected List<RobustnessAnalysis> call() throws Exception {
 		
-		this.roadmap = lstRoadmap.get(0);
+		this.roadmap = (RoadMap) lstRoadmap.get(0).clone();
 		int countProjects = 0;
 		
 		

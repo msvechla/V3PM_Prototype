@@ -70,10 +70,8 @@ public class Calculator{
 
 				projectsInPeriod.add(tempProject);
 				
-//				if(RM.toString().contains("[ Six Sigma null ][ null null ]")){
-//					System.out.println("FOUND");
-//				}
-//				if(RM.toString().contains("[ Einführung SEPA Standardisierung ][ Automatisierung    ]")){
+
+//				if(RM.toString().equals("[ Six Sigma Standardisierung ][ Automatisierung Stärkere IT ][ Einführung SEPA ][ Effizienzsteigerung 2 ]")){
 //					System.out.println("FOUND");
 //				}
 				
