@@ -20,6 +20,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -490,41 +494,40 @@ public class TabStartController {
 						"demandFunction"));
 		tvProcesses.setItems(TabStartController.olProcesses);
 		
-		
 		// -------------------- CONTEXT MENU --------------------
 
-				final ContextMenu processesContextMenu = new ContextMenu();
-				MenuItem delete = new MenuItem("Delete");
-				MenuItem item = new MenuItem("Copy to Clipboard");
-				item.setOnAction(new TableViewSnapshot(tvProcesses));
-				processesContextMenu.getItems().addAll(item,delete);
-				
-				tvProcesses.setContextMenu(processesContextMenu);
+		final ContextMenu processesContextMenu = new ContextMenu();
+		MenuItem delete = new MenuItem("Delete");
+		MenuItem item = new MenuItem("Copy to Clipboard");
+		item.setOnAction(new TableViewSnapshot(tvProcesses));
+		processesContextMenu.getItems().addAll(item, delete);
 
-				delete.setOnAction(new EventHandler<ActionEvent>() {
+		tvProcesses.setContextMenu(processesContextMenu);
 
-					@Override
-					public void handle(ActionEvent event) {
-						DBProcess process = tvProcesses.getSelectionModel()
-								.getSelectedItem();
-						olProcesses.remove(process);
+		delete.setOnAction(new EventHandler<ActionEvent>() {
 
-						// Delete from database
-						try {
-							Connection conn = DBConnection.getInstance()
-									.getConnection();
-							Statement st = conn.createStatement();
-							st.executeUpdate("DELETE FROM Process WHERE id = "
-									+ process.getId() + ";");
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-					}
-				});
+			@Override
+			public void handle(ActionEvent event) {
+				DBProcess process = tvProcesses.getSelectionModel()
+						.getSelectedItem();
+				olProcesses.remove(process);
 
+				// Delete from database
+				try {
+					Connection conn = DBConnection.getInstance()
+							.getConnection();
+					Statement st = conn.createStatement();
+					st.executeUpdate("DELETE FROM Process WHERE id = "
+							+ process.getId() + ";");
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		
 
 	}
+	
 
 	/**
 	 * Starts a task that loads all data from the DB. Calls loadProjects() which

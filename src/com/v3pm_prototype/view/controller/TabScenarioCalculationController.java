@@ -25,6 +25,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
@@ -156,6 +157,9 @@ public class TabScenarioCalculationController {
 
 	@FXML
 	private ListView lvRestrictions;
+	
+	@FXML
+	private AreaChart<String, Double> acCashflows;
 	
 	@FXML
 	private SwingNode swingNode;
@@ -840,6 +844,19 @@ public class TabScenarioCalculationController {
 		
 	}
 
+	private void initACCashflows(){
+		XYChart.Series<String,Double> series1= new Series<String, Double>();
+        series1.setName(this.scenario.getName());
+                
+        for(int period = 0; period < config.getPeriods(); period++){
+        	series1.getData().add(new Data<String, Double>("Period "+(period), rmList.get(0).getCashflowsPerPeriod(config)[period]));
+        	System.out.println("Series1: "+rmList.get(0).getCashflowsPerPeriod(config)[period]);
+        }
+        acCashflows.getData().add(series1);   
+	}
+	
+	
+	
 	/**
 	 * Generates the initial Roadmaps and updates the UI
 	 * 
@@ -924,6 +941,7 @@ public class TabScenarioCalculationController {
 						tvRoadmap.getSelectionModel().selectedItemProperty()
 								.addListener(rmListChangeListener);
 						initLineCharts();
+						initACCashflows();
 						initGraphStream();
 						initRoadmapContainer(null);
 						updateTVProcesses();
