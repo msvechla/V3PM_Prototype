@@ -10,12 +10,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class MainApp extends Application {
+public class V3PM_Prototype extends Application {
 
 	private Stage primaryStage;
 	private VBox rootLayout;
 	private V3PMGUIController v3pmGUIController;
-	public static MainApp instance;
+	public static V3PM_Prototype instance;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -26,7 +26,7 @@ public class MainApp extends Application {
 		try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/com/v3pm_prototype/view/v3pmGUI.fxml"));
+            loader.setLocation(V3PM_Prototype.class.getResource("/com/v3pm_prototype/view/V3PMGUI.fxml"));
             rootLayout = (VBox) loader.load();
             
             System.out.println("javafx.runtime.version: " + System.getProperties().get("javafx.runtime.version"));

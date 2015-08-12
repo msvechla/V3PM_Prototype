@@ -1,7 +1,7 @@
 package com.v3pm_prototype.view.controller;
 
 import com.v3pm_prototype.analysis.RobustnessAnalysis;
-import com.v3pm_prototype.main.MainApp;
+import com.v3pm_prototype.main.V3PM_Prototype;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,7 +33,7 @@ public abstract class AnalysisController {
 	@FXML
 	protected ProgressIndicator piSolution;
 	
-	protected MainApp mainApp;
+	protected V3PM_Prototype mainApp;
 	protected TabScenarioCalculationController tsc;
 	
 	public AnalysisController() {
@@ -60,11 +60,11 @@ public abstract class AnalysisController {
 		cbAbsRel.getSelectionModel().select(olAbsRel.get(0));
 	}
 	
-	public MainApp getMainApp() {
+	public V3PM_Prototype getMainApp() {
 		return mainApp;
 	}
 
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(V3PM_Prototype mainApp) {
 		this.mainApp = mainApp;
 	}
 

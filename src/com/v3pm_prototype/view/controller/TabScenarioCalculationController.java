@@ -75,7 +75,7 @@ import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.database.DBConstraint;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBScenario;
-import com.v3pm_prototype.main.MainApp;
+import com.v3pm_prototype.main.V3PM_Prototype;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
@@ -165,7 +165,7 @@ public class TabScenarioCalculationController {
 	SpringBox graphstreamLayout;
 	private HashSet<Project> oldProjectList = new HashSet<Project>();
 
-	private MainApp mainApp;
+	private V3PM_Prototype mainApp;
 	private DBScenario scenario;
 	private RunConfiguration config;
 	private Tab tab;
@@ -252,7 +252,7 @@ public class TabScenarioCalculationController {
 	public void openSAProjectSuccessTab() {
 		// Load root layout from fxml file.
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(MainApp.class
+		loader.setLocation(V3PM_Prototype.class
 				.getResource("/com/v3pm_prototype/view/SAProjectSuccess.fxml"));
 		VBox root;
 		try {
@@ -282,7 +282,7 @@ public class TabScenarioCalculationController {
 	public void openRobustnessAnalysisTab() {
 		// Load root layout from fxml file.
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(MainApp.class
+		loader.setLocation(V3PM_Prototype.class
 				.getResource("/com/v3pm_prototype/view/RobustnessAnalysis.fxml"));
 		VBox root;
 		try {
@@ -314,7 +314,7 @@ public class TabScenarioCalculationController {
 		if( tvRoadmap.getSelectionModel().getSelectedItems().size() == 2){
 			// Load root layout from fxml file.
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class
+			loader.setLocation(V3PM_Prototype.class
 					.getResource("/com/v3pm_prototype/view/RoadmapComparison.fxml"));
 			VBox root;
 			try {
@@ -372,7 +372,7 @@ public class TabScenarioCalculationController {
 	
 	private void initRoadmapContainer(CompleteRobustnessAnalysis cra) {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(MainApp.class
+		loader.setLocation(V3PM_Prototype.class
 				.getResource("/com/v3pm_prototype/view/RoadmapBox.fxml"));
 		VBox root;
 		try {
@@ -957,7 +957,7 @@ public class TabScenarioCalculationController {
 	 * 
 	 * @param mainApp
 	 */
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(V3PM_Prototype mainApp) {
 		//TODO Cycle through tabs and closs all viewers
 		this.mainApp = mainApp;
 		this.mainApp.getPrimaryStage().setOnCloseRequest(

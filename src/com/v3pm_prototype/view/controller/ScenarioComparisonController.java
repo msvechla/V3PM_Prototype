@@ -42,7 +42,7 @@ import com.v3pm_prototype.calculation.Calculator;
 import com.v3pm_prototype.calculation.ConstraintSet;
 import com.v3pm_prototype.database.DBConstraint;
 import com.v3pm_prototype.database.DBScenario;
-import com.v3pm_prototype.main.MainApp;
+import com.v3pm_prototype.main.V3PM_Prototype;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
@@ -96,7 +96,7 @@ public class ScenarioComparisonController {
 	@FXML
 	private AreaChart<String, Double> sacCashflows;
 	
-	private MainApp mainApp;
+	private V3PM_Prototype mainApp;
 	private Tab tab;
 	private DBScenario scenario1;
 	private DBScenario scenario2;
@@ -440,7 +440,7 @@ public class ScenarioComparisonController {
 	
 	private void initRoadmapContainer(VBox rmc, List<RoadMap>rmList, RunConfiguration config, CompleteRobustnessAnalysis cra) {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(MainApp.class
+		loader.setLocation(V3PM_Prototype.class
 				.getResource("/com/v3pm_prototype/view/RoadmapBox.fxml"));
 		VBox root;
 		try {
@@ -454,7 +454,7 @@ public class ScenarioComparisonController {
 		}
 	}
 
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(V3PM_Prototype mainApp) {
 		this.mainApp = mainApp;
 	}
 

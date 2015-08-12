@@ -41,12 +41,12 @@ import com.v3pm_prototype.database.DBConstraint;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.database.DBScenario;
-import com.v3pm_prototype.main.MainApp;
+import com.v3pm_prototype.main.V3PM_Prototype;
 import com.v3pm_prototype.tools.TableViewSnapshot;
 
 public class TabStartController {
 
-	private MainApp mainApp;
+	private V3PM_Prototype mainApp;
 
 	@FXML
 	private Button btnNewScenario;
@@ -152,7 +152,7 @@ public class TabStartController {
 
 			// Load root layout from fxml file.
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class
+			loader.setLocation(V3PM_Prototype.class
 					.getResource("/com/v3pm_prototype/view/TabScenarioCalculation.fxml"));
 			HBox root;
 			try {
@@ -190,7 +190,7 @@ public class TabStartController {
 
 			// Load root layout from fxml file.
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class
+			loader.setLocation(V3PM_Prototype.class
 					.getResource("/com/v3pm_prototype/view/ScenarioComparison.fxml"));
 			VBox root;
 			try {
@@ -227,7 +227,7 @@ public class TabStartController {
 	public void openAddProjectWindow() {
 		// Load root layout from fxml file.
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(MainApp.class
+		loader.setLocation(V3PM_Prototype.class
 				.getResource("/com/v3pm_prototype/view/AddProject.fxml"));
 		VBox root;
 		try {
@@ -254,7 +254,7 @@ public class TabStartController {
 	public void openAddProcessWindow() {
 		// Load root layout from fxml file.
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(MainApp.class
+		loader.setLocation(V3PM_Prototype.class
 				.getResource("/com/v3pm_prototype/view/AddProcess.fxml"));
 		VBox root;
 		try {
@@ -280,7 +280,7 @@ public class TabStartController {
 	public void openNewScenarioWindow(DBScenario blueprint) {
 		// Load root layout from fxml file.
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(MainApp.class
+		loader.setLocation(V3PM_Prototype.class
 				.getResource("/com/v3pm_prototype/view/NewScenario.fxml"));
 		VBox root;
 		try {
@@ -420,12 +420,16 @@ public class TabStartController {
 
 		tvProjects.setItems(TabStartController.olProjects);
 
-		// -------------------- DELETE CONTEXT MENU --------------------
+		// -------------------- CONTEXT MENU --------------------
 
 		final ContextMenu projectsContextMenu = new ContextMenu();
 		MenuItem delete = new MenuItem("Delete");
-		projectsContextMenu.getItems().add(delete);
-
+		MenuItem item = new MenuItem("Copy to Clipboard");
+		item.setOnAction(new TableViewSnapshot(tvProjects));
+		
+		projectsContextMenu.getItems().addAll(item,delete);
+		
+		
 		tvProjects.setContextMenu(projectsContextMenu);
 
 		delete.setOnAction(new EventHandler<ActionEvent>() {
@@ -449,10 +453,7 @@ public class TabStartController {
 			}
 		});
 
-		MenuItem item = new MenuItem("Copy to Clipboard");
-		item.setOnAction(new TableViewSnapshot(tvProjects));
-		ContextMenu menu = new ContextMenu(item);
-		tvProjects.setContextMenu(menu);
+		
 
 	}
 
@@ -490,12 +491,14 @@ public class TabStartController {
 		tvProcesses.setItems(TabStartController.olProcesses);
 		
 		
-		// -------------------- DELETE CONTEXT MENU --------------------
+		// -------------------- CONTEXT MENU --------------------
 
 				final ContextMenu processesContextMenu = new ContextMenu();
 				MenuItem delete = new MenuItem("Delete");
-				processesContextMenu.getItems().add(delete);
-
+				MenuItem item = new MenuItem("Copy to Clipboard");
+				item.setOnAction(new TableViewSnapshot(tvProcesses));
+				processesContextMenu.getItems().addAll(item,delete);
+				
 				tvProcesses.setContextMenu(processesContextMenu);
 
 				delete.setOnAction(new EventHandler<ActionEvent>() {
@@ -519,10 +522,7 @@ public class TabStartController {
 					}
 				});
 
-		MenuItem item = new MenuItem("Copy to Clipboard");
-		item.setOnAction(new TableViewSnapshot(tvProcesses));
-		ContextMenu menu = new ContextMenu(item);
-		tvProcesses.setContextMenu(menu);
+		
 
 	}
 
@@ -794,15 +794,15 @@ public class TabStartController {
 	private void setAppIcon(){
 		this.mainApp.getPrimaryStage().getIcons().add(
 				   new Image(
-				      MainApp.class.getResourceAsStream( "/com/v3pm_prototype/tools/v3pmLogo_small.png" ))); 
+				      V3PM_Prototype.class.getResourceAsStream( "/com/v3pm_prototype/tools/v3pmLogo_small.png" ))); 
 	}
 	
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(V3PM_Prototype mainApp) {
 		this.mainApp = mainApp;
 		setAppIcon();
 	}
 
-	public MainApp getMainApp() {
+	public V3PM_Prototype getMainApp() {
 		return this.mainApp;
 	}
 

@@ -16,7 +16,7 @@ public class DBConnection {
 			Class.forName("org.sqlite.JDBC");
 			
 			// create a database connection
-		    connection = DriverManager.getConnection("jdbc:sqlite:V3PMDB.db");
+		    connection = DriverManager.getConnection("jdbc:sqlite::resource:com/v3pm_prototype/database/V3PMDB.db");
 		    
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

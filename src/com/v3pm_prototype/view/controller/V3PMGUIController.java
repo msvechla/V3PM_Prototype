@@ -2,7 +2,7 @@ package com.v3pm_prototype.view.controller;
 
 import java.io.File;
 
-import com.v3pm_prototype.main.MainApp;
+import com.v3pm_prototype.main.V3PM_Prototype;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,7 +35,7 @@ public class V3PMGUIController {
 	@FXML
 	private TabStartController tabStartController;
 	
-	private MainApp mainApp;
+	private V3PM_Prototype mainApp;
 	
 	public V3PMGUIController(){
 		
@@ -45,7 +45,7 @@ public class V3PMGUIController {
 	private void initialize(){
 	}
 	
-	public void setMainApp(MainApp mainApp){
+	public void setMainApp(V3PM_Prototype mainApp){
 		this.mainApp = mainApp;
 		tabStartController.setMainApp(mainApp);
 	}

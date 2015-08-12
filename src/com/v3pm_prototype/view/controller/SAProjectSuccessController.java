@@ -31,7 +31,7 @@ import org.controlsfx.control.Notifications;
 
 import com.v3pm_prototype.analysis.SAProjectSuccess;
 import com.v3pm_prototype.calculation.Project;
-import com.v3pm_prototype.main.MainApp;
+import com.v3pm_prototype.main.V3PM_Prototype;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.tools.TableViewSnapshot;
 
@@ -190,14 +190,14 @@ public class SAProjectSuccessController extends AnalysisController{
 	}
 
 	@Override
-	public MainApp getMainApp() {
+	public V3PM_Prototype getMainApp() {
 		return super.getMainApp();
 	}
 
 
 
 	@Override
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(V3PM_Prototype mainApp) {
 		// TODO Auto-generated method stub
 		super.setMainApp(mainApp);
 	}

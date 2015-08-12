@@ -41,7 +41,7 @@ import com.v3pm_prototype.database.DBConstraint;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.database.DBScenario;
-import com.v3pm_prototype.main.MainApp;
+import com.v3pm_prototype.main.V3PM_Prototype;
 
 public class NewScenarioController {
 	private TabStartController tsc;
@@ -707,7 +707,7 @@ public class NewScenarioController {
 	public void openAddConstraintWindow(String type){
 		// Load root layout from fxml file. 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/com/v3pm_prototype/view/AddConstraint.fxml"));
+        loader.setLocation(V3PM_Prototype.class.getResource("/com/v3pm_prototype/view/AddConstraint.fxml"));
         VBox root;
 		try {
 			root = (VBox) loader.load();
