@@ -84,14 +84,14 @@
                               <TableView fx:id="tvProcesses" editable="true" layoutX="14.0" layoutY="141.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="1172.0">
                                  <columns>
                                     <TableColumn fx:id="clmProcessesProcess" editable="false" prefWidth="258.0" text="Process" />
-                                    <TableColumn fx:id="clmProcessesFixCosts" prefWidth="96.0" text="FixCosts" />
-                                    <TableColumn fx:id="clmProcessesQ" editable="false" minWidth="0.0" prefWidth="65.0" text="q" />
-                                    <TableColumn fx:id="clmProcessesT" prefWidth="57.0" text="t" />
-                                    <TableColumn fx:id="clmProcessesP" prefWidth="70.0" text="Preis" />
-                                    <TableColumn fx:id="clmProcessesOop" prefWidth="91.0" text="OOp" />
-                                    <TableColumn fx:id="clmProcessesDGQ" prefWidth="62.0" text="d(q)" />
-                                    <TableColumn fx:id="clmProcessesDGT" prefWidth="68.0" text="v(t)" />
-                                    <TableColumn fx:id="clmProcessesDFKT" prefWidth="181.0" text="NachfrageFunktion" />
+                                    <TableColumn fx:id="clmProcessesFixCosts" prefWidth="96.0" text="Fixed Costs" />
+                                    <TableColumn fx:id="clmProcessesQ" editable="false" minWidth="0.0" prefWidth="65.0" text="Quality" />
+                                    <TableColumn fx:id="clmProcessesT" prefWidth="57.0" text="Time" />
+                                    <TableColumn fx:id="clmProcessesP" prefWidth="70.0" text="Price" />
+                                    <TableColumn fx:id="clmProcessesOop" prefWidth="91.0" text="Op. Outflows" />
+                                    <TableColumn fx:id="clmProcessesDGQ" prefWidth="110.0" text="Quality Degeneration" />
+                                    <TableColumn fx:id="clmProcessesDGT" minWidth="110.0" prefWidth="68.0" text="Time Degeneration" />
+                                    <TableColumn fx:id="clmProcessesDFKT" prefWidth="181.0" text="Demand" />
                                  </columns>
                               </TableView>
                               <Label layoutX="15.0" layoutY="463.0" styleClass="Titel2" text="Project list" />
@@ -99,15 +99,15 @@
                                 <columns>
                                   <TableColumn fx:id="clmProjectsProject" editable="false" prefWidth="258.0" text="Project" />
                                   <TableColumn fx:id="clmProjectsPeriods" editable="false" minWidth="0.0" prefWidth="73.0" text="Periods" />
-                                    <TableColumn fx:id="clmProjectsType" editable="false" prefWidth="136.0" text="Type" />
-                                    <TableColumn fx:id="clmProjectsProcess" prefWidth="205.0" text="Process" />
-                                    <TableColumn fx:id="clmProjectsFixCosts" prefWidth="122.0" text="FixCosts" />
-                                    <TableColumn fx:id="clmProjectsOInv" prefWidth="125.0" text="OInv" />
-                                    <TableColumn fx:id="clmProjectsA" prefWidth="51.0" text="a" />
-                                    <TableColumn fx:id="clmProjectsB" prefWidth="47.0" text="b" />
-                                    <TableColumn fx:id="clmProjectsE" prefWidth="51.0" text="e" />
-                                    <TableColumn fx:id="clmProjectsU" prefWidth="49.0" text="u" />
-                                    <TableColumn fx:id="clmProjectsM" prefWidth="54.0" text="m" />
+                                    <TableColumn fx:id="clmProjectsType" editable="false" prefWidth="110.0" text="Type" />
+                                    <TableColumn fx:id="clmProjectsProcess" prefWidth="110.0" text="Process" />
+                                    <TableColumn fx:id="clmProjectsFixCosts" prefWidth="110.0" text="Fixed Costs" />
+                                    <TableColumn fx:id="clmProjectsOInv" prefWidth="110.0" text="Inv. Outflows" />
+                                    <TableColumn fx:id="clmProjectsA" minWidth="110.0" prefWidth="110.0" text="Effect on Op. Ouflows" />
+                                    <TableColumn fx:id="clmProjectsB" prefWidth="110.0" text="Effect on Inv. Outflows" />
+                                    <TableColumn fx:id="clmProjectsE" prefWidth="110.0" text="Effect on Time" />
+                                    <TableColumn fx:id="clmProjectsU" prefWidth="110.0" text="Effect on Quality" />
+                                    <TableColumn fx:id="clmProjectsM" prefWidth="110.0" text="Effect on Fixed Costs" />
                                 </columns>
                               </TableView>
                            </children>
