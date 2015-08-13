@@ -38,7 +38,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import com.v3pm_prototype.analysis.CompleteRobustnessAnalysis;
-import com.v3pm_prototype.calculation.Calculator;
+import com.v3pm_prototype.calculation.NPVCalculator;
 import com.v3pm_prototype.calculation.ConstraintSet;
 import com.v3pm_prototype.database.DBConstraint;
 import com.v3pm_prototype.database.DBScenario;

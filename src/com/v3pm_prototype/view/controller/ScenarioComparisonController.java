@@ -38,7 +38,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import com.v3pm_prototype.analysis.CompleteRobustnessAnalysis;
-import com.v3pm_prototype.calculation.Calculator;
+import com.v3pm_prototype.calculation.NPVCalculator;
 import com.v3pm_prototype.calculation.ConstraintSet;
 import com.v3pm_prototype.database.DBConstraint;
 import com.v3pm_prototype.database.DBScenario;
@@ -209,8 +209,8 @@ public class ScenarioComparisonController {
 
 			@Override
 			protected Object call() throws Exception {
-				Calculator calc1 = new Calculator(rmList1, config1);
-				Calculator calc2 = new Calculator(rmList2, config2);
+				NPVCalculator calc1 = new NPVCalculator(rmList1, config1);
+				NPVCalculator calc2 = new NPVCalculator(rmList2, config2);
 				
 				rmList1 = calc1.start();
 				rmList2 = calc2.start();

@@ -12,7 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ProgressIndicator;
 
-import com.v3pm_prototype.calculation.Calculator;
+import com.v3pm_prototype.calculation.NPVCalculator;
 import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.exceptions.NoValidThetaIDException;
@@ -80,7 +80,7 @@ public class SAProjectSuccess extends Analysis {
 						currentField.setDouble(project, start * (1 + i));
 					}
 
-					Calculator c = new Calculator(lstRoadmap, config);
+					NPVCalculator c = new NPVCalculator(lstRoadmap, config);
 					lstResultsPerField.add((RoadMap) c.start().get(0).clone());
 					System.out.println("parameter: "+currentField.getName()+" STEP: "+i+" NPV: "+lstResultsPerField.get(lstResultsPerField.size()-1).getNPVString());
 					lstSteps.add(i);
@@ -95,7 +95,7 @@ public class SAProjectSuccess extends Analysis {
 						currentField.setDouble(project, start * (1 - i));
 					}
 
-					Calculator c = new Calculator(lstRoadmap, config);
+					NPVCalculator c = new NPVCalculator(lstRoadmap, config);
 					lstResultsPerField.add((RoadMap) c.start().get(0).clone());
 					System.out.println("parameter: "+currentField.getName()+" STEP: "+(-i)+" NPV: "+lstResultsPerField.get(lstResultsPerField.size()-1).getNPVString());
 					lstSteps.add(-i);

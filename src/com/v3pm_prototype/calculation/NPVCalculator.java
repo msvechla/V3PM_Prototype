@@ -15,12 +15,12 @@ import com.v3pm_prototype.rmgeneration.*;
 /**
  * This Class is used to calculate the NPV of each roadmap.
  */
-public class Calculator{
+public class NPVCalculator{
 	
 	private List<RoadMap> collRM;
 	private RunConfiguration config;
 	
-	public Calculator(List<RoadMap> collRM, RunConfiguration config) {
+	public NPVCalculator(List<RoadMap> collRM, RunConfiguration config) {
 		super();
 		this.collRM = collRM;
 		this.config = config;
@@ -106,7 +106,7 @@ public class Calculator{
 				// for each process
 				// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				// modify processes by project for next iteration
-				restrictionClear = ProjectAndProcessModifier.modifyProcessesAndProjectsByProject(tempCollProcess, bufferedTempCollProcess, tempProject, tempCollPoj_sorted,
+				restrictionClear = PerformanceEffects.modifyProcessesAndProjectsByProject(tempCollProcess, bufferedTempCollProcess, tempProject, tempCollPoj_sorted,
 						projectNumberWithinPeriod, config);
 				if(!restrictionClear){
 					RM.setRestrictionBroken(true);

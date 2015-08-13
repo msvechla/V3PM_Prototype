@@ -13,7 +13,7 @@ import com.v3pm_prototype.rmgeneration.RunConfiguration;
  * project.
  * 
  */
-public class ProjectAndProcessModifier {
+public class PerformanceEffects {
 
 	/**
 	 * loops through every process and modifies the values affected from the

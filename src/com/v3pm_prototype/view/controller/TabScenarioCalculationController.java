@@ -68,7 +68,7 @@ import org.graphstream.ui.swingViewer.Viewer;
 import org.graphstream.ui.swingViewer.Viewer.ThreadingModel;
 
 import com.v3pm_prototype.analysis.CompleteRobustnessAnalysis;
-import com.v3pm_prototype.calculation.Calculator;
+import com.v3pm_prototype.calculation.NPVCalculator;
 import com.v3pm_prototype.calculation.ConstraintSet;
 import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.calculation.Project;
@@ -911,7 +911,7 @@ public class TabScenarioCalculationController {
 
 					@Override
 					protected List<RoadMap> call() throws Exception {
-						Calculator c = new Calculator(generatedRoadmaps, config);
+						NPVCalculator c = new NPVCalculator(generatedRoadmaps, config);
 						return c.start();
 					}
 

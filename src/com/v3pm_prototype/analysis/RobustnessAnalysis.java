@@ -11,7 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.control.ProgressIndicator;
 
-import com.v3pm_prototype.calculation.Calculator;
+import com.v3pm_prototype.calculation.NPVCalculator;
 import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.exceptions.NoValidThetaIDException;
@@ -102,7 +102,7 @@ public class RobustnessAnalysis extends Analysis{
 					selectedParameter.setDouble(object, start * (1+i));
 				}
 				
-				Calculator c = new Calculator(lstRoadmap, config);
+				NPVCalculator c = new NPVCalculator(lstRoadmap, config);
 				
 				List<RoadMap> calculatedRoadmaps =  c.start();
 				
@@ -141,7 +141,7 @@ public class RobustnessAnalysis extends Analysis{
 					selectedParameter.setDouble(object, start * (1-i));
 				}
 				
-				Calculator c = new Calculator(lstRoadmap, config);
+				NPVCalculator c = new NPVCalculator(lstRoadmap, config);
 				
 				List<RoadMap> calculatedRoadmaps =  c.start();
 				
