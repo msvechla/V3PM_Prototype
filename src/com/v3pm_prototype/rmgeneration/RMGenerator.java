@@ -9,6 +9,7 @@ import javafx.concurrent.Task;
 
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.calculation.RMRestrictionHandler;
+import com.v3pm_prototype.main.V3PM_Prototype;
 
 public class RMGenerator extends Task<List<RoadMap>> {
 	
@@ -22,6 +23,7 @@ public class RMGenerator extends Task<List<RoadMap>> {
 	
 	@Override
 	protected List<RoadMap> call() throws Exception {
+		V3PM_Prototype.lstTasks.add(this);
 		return this.generateRoadmaps();
 	}
 
@@ -74,6 +76,8 @@ public class RMGenerator extends Task<List<RoadMap>> {
 				RMContainer rmcSingle2 = lstRMContainer.get(i);
 				
 				for(RMContainer rmcSingle : RMContainer.lstRMContainerSingle){
+					
+					if(isCancelled()) break;
 					
 					//Generate list of combined IDs
 					HashSet<Integer> implementedProjectIDs = new HashSet<Integer>();

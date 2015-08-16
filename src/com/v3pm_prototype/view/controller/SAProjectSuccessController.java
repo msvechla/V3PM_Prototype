@@ -97,7 +97,7 @@ public class SAProjectSuccessController extends AnalysisController{
 		};
 		
 		Thread t = new Thread(sapsTask);
-		t.setDaemon(false);
+		t.setDaemon(true);
 		t.start();
 		
 	}

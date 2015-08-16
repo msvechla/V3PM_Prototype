@@ -109,7 +109,7 @@ public class RobustnessAnalysisController extends AnalysisController{
 		};
 		
 		Thread t = new Thread(raTask);
-		t.setDaemon(false);
+		t.setDaemon(true);
 		t.start();
 	}
 	

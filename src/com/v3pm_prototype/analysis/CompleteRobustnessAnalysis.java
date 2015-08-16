@@ -38,6 +38,9 @@ public class CompleteRobustnessAnalysis extends Task<List<CRAResult>>{
 		
 		for(Integer pID : roadmap.implementedProjectIDs){
 			for(Project p : config.getLstProjects()){
+				
+				if(isCancelled())break;
+				
 				if(p.getId() == pID){
 					
 					double pPerProject = 0;
@@ -49,6 +52,7 @@ public class CompleteRobustnessAnalysis extends Task<List<CRAResult>>{
 								lstRoadmap, config,
 								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_A,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
+						ra.setTask(this);
 						ra.start();
 						pPerProject = pPerProject + ra.getPercentage();
 						countParameters++;
@@ -59,6 +63,7 @@ public class CompleteRobustnessAnalysis extends Task<List<CRAResult>>{
 								lstRoadmap, config,
 								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_B,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
+						ra.setTask(this);
 						ra.start();
 						pPerProject = pPerProject + ra.getPercentage();
 						countParameters++;
@@ -69,6 +74,7 @@ public class CompleteRobustnessAnalysis extends Task<List<CRAResult>>{
 								lstRoadmap, config,
 								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_E,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
+						ra.setTask(this);
 						ra.start();
 						pPerProject = pPerProject + ra.getPercentage();
 						countParameters++;
@@ -79,6 +85,7 @@ public class CompleteRobustnessAnalysis extends Task<List<CRAResult>>{
 								lstRoadmap, config,
 								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_U,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
+						ra.setTask(this);
 						ra.start();
 						pPerProject = pPerProject + ra.getPercentage();
 						countParameters++;
@@ -89,6 +96,7 @@ public class CompleteRobustnessAnalysis extends Task<List<CRAResult>>{
 								lstRoadmap, config,
 								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_M,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
+						ra.setTask(this);
 						ra.start();
 						pPerProject = pPerProject + ra.getPercentage();
 						countParameters++;

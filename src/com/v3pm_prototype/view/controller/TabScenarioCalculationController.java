@@ -165,6 +165,7 @@ public class TabScenarioCalculationController {
 	private SwingNode swingNode;
 	private Graph graph;
 	private Viewer viewer;
+	private static ArrayList<Viewer> lstViewer = new ArrayList<Viewer>();
 	private View view;
 	SpringBox graphstreamLayout;
 	private HashSet<Project> oldProjectList = new HashSet<Project>();
@@ -367,7 +368,7 @@ public class TabScenarioCalculationController {
 		};
 
 		Thread t = new Thread(cra);
-		t.setDaemon(false);
+		t.setDaemon(true);
 		t.start();
 	}
 	
@@ -544,6 +545,8 @@ public class TabScenarioCalculationController {
 		graph.addAttribute("ui.antialias");
 
 		viewer = new Viewer(graph, ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+		lstViewer.add(viewer);
+		
 		graphstreamLayout = new SpringBox(false);
 		viewer.enableAutoLayout(graphstreamLayout);
 		view = viewer.addDefaultView(false);
@@ -638,7 +641,6 @@ public class TabScenarioCalculationController {
 		Thread th = new Thread(task);
 		th.setDaemon(true);
 		th.start();
-
 	}
 
 	/**
@@ -646,7 +648,7 @@ public class TabScenarioCalculationController {
 	 */
 	private void startInitialCalculations() {
 		Service<List<RoadMap>> svRMGen = initialRMGenService();
-
+		
 		svRMGen.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			@Override
 			public void handle(WorkerStateEvent event) {
@@ -875,7 +877,7 @@ public class TabScenarioCalculationController {
 			protected Task<List<RoadMap>> createTask() {
 				start = System.currentTimeMillis();
 				return new RMGenerator(config) {
-
+					
 					@Override
 					protected void succeeded() {
 						mainApp.getV3pmGUIController().setProgress(0);
@@ -909,11 +911,12 @@ public class TabScenarioCalculationController {
 		Service<List<RoadMap>> service = new Service<List<RoadMap>>() {
 			@Override
 			protected Task<List<RoadMap>> createTask() {
-
+				
 				return new Task<List<RoadMap>>() {
 
 					@Override
 					protected List<RoadMap> call() throws Exception {
+						V3PM_Prototype.lstTasks.add(this);
 						NPVCalculator c = new NPVCalculator(generatedRoadmaps, config);
 						return c.start();
 					}
@@ -982,14 +985,21 @@ public class TabScenarioCalculationController {
 	 * @param mainApp
 	 */
 	public void setMainApp(V3PM_Prototype mainApp) {
-		//TODO Cycle through tabs and closs all viewers
+		// TODO Cycle through tabs and closs all viewers
 		this.mainApp = mainApp;
 		this.mainApp.getPrimaryStage().setOnCloseRequest(
 				new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent event) {
-						if(viewer != null){
-							viewer.close();
+						for (Viewer viewer : lstViewer) {
+							if (viewer != null) {
+								viewer.close();
+							}
+						}
+
+						for (Task t : V3PM_Prototype.lstTasks) {
+							if (t != null)
+								t.cancel();
 						}
 					}
 				});

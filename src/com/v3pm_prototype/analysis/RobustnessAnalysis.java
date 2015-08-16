@@ -38,6 +38,7 @@ public class RobustnessAnalysis extends Analysis{
 	private double percentage;
 	private String solutionText;
 	private double workProgress;
+	private Task task = null;
 	
 
 	public RobustnessAnalysis(List<RoadMap> lstRoadmap, RunConfiguration config, String mode, Object object, String parameterReadable, double radius, double step, String absRel, ProgressIndicator piSolution) {
@@ -93,6 +94,10 @@ public class RobustnessAnalysis extends Analysis{
 
 		for (double i = step; i <= radius; i += step) {
 
+			if(task != null){
+				if(task.isCancelled()) break;
+			}
+			
 			// positive radius
 			if(mode.equals(MODE_PLUS) || mode.equals(MODE_PLUSMINUS)){
 				
@@ -329,4 +334,7 @@ public class RobustnessAnalysis extends Analysis{
 		return solutionText;
 	}
 
+	public void setTask(Task task){
+		this.task = task;
+	}
 }

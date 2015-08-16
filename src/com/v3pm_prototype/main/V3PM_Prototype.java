@@ -2,9 +2,12 @@ package com.v3pm_prototype.main;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import com.v3pm_prototype.view.controller.V3PMGUIController;
 
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
@@ -16,6 +19,8 @@ public class V3PM_Prototype extends Application {
 	private VBox rootLayout;
 	private V3PMGUIController v3pmGUIController;
 	public static V3PM_Prototype instance;
+	
+	public static ArrayList<Task> lstTasks = new ArrayList<Task>();
 	
 	@Override
 	public void start(Stage primaryStage) {

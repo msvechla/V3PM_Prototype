@@ -153,11 +153,11 @@ public class ScenarioComparisonController {
 		};
 
 		Thread t1 = new Thread(cra1);
-		t1.setDaemon(false);
+		t1.setDaemon(true);
 		t1.start();
 		
 		Thread t2 = new Thread(cra2);
-		t2.setDaemon(false);
+		t2.setDaemon(true);
 		t2.start();
 	}
 	
@@ -238,7 +238,7 @@ public class ScenarioComparisonController {
 		};
 		
 		Thread t = new Thread(calcTask);
-		t.setDaemon(false);
+		t.setDaemon(true);
 		t.start();
 	}
 	
@@ -247,10 +247,10 @@ public class ScenarioComparisonController {
 		final RMGenerator rmGen2 = new RMGenerator(config2);
 		
 		Thread t1 = new Thread(rmGen1);
-		t1.setDaemon(false);
+		t1.setDaemon(true);
 		
 		final Thread t2 = new Thread(rmGen2);
-		t2.setDaemon(false);
+		t2.setDaemon(true);
 		
 		rmGen1.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 
