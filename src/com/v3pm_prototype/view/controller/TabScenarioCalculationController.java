@@ -175,6 +175,8 @@ public class TabScenarioCalculationController {
 	private Tab tab;
 	
 	private javafx.scene.Node snapshotNode;
+	
+	private double start = 0;
 
 	public TabScenarioCalculationController() {
 
@@ -871,6 +873,7 @@ public class TabScenarioCalculationController {
 		Service<List<RoadMap>> service = new Service<List<RoadMap>>() {
 			@Override
 			protected Task<List<RoadMap>> createTask() {
+				start = System.currentTimeMillis();
 				return new RMGenerator(config) {
 
 					@Override
@@ -918,6 +921,7 @@ public class TabScenarioCalculationController {
 					@Override
 					protected void succeeded() {
 						super.succeeded();
+						System.out.println("TIME: "+(System.currentTimeMillis()-start)/1000);
 						mainApp.getV3pmGUIController().setProgress(0);
 						mainApp.getV3pmGUIController().setStatus(
 								"NPVs calculated.");
@@ -945,7 +949,9 @@ public class TabScenarioCalculationController {
 						initGraphStream();
 						initRoadmapContainer(null);
 						updateTVProcesses();
-						startCompleteRobustnessAnalysis();
+						if(rmList.size()<50000){
+							startCompleteRobustnessAnalysis();
+						}
 						initBarChartRBroken();
 					}
 

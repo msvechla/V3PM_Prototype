@@ -31,7 +31,12 @@ public class RMContainer {
 		lstCombinedProjectIDs.add(implementedProjects);
 	}
 	
-	//TODO CLEAR Method
+	public static void clear(){
+		lstRMContainerSingle.clear();
+		lstRMContainerCombined.clear();
+		lstCombinedProjectIDs.clear();
+		countRoadMapsGenerated = 0;
+	}
 	
 	public void addRoadMap(RoadMap rm){
 		this.lstRM.add(rm);

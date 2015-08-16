@@ -227,7 +227,9 @@ public class ScenarioComparisonController {
 				initRoadmapContainer(roadmapBox1, rmList1, config1, null);
 				initRoadmapContainer(roadmapBox2, rmList2, config2, null);
 				initSACCashflows();
-				startCompleteRobustnessAnalysis();
+				if(rmList1.size()<50000 && rmList2.size()<50000){
+					startCompleteRobustnessAnalysis();
+				}
 				generateSolutionText();
 				super.succeeded();
 			}
@@ -241,13 +243,13 @@ public class ScenarioComparisonController {
 	}
 	
 	private void initialRMGeneration(){
-		RMGenerator rmGen1 = new RMGenerator(config1);
-		RMGenerator rmGen2 = new RMGenerator(config2);
+		final RMGenerator rmGen1 = new RMGenerator(config1);
+		final RMGenerator rmGen2 = new RMGenerator(config2);
 		
 		Thread t1 = new Thread(rmGen1);
 		t1.setDaemon(false);
 		
-		Thread t2 = new Thread(rmGen2);
+		final Thread t2 = new Thread(rmGen2);
 		t2.setDaemon(false);
 		
 		rmGen1.setOnSucceeded(new EventHandler<WorkerStateEvent>() {

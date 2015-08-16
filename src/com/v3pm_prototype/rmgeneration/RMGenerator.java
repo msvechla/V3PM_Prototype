@@ -16,6 +16,7 @@ public class RMGenerator extends Task<List<RoadMap>> {
 	
 	public RMGenerator(RunConfiguration config){
 		this.config = config;
+		
 	}
 
 	
@@ -29,6 +30,7 @@ public class RMGenerator extends Task<List<RoadMap>> {
 	 */
 	
 	private List<RoadMap> generateRoadmaps() {
+		RMContainer.clear();
 		double start = System.currentTimeMillis();
 		System.out.println("--- START: generateRoadmaps()");
 		

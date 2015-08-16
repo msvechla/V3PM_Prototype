@@ -160,7 +160,7 @@
                               <Insets />
                            </VBox.margin>
                         </Label>
-                        <TableView fx:id="tvProcesses" maxHeight="250.0" minHeight="140.0" prefHeight="200.0" VBox.vgrow="NEVER">
+                        <TableView fx:id="tvProcesses" maxHeight="250.0" minHeight="100.0" prefHeight="140" VBox.vgrow="NEVER">
                           <columns>
                             <TableColumn fx:id="clmProcessesName" prefWidth="311.0" text="Process" />
                             <TableColumn fx:id="clmProcessesQ" prefWidth="95.0" text="Quality" />

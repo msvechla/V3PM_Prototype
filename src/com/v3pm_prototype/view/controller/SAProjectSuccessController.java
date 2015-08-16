@@ -29,6 +29,7 @@ import javafx.scene.input.MouseEvent;
 
 import org.controlsfx.control.Notifications;
 
+import com.v3pm_prototype.analysis.Analysis;
 import com.v3pm_prototype.analysis.SAProjectSuccess;
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.main.V3PM_Prototype;
@@ -165,7 +166,7 @@ public class SAProjectSuccessController extends AnalysisController{
 		for(Field field : saps.getLstFields()){
 			//Create a series for each field
 			Series<Number, Number> series = new XYChart.Series<Number, Number>();
-			series.setName(field.getName());
+			series.setName(Analysis.mapToReadableParameter(field.getName()));
 			
 
 			for(RoadMap rm : saps.getHmResults().get(field.getName())){

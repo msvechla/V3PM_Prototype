@@ -105,7 +105,7 @@ public class RobustnessAnalysis extends Analysis{
 				NPVCalculator c = new NPVCalculator(lstRoadmap, config);
 				
 				List<RoadMap> calculatedRoadmaps =  c.start();
-				
+				c = null; 
 				RoadMap bestRM = (RoadMap) calculatedRoadmaps.get(0).clone();
 				lstResults.add(bestRM);
 				lstDouble.add(selectedParameter.getDouble(object));

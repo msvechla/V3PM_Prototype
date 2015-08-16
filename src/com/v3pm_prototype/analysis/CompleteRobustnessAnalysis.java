@@ -9,12 +9,12 @@ import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
-public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
+public class CompleteRobustnessAnalysis extends Task<List<CRAResult>>{
 	
 	private RoadMap roadmap;
 	private RunConfiguration config;
 	private List<RoadMap> lstRoadmap;
-	private List<RobustnessAnalysis> lstResults = new ArrayList<RobustnessAnalysis>();
+	private List<CRAResult> lstResults = new ArrayList<CRAResult>();
 	private double percentage;
 	double pProjectsAll = 0;
 	double pGeneral;
@@ -24,12 +24,13 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 			List<RoadMap> lstRoadmap) {
 		super();
 		this.config = (RunConfiguration) config.clone();
+		
 		this.lstRoadmap = lstRoadmap;
 	}
 
 
 	@Override
-	protected List<RobustnessAnalysis> call() throws Exception {
+	protected List<CRAResult> call() throws Exception {
 		
 		this.roadmap = (RoadMap) lstRoadmap.get(0).clone();
 		int countProjects = 0;
@@ -48,51 +49,50 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 								lstRoadmap, config,
 								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_A,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
-						lstResults.add(ra);
 						ra.start();
 						pPerProject = pPerProject + ra.getPercentage();
 						countParameters++;
-
+						lstResults.add(new CRAResult(ra.getObject(), ra.getSelectedParameter(), ra.getPercentage()));
 					}
 					if (p.getB() != 0) {
 						RobustnessAnalysis ra = new RobustnessAnalysis(
 								lstRoadmap, config,
 								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_B,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
-						lstResults.add(ra);
 						ra.start();
 						pPerProject = pPerProject + ra.getPercentage();
 						countParameters++;
+						lstResults.add(new CRAResult(ra.getObject(), ra.getSelectedParameter(), ra.getPercentage()));
 					}
 					if (p.getE() != 0) {
 						RobustnessAnalysis ra = new RobustnessAnalysis(
 								lstRoadmap, config,
 								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_E,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
-						lstResults.add(ra);
 						ra.start();
 						pPerProject = pPerProject + ra.getPercentage();
 						countParameters++;
+						lstResults.add(new CRAResult(ra.getObject(), ra.getSelectedParameter(), ra.getPercentage()));
 					}
 					if (p.getU() != 0) {
 						RobustnessAnalysis ra = new RobustnessAnalysis(
 								lstRoadmap, config,
 								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_U,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
-						lstResults.add(ra);
 						ra.start();
 						pPerProject = pPerProject + ra.getPercentage();
 						countParameters++;
+						lstResults.add(new CRAResult(ra.getObject(), ra.getSelectedParameter(), ra.getPercentage()));
 					}
 					if (p.getM() != 0) {
 						RobustnessAnalysis ra = new RobustnessAnalysis(
 								lstRoadmap, config,
 								RobustnessAnalysis.MODE_PLUSMINUS, p, Project.FX_READABLE_M,
 								0.02, 0.005, RobustnessAnalysis.RELATIVE, null);
-						lstResults.add(ra);
 						ra.start();
 						pPerProject = pPerProject + ra.getPercentage();
 						countParameters++;
+						lstResults.add(new CRAResult(ra.getObject(), ra.getSelectedParameter(), ra.getPercentage()));
 					}
 
 					if(countParameters == 0){
@@ -166,7 +166,7 @@ public class CompleteRobustnessAnalysis extends Task<List<RobustnessAnalysis>>{
 	}
 
 
-	public List<RobustnessAnalysis> getLstResults() {
+	public List<CRAResult> getLstResults() {
 		return lstResults;
 	}
 	

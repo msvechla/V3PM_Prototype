@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 
 import com.sun.javafx.css.converters.PaintConverter;
 import com.v3pm_prototype.analysis.Analysis;
+import com.v3pm_prototype.analysis.CRAResult;
 import com.v3pm_prototype.analysis.CompleteRobustnessAnalysis;
 import com.v3pm_prototype.analysis.RobustnessAnalysis;
 import com.v3pm_prototype.calculation.Project;
@@ -157,11 +158,11 @@ public class RoadmapBoxController {
 		//Add info from the robustness Analysis
 		if(cra != null){
 			sb.append("Robustness Info: \n");
-			for(RobustnessAnalysis ra: cra.getLstResults()){
-				if(ra.getObject() instanceof Project){
-					if(((Project)ra.getObject()).equals(project)){
+			for(CRAResult craResult: cra.getLstResults()){
+				if(craResult.getObject() instanceof Project){
+					if(((Project)craResult.getObject()).getId()== project.getId()){
 						//add info for every calculated parameter
-						sb.append(Analysis.mapToReadableParameter(ra.getSelectedParameter().getName()) + ": "+(ra.getPercentage()*100)+" %\n");
+						sb.append(Analysis.mapToReadableParameter(craResult.getSelectedParameter().getName()) + ": "+(craResult.getPercentage()*100)+" %\n");
 					}
 				}
 			}
