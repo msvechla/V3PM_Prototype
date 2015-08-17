@@ -568,7 +568,6 @@ public class TabScenarioCalculationController {
 
 		viewer = new Viewer(graph, ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
 		lstViewer.add(viewer);
-
 		graphstreamLayout = new SpringBox(false);
 		viewer.enableAutoLayout(graphstreamLayout);
 		view = viewer.addDefaultView(false);
@@ -1026,16 +1025,14 @@ public class TabScenarioCalculationController {
 					@Override
 					public void handle(WindowEvent event) {
 						
-						ArrayList<Viewer> lstRemoved = new ArrayList<Viewer>();
+						mainApp.getV3pmGUIController().getTpMain().getTabs().clear();
 						
-						for (Viewer viewer : lstViewer) {
-							if (viewer != null) {
-								lstRemoved.add(viewer);
-								viewer.close();
+						for (Viewer v : lstViewer) {
+							if (v != null) {
+								v.removeView(v.getDefaultView().getId());
+								v.close();
 							}
 						}
-						
-						lstViewer.removeAll(lstRemoved);
 
 						for (Task t : V3PM_Prototype.lstTasks) {
 							if (t != null)
@@ -1055,8 +1052,12 @@ public class TabScenarioCalculationController {
 		tab.setOnClosed(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				viewer.close();
-				mainApp.getPrimaryStage().setOnCloseRequest(null);
+				lstViewer.remove(viewer);
+				if(viewer != null){
+					viewer.close();
+					viewer = null;
+				}
+				
 			}
 		});
 	}
