@@ -86,7 +86,7 @@ import com.v3pm_prototype.tools.TableViewSnapshot;
 public class TabScenarioCalculationController {
 	@FXML
 	private Label lblNPV;
-	
+
 	@FXML
 	private Label lblRobustness;
 	@FXML
@@ -96,7 +96,7 @@ public class TabScenarioCalculationController {
 
 	@FXML
 	private Label lblAmountRoadmaps;
-	
+
 	@FXML
 	private TableView<RoadMap> tvRoadmap;
 	private ObservableList<RoadMap> olRoadmap = FXCollections
@@ -106,10 +106,10 @@ public class TabScenarioCalculationController {
 
 	@FXML
 	VBox boxRMSolution;
-	
+
 	@FXML
 	private VBox roadmapContainer;
-	
+
 	@FXML
 	private TableColumn<RoadMap, String> clmRoadmap;
 	@FXML
@@ -157,10 +157,10 @@ public class TabScenarioCalculationController {
 
 	@FXML
 	private ListView lvRestrictions;
-	
+
 	@FXML
 	private AreaChart<String, Double> acCashflows;
-	
+
 	@FXML
 	private SwingNode swingNode;
 	private Graph graph;
@@ -174,9 +174,9 @@ public class TabScenarioCalculationController {
 	private DBScenario scenario;
 	private RunConfiguration config;
 	private Tab tab;
-	
+
 	private javafx.scene.Node snapshotNode;
-	
+
 	private double start = 0;
 
 	public TabScenarioCalculationController() {
@@ -192,7 +192,7 @@ public class TabScenarioCalculationController {
 		bootGraphStream();
 		setupSnapshots();
 	}
-			
+
 	/**
 	 * Adds a snapshot feature to the charts
 	 */
@@ -204,58 +204,69 @@ public class TabScenarioCalculationController {
 		miSnapshot.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				WritableImage snapshot = new WritableImage((int)snapshotNode.getBoundsInLocal().getWidth(), (int)snapshotNode.getBoundsInLocal().getHeight());
+				WritableImage snapshot = new WritableImage((int) snapshotNode
+						.getBoundsInLocal().getWidth(), (int) snapshotNode
+						.getBoundsInLocal().getHeight());
 				snapshotNode.snapshot(new SnapshotParameters(), snapshot);
 				Clipboard clipboard = Clipboard.getSystemClipboard();
 				ClipboardContent content = new ClipboardContent();
-				content.putImage(snapshot); 
+				content.putImage(snapshot);
 				clipboard.clear();
 				clipboard.setContent(content);
-				
-				Notifications.create()
-	              .title("Snapshot Taken")
-	              .text("A snapshot of the component has been taken and is available in your clipboard.")
-	              .showInformation();
-				
+
+				Notifications
+						.create()
+						.title("Snapshot Taken")
+						.text("A snapshot of the component has been taken and is available in your clipboard.")
+						.showInformation();
+
 			}
 		});
-		
+
 		EventHandler<MouseEvent> eventHandlerSnapshot = (new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				 if (MouseButton.SECONDARY.equals(event.getButton())) {
-					 snapshotNode = (javafx.scene.Node) event.getSource();
-				      snapshotCM.show(mainApp.getPrimaryStage(), event.getScreenX(), event.getScreenY());
-				    }  
+				if (MouseButton.SECONDARY.equals(event.getButton())) {
+					snapshotNode = (javafx.scene.Node) event.getSource();
+					snapshotCM.show(mainApp.getPrimaryStage(),
+							event.getScreenX(), event.getScreenY());
+				}
 			}
 		});
-		
-		lcProcessQuality.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
-		lcProcessTime.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
-		lcProcessFC.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
-		lcProcessOOP.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
-		bcRBroken.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
-		swingNode.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
-		boxRMSolution.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandlerSnapshot);
-		
+
+		lcProcessQuality.addEventHandler(MouseEvent.MOUSE_CLICKED,
+				eventHandlerSnapshot);
+		lcProcessTime.addEventHandler(MouseEvent.MOUSE_CLICKED,
+				eventHandlerSnapshot);
+		lcProcessFC.addEventHandler(MouseEvent.MOUSE_CLICKED,
+				eventHandlerSnapshot);
+		lcProcessOOP.addEventHandler(MouseEvent.MOUSE_CLICKED,
+				eventHandlerSnapshot);
+		bcRBroken.addEventHandler(MouseEvent.MOUSE_CLICKED,
+				eventHandlerSnapshot);
+		swingNode.addEventHandler(MouseEvent.MOUSE_CLICKED,
+				eventHandlerSnapshot);
+		boxRMSolution.addEventHandler(MouseEvent.MOUSE_CLICKED,
+				eventHandlerSnapshot);
+
 		MenuItem item = new MenuItem("Copy to Clipboard");
 		item.setOnAction(new TableViewSnapshot(tvProcesses));
 		ContextMenu menu = new ContextMenu(item);
 		tvProcesses.setContextMenu(menu);
-		
+
 	}
 
 	private void chartBugfix() {
 		// Add blank data and clear afterwards for bug workaraound
 		Series<String, Number> series1 = new XYChart.Series<String, Number>();
-	
+
 		for (int i = 0; i < 8; i++) {
 			series1.getData().add(new XYChart.Data<String, Number>("", 0));
 		}
-		
+
 		bcRBroken.getData().add(series1);
 	}
-	
+
 	public void openSAProjectSuccessTab() {
 		// Load root layout from fxml file.
 		FXMLLoader loader = new FXMLLoader();
@@ -264,19 +275,21 @@ public class TabScenarioCalculationController {
 		VBox root;
 		try {
 			root = (VBox) loader.load();
-			SAProjectSuccessController saPSController = loader
-					.getController();
+			SAProjectSuccessController saPSController = loader.getController();
 			saPSController.setMainApp(this.mainApp);
 			saPSController.setTsc(this);
-			saPSController.setRoadmap(tvRoadmap.getSelectionModel().getSelectedItem());
-			
-			Tab tabSAPS = new Tab(mainApp.getV3pmGUIController().getTpMain().getSelectionModel().getSelectedItem().getText()+" Project Success Analysis");
+			saPSController.setRoadmap(tvRoadmap.getSelectionModel()
+					.getSelectedItem());
+
+			Tab tabSAPS = new Tab(mainApp.getV3pmGUIController().getTpMain()
+					.getSelectionModel().getSelectedItem().getText()
+					+ " Project Success Analysis");
 			tabSAPS.setContent(root);
 			tabSAPS.setClosable(true);
 			mainApp.getV3pmGUIController().getTpMain().getTabs().add(tabSAPS);
 			mainApp.getV3pmGUIController().getTpMain().getSelectionModel()
-			.select(tabSAPS);
-			
+					.select(tabSAPS);
+
 			mainApp.getV3pmGUIController().getTpMain()
 					.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
 
@@ -294,21 +307,22 @@ public class TabScenarioCalculationController {
 		VBox root;
 		try {
 			root = (VBox) loader.load();
-			RobustnessAnalysisController raController = loader
-					.getController();
+			RobustnessAnalysisController raController = loader.getController();
 			raController.setMainApp(this.mainApp);
 			raController.setTsc(this);
 
-			Tab tabRA = new Tab(mainApp.getV3pmGUIController().getTpMain().getSelectionModel().getSelectedItem().getText()+" Robustness Analysis");
+			Tab tabRA = new Tab(mainApp.getV3pmGUIController().getTpMain()
+					.getSelectionModel().getSelectedItem().getText()
+					+ " Robustness Analysis");
 			tabRA.setContent(root);
 			tabRA.setClosable(true);
 			mainApp.getV3pmGUIController().getTpMain().getTabs().add(tabRA);
 			mainApp.getV3pmGUIController().getTpMain().getSelectionModel()
-			.select(tabRA);
-			
+					.select(tabRA);
+
 			mainApp.getV3pmGUIController().getTpMain()
 					.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
-			
+
 			raController.setScenario(scenario);
 
 		} catch (IOException e) {
@@ -316,9 +330,9 @@ public class TabScenarioCalculationController {
 		}
 
 	}
-	
+
 	public void openRoadmapComparisonTab() {
-		if( tvRoadmap.getSelectionModel().getSelectedItems().size() == 2){
+		if (tvRoadmap.getSelectionModel().getSelectedItems().size() == 2) {
 			// Load root layout from fxml file.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(V3PM_Prototype.class
@@ -329,15 +343,18 @@ public class TabScenarioCalculationController {
 				RoadmapComparisonController rcController = loader
 						.getController();
 				rcController.setMainApp(this.mainApp);
-				rcController.setRoadmaps(config, tvRoadmap.getSelectionModel().getSelectedItems().get(0), tvRoadmap.getSelectionModel().getSelectedItems().get(1));
-				
+				rcController.setRoadmaps(config, tvRoadmap.getSelectionModel()
+						.getSelectedItems().get(0), tvRoadmap
+						.getSelectionModel().getSelectedItems().get(1));
+
 				Tab tabSAPS = new Tab("Roadmap Comparison");
 				tabSAPS.setContent(root);
 				tabSAPS.setClosable(true);
-				mainApp.getV3pmGUIController().getTpMain().getTabs().add(tabSAPS);
+				mainApp.getV3pmGUIController().getTpMain().getTabs()
+						.add(tabSAPS);
 				mainApp.getV3pmGUIController().getTpMain().getSelectionModel()
-				.select(tabSAPS);
-				
+						.select(tabSAPS);
+
 				mainApp.getV3pmGUIController().getTpMain()
 						.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
 
@@ -347,8 +364,9 @@ public class TabScenarioCalculationController {
 		}
 	}
 
-	private void startCompleteRobustnessAnalysis(){
-		CompleteRobustnessAnalysis cra = new CompleteRobustnessAnalysis(config, rmList){
+	private void startCompleteRobustnessAnalysis() {
+		CompleteRobustnessAnalysis cra = new CompleteRobustnessAnalysis(config,
+				rmList) {
 
 			@Override
 			protected void succeeded() {
@@ -356,27 +374,31 @@ public class TabScenarioCalculationController {
 				initRoadmapContainer(this);
 				DecimalFormat df = new DecimalFormat("#.#%");
 				lblRobustness.setText(df.format(this.getPercentage()));
-				lblRobustnessText.setText("All set parameters have been tested in a 2% radius. "
-						+ "Projects scored a robustness of "+df.format(this.getpProjectsAll())+". Discount rate scored a robustness of "+df.format(this.getpGeneral())+".");
+				lblRobustnessText
+						.setText("All set parameters have been tested in a 2% radius. "
+								+ "Projects scored a robustness of "
+								+ df.format(this.getpProjectsAll())
+								+ ". Discount rate scored a robustness of "
+								+ df.format(this.getpGeneral()) + ".");
 				System.out.println(df.format(this.getPercentage()));
 				lblRobustness.setVisible(true);
 				lblRobustness.setManaged(true);
 				piRobustness.setVisible(false);
 				piRobustness.setManaged(false);
 			}
-			
+
 		};
 
 		Thread t = new Thread(cra);
 		t.setDaemon(true);
 		t.start();
 	}
-	
-	private void initRobustnessAnalysis(){
+
+	private void initRobustnessAnalysis() {
 		lblRobustness.setVisible(false);
 		lblRobustness.setManaged(false);
 	}
-	
+
 	private void initRoadmapContainer(CompleteRobustnessAnalysis cra) {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(V3PM_Prototype.class
@@ -546,13 +568,13 @@ public class TabScenarioCalculationController {
 
 		viewer = new Viewer(graph, ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
 		lstViewer.add(viewer);
-		
+
 		graphstreamLayout = new SpringBox(false);
 		viewer.enableAutoLayout(graphstreamLayout);
 		view = viewer.addDefaultView(false);
 		swingNode.setContent(view);
 		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.EXIT);
-		
+
 	}
 
 	private void initGraphStream() {
@@ -648,7 +670,7 @@ public class TabScenarioCalculationController {
 	 */
 	private void startInitialCalculations() {
 		Service<List<RoadMap>> svRMGen = initialRMGenService();
-		
+
 		svRMGen.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			@Override
 			public void handle(WorkerStateEvent event) {
@@ -694,17 +716,17 @@ public class TabScenarioCalculationController {
 					}
 				});
 	}
-	
-	private void initLVRestrictions(){
+
+	private void initLVRestrictions() {
 		ObservableList olRestrictions = FXCollections.observableArrayList();
 		olRestrictions.addAll(config.getConstraintSet().getLstConstraints());
 		lvRestrictions.setItems(olRestrictions);
 	}
 
 	private void initTVRoadmaps() {
-		
+
 		tvRoadmap.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		
+
 		// Set the Data for the Roadmap Table
 		this.tvRoadmap.setItems(olRoadmap);
 		clmRoadmap
@@ -731,7 +753,7 @@ public class TabScenarioCalculationController {
 			}
 
 		};
-		
+
 		// -------------------- DOUBLECLICK: START SAProjectSuccess
 		// -------------------
 
@@ -754,11 +776,11 @@ public class TabScenarioCalculationController {
 
 		// Add Data to the charts for each process
 		if (tvRoadmap.getSelectionModel().getSelectedItem() != null) {
-			if(tvRoadmap.getSelectionModel().getSelectedItem()
-					.getLstProcessCalculated() != null){
-				
-				for (Process p : tvRoadmap.getSelectionModel().getSelectedItem()
-						.getLstProcessCalculated()) {
+			if (tvRoadmap.getSelectionModel().getSelectedItem()
+					.getLstProcessCalculated() != null) {
+
+				for (Process p : tvRoadmap.getSelectionModel()
+						.getSelectedItem().getLstProcessCalculated()) {
 
 					// Create a series for each process and factor (q/t/OOP/FC)
 					Series<String, Number> seriesQ = new XYChart.Series<String, Number>();
@@ -766,10 +788,10 @@ public class TabScenarioCalculationController {
 
 					Series<String, Number> seriesT = new XYChart.Series<String, Number>();
 					seriesT.setName(p.getName());
-					
+
 					Series<String, Number> seriesOOP = new XYChart.Series<String, Number>();
 					seriesT.setName(p.getName());
-					
+
 					Series<String, Number> seriesFC = new XYChart.Series<String, Number>();
 					seriesT.setName(p.getName());
 
@@ -784,14 +806,14 @@ public class TabScenarioCalculationController {
 								new XYChart.Data<String, Number>("Period "
 										+ String.valueOf(period), p
 										.gettPerPeriod(config)[period]));
-						
+
 						seriesOOP.getData().add(
 								new XYChart.Data<String, Number>("Period "
 										+ String.valueOf(period), p
 										.getOopPerPeriod(config)[period]));
-						
-						seriesFC.getData().add(
-								new XYChart.Data<String, Number>("Period "
+
+						seriesFC.getData()
+								.add(new XYChart.Data<String, Number>("Period "
 										+ String.valueOf(period), p
 										.getFixedCostsPerPeriod(config)[period]));
 					}
@@ -801,66 +823,71 @@ public class TabScenarioCalculationController {
 					lcProcessOOP.getData().add(seriesOOP);
 					lcProcessFC.getData().add(seriesFC);
 				}
-				
+
 			}
-			
 
 		}
 
 	}
-	
-	private void initBarChartRBroken(){
+
+	private void initBarChartRBroken() {
 		bcRBroken.getData().clear();
-		
-		//Add data to the chart for each restriction type
+
+		// Add data to the chart for each restriction type
 		ConstraintSet cs = config.getConstraintSet();
 		List<String> lstTypeAlreadyCounted = new ArrayList<String>();
-		
+
 		Series<String, Number> series = new XYChart.Series<String, Number>();
 		int amountBrokenOverall = 0;
-		
-		for(DBConstraint dbConstraint : config.getConstraintSet().getLstConstraints()){
+
+		for (DBConstraint dbConstraint : config.getConstraintSet()
+				.getLstConstraints()) {
 			int countBrokenAll = 0;
-			
+
 			// Get all constraints of the same type
-			if(!lstTypeAlreadyCounted.contains(dbConstraint.getType())){
-				for(DBConstraint dbc : config.getConstraintSet().getLstConstraints()){
-					if(dbConstraint.getType().equals(dbc.getType())){
+			if (!lstTypeAlreadyCounted.contains(dbConstraint.getType())) {
+				for (DBConstraint dbc : config.getConstraintSet()
+						.getLstConstraints()) {
+					if (dbConstraint.getType().equals(dbc.getType())) {
 						countBrokenAll = countBrokenAll + dbc.getCountBroken();
 					}
 				}
-			
+
 				// Dont count constraints of this type again
 				lstTypeAlreadyCounted.add(dbConstraint.getType());
-				System.out.println(dbConstraint.getType() + " countBroken: "+countBrokenAll);
+				System.out.println(dbConstraint.getType() + " countBroken: "
+						+ countBrokenAll);
 				amountBrokenOverall += countBrokenAll;
 				// Add a Bar of the type to the chart
-				series.getData().add(new XYChart.Data<String, Number>(dbConstraint.getType(),countBrokenAll));
-			}	
+				series.getData().add(
+						new XYChart.Data<String, Number>(
+								dbConstraint.getType(), countBrokenAll));
+			}
 		}
-		
-		//Display as percentage of all broken Restrictions
-		for(Data<String,Number> d: series.getData()){
+
+		// Display as percentage of all broken Restrictions
+		for (Data<String, Number> d : series.getData()) {
 			d.setYValue(d.getYValue().doubleValue() / amountBrokenOverall);
 		}
-		
+
 		bcRBroken.getData().add(series);
-		
+
 	}
 
-	private void initACCashflows(){
-		XYChart.Series<String,Double> series1= new Series<String, Double>();
-        series1.setName(this.scenario.getName());
-                
-        for(int period = 0; period < config.getPeriods(); period++){
-        	series1.getData().add(new Data<String, Double>("Period "+(period), rmList.get(0).getCashflowsPerPeriod(config)[period]));
-        	System.out.println("Series1: "+rmList.get(0).getCashflowsPerPeriod(config)[period]);
-        }
-        acCashflows.getData().add(series1);   
+	private void initACCashflows() {
+		XYChart.Series<String, Double> series1 = new Series<String, Double>();
+		series1.setName(this.scenario.getName());
+
+		for (int period = 0; period < config.getPeriods(); period++) {
+			series1.getData().add(
+					new Data<String, Double>("Period " + (period), rmList
+							.get(0).getCashflowsPerPeriod(config)[period]));
+			System.out.println("Series1: "
+					+ rmList.get(0).getCashflowsPerPeriod(config)[period]);
+		}
+		acCashflows.getData().add(series1);
 	}
-	
-	
-	
+
 	/**
 	 * Generates the initial Roadmaps and updates the UI
 	 * 
@@ -877,7 +904,7 @@ public class TabScenarioCalculationController {
 			protected Task<List<RoadMap>> createTask() {
 				start = System.currentTimeMillis();
 				return new RMGenerator(config) {
-					
+
 					@Override
 					protected void succeeded() {
 						mainApp.getV3pmGUIController().setProgress(0);
@@ -885,7 +912,8 @@ public class TabScenarioCalculationController {
 								"Roadmaps generated.");
 						rmList = (List<RoadMap>) getValue();
 						olRoadmap.addAll(rmList);
-						lblAmountRoadmaps.setText(rmList.size() +" Roadmaps have been generated.");
+						lblAmountRoadmaps.setText(rmList.size()
+								+ " Roadmaps have been generated.");
 						System.out.println(config);
 						super.succeeded();
 					}
@@ -911,20 +939,22 @@ public class TabScenarioCalculationController {
 		Service<List<RoadMap>> service = new Service<List<RoadMap>>() {
 			@Override
 			protected Task<List<RoadMap>> createTask() {
-				
+
 				return new Task<List<RoadMap>>() {
 
 					@Override
 					protected List<RoadMap> call() throws Exception {
 						V3PM_Prototype.lstTasks.add(this);
-						NPVCalculator c = new NPVCalculator(generatedRoadmaps, config);
+						NPVCalculator c = new NPVCalculator(generatedRoadmaps,
+								config);
 						return c.start();
 					}
 
 					@Override
 					protected void succeeded() {
 						super.succeeded();
-						System.out.println("TIME: "+(System.currentTimeMillis()-start)/1000);
+						System.out.println("TIME: "
+								+ (System.currentTimeMillis() - start) / 1000);
 						mainApp.getV3pmGUIController().setProgress(0);
 						mainApp.getV3pmGUIController().setStatus(
 								"NPVs calculated.");
@@ -952,8 +982,12 @@ public class TabScenarioCalculationController {
 						initGraphStream();
 						initRoadmapContainer(null);
 						updateTVProcesses();
-						if(rmList.size()<50000){
+						if ((SettingsController.FORCE_CRA)
+								|| rmList.size() < 50000) {
 							startCompleteRobustnessAnalysis();
+						}else{
+							lblRobustnessText.setText("Go into Settings to force this feature on.");
+							piRobustness.setProgress(0);
 						}
 						initBarChartRBroken();
 					}
@@ -991,11 +1025,17 @@ public class TabScenarioCalculationController {
 				new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent event) {
+						
+						ArrayList<Viewer> lstRemoved = new ArrayList<Viewer>();
+						
 						for (Viewer viewer : lstViewer) {
 							if (viewer != null) {
+								lstRemoved.add(viewer);
 								viewer.close();
 							}
 						}
+						
+						lstViewer.removeAll(lstRemoved);
 
 						for (Task t : V3PM_Prototype.lstTasks) {
 							if (t != null)
@@ -1028,7 +1068,5 @@ public class TabScenarioCalculationController {
 	public RunConfiguration getConfig() {
 		return config;
 	}
-	
-	
 
 }

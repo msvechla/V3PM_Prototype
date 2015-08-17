@@ -227,9 +227,17 @@ public class ScenarioComparisonController {
 				initRoadmapContainer(roadmapBox1, rmList1, config1, null);
 				initRoadmapContainer(roadmapBox2, rmList2, config2, null);
 				initSACCashflows();
-				if(rmList1.size()<50000 && rmList2.size()<50000){
+				
+				if ((SettingsController.FORCE_CRA)
+						|| (rmList1.size()<50000 && rmList2.size()<50000)) {
 					startCompleteRobustnessAnalysis();
+				}else{
+					lblRobustness1.setText("Go into Settings to force this feature on.");
+					lblRobustness2.setText("Go into Settings to force this feature on.");
+					piRobustness1.setProgress(0);
+					piRobustness2.setProgress(0);
 				}
+				
 				generateSolutionText();
 				super.succeeded();
 			}

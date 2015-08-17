@@ -24,7 +24,8 @@ public class RMGenerator extends Task<List<RoadMap>> {
 	@Override
 	protected List<RoadMap> call() throws Exception {
 		V3PM_Prototype.lstTasks.add(this);
-		return this.generateRoadmaps();
+		List<RoadMap> lstRM = this.generateRoadmaps();
+		return lstRM;
 	}
 
 	/**

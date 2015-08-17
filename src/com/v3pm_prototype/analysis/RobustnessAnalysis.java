@@ -177,14 +177,14 @@ public class RobustnessAnalysis extends Analysis{
 			
 			workProgress = i / radius;
 			
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					if(piSolution != null){
+			if (piSolution != null) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
 						piSolution.setProgress(workProgress);
 					}
-				}
-			});
+				});
+			}
 			
 		}
 		
