@@ -12,6 +12,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 
+/**
+ * 
+ * @author Marius Svechla
+ *
+ */
 public class SettingsController {
 	
 	@FXML 

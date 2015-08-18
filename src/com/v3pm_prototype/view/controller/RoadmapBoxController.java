@@ -30,6 +30,11 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
+/**
+ * Creates the box at the top of the scenario analysis dynamically according to the roadmap
+ * @author Marius Svechla
+ *
+ */
 public class RoadmapBoxController {
 	@FXML
 	private HBox periodLabels;

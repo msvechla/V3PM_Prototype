@@ -11,6 +11,11 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 
+/**
+ * 
+ * @author Marius Svechla
+ *
+ */
 public abstract class AnalysisController {
 	
 	@FXML

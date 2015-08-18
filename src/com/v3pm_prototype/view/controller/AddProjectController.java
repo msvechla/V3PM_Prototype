@@ -25,6 +25,11 @@ import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
 
+/**
+ * 
+ * @author Marius Svechla
+ *
+ */
 public class AddProjectController {
 	
 	@FXML

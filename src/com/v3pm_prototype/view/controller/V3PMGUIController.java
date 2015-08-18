@@ -21,6 +21,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 
+/**
+ * 
+ * @author Marius Svechla
+ *
+ */
 public class V3PMGUIController {
 	
 	public static final String STATUS_LOADING_START = "Loading configuration file...";

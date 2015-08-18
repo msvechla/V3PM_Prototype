@@ -50,6 +50,11 @@ import com.v3pm_prototype.tools.Colorpalette;
 import com.v3pm_prototype.tools.TableViewSnapshot;
 import com.v3pm_prototype.calculation.Process;
 
+/**
+ * 
+ * @author Marius Svechla
+ *
+ */
 public class RoadmapComparisonController {
 	@FXML
 	private Label lblRoadmapName1;

@@ -9,6 +9,11 @@ import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
+/**
+ * Performs the Complete Robustness Analysis for a scenario
+ * @author Marius Svechla
+ *
+ */
 public class CompleteRobustnessAnalysis extends Task<List<CRAResult>>{
 	
 	private RoadMap roadmap;

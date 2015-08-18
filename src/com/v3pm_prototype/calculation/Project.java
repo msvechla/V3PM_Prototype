@@ -6,8 +6,9 @@ import java.util.List;
 import com.v3pm_prototype.database.DBProject;
 
 /**
- * class for value objects which holds all the information about a single project
- * 
+ * Used for calculations
+ * @author Marius Svechla
+ *
  */
 public class Project implements Cloneable{
 	
@@ -29,8 +30,8 @@ public class Project implements Cloneable{
 	private double fixedCosts;
 	private double oinv; // investment-outflows
 	private int i; // influenced processes
-	private double a; // relative effect on the operating outflows of a process (only for BPM-level projects)
-	private double b; // relative effect on the investment-Outflows of future projects (only for BPM-level projects)
+	private double a; // relative effect on the operating outflows of a process
+	private double b; // relative effect on the investment-Outflows of future projects
 	private double e; // relative effect on time of a process
 	private double u; // relative effect on quality of a process
 	private double m; // fixedCostEffect
@@ -63,14 +64,6 @@ public class Project implements Cloneable{
 		this.absRelT = absRelT;
 		this.absRelOop = absRelOop;
 	}
-
-	//TODO get via index?
-//	public static Project getProject(int id){
-//		for(Project p: projectList){
-//			if(p.getId() == id) return p;
-//		}
-//		return null;
-//	}
 	
 	public String toString(){
 		return String.valueOf(this.name);

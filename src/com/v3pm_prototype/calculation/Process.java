@@ -4,7 +4,8 @@ import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
 /**
- * class for value objects which holds all the information about a single process
+ * Used for Calculation
+ * @author Marius Svechla
  *
  */
 public class Process implements Comparable<Process>, Cloneable{
@@ -24,15 +25,15 @@ public class Process implements Comparable<Process>, Cloneable{
 	private double oop; // operating outflows
 	private double d; // quality specific degeneration effect
 	private double v; // time specific degeneration effect
-	private double fixedCosts; // MLe
-	private double n; // demand
+	private double fixedCosts;
+	private double n; 
 	
 	private double[] qPerPeriod = null;
 	private double[] tPerPeriod = null;
 	private double[] fixedCostsPerPeriod = null;
 	private double[] OopPerPeriod = null;
 	
-	// variables for calculating the demand
+	// demand
 	private double roh;
 	private double lamda;
 	private double alpha;

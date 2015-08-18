@@ -33,6 +33,11 @@ import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 import com.v3pm_prototype.tools.TableViewSnapshot;
 
+/**
+ * 
+ * @author Marius Svechla
+ *
+ */
 public class RobustnessAnalysisController extends AnalysisController{
 	@FXML
 	private ChoiceBox<String> cbType;

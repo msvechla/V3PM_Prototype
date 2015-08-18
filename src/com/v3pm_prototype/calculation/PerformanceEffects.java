@@ -37,9 +37,7 @@ public class PerformanceEffects {
 		}
 		
 
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		// for each process
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		// Iterate through processes
 		// check each modification parameter of a project and modify the
 		// regarding processes
 		for (Iterator<Process> itProcessModify = tempCollPocess.iterator(); itProcessModify
@@ -63,33 +61,6 @@ public class PerformanceEffects {
 						.getOop();
 			}
 			
-
-			// ------------------------------------------------------
-			// a
-			// ------------------------------------------------------
-			// if (projectFinishes && projectRegardsProcess &&
-			// tempProject.getA() != 0) {
-			// tempProcess.setOop(tempProcess.getOop() * tempProject.getA());
-			// }
-
-			/*
-			 * MLe alte Version konmplett auskommentiert //
-			 * ------------------------------------------------------ // e //
-			 * ------------------------------------------------------ if
-			 * (projectRegardsProcess && tempProject.getE() != 0) {
-			 * tempProcess.setT(tempProcess.getT() * tempProject.getE()); } else
-			 * { // degeneration-effect on time // differ between one or
-			 * multiple projects per period if (Main.maxProjectsPerPeriod == 1)
-			 * { tempProcess.setT(tempProcess.getT() * (1 +
-			 * tempProcess.getV())); // degeneration } else { // check if it is
-			 * the last handled project of a period. if
-			 * (Main.maxProjectsPerPeriod == projectNumberWithinPeriod) { //
-			 * check if there are any changes of t between handling the first
-			 * and the last project in a period if
-			 * (isTheSameValue(tempProcess.getT(), bufferedTempCollProcess,
-			 * tempProcess.getId(), 't')) { tempProcess.setT(tempProcess.getT()
-			 * * (1 + tempProcess.getV())); // degeneration } } } }
-			 */
 
 			// ------------------------------------------------------
 			// e mit Absolutem Effekt
@@ -119,9 +90,6 @@ public class PerformanceEffects {
 									+ tempProject.getName());
 
 				}
-
-				// Test der Zeit bzgl. Effekt
-				// System.out.println("time " +tempProcess.getT() );
 
 			}
 
@@ -153,25 +121,6 @@ public class PerformanceEffects {
 			if (RMRestrictionHandler.rTimeMax(tempProject.getPeriod(),
 					tempProcess, config) == false)
 				return false;
-
-			/*
-			 * MLe: 1zu1 Kopie der alten q Berechnung //
-			 * ------------------------------------------------------ // u //
-			 * ------------------------------------------------------ if
-			 * (projectRegardsProcess && tempProject.getU() != 0) {
-			 * tempProcess.setQ(tempProcess.getQ() * tempProject.getU()); } else
-			 * { // degeneration-effect on quality // differ between one or
-			 * multiple projects per period if (Main.maxProjectsPerPeriod == 1)
-			 * { tempProcess.setQ(tempProcess.getQ() * (1 -
-			 * tempProcess.getD())); // degeneration } else { // check if it is
-			 * the last handled project of a period. if
-			 * (Main.maxProjectsPerPeriod == projectNumberWithinPeriod) { //
-			 * check if there are any changes of q between handling the first
-			 * and the last project in a period if
-			 * (isTheSameValue(tempProcess.getQ(), bufferedTempCollProcess,
-			 * tempProcess.getId(), 'q')) { tempProcess.setQ(tempProcess.getQ()
-			 * * (1 - tempProcess.getD())); // degeneration } } } }
-			 */
 
 			// ------------------------------------------------------
 			// u
@@ -228,29 +177,11 @@ public class PerformanceEffects {
 				tempProcess.setQ(tempProcess.getQmax());
 			}
 
-			// Platz für q min
-			// Abfrage, korrekt. Ausgabe enthält noch keine Information darüber,
-			// welche Roadmap betroffen ist.
-
 			if (RMRestrictionHandler.rQualMin(tempProject.getPeriod(),
 					tempProcess, config) == false)
 				return false;
 
-			// / MLe Ende
-
-			// ------------------------------------------------------
-			// m
-			// ------------------------------------------------------
-			/*
-			 * Ursprüngliche Variante auskommentiert! if (projectRegardsProcess
-			 * && tempProject.getM() != 0) {
-			 * tempProcess.setOop(tempProcess.getOop() * tempProject.getM()); }
-			 * }
-			 */
-
-			// Neu MLe Oop mit absolutem Effekt - Scheint korrekt zu sein.
-			// Ausführlicher Test erforderlich
-
+			
 			if (projectFinishes && projectRegardsProcess
 					&& tempProject.getA() != 0) {
 
@@ -317,9 +248,7 @@ public class PerformanceEffects {
 		// b
 		// ------------------------------------------------------
 		if (projectFinishes && tempProject.getB() != 0) {
-			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			// for each project
-			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			// Iterate through projects
 			// check all future projects for process-level-projects
 			for (Iterator<Project> itProjB = tempCollPoj_sorted.iterator(); itProjB
 					.hasNext();) {

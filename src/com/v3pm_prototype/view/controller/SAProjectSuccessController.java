@@ -36,6 +36,11 @@ import com.v3pm_prototype.main.V3PM_Prototype;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.tools.TableViewSnapshot;
 
+/**
+ * 
+ * @author Marius Svechla
+ *
+ */
 public class SAProjectSuccessController extends AnalysisController{
 	
 	public static final String CLM_PARAMETER = "Parameter";

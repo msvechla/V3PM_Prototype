@@ -83,6 +83,11 @@ import com.v3pm_prototype.rmgeneration.RunConfiguration;
 import com.v3pm_prototype.tools.Colorpalette;
 import com.v3pm_prototype.tools.TableViewSnapshot;
 
+/**
+ * 
+ * @author Marius Svechla
+ *
+ */
 public class TabScenarioCalculationController {
 	@FXML
 	private Label lblNPV;
@@ -248,6 +253,8 @@ public class TabScenarioCalculationController {
 				eventHandlerSnapshot);
 		boxRMSolution.addEventHandler(MouseEvent.MOUSE_CLICKED,
 				eventHandlerSnapshot);
+		acCashflows.addEventHandler(MouseEvent.MOUSE_CLICKED,
+				eventHandlerSnapshot);
 
 		MenuItem item = new MenuItem("Copy to Clipboard");
 		item.setOnAction(new TableViewSnapshot(tvProcesses));
@@ -365,6 +372,8 @@ public class TabScenarioCalculationController {
 	}
 
 	private void startCompleteRobustnessAnalysis() {
+		this.mainApp.getV3pmGUIController().setProgress(-1);
+		this.mainApp.getV3pmGUIController().setStatus("Calculating Complete Robustness...");
 		CompleteRobustnessAnalysis cra = new CompleteRobustnessAnalysis(config,
 				rmList) {
 
@@ -385,6 +394,8 @@ public class TabScenarioCalculationController {
 				lblRobustness.setManaged(true);
 				piRobustness.setVisible(false);
 				piRobustness.setManaged(false);
+				mainApp.getV3pmGUIController().setProgress(0);
+				mainApp.getV3pmGUIController().setStatus("Complete Robustness calculated.");
 			}
 
 		};
@@ -931,8 +942,7 @@ public class TabScenarioCalculationController {
 	 */
 	private Service<List<RoadMap>> initialNPVCalcService(
 			final List<RoadMap> generatedRoadmaps) { // Update Statusbar
-		this.mainApp.getV3pmGUIController().setProgress(-1);
-		this.mainApp.getV3pmGUIController().setStatus("Calculating NPVs...");
+		
 
 		// Create a Service that executes the RMGenerator Task and start it
 		Service<List<RoadMap>> service = new Service<List<RoadMap>>() {
@@ -943,6 +953,8 @@ public class TabScenarioCalculationController {
 
 					@Override
 					protected List<RoadMap> call() throws Exception {
+						mainApp.getV3pmGUIController().setProgress(-1);
+						mainApp.getV3pmGUIController().setStatus("Calculating NPVs...");
 						V3PM_Prototype.lstTasks.add(this);
 						NPVCalculator c = new NPVCalculator(generatedRoadmaps,
 								config);
@@ -985,7 +997,7 @@ public class TabScenarioCalculationController {
 								|| rmList.size() < 50000) {
 							startCompleteRobustnessAnalysis();
 						}else{
-							lblRobustnessText.setText("Go into Settings to force this feature on.");
+							lblRobustnessText.setText("Go into Settings to force this feature on for huge scenarios.");
 							piRobustness.setProgress(0);
 						}
 						initBarChartRBroken();

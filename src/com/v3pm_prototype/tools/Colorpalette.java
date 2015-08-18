@@ -1,5 +1,10 @@
 package com.v3pm_prototype.tools;
 
+/**
+ * Contains information about Colors that are adjusted dynamically
+ * @author Marius Svechla
+ *
+ */
 public final class Colorpalette {
 	public static final String[] PROJECT = {"black","#001f3f","#FF851B","#7FDBFF","#FFDC00","#3D9970","#AAAAAA","#01FF70","#3D9970","#85144b","#39CCCC"};
 	public static final String[] PROCESS = {"black","#F3622D","#66BD66","#FBA71B","#41A9C9","#4258C9","#9A42C8","#C84164","#888888","#85144b","#39CCCC"};

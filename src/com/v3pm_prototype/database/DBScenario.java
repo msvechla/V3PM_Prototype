@@ -9,6 +9,11 @@ import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
+/**
+ * Stores information about scenarios
+ * @author Marius Svechla
+ *
+ */
 public class DBScenario {
 	private int id; 
 	private String name;

@@ -43,6 +43,11 @@ import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.V3PM_Prototype;
 
+/**
+ * 
+ * @author Marius Svechla
+ *
+ */
 public class NewScenarioController {
 	private TabStartController tsc;
 	private static final DataFormat DF_PROJECT = new DataFormat(

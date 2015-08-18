@@ -6,7 +6,11 @@ import java.util.List;
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.calculation.RMRestrictionHandler;
 
-
+/**
+ * Stores roadmaps and groups them into containers for efficiency
+ * @author Marius Svechla
+ *
+ */
 public class RMContainer {
 	
 	public static List<RMContainer> lstRMContainerSingle = new ArrayList<RMContainer>();

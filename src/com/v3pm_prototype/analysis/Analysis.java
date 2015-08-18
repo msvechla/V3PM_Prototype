@@ -7,6 +7,11 @@ import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.exceptions.NoValidThetaIDException;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
+/**
+ * Parent Class for various analysis techniques
+ * @author Marius Svechla
+ *
+ */
 public abstract class Analysis {
 
 	public static final String MODE_PLUS = "MODE_PLUS";
@@ -35,7 +40,7 @@ public abstract class Analysis {
 		this.piSolution = piSolution;
 	}
 	
-	public abstract void start() throws IllegalArgumentException, IllegalAccessException, NoValidThetaIDException, NoSuchFieldException, SecurityException;
+	public abstract void start() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, NoValidThetaIDException;
 	
 	public static String mapToCodeParameter(String parameterReadable){
 		switch(parameterReadable){

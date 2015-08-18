@@ -5,6 +5,11 @@ import java.util.List;
 
 import com.v3pm_prototype.database.DBConstraint;
 
+/**
+ * Stores all constraints of a scenario
+ * @author Marius Svechla
+ *
+ */
 public class ConstraintSet {
 	private List<DBConstraint> lstConstraints;
 	

@@ -6,6 +6,11 @@ import javafx.scene.control.ComboBox;
 
 import com.v3pm_prototype.calculation.Process;
 
+/**
+ * Stores information about Processes
+ * @author Marius Svechla
+ *
+ */
 public class DBProcess implements Serializable{
 	public static final int ID_ALLPROCESSES = 0;
 	public static final String NAME_ALLPROCESSES = "All Processes";

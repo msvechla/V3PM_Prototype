@@ -11,6 +11,11 @@ import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.calculation.RMRestrictionHandler;
 import com.v3pm_prototype.main.V3PM_Prototype;
 
+/**
+ * Generates all viable roadmaps and check at multiple stages for consraint violations
+ * @author Marius Svechla
+ *
+ */
 public class RMGenerator extends Task<List<RoadMap>> {
 	
 	private RunConfiguration config;

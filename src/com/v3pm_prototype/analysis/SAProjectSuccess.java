@@ -20,6 +20,11 @@ import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 import com.v3pm_prototype.view.controller.SAProjectSuccessController;
 
+/**
+ * Performs the Sensitivity to Project Success Analysis
+ * @author Marius Svechla
+ *
+ */
 public class SAProjectSuccess extends Analysis {
 
 	private RoadMap roadmap;

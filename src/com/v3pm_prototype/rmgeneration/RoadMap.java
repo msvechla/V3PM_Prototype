@@ -10,6 +10,11 @@ import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.database.DBProject;
 
+/**
+ * Contains all information about a roadmap
+ * @author Marius Svechla
+ *
+ */
 public class RoadMap implements Comparable<RoadMap>, Cloneable{
 	private Project[][] rmArray;
 	public HashSet<Integer> implementedProjectIDs;

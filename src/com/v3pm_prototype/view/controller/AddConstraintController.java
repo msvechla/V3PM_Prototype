@@ -28,6 +28,11 @@ import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBProject;
 import com.v3pm_prototype.database.DBProcess;
 
+/**
+ * 
+ * @author Marius Svechla
+ *
+ */
 public class AddConstraintController {
 	
 	private String type;

@@ -5,6 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Handles connections to the database, Singleton Pattern
+ * @author Marius Svechla
+ *
+ */
 public class DBConnection {
 	private static DBConnection instance;
 	

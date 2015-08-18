@@ -18,6 +18,7 @@ import com.v3pm_prototype.rmgeneration.RunConfiguration;
 /**
  * The RMRestrictionHandler contains methods to check if the given roadmap
  * violates any restriction or not.
+ * @author Marius Svechla
  */
 public class RMRestrictionHandler {
 

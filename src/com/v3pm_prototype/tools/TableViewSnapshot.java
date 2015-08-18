@@ -14,6 +14,11 @@ import javafx.scene.input.ClipboardContent;
 import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.database.DBProcess;
 
+/**
+ * Class for copying tables to the clipboard in the MSExcel format
+ * @author Marius Svechla
+ *
+ */
 public class TableViewSnapshot implements EventHandler<ActionEvent> {
 
 	private TableView<Object> tableView;

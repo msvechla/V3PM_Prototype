@@ -9,6 +9,11 @@ import com.v3pm_prototype.calculation.Process;
 import com.v3pm_prototype.calculation.Project;
 import com.v3pm_prototype.database.DBConstraint;
 
+/**
+ * Contains all additional information about a scenario
+ * @author Marius Svechla
+ *
+ */
 public class RunConfiguration implements Cloneable{
 	
 	public static final String FX_READABLE_DISCOUNTRATE = "Discount Rate";

@@ -18,6 +18,11 @@ import com.v3pm_prototype.exceptions.NoValidThetaIDException;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
 
+/**
+ * Performs a Robustness Analysis
+ * @author Marius Svechla
+ *
+ */
 public class RobustnessAnalysis extends Analysis{
 
 	private List<RoadMap> lstRoadmap;

@@ -48,6 +48,11 @@ import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.V3PM_Prototype;
 import com.v3pm_prototype.tools.TableViewSnapshot;
 
+/**
+ * 
+ * @author Marius Svechla
+ *
+ */
 public class TabStartController {
 
 	private V3PM_Prototype mainApp;

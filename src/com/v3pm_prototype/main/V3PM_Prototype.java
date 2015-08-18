@@ -13,6 +13,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Main entry class of the application
+ * @author Marius Svechla
+ *
+ */
 public class V3PM_Prototype extends Application {
 
 	private Stage primaryStage;

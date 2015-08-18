@@ -41,9 +41,7 @@ public class NPVCalculator{
 
 		List<RoadMap> brokenRoadmaps = new ArrayList<RoadMap>();
 		
-		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		// for each roadmap
-		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		//Iterate through every roadmap
 		for (Iterator<RoadMap> itRM = collRM.iterator(); itRM.hasNext();) {
 			RoadMap RM = itRM.next();
 			boolean restrictionClear = false; //QualMin, TimeMax
@@ -62,9 +60,7 @@ public class NPVCalculator{
 			
 			List<Project> projectsInPeriod = new ArrayList<Project>();
 			
-			// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			// for each project
-			// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Iterate through projects
 			for (Iterator<Project> itProj = tempCollPoj_sorted.iterator(); itProj.hasNext();) {
 				Project tempProject = itProj.next();
 
@@ -102,9 +98,6 @@ public class NPVCalculator{
 				}
 						
 				
-				// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				// for each process
-				// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				// modify processes by project for next iteration
 				restrictionClear = PerformanceEffects.modifyProcessesAndProjectsByProject(tempCollProcess, bufferedTempCollProcess, tempProject, tempCollPoj_sorted,
 						projectNumberWithinPeriod, config);

@@ -1,5 +1,10 @@
 package com.v3pm_prototype.database;
 
+/**
+ * Stores information about constraints
+ * @author Marius Svechla
+ *
+ */
 public class DBConstraint implements Cloneable{
 	public static final String TYPE_LOCMUTEX="LocMutEx";
 	public static final String TYPE_GLOMUTEX="GloMutEx";

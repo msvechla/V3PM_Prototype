@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import com.v3pm_prototype.calculation.Project;
 
+/**
+ * Stores information about Projects
+ * @author Marius Svechla
+ *
+ */
 public class DBProject implements Serializable {
 	private int id;
 	private String name;
