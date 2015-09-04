@@ -885,9 +885,10 @@ public class TabScenarioCalculationController {
 		}
 
 		// Display as percentage of all broken Restrictions
-		for (Data<String, Number> d : series.getData()) {
-			d.setYValue(d.getYValue().doubleValue() / amountBrokenOverall);
-		}
+//		for (Data<String, Number> d : series.getData()) {
+//			d.setYValue(d.getYValue().doubleValue() / amountBrokenOverall);
+//		}
+		
 
 		bcRBroken.getData().add(series);
 
@@ -1003,6 +1004,10 @@ public class TabScenarioCalculationController {
 						initGraphStream();
 						initRoadmapContainer(null);
 						updateTVProcesses();
+						
+						lblAmountRoadmaps.setText(rmList.size()
+								+ " Roadmaps have been generated.");
+						
 						if ((SettingsController.FORCE_CRA)
 								|| rmList.size() < 50000) {
 							startCompleteRobustnessAnalysis();

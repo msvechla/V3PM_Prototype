@@ -1,5 +1,6 @@
 package com.v3pm_prototype.view.controller;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -82,6 +83,14 @@ public class RobustnessAnalysisController extends AnalysisController{
 
 	public void startRobustnessAnalysis(){
 		lblSolution.setText("");
+		
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				piSolution.setProgress(-1);
+			}
+		});
+		
 		Task<RobustnessAnalysis> raTask = new Task<RobustnessAnalysis>() {
 
 			@Override
