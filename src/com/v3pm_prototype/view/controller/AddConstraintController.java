@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -89,8 +90,15 @@ public class AddConstraintController {
 
 	//Updates the available SI Projects, according to already chosen Project S
 	private void updateAvailableSI(){
-		availableSI.addAll(availableS);
-		availableSI.remove(cbS.getSelectionModel().getSelectedItem());
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				availableSI.addAll(availableS);
+				availableSI.remove(cbS.getSelectionModel().getSelectedItem());
+			}
+		});
+		
 	}
 	
 	//Updates the layout according to the constraint type

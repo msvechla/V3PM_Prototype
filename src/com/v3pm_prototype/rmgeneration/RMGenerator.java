@@ -71,6 +71,8 @@ public class RMGenerator extends Task<List<RoadMap>> {
 		//STEP2: Generate initial CombinedContainers from combining SingleContainers with SingleContainers
 		//STEP3: Generate CombinedContainers from looping through CombinedContainers and combining with SingleContainers
 		
+		System.out.println("CombinedContainer");
+		
 		List<List<RMContainer>> lstSingleCombined = new ArrayList<List<RMContainer>>();
 		lstSingleCombined.add(RMContainer.lstRMContainerSingle); //list for STEP2
 		lstSingleCombined.add(RMContainer.lstRMContainerCombined); //list for STEP3
@@ -82,6 +84,8 @@ public class RMGenerator extends Task<List<RoadMap>> {
 				RMContainer rmcSingle2 = lstRMContainer.get(i);
 				
 				for(RMContainer rmcSingle : RMContainer.lstRMContainerSingle){
+					
+					System.out.println("SINGLECOMBINED");
 					
 					if(isCancelled()) break;
 					
@@ -121,6 +125,7 @@ public class RMGenerator extends Task<List<RoadMap>> {
 			
 		}
 		
+		System.out.println("CONTAINER GENERATED");
 		List<RoadMap> rmList = RMContainer.createRMList(config);
 		List<RoadMap> rmListPostRMGenCheck = new ArrayList<RoadMap>();
 		

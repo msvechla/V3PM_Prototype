@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.omg.CORBA.TCKind;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -148,7 +149,11 @@ public class TabStartController {
 		initTVProcesses();
 		initTVScenarios();
 
-		loadFromDatabase();
+		try {
+			loadFromDatabase();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -537,8 +542,14 @@ public class TabStartController {
 	/**
 	 * Starts a task that loads all data from the DB. Calls loadProjects() which
 	 * calls LoadScenarios()
+	 * @throws SQLException 
 	 */
-	private void loadFromDatabase() {
+	private void loadFromDatabase() throws SQLException {
+		
+		// Load Settings
+		SettingsController.readFCRA();
+		
+
 		// First load all Processes
 		Task<?> loadProcessesTask = new Task<Object>() {
 			@Override
@@ -678,22 +689,26 @@ public class TabStartController {
 	 */
 	private void loadScenarios() {
 		Task<?> loadScenarioTask = new Task<Object>() {
+			
+			private List<DBScenario> lstScenario = new ArrayList<DBScenario>();
+			
 			@Override
 			protected Object call() throws Exception {
 				Connection conn = DBConnection.getInstance().getConnection();
 				Statement stS = conn.createStatement();
 				ResultSet rsS = stS.executeQuery("SELECT * FROM Scenario");
 
-				DBScenario scenario = null;
+				
 
 				while (rsS.next()) {
-					scenario = new DBScenario(rsS.getInt("id"),
+					DBScenario scenario = new DBScenario(rsS.getInt("id"),
 							rsS.getString("name"), rsS.getDouble("npv"),
 							rsS.getInt("periods"), rsS.getInt("slotsPerPeriod"),
 							rsS.getDouble("discountRate"),
 							rsS.getDouble("oOAFixed"), null, null, null);
-					olScenarios.add(scenario);
-
+					
+					lstScenario.add(scenario);
+					
 					// Load ScenarioProcess
 					Statement st = conn.createStatement();
 					ResultSet rs = st.executeQuery("SELECT * FROM ScenarioProcess WHERE scenarioID = "
@@ -789,9 +804,20 @@ public class TabStartController {
 					}
 					scenario.setLstConstraints(lstScenarioConstraint);
 				}
-
 				return null;
 			}
+
+			@Override
+			protected void succeeded() {
+				Platform.runLater(new Runnable() {
+					
+					@Override
+					public void run() {
+						olScenarios.addAll(lstScenario);
+					}
+				});
+			}
+			
 		};
 
 		Thread t = new Thread(loadScenarioTask);

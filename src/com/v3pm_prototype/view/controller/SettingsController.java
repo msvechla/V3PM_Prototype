@@ -65,6 +65,19 @@ public class SettingsController {
 	
 	
 	private void initCBFCRA() throws SQLException{
+		
+		int bool = readFCRA();
+		
+		if(bool == 0){
+			cbFCRA.setSelected(false);
+			FORCE_CRA = false;
+		}else{
+			cbFCRA.setSelected(true);
+			FORCE_CRA = true;
+		}	
+	}
+
+	public static int readFCRA() throws SQLException{
 		Connection conn = DBConnection.getInstance().getConnection();
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT * FROM Settings WHERE type = 'FCRA'");
@@ -73,13 +86,10 @@ public class SettingsController {
 		int bool = rs.getInt("boolean");
 		
 		if(bool == 0){
-			cbFCRA.setSelected(false);
 			FORCE_CRA = false;
 		}else{
-			cbFCRA.setSelected(true);
 			FORCE_CRA = true;
 		}
-			
+		return bool;
 	}
-
 }

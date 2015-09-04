@@ -77,6 +77,7 @@ import com.v3pm_prototype.database.DBConstraint;
 import com.v3pm_prototype.database.DBProcess;
 import com.v3pm_prototype.database.DBScenario;
 import com.v3pm_prototype.main.V3PM_Prototype;
+import com.v3pm_prototype.rmgeneration.RMContainer;
 import com.v3pm_prototype.rmgeneration.RMGenerator;
 import com.v3pm_prototype.rmgeneration.RoadMap;
 import com.v3pm_prototype.rmgeneration.RunConfiguration;
@@ -374,8 +375,16 @@ public class TabScenarioCalculationController {
 	private void startCompleteRobustnessAnalysis() {
 		this.mainApp.getV3pmGUIController().setProgress(-1);
 		this.mainApp.getV3pmGUIController().setStatus("Calculating Complete Robustness...");
+		
+		List<RoadMap> rmListSmall = null;
+		if(rmList.size() > 50000){
+			rmListSmall = rmList.subList(0, 49999);
+		}else{
+			rmListSmall = rmList;
+		}
+		
 		CompleteRobustnessAnalysis cra = new CompleteRobustnessAnalysis(config,
-				rmList) {
+				rmListSmall) {
 
 			@Override
 			protected void succeeded() {
@@ -924,6 +933,7 @@ public class TabScenarioCalculationController {
 						olRoadmap.addAll(rmList);
 						lblAmountRoadmaps.setText(rmList.size()
 								+ " Roadmaps have been generated.");
+						RMContainer.clear();
 						System.out.println(config);
 						super.succeeded();
 					}

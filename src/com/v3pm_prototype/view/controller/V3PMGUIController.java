@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import com.v3pm_prototype.main.V3PM_Prototype;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -98,7 +99,14 @@ public class V3PMGUIController {
 	}
 	
 	public void setProgress(int progress){
-		this.progressBar.setProgress(progress);
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				progressBar.setProgress(progress);
+			}
+		});
+		
 	}
 
 	public TabStartController getTabStartController() {
