@@ -10,7 +10,7 @@ import com.v3pm_prototype.database.DBProject;
  * @author Marius Svechla
  *
  */
-public class Project implements Cloneable{
+public class Project implements Cloneable,Comparable<Project>{
 	
 	public static final String TYPE_PROCESSLEVEL = "processLevel";
 	public static final String TYPE_BPMLEVEL = "";
@@ -63,6 +63,10 @@ public class Project implements Cloneable{
 		this.absRelQ = absRelQ;
 		this.absRelT = absRelT;
 		this.absRelOop = absRelOop;
+	}
+	
+	public void info(){
+		System.out.println(name+ "fc:"+fixedCosts+" oinv:"+oinv+" i:"+i+" a:"+a+" b:"+b+" e:"+e+" u:"+u+" m:"+m);
 	}
 	
 	public String toString(){
@@ -251,6 +255,11 @@ public class Project implements Cloneable{
 	    }catch(Exception e){ 
 	        return null; 
 	    }
+	}
+
+	@Override
+	public int compareTo(Project o) {
+		return Integer.compare(this.id,o.id);
 	}
 	
 }

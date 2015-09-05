@@ -2,6 +2,7 @@ package com.v3pm_prototype.rmgeneration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -17,6 +18,13 @@ import com.v3pm_prototype.main.V3PM_Prototype;
  *
  */
 public class RMGenerator extends Task<List<RoadMap>> {
+	
+	//RMContainer specific
+	public List<RMContainer> lstRMContainerSingle = new ArrayList<RMContainer>();
+	public List<RMContainer> lstRMContainerCombined = new ArrayList<RMContainer>();
+	public List<HashSet<Integer>> lstCombinedProjectIDs = new ArrayList<HashSet<Integer>>();
+	
+	public static int countRoadMapsGenerated=0;
 	
 	private RunConfiguration config;
 	
@@ -38,7 +46,6 @@ public class RMGenerator extends Task<List<RoadMap>> {
 	 */
 	
 	private List<RoadMap> generateRoadmaps() {
-		RMContainer.clear();
 		double start = System.currentTimeMillis();
 		System.out.println("--- START: generateRoadmaps()");
 		
@@ -48,7 +55,7 @@ public class RMGenerator extends Task<List<RoadMap>> {
 			//create a container for every project
 			HashSet<Integer> implementedProjectIDs = new HashSet<Integer>();
 			implementedProjectIDs.add(p.getId());
-			RMContainer rmc = new RMContainer(false, implementedProjectIDs);
+			RMContainer rmc = new RMContainer(false, implementedProjectIDs,lstRMContainerSingle,lstRMContainerCombined,lstCombinedProjectIDs);
 			
 			//add a roadmaps to the container for implementation start in each period
 			for(int period = 0; period < config.getPeriods() - p.numberOfPeriods+1; period++){
@@ -74,8 +81,8 @@ public class RMGenerator extends Task<List<RoadMap>> {
 		System.out.println("CombinedContainer");
 		
 		List<List<RMContainer>> lstSingleCombined = new ArrayList<List<RMContainer>>();
-		lstSingleCombined.add(RMContainer.lstRMContainerSingle); //list for STEP2
-		lstSingleCombined.add(RMContainer.lstRMContainerCombined); //list for STEP3
+		lstSingleCombined.add(lstRMContainerSingle); //list for STEP2
+		lstSingleCombined.add(lstRMContainerCombined); //list for STEP3
 		
 		//Work through STEP2 and STEP3
 		for(List<RMContainer>lstRMContainer : lstSingleCombined){
@@ -83,10 +90,7 @@ public class RMGenerator extends Task<List<RoadMap>> {
 			for(int i=0;i<lstRMContainer.size();i++){
 				RMContainer rmcSingle2 = lstRMContainer.get(i);
 				
-				for(RMContainer rmcSingle : RMContainer.lstRMContainerSingle){
-					
-					System.out.println("SINGLECOMBINED");
-					
+				for(RMContainer rmcSingle : lstRMContainerSingle){				
 					if(isCancelled()) break;
 					
 					//Generate list of combined IDs
@@ -98,7 +102,7 @@ public class RMGenerator extends Task<List<RoadMap>> {
 					if(RMRestrictionHandler.meetsPreCombinedContainerGenerationCheck(implementedProjectIDs, config)){
 						
 						//If combination has not been generated yet -> Generate
-						if(!RMContainer.lstCombinedProjectIDs.contains(implementedProjectIDs)){
+						if(!lstCombinedProjectIDs.contains(implementedProjectIDs)){
 							//create container
 							RMContainer rmcCombined = null;
 							
@@ -108,7 +112,7 @@ public class RMGenerator extends Task<List<RoadMap>> {
 									//combine both roadmaps
 									Project[][] roadmap = combineRoadMaps(rmSingle,rmSingle2,config);
 									if(roadmap != null){				
-										if(rmcCombined == null) rmcCombined = new RMContainer(true, implementedProjectIDs);
+										if(rmcCombined == null) rmcCombined = new RMContainer(true, implementedProjectIDs,lstRMContainerSingle,lstRMContainerCombined,lstCombinedProjectIDs);
 										rmcCombined.addRoadMap(new RoadMap(roadmap,implementedProjectIDs));
 									}
 
@@ -126,7 +130,7 @@ public class RMGenerator extends Task<List<RoadMap>> {
 		}
 		
 		System.out.println("CONTAINER GENERATED");
-		List<RoadMap> rmList = RMContainer.createRMList(config);
+		List<RoadMap> rmList = createRMList(config);
 		List<RoadMap> rmListPostRMGenCheck = new ArrayList<RoadMap>();
 		
 
@@ -165,13 +169,14 @@ public class RMGenerator extends Task<List<RoadMap>> {
 			
 			List<Project> lstProjectsInPeriod = new ArrayList<Project>();
 			lstProjectsInPeriod.addAll(projectsInPeriod);
+			Collections.sort(lstProjectsInPeriod);
 			
 			RMRestrictionHandler.meetsOnCombinedContainerGenerationCheck(lstProjectsInPeriod, config);
 			
 			//save period if COUNT_PROJECTS_MAX_PER_PERIOD is not exceeded, otherwise stop combination
 			if(projectsInPeriod.size() <= config.getSlotsPerPeriod()){
 				int i=0;
-				for(Project p : projectsInPeriod){
+				for(Project p : lstProjectsInPeriod){
 					rmCombined[period][i] =  p;
 					i++;
 				}
@@ -181,6 +186,38 @@ public class RMGenerator extends Task<List<RoadMap>> {
 		}
 
 		return rmCombined;
+	}
+	
+	public List<RoadMap> createRMList(RunConfiguration config){
+		List<RoadMap> rmList = new ArrayList<RoadMap>();
+		int countMandatory = config.getConstraintSet().getLstMandatory().size();
+		int countGloMutDep = config.getConstraintSet().getLstGloMutDep().size();
+		
+			for(RMContainer rmc : lstRMContainerSingle){
+				//Only add Single Containers if it contains mandatory projects
+				if(countMandatory == 1 && countGloMutDep == 0){
+					if(rmc.getImplementedProjects().contains(config.getConstraintSet().getLstMandatory().get(0).getS().getId())){
+						rmList.addAll(rmc.getLstRM());
+						break;
+					}
+				}
+				
+				if(countMandatory == 0 && countGloMutDep == 0){
+					rmList.addAll(rmc.getLstRM());
+				}		
+			}	
+		
+		for(RMContainer rmc : lstRMContainerCombined){
+			rmList.addAll(rmc.getLstRM());
+		}
+		return rmList;
+	}
+	
+	public void clear(){
+		lstRMContainerSingle.clear();
+		lstRMContainerCombined.clear();
+		lstCombinedProjectIDs.clear();
+		countRoadMapsGenerated = 0;
 	}
 
 }

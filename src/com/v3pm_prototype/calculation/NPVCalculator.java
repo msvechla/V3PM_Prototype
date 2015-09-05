@@ -29,6 +29,8 @@ public class NPVCalculator{
 	public List<RoadMap> start() throws NoValidThetaIDException{
 		calculateNPVs();
 		Collections.sort(collRM);
+		System.out.println("BEST NPV: "+collRM.get(0).getNpv());
+		System.out.println("DISCOUNT RATE: "+config.getDiscountRate());
 		return collRM;
 	}
 
@@ -67,8 +69,10 @@ public class NPVCalculator{
 				projectsInPeriod.add(tempProject);
 				
 
-//				if(RM.toString().equals("[ Six Sigma Standardisierung ][ Automatisierung Stärkere IT ][ Einführung SEPA ][ Effizienzsteigerung 2 ]")){
-//					System.out.println("FOUND");
+//				if(RM.toString().equals("[ Six Sigma Standardisierung ][ Stärkere IT Automatisierung ][ Einführung SEPA  ][ Effizienzsteigerung 2  ][   ]")|| RM.toString().equals("[ Standardisierung Six Sigma ][ Stärkere IT Automatisierung ][ Einführung SEPA  ][ Effizienzsteigerung 2  ][   ]") || RM.toString().equals("[ Standardisierung Six Sigma ][ Automatisierung Stärkere IT ][ Einführung SEPA  ][ Effizienzsteigerung 2  ][   ]")||RM.toString().equals("[ Six Sigma Standardisierung ][ Automatisierung Stärkere IT ][ Einführung SEPA  ][ Effizienzsteigerung 2  ][   ]")){
+//					System.out.println("FOUND: "+RM.toString());
+//					tempProject.info();
+//					System.out.println("DR:"+config.getDiscountRate()+" FCOAG:"+fixedCostsOAGes);
 //				}
 				
 				// calculate inflows
@@ -133,8 +137,6 @@ public class NPVCalculator{
 				double npv = Math.round((inflows - outflows - fixedCostsOAGes) * 100);
 				RM.setNpv(npv / 100);
 			}
-			
-			
 			
 			//Save the calculated quality and time per period
 			if(RM.getNpv()>0){

@@ -36,7 +36,7 @@ public class CompleteRobustnessAnalysis extends Task<List<CRAResult>>{
 
 	@Override
 	protected List<CRAResult> call() throws Exception {
-		
+		System.out.println("CRA STARTED");
 		this.roadmap = (RoadMap) lstRoadmap.get(0).clone();
 		int countProjects = 0;
 		

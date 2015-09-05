@@ -13,38 +13,32 @@ import com.v3pm_prototype.calculation.RMRestrictionHandler;
  */
 public class RMContainer {
 	
-	public static List<RMContainer> lstRMContainerSingle = new ArrayList<RMContainer>();
-	public static List<RMContainer> lstRMContainerCombined = new ArrayList<RMContainer>();
-	public static List<HashSet<Integer>> lstCombinedProjectIDs = new ArrayList<HashSet<Integer>>();
-	
-	public static int countRoadMapsGenerated=0;
-	
-	
 	private boolean isCombinedContainer;
+	private List<RMContainer> lstRMContainerSingle = new ArrayList<RMContainer>();
+	private List<RMContainer> lstRMContainerCombined = new ArrayList<RMContainer>();
 	private HashSet<Integer> implementedProjects;
 	private List<RoadMap> lstRM;
 	
-	public RMContainer(boolean isCominedContainer,HashSet<Integer> implementedProjects){
+	public RMContainer(boolean isCombinedContainer,HashSet<Integer> implementedProjects,List<RMContainer> lstRMContainerSingle,List<RMContainer> lstRMContainerCombined, List<HashSet<Integer>> lstIDsOverall){
 		this.implementedProjects = implementedProjects;
 		this.lstRM = new ArrayList<RoadMap>();
-		if(isCominedContainer){
+		this.isCombinedContainer = isCombinedContainer;
+		this.lstRMContainerSingle = lstRMContainerSingle;
+		this.lstRMContainerCombined = lstRMContainerCombined;
+		
+		if(isCombinedContainer){
 			lstRMContainerCombined.add(this);
 		}else{
 			lstRMContainerSingle.add(this);
 		}
-		lstCombinedProjectIDs.add(implementedProjects);
+		lstIDsOverall.add(implementedProjects);
 	}
 	
-	public static void clear(){
-		lstRMContainerSingle.clear();
-		lstRMContainerCombined.clear();
-		lstCombinedProjectIDs.clear();
-		countRoadMapsGenerated = 0;
-	}
+	
 	
 	public void addRoadMap(RoadMap rm){
 		this.lstRM.add(rm);
-		countRoadMapsGenerated++;
+		//countRoadMapsGenerated++;
 	}
 	
 	public List<RoadMap> getLstRM(){
@@ -53,31 +47,6 @@ public class RMContainer {
 	
 	public HashSet<Integer> getImplementedProjects(){
 		return this.implementedProjects;
-	}
-	
-	public static List<RoadMap> createRMList(RunConfiguration config){
-		List<RoadMap> rmList = new ArrayList<RoadMap>();
-		int countMandatory = config.getConstraintSet().getLstMandatory().size();
-		int countGloMutDep = config.getConstraintSet().getLstGloMutDep().size();
-		
-			for(RMContainer rmc : lstRMContainerSingle){
-				//Only add Single Containers if it contains mandatory projects
-				if(countMandatory == 1 && countGloMutDep == 0){
-					if(rmc.implementedProjects.contains(config.getConstraintSet().getLstMandatory().get(0).getS().getId())){
-						rmList.addAll(rmc.getLstRM());
-						break;
-					}
-				}
-				
-				if(countMandatory == 0 && countGloMutDep == 0){
-					rmList.addAll(rmc.getLstRM());
-				}		
-			}	
-		
-		for(RMContainer rmc : lstRMContainerCombined){
-			rmList.addAll(rmc.getLstRM());
-		}
-		return rmList;
 	}
 
 }

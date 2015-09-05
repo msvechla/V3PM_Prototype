@@ -769,6 +769,7 @@ public class TabScenarioCalculationController {
 				initLineCharts();
 				initGraphStream();
 				updateTVProcesses();
+				initACCashflows();
 			}
 
 		};
@@ -900,11 +901,9 @@ public class TabScenarioCalculationController {
 
 		for (int period = 0; period < config.getPeriods(); period++) {
 			series1.getData().add(
-					new Data<String, Double>("Period " + (period), rmList
-							.get(0).getCashflowsPerPeriod(config)[period]));
-			System.out.println("Series1: "
-					+ rmList.get(0).getCashflowsPerPeriod(config)[period]);
+					new Data<String, Double>("Period " + (period), tvRoadmap.getSelectionModel().getSelectedItem().getCashflowsPerPeriod(config)[period]));
 		}
+		acCashflows.getData().clear();
 		acCashflows.getData().add(series1);
 	}
 
@@ -934,7 +933,7 @@ public class TabScenarioCalculationController {
 						olRoadmap.addAll(rmList);
 						lblAmountRoadmaps.setText(rmList.size()
 								+ " Roadmaps have been generated.");
-						RMContainer.clear();
+						this.clear();
 						System.out.println(config);
 						super.succeeded();
 					}
@@ -953,7 +952,8 @@ public class TabScenarioCalculationController {
 	 */
 	private Service<List<RoadMap>> initialNPVCalcService(
 			final List<RoadMap> generatedRoadmaps) { // Update Statusbar
-		
+			mainApp.getV3pmGUIController().setProgress(-1);
+			mainApp.getV3pmGUIController().setStatus("Calculating NPVs...");
 
 		// Create a Service that executes the RMGenerator Task and start it
 		Service<List<RoadMap>> service = new Service<List<RoadMap>>() {
@@ -964,8 +964,6 @@ public class TabScenarioCalculationController {
 
 					@Override
 					protected List<RoadMap> call() throws Exception {
-						mainApp.getV3pmGUIController().setProgress(-1);
-						mainApp.getV3pmGUIController().setStatus("Calculating NPVs...");
 						V3PM_Prototype.lstTasks.add(this);
 						NPVCalculator c = new NPVCalculator(generatedRoadmaps,
 								config);
