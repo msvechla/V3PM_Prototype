@@ -72,7 +72,7 @@
                                                       </Label>
                                                    </children>
                                                 </VBox>
-                                                <Label fx:id="lblRobustnessText" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" minWidth="200.0" prefWidth="400.0" text="The general robustness is calculated by varying every set project modifier in the range from -5% to +5%. The value represents the percentage of calculations where the solution managed to stay on top" textOverrun="CLIP" wrapText="true" HBox.hgrow="ALWAYS">
+                                                <Label fx:id="lblRobustnessText" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" minWidth="200.0" prefWidth="400.0" text="The general robustness is calculated by varying every set project modifier in the range from -2% to +2%. The value represents the percentage of calculations where the solution managed to stay on top" textOverrun="CLIP" wrapText="true" HBox.hgrow="ALWAYS">
                                                    <HBox.margin>
                                                       <Insets left="10.0" />
                                                    </HBox.margin>

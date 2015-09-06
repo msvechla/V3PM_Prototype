@@ -360,15 +360,29 @@ public class TabStartController {
 
 		final ContextMenu scenariosContextMenu = new ContextMenu();
 		MenuItem miBlueprint = new MenuItem("Use as blueprint");
-		scenariosContextMenu.getItems().add(miBlueprint);
-
+		MenuItem miDelete = new MenuItem("Delete");
+		scenariosContextMenu.getItems().addAll(miBlueprint,miDelete);
 		tvScenarios.setContextMenu(scenariosContextMenu);
+		
 		miBlueprint.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				openNewScenarioWindow(tvScenarios.getSelectionModel()
 						.getSelectedItem());
+			}
+		});
+		
+		miDelete.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					deleteScenario(tvScenarios.getSelectionModel().getSelectedItem());
+				} catch (SQLException e) {
+					System.err.println("[SQL] FEHLER BEIM LÖSCHEN DES SCENARIOS");
+					e.printStackTrace();
+				}
 			}
 		});
 		
@@ -825,6 +839,16 @@ public class TabStartController {
 		t.start();
 	}
 
+	private void deleteScenario(DBScenario scenario) throws SQLException{
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement stS = conn.createStatement();
+		stS.executeUpdate("DELETE FROM Scenario WHERE id = "+scenario.getId()+";");
+		stS.executeUpdate("DELETE FROM ScenarioConstraint WHERE scenarioID = "+scenario.getId()+";");
+		stS.executeUpdate("DELETE FROM ScenarioProcess WHERE scenarioID = "+scenario.getId()+";");
+		stS.executeUpdate("DELETE FROM ScenarioProject WHERE scenarioID = "+scenario.getId()+";");
+		olScenarios.remove(scenario);
+	}
+	
 	private void setAppIcon(){
 		this.mainApp.getPrimaryStage().getIcons().add(
 				   new Image(

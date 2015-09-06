@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -952,18 +953,25 @@ public class TabScenarioCalculationController {
 	 */
 	private Service<List<RoadMap>> initialNPVCalcService(
 			final List<RoadMap> generatedRoadmaps) { // Update Statusbar
-			mainApp.getV3pmGUIController().setProgress(-1);
-			mainApp.getV3pmGUIController().setStatus("Calculating NPVs...");
 
 		// Create a Service that executes the RMGenerator Task and start it
 		Service<List<RoadMap>> service = new Service<List<RoadMap>>() {
 			@Override
 			protected Task<List<RoadMap>> createTask() {
-
+				
 				return new Task<List<RoadMap>>() {
 
 					@Override
 					protected List<RoadMap> call() throws Exception {
+						
+						Platform.runLater(new Runnable(){
+							@Override
+							public void run() {
+								mainApp.getV3pmGUIController().setProgress(-1);
+								mainApp.getV3pmGUIController().setStatus("Calculating NPVs...");
+							}
+						});
+						
 						V3PM_Prototype.lstTasks.add(this);
 						NPVCalculator c = new NPVCalculator(generatedRoadmaps,
 								config);
