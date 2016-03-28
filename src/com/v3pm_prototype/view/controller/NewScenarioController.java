@@ -702,7 +702,7 @@ public class NewScenarioController {
 			public void handle(ActionEvent event) {
 				DBProject selectedProject = tvProjects.getSelectionModel()
 						.getSelectedItem();
-				olProcesses.remove(selectedProject);
+				olProjects.remove(selectedProject);
 				availableProjects.add(selectedProject);
 			}
 		});

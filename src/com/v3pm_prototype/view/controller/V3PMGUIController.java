@@ -2,7 +2,9 @@ package com.v3pm_prototype.view.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
+import com.v3pm_prototype.database.DBConnection;
 import com.v3pm_prototype.main.V3PM_Prototype;
 
 import javafx.application.Platform;
@@ -12,10 +14,12 @@ import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -39,6 +43,9 @@ public class V3PMGUIController {
 	private MenuItem menuSettings;
 	
 	@FXML
+	private MenuItem menuSetDB;
+	
+	@FXML
 	private Label lblStatusText;
 	
 	@FXML
@@ -59,6 +66,7 @@ public class V3PMGUIController {
 	@FXML
 	private void initialize(){
 		initSettings();
+		initSetDB();
 	}
 	
 	private void initSettings(){
@@ -87,6 +95,46 @@ public class V3PMGUIController {
 				
 			}
 		});
+	}
+	
+	private void initSetDB(){	
+		// Update menu item text
+		setSetDBName();
+		
+		menuSetDB.addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				// Open the file dialog and write new path to config
+				DBConnection.getInstance().openDBFileDialog();
+				
+				// Update menu item text
+				setSetDBName();
+				
+				//Open dialog to prompt the user to restart the application
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Notification");
+				alert.setHeaderText("Changes require application restart");
+				alert.setContentText("Your settings have been saved. Please restart the application for the changes to take effect.");
+				alert.showAndWait();
+				
+			}
+		});
+	}
+	
+	/**
+	 * Updates the text of the menu item and adds the current path
+	 */
+	private void setSetDBName(){
+		Path path = new File(DBConnection.DB_PATH).toPath();
+		final int len = path.getNameCount();	
+		
+		if (len >= 2){
+			menuSetDB.setText("Set Database... | "+path.subpath(len - 2, len));
+		}else{
+			menuSetDB.setText("Set Database... | "+DBConnection.DB_PATH);
+		}
+		
 	}
 	
 	public void setMainApp(V3PM_Prototype mainApp){
