@@ -31,7 +31,7 @@ public class V3PM_Prototype extends Application {
 	public void start(Stage primaryStage) {
 		instance = this;
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("V3PM Prototype");
+		this.primaryStage.setTitle("V3PM Prototype V1.2");
 		
 		try {
             // Load root layout from fxml file.

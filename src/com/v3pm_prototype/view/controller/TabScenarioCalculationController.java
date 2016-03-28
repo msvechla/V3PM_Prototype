@@ -375,15 +375,16 @@ public class TabScenarioCalculationController {
 
 	private void startCompleteRobustnessAnalysis() {
 		this.mainApp.getV3pmGUIController().setProgress(-1);
-		this.mainApp.getV3pmGUIController().setStatus("Calculating Complete Robustness...");
-		
+		this.mainApp.getV3pmGUIController().setStatus(
+				"Calculating Complete Robustness...");
+
 		List<RoadMap> rmListSmall = null;
-		if(rmList.size() > 50000){
+		if (rmList.size() > 50000) {
 			rmListSmall = rmList.subList(0, 49999);
-		}else{
+		} else {
 			rmListSmall = rmList;
 		}
-		
+
 		CompleteRobustnessAnalysis cra = new CompleteRobustnessAnalysis(config,
 				rmListSmall) {
 
@@ -405,7 +406,8 @@ public class TabScenarioCalculationController {
 				piRobustness.setVisible(false);
 				piRobustness.setManaged(false);
 				mainApp.getV3pmGUIController().setProgress(0);
-				mainApp.getV3pmGUIController().setStatus("Complete Robustness calculated.");
+				mainApp.getV3pmGUIController().setStatus(
+						"Complete Robustness calculated.");
 			}
 
 		};
@@ -497,6 +499,8 @@ public class TabScenarioCalculationController {
 					}
 				});
 
+		// Set color for delta values red / green accordingly
+
 		Callback<TableColumn<Process, Double>, TableCell<Process, Double>> cellFactoryDelta = new Callback<TableColumn<Process, Double>, TableCell<Process, Double>>() {
 
 			@Override
@@ -526,10 +530,8 @@ public class TabScenarioCalculationController {
 									setText(String.valueOf(Math
 											.round(item * 100) / 100.0));
 								}
-							}
-
-							if (this.getTableColumn()
-									.equals(clmProcessesTDelta)
+							} else if (this.getTableColumn().equals(
+									clmProcessesTDelta)
 									|| this.getTableColumn().equals(
 											clmProcessesOOpDelta)
 									|| this.getTableColumn().equals(
@@ -554,6 +556,16 @@ public class TabScenarioCalculationController {
 									this.setTextFill(Color.BLACK);
 									setText(String.valueOf(item));
 								}
+							}else{
+								if (item > 0) {
+									setText("+"
+											+ String.valueOf(Math
+													.round(item * 100) / 100.0));
+								}
+								if (item < 0) {
+									setText(String.valueOf(Math
+											.round(item * 100) / 100.0));
+								}
 							}
 						}
 
@@ -563,10 +575,17 @@ public class TabScenarioCalculationController {
 			}
 		};
 
+		// set this factory for red / green coloring
 		clmProcessesQDelta.setCellFactory(cellFactoryDelta);
 		clmProcessesTDelta.setCellFactory(cellFactoryDelta);
 		clmProcessesOOpDelta.setCellFactory(cellFactoryDelta);
 		clmProcessesFCDelta.setCellFactory(cellFactoryDelta);
+		
+		// set this factory for rounding purpose only
+		clmProcessesQ.setCellFactory(cellFactoryDelta);
+		clmProcessesT.setCellFactory(cellFactoryDelta);
+		clmProcessesOOp.setCellFactory(cellFactoryDelta);
+		clmProcessesFC.setCellFactory(cellFactoryDelta);
 
 	}
 
@@ -887,10 +906,9 @@ public class TabScenarioCalculationController {
 		}
 
 		// Display as percentage of all broken Restrictions
-//		for (Data<String, Number> d : series.getData()) {
-//			d.setYValue(d.getYValue().doubleValue() / amountBrokenOverall);
-//		}
-		
+		// for (Data<String, Number> d : series.getData()) {
+		// d.setYValue(d.getYValue().doubleValue() / amountBrokenOverall);
+		// }
 
 		bcRBroken.getData().add(series);
 
@@ -902,7 +920,9 @@ public class TabScenarioCalculationController {
 
 		for (int period = 0; period < config.getPeriods(); period++) {
 			series1.getData().add(
-					new Data<String, Double>("Period " + (period), tvRoadmap.getSelectionModel().getSelectedItem().getCashflowsPerPeriod(config)[period]));
+					new Data<String, Double>("Period " + (period), tvRoadmap
+							.getSelectionModel().getSelectedItem()
+							.getCashflowsPerPeriod(config)[period]));
 		}
 		acCashflows.getData().clear();
 		acCashflows.getData().add(series1);
@@ -958,20 +978,21 @@ public class TabScenarioCalculationController {
 		Service<List<RoadMap>> service = new Service<List<RoadMap>>() {
 			@Override
 			protected Task<List<RoadMap>> createTask() {
-				
+
 				return new Task<List<RoadMap>>() {
 
 					@Override
 					protected List<RoadMap> call() throws Exception {
-						
-						Platform.runLater(new Runnable(){
+
+						Platform.runLater(new Runnable() {
 							@Override
 							public void run() {
 								mainApp.getV3pmGUIController().setProgress(-1);
-								mainApp.getV3pmGUIController().setStatus("Calculating NPVs...");
+								mainApp.getV3pmGUIController().setStatus(
+										"Calculating NPVs...");
 							}
 						});
-						
+
 						V3PM_Prototype.lstTasks.add(this);
 						NPVCalculator c = new NPVCalculator(generatedRoadmaps,
 								config);
@@ -1010,15 +1031,16 @@ public class TabScenarioCalculationController {
 						initGraphStream();
 						initRoadmapContainer(null);
 						updateTVProcesses();
-						
+
 						lblAmountRoadmaps.setText(rmList.size()
 								+ " Roadmaps have been generated.");
-						
+
 						if ((SettingsController.FORCE_CRA)
 								|| rmList.size() < 50000) {
 							startCompleteRobustnessAnalysis();
-						}else{
-							lblRobustnessText.setText("Go into Settings to force this feature on for huge scenarios.");
+						} else {
+							lblRobustnessText
+									.setText("Go into Settings to force this feature on for huge scenarios.");
 							piRobustness.setProgress(0);
 						}
 						initBarChartRBroken();
@@ -1057,9 +1079,10 @@ public class TabScenarioCalculationController {
 				new EventHandler<WindowEvent>() {
 					@Override
 					public void handle(WindowEvent event) {
-						
-						mainApp.getV3pmGUIController().getTpMain().getTabs().clear();
-						
+
+						mainApp.getV3pmGUIController().getTpMain().getTabs()
+								.clear();
+
 						for (Viewer v : lstViewer) {
 							if (v != null) {
 								v.removeView(v.getDefaultView().getId());
@@ -1086,11 +1109,11 @@ public class TabScenarioCalculationController {
 			@Override
 			public void handle(Event event) {
 				lstViewer.remove(viewer);
-				if(viewer != null){
+				if (viewer != null) {
 					viewer.close();
 					viewer = null;
 				}
-				
+
 			}
 		});
 	}

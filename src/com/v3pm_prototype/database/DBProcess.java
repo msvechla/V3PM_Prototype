@@ -113,7 +113,7 @@ public class DBProcess implements Serializable{
 	}
 	
 	private void generateDemandfunction(){
-		this.demandFunction = String.valueOf(this.dmP)+" + "+String.valueOf(this.dmLambda)+" *( "+String.valueOf(this.dmAlpha)+"*"+this.dmFktQ+" + "+String.valueOf(this.dmBeta)+"*"+this.dmFktT;
+		this.demandFunction = String.valueOf(this.dmP)+" + "+String.valueOf(this.dmLambda)+" *( "+String.valueOf(this.dmAlpha)+"*"+this.dmFktQ+" + "+String.valueOf(this.dmBeta)+"*"+this.dmFktT+" )";
 		//TODO DEMANDFKT
 	}
 	
