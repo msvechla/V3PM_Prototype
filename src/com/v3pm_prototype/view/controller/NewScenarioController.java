@@ -2,7 +2,9 @@ package com.v3pm_prototype.view.controller;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 
 import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
@@ -16,7 +18,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
@@ -185,7 +190,8 @@ public class NewScenarioController {
 	
 	private Stage stage = null;
 	private DBScenario blueprint = null; //contains a Scenario that is used to populate views with basic data
-
+	private boolean isEdit = false; //Defines whether an existing Scenario is edited or used as Blueprint
+	
 	private ValidationSupport validationSupport;
 	@FXML
 	private VBox mainContainer;
@@ -262,147 +268,215 @@ public class NewScenarioController {
 
 	/**
 	 * Writes the scenario and all its components to the database
+	 * @throws SQLException 
 	 */
-	public void createScenario(){
-		
-		//Close the window
-		Stage stage = (Stage) btnCreateScenario.getScene().getWindow();
-		stage.close();
-		
-		tsc.getMainApp().getV3pmGUIController().setStatus("Writing Scenario to Database...");
-		tsc.getMainApp().getV3pmGUIController().setProgress(-1);
-		
-		Task<?> writeScenarioTask = new Task<Object>(){
-			@Override
-			protected Object call() throws Exception {
-				Connection conn = DBConnection.getInstance().getConnection();
-				Statement st = conn.createStatement();
-				
-				//-------------------- WRITE Scenario TO DB --------------------
-				st.executeUpdate("INSERT INTO Scenario(name, periods, slotsPerPeriod, discountRate, oOAFixed) VALUES('"
-						+ tfName.getText()
-						+ "',"
-						+ cbPeriods.getValue()
-						+ ","
-						+ cbSlotsPerPeriod.getValue()
-						+ ","
-						+ Float.valueOf(tfDiscountRate.getText())
-						+ ","
-						+ Float.valueOf(tfOAFixedOutflows.getText()) + ");");
-				int scenarioID = st.getGeneratedKeys().getInt(1);
-				
-				
-				//Create DBScenario and add it to the Scenario List
-				DBScenario scenario = new DBScenario(scenarioID,
-						tfName.getText(), 0, cbPeriods.getValue(),
-						cbSlotsPerPeriod.getValue(),
-						Float.valueOf(tfDiscountRate.getText()),
-						Float.valueOf(tfOAFixedOutflows.getText()));
-				
-				scenario.getLstConstraints().addAll(olConstraints);
-				scenario.getLstProcesses().addAll(olProcesses);
-				scenario.getLstProjects().addAll(olProjects);
-				tsc.olScenarios.add(scenario);
-				
-				//TODO Loop through classes would be nicer code
-				//-------------------- WRITE ScenarioConstraint TO DB --------------------
-				StringBuilder query = new StringBuilder();
-				query.append("INSERT INTO ScenarioConstraint(scenarioID, type, sID, sIID, iID, x, y) VALUES");
-				
-				for(DBConstraint constraint : olConstraints){
-					int sID = 0;
-					if(constraint.getS() != null){
-						sID = constraint.getS().getId();
-					}
-					int sIID = 0;
-					if(constraint.getSi() != null){
-						sIID = constraint.getSi().getId();
-					}
-					int iID = 0;
-					if(constraint.getI() != null){
-						iID = constraint.getI().getId();
-					}
-					int y = -1;
-					if(constraint.getY().equals("ALL")){
-						y =-2;
-					}else{
-						y = Integer.parseInt(constraint.getY());
-					}
-					
-					query.append("("+scenarioID+", '"+constraint.getType()+"', "+sID+", "+sIID+", "+iID+", "+constraint.getX()+", "+y+")");
-					
-					//If this is the last constraint  close the query ";", else add "," for next values
-					if(olConstraints.indexOf(constraint) == olConstraints.size()-1){
-						query.append(";");
-					}else{
-						query.append(",");
-					}
-				}
-				
-				//Execute the Constraint Query
-				System.out.println("[SQLITE] " + query.toString());
-				st.executeUpdate(query.toString());
-				
-				//-------------------- WRITE ScenarioProcess TO DB --------------------
-				query = new StringBuilder();
-				query.append("INSERT INTO ScenarioProcess(scenarioID, processID) VALUES");
-				
-				for(DBProcess process : olProcesses){
-					
-					query.append("("+scenarioID+", "+process.getId()+")");
-					
-					//If this is the last process  close the query ";", else add "," for next values
-					if(olProcesses.indexOf(process) == olProcesses.size()-1){
-						query.append(";");
-					}else{
-						query.append(",");
-					}
-				}
-				
-				//Execute the Process Query
-				System.out.println("[SQLITE] " + query.toString());
-				st.executeUpdate(query.toString());
-				
-				//-------------------- WRITE ScenarioProject TO DB --------------------
-				query = new StringBuilder();
-				query.append("INSERT INTO ScenarioProject(scenarioID, projectID) VALUES");
-				
-				for(DBProject project : olProjects){
-					
-					query.append("("+scenarioID+", "+project.getId()+")");
-					
-					//If this is the last project  close the query ";", else add "," for next values
-					if(olProjects.indexOf(project) == olProjects.size()-1){
-						query.append(";");
-					}else{
-						query.append(",");
-					}
-				}
-				
-				//Execute the Project Query
-				System.out.println("[SQLITE] " + query.toString());
-				st.executeUpdate(query.toString());
-				
-				return null;
-			}
+	public void createScenario() throws SQLException {
 
-			@Override
-			protected void succeeded() {
-				super.succeeded();
-				tsc.getMainApp().getV3pmGUIController().setStatus("Scenario saved to Database.");
-				tsc.getMainApp().getV3pmGUIController().setProgress(0);
-				
-//				//Close the window
-//				Stage stage = (Stage) btnCreateScenario.getScene().getWindow();
-//				stage.close();
-			}		
-		};
-		
-		Thread t = new Thread(writeScenarioTask);
-		t.setDaemon(true);
-		t.start();
+		//Get User Confirmation
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation Required");
+		if (this.isEdit){
+			alert.setHeaderText("This will overwrite the existing Scenario with your changes");
+			alert.setContentText("The original Scenario is deleted and a new Scenario with the updated values is created."
+					+ "Are you sure you want to continue?");
+		}else{
+			alert.setHeaderText("This will create a new Scenario in your Database");
+			alert.setContentText("Are you sure you want to continue?");
+		}
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+
+			// Close the window
+			Stage stage = (Stage) btnCreateScenario.getScene().getWindow();
+			stage.close();
+
+			tsc.getMainApp().getV3pmGUIController()
+					.setStatus("Writing Scenario to Database...");
+			tsc.getMainApp().getV3pmGUIController().setProgress(-1);
+			
+			//Delete the old Scenario if this is an edit (New Scenario is written afterwards)
+			if (this.isEdit){
+				this.deleteScenario(this.blueprint);
+			}
+			
+
+			Task<?> writeScenarioTask = new Task<Object>() {
+				@Override
+				protected Object call() throws Exception {
+					Connection conn = DBConnection.getInstance()
+							.getConnection();
+					Statement st = conn.createStatement();
+
+					// -------------------- WRITE Scenario TO DB --------------------
+					st.executeUpdate("INSERT INTO Scenario(name, periods, slotsPerPeriod, discountRate, oOAFixed) VALUES('"
+							+ tfName.getText()
+							+ "',"
+							+ cbPeriods.getValue()
+							+ ","
+							+ cbSlotsPerPeriod.getValue()
+							+ ","
+							+ Float.valueOf(tfDiscountRate.getText())
+							+ ","
+							+ Float.valueOf(tfOAFixedOutflows.getText()) + ");");
+					int scenarioID = st.getGeneratedKeys().getInt(1);
+
+					// Create DBScenario and add it to the Scenario List
+					DBScenario scenario = new DBScenario(scenarioID,
+							tfName.getText(), 0, cbPeriods.getValue(),
+							cbSlotsPerPeriod.getValue(),
+							Double.valueOf(tfDiscountRate.getText()),
+							Double.valueOf(tfOAFixedOutflows.getText()));
+
+					scenario.getLstConstraints().addAll(olConstraints);
+					scenario.getLstProcesses().addAll(olProcesses);
+					scenario.getLstProjects().addAll(olProjects);
+					
+					//Remove the old scenario from the overview (EDIT only) and add the new
+					if(isEdit){
+						tsc.olScenarios.remove(blueprint);
+					}
+					tsc.olScenarios.add(scenario);
+
+					// TODO Loop through classes would be nicer code
+					// -------------------- WRITE ScenarioConstraint TO DB --------------------
+					StringBuilder query = new StringBuilder();
+					query.append("INSERT INTO ScenarioConstraint(scenarioID, type, sID, sIID, iID, x, y) VALUES");
+
+					for (DBConstraint constraint : olConstraints) {
+						int sID = 0;
+						if (constraint.getS() != null) {
+							sID = constraint.getS().getId();
+						}
+						int sIID = 0;
+						if (constraint.getSi() != null) {
+							sIID = constraint.getSi().getId();
+						}
+						int iID = 0;
+						if (constraint.getI() != null) {
+							iID = constraint.getI().getId();
+						}
+						int y = -1;
+						if (constraint.getY().equals("ALL")) {
+							y = -2;
+						} else {
+							y = Integer.parseInt(constraint.getY());
+						}
+
+						query.append("(" + scenarioID + ", '"
+								+ constraint.getType() + "', " + sID + ", "
+								+ sIID + ", " + iID + ", " + constraint.getX()
+								+ ", " + y + ")");
+
+						// If this is the last constraint close the query ";",
+						// else add "," for next values
+						if (olConstraints.indexOf(constraint) == olConstraints
+								.size() - 1) {
+							query.append(";");
+						} else {
+							query.append(",");
+						}
+					}
+
+					// Execute the Constraint Query
+					System.out.println("[SQLITE] " + query.toString());
+					st.executeUpdate(query.toString());
+
+					// -------------------- WRITE ScenarioProcess TO DB
+					// --------------------
+					query = new StringBuilder();
+					query.append("INSERT INTO ScenarioProcess(scenarioID, processID) VALUES");
+
+					for (DBProcess process : olProcesses) {
+
+						query.append("(" + scenarioID + ", " + process.getId()
+								+ ")");
+
+						// If this is the last process close the query ";", else
+						// add "," for next values
+						if (olProcesses.indexOf(process) == olProcesses.size() - 1) {
+							query.append(";");
+						} else {
+							query.append(",");
+						}
+					}
+
+					// Execute the Process Query
+					System.out.println("[SQLITE] " + query.toString());
+					st.executeUpdate(query.toString());
+
+					// -------------------- WRITE ScenarioProject TO DB
+					// --------------------
+					query = new StringBuilder();
+					query.append("INSERT INTO ScenarioProject(scenarioID, projectID) VALUES");
+
+					for (DBProject project : olProjects) {
+
+						query.append("(" + scenarioID + ", " + project.getId()
+								+ ")");
+
+						// If this is the last project close the query ";", else
+						// add "," for next values
+						if (olProjects.indexOf(project) == olProjects.size() - 1) {
+							query.append(";");
+						} else {
+							query.append(",");
+						}
+					}
+
+					// Execute the Project Query
+					System.out.println("[SQLITE] " + query.toString());
+					st.executeUpdate(query.toString());
+
+					return null;
+				}
+
+				@Override
+				protected void succeeded() {
+					super.succeeded();
+					tsc.getMainApp().getV3pmGUIController()
+							.setStatus("Scenario saved to Database.");
+					tsc.getMainApp().getV3pmGUIController().setProgress(0);
+
+					// //Close the window
+					// Stage stage = (Stage)
+					// btnCreateScenario.getScene().getWindow();
+					// stage.close();
+				}
+			};
+
+			Thread t = new Thread(writeScenarioTask);
+			t.setDaemon(true);
+			t.start();
+
+		}
 	}
 
+	/**
+	 * Deletes a given Scenario from the Database. Needed for editing Scenarios (Delete old and write new Scenario again to avoid calculating delta)
+	 * @param scenario Scenario to delete from the Database
+	 * @throws SQLException
+	 */
+	private void deleteScenario(DBScenario scenario) throws SQLException{
+		Connection conn = DBConnection.getInstance().getConnection();
+		Statement stS = conn.createStatement();
+		System.out.println("--- DELETING OLD SCENARIO (EDIT) ---");
+		
+		System.out.println("[SQLITE] DELETE FROM Scenario WHERE id = "+scenario.getId()+";");
+		stS.executeUpdate("DELETE FROM Scenario WHERE id = "+scenario.getId()+";");
+		
+		System.out.println("[SQLITE] DELETE FROM ScenarioConstraint WHERE scenarioID = "+scenario.getId()+";");
+		stS.executeUpdate("DELETE FROM ScenarioConstraint WHERE scenarioID = "+scenario.getId()+";");
+		
+		System.out.println("[SQLITE] DELETE FROM ScenarioProcess WHERE scenarioID = "+scenario.getId()+";");
+		stS.executeUpdate("DELETE FROM ScenarioProcess WHERE scenarioID = "+scenario.getId()+";");
+		
+		System.out.println("[SQLITE] DELETE FROM ScenarioProject WHERE scenarioID = "+scenario.getId()+";");
+		stS.executeUpdate("DELETE FROM ScenarioProject WHERE scenarioID = "+scenario.getId()+";");
+		
+		System.out.println("--- OLD SCENARIO DELETED (EDIT) ---");
+	}
+	
 	private void initLVConstraints() {
 		// Set listview content
 		lvCAmongProjects.setItems(olCAmongProjects);
@@ -751,8 +825,13 @@ public class NewScenarioController {
 		availableProjects.removeAll(blueprint.getLstProjects());
 		
 		olConstraints.addAll(blueprint.getLstConstraints());
-		tfName.setText(blueprint.getName()+" Copy");
 		
+		if(this.isEdit){
+			tfName.setText(blueprint.getName());
+			btnCreateScenario.setText("Overwrite existing Scenario");
+		}else{
+			tfName.setText(blueprint.getName()+" Copy");
+		}	
 		
 	}
 
@@ -786,6 +865,14 @@ public class NewScenarioController {
 			}
 		});
 		
+	}
+
+	public boolean isEdit() {
+		return isEdit;
+	}
+
+	public void setEdit(boolean isEdit) {
+		this.isEdit = isEdit;
 	}
 
 }

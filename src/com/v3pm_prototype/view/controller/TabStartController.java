@@ -288,10 +288,10 @@ public class TabStartController {
 	}
 
 	public void openNewScenarioWindow() {
-		openNewScenarioWindow(null);
+		openNewScenarioWindow(null, false);
 	}
 
-	public void openNewScenarioWindow(DBScenario blueprint) {
+	public void openNewScenarioWindow(DBScenario blueprint, boolean isEdit) {
 		// Load root layout from fxml file.
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(V3PM_Prototype.class
@@ -301,6 +301,7 @@ public class TabStartController {
 			root = (VBox) loader.load();
 			NewScenarioController nsController = loader.getController();
 			nsController.setTsc(this);
+			nsController.setEdit(isEdit);
 
 			if (blueprint != null) {
 				nsController.setBlueprint(blueprint);
@@ -308,7 +309,12 @@ public class TabStartController {
 
 			// Show the scene containing the root layout.
 			Stage stage = new Stage();
-			stage.setTitle("New Scenario");
+			
+			if(isEdit){
+				stage.setTitle("Edit Scenario "+blueprint.getName());
+			}else{
+				stage.setTitle("New Scenario");
+			}
 			stage.setScene(new Scene(root));
 			nsController.setStage(stage);
 			stage.show();
@@ -360,8 +366,9 @@ public class TabStartController {
 
 		final ContextMenu scenariosContextMenu = new ContextMenu();
 		MenuItem miBlueprint = new MenuItem("Use as blueprint");
+		MenuItem miEdit = new MenuItem("Edit Scenario");
 		MenuItem miDelete = new MenuItem("Delete");
-		scenariosContextMenu.getItems().addAll(miBlueprint,miDelete);
+		scenariosContextMenu.getItems().addAll(miBlueprint,miEdit,miDelete);
 		tvScenarios.setContextMenu(scenariosContextMenu);
 		
 		miBlueprint.setOnAction(new EventHandler<ActionEvent>() {
@@ -369,7 +376,16 @@ public class TabStartController {
 			@Override
 			public void handle(ActionEvent event) {
 				openNewScenarioWindow(tvScenarios.getSelectionModel()
-						.getSelectedItem());
+						.getSelectedItem(), false);
+			}
+		});
+		
+		miEdit.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				openNewScenarioWindow(tvScenarios.getSelectionModel()
+						.getSelectedItem(),true);
 			}
 		});
 		
