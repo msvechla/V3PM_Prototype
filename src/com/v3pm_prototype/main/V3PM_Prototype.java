@@ -25,13 +25,15 @@ public class V3PM_Prototype extends Application {
 	private V3PMGUIController v3pmGUIController;
 	public static V3PM_Prototype instance;
 	
+	public static final String RELEASE_VERSION = "1.3";
+	
 	public static ArrayList<Task> lstTasks = new ArrayList<Task>();
 	
 	@Override
 	public void start(Stage primaryStage) {
 		instance = this;
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("V3PM Prototype V1.2");
+		this.primaryStage.setTitle("V3PM Prototype V"+RELEASE_VERSION);
 		
 		try {
             // Load root layout from fxml file.
