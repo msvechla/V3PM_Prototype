@@ -37,6 +37,8 @@ public class AddProcessController {
 
 	// General Settings
 	@FXML
+	private Label lblHeading;
+	@FXML
 	private TextField tfName;
 	@FXML
 	private TextField tfP;
@@ -85,6 +87,9 @@ public class AddProcessController {
 	private TabStartController tsc;
 	
 	private ValidationSupport validationSupport;
+	
+	private boolean isEdit = false;
+	private DBProcess blueprint = null;
 
 	public AddProcessController() {
 		validationSupport = new ValidationSupport();
@@ -166,47 +171,100 @@ public class AddProcessController {
 			}
 
 			try {
+
 				Statement st = conn.createStatement();
-				st.executeUpdate("INSERT INTO Process(name, p, oop, fixedCosts, q, qMax, t, degQ, degT, dmP, dmLambda, dmAlpha, dmBeta, dmFktQ, dmFktT) VALUES ('"
-						+ tfName.getText()
-						+ "',"
-						+ Float.valueOf(tfP.getText())
-						+ ","
-						+ Float.valueOf(tfOop.getText())
-						+ ","
-						+ fixedCosts
-						+ ","
-						+ (this.slQ.getValue() / 100) * Double.valueOf(this.tfQMax.getText())
-						+ ","
-						+ Float.valueOf(tfQMax.getText())
-						+ ","
-						+ t
-						+ ","
-						+ degQ
-						+ ","
-						+ degT
-						+ ","
-						+ dmP
-						+ ","
-						+ dmLambda
-						+ ","
-						+ dmAlpha
-						+ ","
-						+ dmBeta
-						+ ","
-						+ getDMFkt(cbDMFktQ)
-						+ "," + getDMFkt(cbDMFktT) + ");");
 
-				int insertedID = st.getGeneratedKeys().getInt(1);
+				if (isEdit) {
+					
+					String query = "UPDATE Process SET name='"
+							+ tfName.getText()
+							+ "', p="
+							+ Float.valueOf(tfP.getText())
+							+ ", oop="
+							+ Float.valueOf(tfOop.getText())
+							+ ", fixedCosts="
+							+ fixedCosts
+							+ ", q="
+							+ (this.slQ.getValue() / 100)
+									* Double.valueOf(this.tfQMax.getText())
+							+ ", qMax=" + Float.valueOf(tfQMax.getText())
+							+ ", t=" + t + ", degQ=" + degQ + ", degT=" + degT
+							+ ", dmP=" + dmP + ", dmLambda=" + dmLambda
+							+ ", dmAlpha=" + dmAlpha + ", dmBeta=" + dmBeta
+							+ ", dmFktQ=" + getDMFkt(cbDMFktQ) + ", dmFktT="
+							+ getDMFkt(cbDMFktT) + " WHERE id="
+							+ blueprint.getId();
+					
+					System.out.println("[SQLITE] "+query);
+					
+					st.executeUpdate(query);
+					
+					//Update the process in the list
+					blueprint.setName(tfName.getText());
+					blueprint.setP(Float.valueOf(tfP.getText()));
+					blueprint.setOop(Float.valueOf(tfOop.getText()));
+					blueprint.setFixedCosts(fixedCosts);
+					blueprint.setQ((this.slQ.getValue() / 100)
+									* Double.valueOf(this.tfQMax.getText()));
+					blueprint.setqMax(Float.valueOf(tfQMax.getText()));
+					blueprint.setDegQ(degQ);
+					blueprint.setT(t);
+					blueprint.setDegT(degT);
+					blueprint.setDmP(dmP);
+					blueprint.setDmLambda(dmLambda);
+					blueprint.setDmAlpha(dmAlpha);
+					blueprint.setDmBeta(dmBeta);
+					blueprint.setDmFktQ(cbDMFktQ.getValue());
+					blueprint.setDmFktT(cbDMFktT.getValue());
+					
+				} else {
 
-				DBProcess process = new DBProcess(insertedID, tfName.getText(),
-						Float.valueOf(tfP.getText()), Float.valueOf(tfOop
-								.getText()), fixedCosts,
-						(this.slQ.getValue() / 100) * Double.valueOf(this.tfQMax.getText()), Float.valueOf(tfQMax.getText()), degQ, t, degT, dmP, dmLambda,
-						dmAlpha, dmBeta, cbDMFktQ.getValue(),
-						cbDMFktT.getValue());
+					st.executeUpdate("INSERT INTO Process(name, p, oop, fixedCosts, q, qMax, t, degQ, degT, dmP, dmLambda, dmAlpha, dmBeta, dmFktQ, dmFktT) VALUES ('"
+							+ tfName.getText()
+							+ "',"
+							+ Float.valueOf(tfP.getText())
+							+ ","
+							+ Float.valueOf(tfOop.getText())
+							+ ","
+							+ fixedCosts
+							+ ","
+							+ (this.slQ.getValue() / 100)
+									* Double.valueOf(this.tfQMax.getText())
+							+ ","
+							+ Float.valueOf(tfQMax.getText())
+							+ ","
+							+ t
+							+ ","
+							+ degQ
+							+ ","
+							+ degT
+							+ ","
+							+ dmP
+							+ ","
+							+ dmLambda
+							+ ","
+							+ dmAlpha
+							+ ","
+							+ dmBeta
+							+ ","
+							+ getDMFkt(cbDMFktQ)
+							+ ","
+							+ getDMFkt(cbDMFktT)
+							+ ");");
 
-				this.tsc.olProcesses.add(process);
+					int insertedID = st.getGeneratedKeys().getInt(1);
+
+					DBProcess process = new DBProcess(insertedID,
+							tfName.getText(), Float.valueOf(tfP.getText()),
+							Float.valueOf(tfOop.getText()), fixedCosts,
+							(this.slQ.getValue() / 100)
+									* Double.valueOf(this.tfQMax.getText()),
+							Float.valueOf(tfQMax.getText()), degQ, t, degT,
+							dmP, dmLambda, dmAlpha, dmBeta,
+							cbDMFktQ.getValue(), cbDMFktT.getValue());
+
+					this.tsc.olProcesses.add(process);
+				}
 
 				// Close the window
 				Stage stage = (Stage) btnAddProcess.getScene().getWindow();
@@ -229,6 +287,35 @@ public class AddProcessController {
 		validationSupport.registerValidator(tfQMax, Validator.createEmptyValidator("Maximum Quality is required"));
 		validationSupport.initInitialDecoration();
 	}
+	
+	/**
+	 * Fills everything with information when editing a process
+	 * @param blueprint
+	 */
+	public void setBlueprint(DBProcess blueprint){
+		this.blueprint = blueprint;
+		this.isEdit = true;
+		
+		tfName.setText(blueprint.getName());
+		tfP.setText(String.valueOf(blueprint.getP()));
+		tfOop.setText(String.valueOf(blueprint.getOop()));
+		tfFixedCosts.setText(String.valueOf(blueprint.getFixedCosts()));
+		slQ.setValue((blueprint.getQ()/blueprint.getqMax())*100);
+		tfQMax.setText(String.valueOf(blueprint.getqMax()));
+		updateQualityHint();
+		tfT.setText(String.valueOf(blueprint.getT()));
+		tfDegQ.setText(String.valueOf(blueprint.getDegQ()));
+		tfDegT.setText(String.valueOf(blueprint.getDegT()));
+		tfDMP.setText(String.valueOf(blueprint.getDmP()));
+		tfDMLambda.setText(String.valueOf(blueprint.getDmLambda()));
+		tfDMAlpha.setText(String.valueOf(blueprint.getDmAlpha()));
+		tfDMBeta.setText(String.valueOf(blueprint.getDmBeta()));
+		cbDMFktQ.getSelectionModel().select(blueprint.getDmFktQ());
+		cbDMFktT.getSelectionModel().select(blueprint.getDmFktT());
+		
+		lblHeading.setText("Editing Process");
+		btnAddProcess.setText("Save Changes");
+	}
 
 	public void updateQualityHint() {
 		this.lblQ.setText(String.valueOf("Current Quality: "+(this.slQ.getValue() / 100) * Double.valueOf(this.tfQMax.getText())));
@@ -245,5 +332,4 @@ public class AddProcessController {
 			return 3;
 		}
 	}
-
 }

@@ -8,7 +8,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="588.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.AddProcessController">
    <children>
-      <Label text="Definition of a new Process" textFill="#2e8ce4">
+      <Label fx:id="lblHeading" text="Definition of a new Process" textFill="#2e8ce4">
          <font>
             <Font size="24.0" />
          </font>

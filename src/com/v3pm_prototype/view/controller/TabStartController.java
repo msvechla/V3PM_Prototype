@@ -262,10 +262,15 @@ public class TabStartController {
 		}
 	}
 
+	public void openAddProcessWindow() {
+		openAddProcessWindow(null);
+	}
+	
 	/**
 	 * Opens the window for creation of a new process
+	 * @param dbProcess 
 	 */
-	public void openAddProcessWindow() {
+	public void openAddProcessWindow(DBProcess blueprint) {
 		// Load root layout from fxml file.
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(V3PM_Prototype.class
@@ -276,10 +281,17 @@ public class TabStartController {
 
 			AddProcessController controller = loader.getController();
 			controller.setTSC(this);
-
+			
 			// Show the scene containing the root layout.
 			Stage stage = new Stage();
 			stage.setTitle("New Process");
+			
+			//Set the blueprint when editing
+			if(blueprint != null){
+				stage.setTitle("Editing Process: "+blueprint.getName());
+				controller.setBlueprint(blueprint);
+			}
+			
 			stage.setScene(new Scene(root));
 			stage.show();
 		} catch (IOException e) {
@@ -537,10 +549,11 @@ public class TabStartController {
 		// -------------------- CONTEXT MENU --------------------
 
 		final ContextMenu processesContextMenu = new ContextMenu();
+		MenuItem edit = new MenuItem("Edit");
 		MenuItem delete = new MenuItem("Delete");
 		MenuItem item = new MenuItem("Copy to Clipboard");
 		item.setOnAction(new TableViewSnapshot(tvProcesses));
-		processesContextMenu.getItems().addAll(item, delete);
+		processesContextMenu.getItems().addAll(item, edit, delete);
 
 		tvProcesses.setContextMenu(processesContextMenu);
 
@@ -562,6 +575,15 @@ public class TabStartController {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
+			}
+		});
+		
+		edit.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				openAddProcessWindow(tvProcesses.getSelectionModel()
+						.getSelectedItem());
 			}
 		});
 		
