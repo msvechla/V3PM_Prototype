@@ -8,7 +8,7 @@
 
 <VBox fx:id="mainBox" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.v3pm_prototype.view.controller.AddProjectController">
    <children>
-      <Label fx:id="lblProjectName" text="Definition of a new Project" textFill="#2e8ce4">
+      <Label fx:id="lblHeading" text="Definition of a new Project" textFill="#2e8ce4">
          <font>
             <Font size="24.0" />
          </font>

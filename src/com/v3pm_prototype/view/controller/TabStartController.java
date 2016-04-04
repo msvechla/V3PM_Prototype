@@ -235,10 +235,14 @@ public class TabStartController {
 
 	}
 
+	public void openAddProjectWindow() {
+		openAddProjectWindow(null);
+	}
+	
 	/**
 	 * Opens the window for creation of a new project
 	 */
-	public void openAddProjectWindow() {
+	public void openAddProjectWindow(DBProject blueprint) {
 		// Load root layout from fxml file.
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(V3PM_Prototype.class
@@ -256,6 +260,11 @@ public class TabStartController {
 			stage.setScene(new Scene(root));
 			stage.show();
 			controller.updateType();
+			
+			if(blueprint != null){
+				stage.setTitle("Edit Project: "+blueprint.getName());
+				controller.setBlueprint(blueprint);
+			}
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -479,11 +488,12 @@ public class TabStartController {
 		// -------------------- CONTEXT MENU --------------------
 
 		final ContextMenu projectsContextMenu = new ContextMenu();
+		MenuItem edit = new MenuItem("Edit");
 		MenuItem delete = new MenuItem("Delete");
 		MenuItem item = new MenuItem("Copy to Clipboard");
 		item.setOnAction(new TableViewSnapshot(tvProjects));
 		
-		projectsContextMenu.getItems().addAll(item,delete);
+		projectsContextMenu.getItems().addAll(item,edit,delete);
 		
 		
 		tvProjects.setContextMenu(projectsContextMenu);
@@ -506,6 +516,14 @@ public class TabStartController {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
+			}
+		});
+		
+		edit.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				openAddProjectWindow(tvProjects.getSelectionModel().getSelectedItem());
 			}
 		});
 

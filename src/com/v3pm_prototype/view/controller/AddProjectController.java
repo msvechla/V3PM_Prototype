@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
@@ -36,6 +37,8 @@ public class AddProjectController {
 	private VBox mainBox;
 	
 	//General Infos
+	@FXML
+	private Label lblHeading;
 	@FXML
 	private TextField tfName;
 	
@@ -94,6 +97,9 @@ public class AddProjectController {
 	private ObservableList<String> projectTypes = FXCollections.observableArrayList("processLevel","bpmLevel");
 	
 	private ValidationSupport validationSupport;
+	
+	private boolean isEdit = false;
+	private DBProject blueprint = null;
 	
 	public AddProjectController(){
 		validationSupport = new ValidationSupport();
@@ -219,41 +225,84 @@ public class AddProjectController {
 				}
 				
 				Statement st = conn.createStatement();
-				st.executeUpdate("INSERT INTO Project(name, type, periods, processID, oInv, fixedCosts, a, b, e, u, m, absrelQ, absrelT, absrelOop) VALUES ('"
-						+ tfName.getText()
-						+ "', '"
-						+ cbType.getValue()
-						+ "',"
-						+ tfPeriods.getText()
-						+ ","
-						+ cbAffectedProcess.getValue().getId()
-						+ ","
-						+ Float.valueOf(tfOInv.getText())
-						+ ","
-						+ fixedCosts
-						+ ","
-						+ a
-						+ ","
-						+ b
-						+ ","
-						+ e
-						+ ","
-						+ u
-						+ ","
-						+ m
-						+ ",'"
-						+ getAbsRel(tbU)
-						+ "','" + getAbsRel(tbE) + "','" + getAbsRel(tbA) + "');");
-				int insertedID = st.getGeneratedKeys().getInt(1);
+				
+				if (isEdit) {
+					
+					String query = "UPDATE PROJECT SET name='"
+							+ tfName.getText()
+							+ "', type='"
+							+ cbType.getValue()
+							+ "', periods="
+							+ tfPeriods.getText()
+							+ ", processID="
+							+ cbAffectedProcess.getValue().getId()
+							+ ", oInv="
+							+ Float.valueOf(tfOInv.getText())
+							+ ", fixedCosts=" + fixedCosts
+							+ ", a=" + a + ", b=" + b + ", e=" + e
+							+ ", u=" + u + ", m=" + m
+							+ ", absrelQ='" + getAbsRel(tbU) + "', absrelT='" + getAbsRel(tbE)
+							+ "', absrelOop='" + getAbsRel(tbA) + "' WHERE id="
+							+ blueprint.getId();
+					
+					System.out.println("[SQLITE] "+query);
+					
+					st.executeUpdate(query);
+					
+					//Update the process in the list
+					blueprint.setName(tfName.getText());
+					blueprint.setType(cbType.getValue());
+					blueprint.setPeriods(Integer.valueOf(tfPeriods.getText()));
+					blueprint.setProcess(cbAffectedProcess.getValue());
+					blueprint.setOInv(Float.valueOf(tfOInv.getText()));
+					blueprint.setFixedCosts(fixedCosts);
+					blueprint.setA(a);
+					blueprint.setB(b);
+					blueprint.setE(e);
+					blueprint.setU(u);
+					blueprint.setM(m);
+					blueprint.setAbsRelQ(getAbsRel(tbU));
+					blueprint.setAbsRelT(getAbsRel(tbE));
+					blueprint.setAbsRelOop(getAbsRel(tbA));
+					
+				} else {
 
-				TabStartController.olProjects.add(new DBProject(insertedID, tfName
-						.getText(), cbType.getValue().toString(), Integer
-						.parseInt(tfPeriods.getText()), fixedCosts, Float.valueOf(tfOInv.getText()),
-						cbAffectedProcess.getValue(), a,
-						b,e,
-						u, m,
-						getAbsRel(tbU), getAbsRel(tbE), getAbsRel(tbA)));
+					st.executeUpdate("INSERT INTO Project(name, type, periods, processID, oInv, fixedCosts, a, b, e, u, m, absrelQ, absrelT, absrelOop) VALUES ('"
+							+ tfName.getText()
+							+ "', '"
+							+ cbType.getValue()
+							+ "',"
+							+ tfPeriods.getText()
+							+ ","
+							+ cbAffectedProcess.getValue().getId()
+							+ ","
+							+ Float.valueOf(tfOInv.getText())
+							+ ","
+							+ fixedCosts
+							+ ","
+							+ a
+							+ ","
+							+ b
+							+ ","
+							+ e
+							+ ","
+							+ u
+							+ ","
+							+ m
+							+ ",'"
+							+ getAbsRel(tbU)
+							+ "','"
+							+ getAbsRel(tbE) + "','" + getAbsRel(tbA) + "');");
+					int insertedID = st.getGeneratedKeys().getInt(1);
 
+					TabStartController.olProjects.add(new DBProject(insertedID,
+							tfName.getText(), cbType.getValue().toString(),
+							Integer.parseInt(tfPeriods.getText()), fixedCosts,
+							Float.valueOf(tfOInv.getText()), cbAffectedProcess
+									.getValue(), a, b, e, u, m, getAbsRel(tbU),
+							getAbsRel(tbE), getAbsRel(tbA)));
+				}
+				
 				//Close the window
 				Stage stage = (Stage) btnAddProject.getScene().getWindow();
 				stage.close();
@@ -271,6 +320,33 @@ public class AddProjectController {
 		
 	}
 	
+	/**
+	 * Fills everything with information when editing a process
+	 * @param blueprint
+	 */
+	public void setBlueprint(DBProject blueprint){
+		this.blueprint = blueprint;
+		this.isEdit = true;
+		
+		tfName.setText(blueprint.getName());
+		cbType.getSelectionModel().select(blueprint.getType());
+		tfPeriods.setText(String.valueOf(blueprint.getPeriods()));
+		cbAffectedProcess.getSelectionModel().select(blueprint.getProcess());
+		tfOInv.setText(String.valueOf(blueprint.getOInv()));
+		tfFixedCosts.setText(String.valueOf(blueprint.getFixedCosts()));
+		tfA.setText(String.valueOf(blueprint.getA()));
+		tfB.setText(String.valueOf(blueprint.getB()));
+		tfE.setText(String.valueOf(blueprint.getE()));
+		tfU.setText(String.valueOf(blueprint.getU()));
+		tfM.setText(String.valueOf(blueprint.getM()));
+		tbU.setSelected(parseAbsRel(blueprint.getAbsRelQ()));
+		tbE.setSelected(parseAbsRel(blueprint.getAbsRelT()));
+		tbA.setSelected(parseAbsRel(blueprint.getAbsRelOop()));
+		
+		lblHeading.setText("Editing Project");
+		btnAddProject.setText("Save Changes");
+	}
+	
 	private void initValidation(){
 		validationSupport.registerValidator(tfName, Validator.createEmptyValidator("Name is required"));
 		validationSupport.registerValidator(tfPeriods, Validator.createEmptyValidator("Number of Periods are required"));
@@ -278,6 +354,14 @@ public class AddProjectController {
 		validationSupport.initInitialDecoration();
 	}
 
+	private boolean parseAbsRel(String value){
+		if(value.equals("relativ")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	private String getAbsRel(ToggleButton tb){
 		if(tb.isSelected()){
 			return "relativ";
